@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع جديد — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="home-page">
+    <header class="app-header">
+        <div class="app-logo">
+            <span class="logo-icon">◈</span>
+            <span class="logo-text">أداة مراجعة OCR</span>
+        </div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="projects.html" class="nav-link">المشاريع</a>
+        </nav>
+    </header>
+
+    <main class="home-main" style="max-width:680px; margin:0 auto; padding-top:30px;">
+        <h1 style="margin-bottom:24px;">مشروع جديد</h1>
+        <form id="new-project-form" class="project-form">
+
+            <fieldset class="form-section">
+                <legend>بيانات الكتاب</legend>
+                <div class="form-group">
+                    <label>عنوان الكتاب <span class="required">*</span></label>
+                    <input type="text" name="title" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>المؤلف <span class="required">*</span></label>
+                        <input type="text" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <label>دار النشر</label>
+                        <input type="text" name="publisher">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>رقم بداية ترقيم الصفحات (PDF)</label>
+                    <input type="number" name="logical_start" value="1" style="width:120px;">
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend>معالجة النصوص</legend>
+                <p class="section-hint">تُطبَّق هذه الخيارات تلقائياً عند استيراد ملفات OCR JSON</p>
+
+                <div class="options-grid">
+                    <label class="option-item">
+                        <input type="checkbox" name="clean_extra_lines">
+                        <span class="option-check"></span>
+                        <span class="option-text">إزالة الأسطر الزائدة</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" name="clean_double_spaces">
+                        <span class="option-check"></span>
+                        <span class="option-text">إزالة المسافات المتكررة</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" name="fix_punctuation">
+                        <span class="option-check"></span>
+                        <span class="option-text">تصحيح مسافات علامات الترقيم</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" name="fix_waw">
+                        <span class="option-check"></span>
+                        <span class="option-text">لصق واو العطف بما بعدها</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" name="superscript_footnotes">
+                        <span class="option-check"></span>
+                        <span class="option-text">تحويل أرقام الحواشي إلى نص علوي</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" name="normalize_hamza">
+                        <span class="option-check"></span>
+                        <span class="option-text">توحيد صور الهمزة (أ إ آ → ا)</span>
+                    </label>
+                </div>
+
+                <div class="radio-group">
+                    <span class="radio-label">التشكيل:</span>
+                    <label class="radio-item"><input type="radio" name="tashkeel_option" value="none" checked> إبقاؤه كما هو</label>
+                    <label class="radio-item"><input type="radio" name="tashkeel_option" value="keep_tanween"> الاحتفاظ بالتنوين والشدة فقط</label>
+                    <label class="radio-item"><input type="radio" name="tashkeel_option" value="remove_all"> إزالة الكل</label>
+                </div>
+
+                <div class="radio-group">
+                    <span class="radio-label">التنوين المنصوب:</span>
+                    <label class="radio-item"><input type="radio" name="tanween_option" value="none" checked> بلا تغيير</label>
+                    <label class="radio-item"><input type="radio" name="tanween_option" value="before_alf"> قبل الألف (كتابًا)</label>
+                    <label class="radio-item"><input type="radio" name="tanween_option" value="on_alf"> على الألف (كتاباً)</label>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend>المشاركة عبر الشبكة المحلية (LAN)</legend>
+                <label class="option-item">
+                    <input type="checkbox" name="lan_enabled" id="lan-enabled-toggle">
+                    <span class="option-check"></span>
+                    <span class="option-text">مشاركة هذا المشروع على الشبكة المحلية</span>
+                </label>
+                <div id="lan-password-row" class="form-group hidden" style="margin-top:10px;">
+                    <label>كلمة مرور المشروع (اختياري)</label>
+                    <input type="password" name="lan_password" placeholder="اتركه فارغاً للسماح بالانضمام بدون كلمة مرور">
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend>ملف PDF</legend>
+                <button type="button" id="pdf-file-input" class="btn-secondary">اختر ملف PDF</button>
+                <div id="selected-path-display" class="path-display">لم يُختر ملف</div>
+            </fieldset>
+
+            <div class="form-actions">
+                <a href="index.html" class="btn-plain">إلغاء</a>
+                <button type="submit" class="btn-success">إنشاء المشروع</button>
+            </div>
+        </form>
+    </main>
+    <script src="js/new-project.js"></script>
+</body>
+</html>

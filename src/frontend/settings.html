@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="home-page">
+    <header class="app-header">
+        <div class="app-logo">
+            <span class="logo-icon">◈</span>
+            <span class="logo-text">أداة مراجعة OCR</span>
+        </div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="projects.html" class="nav-link">المشاريع</a>
+        </nav>
+    </header>
+
+    <main class="home-main" style="max-width:580px; margin:0 auto; padding-top:30px;">
+        <h1 style="margin-bottom:24px;">الإعدادات</h1>
+        <div class="settings-card">
+            <div class="settings-section-title">المراجعة</div>
+            <div class="setting-row">
+                <label class="switch"><input type="checkbox" id="autosave-toggle"><span class="slider"></span></label>
+                <span class="setting-label">الحفظ التلقائي عند مغادرة الكتلة النصية</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="show-iv" checked><span class="slider"></span></label>
+                <span class="setting-label">إظهار نافذة الصورة الكاملة</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
+                <span class="setting-label">إظهار نافذة الاقتطاع</span>
+            </div>
+        </div>
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">الواجهة</div>
+            <div class="setting-row">
+                <span class="setting-label">تكبير الواجهة</span>
+                <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-right:12px;">
+                <span id="zoom-val">100%</span>
+            </div>
+        </div>
+        <div style="margin-top:20px; text-align:left;">
+            <button id="save-settings" class="btn-primary">حفظ الإعدادات</button>
+        </div>
+    </main>
+    <script src="js/settings.js"></script>
+    <script>
+        // Reflect current shared settings into the controls on load.
+        document.getElementById('autosave-toggle').checked = window.__appSettings.autoSaveEnabled;
+        document.getElementById('show-iv').checked = window.__appSettings.showIV;
+        document.getElementById('show-cv').checked = window.__appSettings.showCV;
+        document.getElementById('ui-zoom').value = window.__appSettings.uiZoom;
+        document.getElementById('zoom-val').textContent = Math.round(window.__appSettings.uiZoom * 100) + '%';
+
+        document.getElementById('ui-zoom').addEventListener('input', function() {
+            document.getElementById('zoom-val').textContent = Math.round(this.value * 100) + '%';
+        });
+        document.getElementById('save-settings').addEventListener('click', () => {
+            window.__appSettings.autoSaveEnabled = document.getElementById('autosave-toggle').checked;
+            window.__appSettings.showIV = document.getElementById('show-iv').checked;
+            window.__appSettings.showCV = document.getElementById('show-cv').checked;
+            window.__appSettings.uiZoom = parseFloat(document.getElementById('ui-zoom').value);
+            alert('تم حفظ الإعدادات');
+        });
+    </script>
+</body>
+</html>

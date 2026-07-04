@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="home-page">
+    <header class="app-header">
+        <div class="app-logo">
+            <span class="logo-icon">◈</span>
+            <span class="logo-text">أداة مراجعة OCR</span>
+        </div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link active">الرئيسية</a>
+            <a href="projects.html" class="nav-link">المشاريع</a>
+            <button id="home-settings-btn" class="nav-link btn-plain">الإعدادات</button>
+        </nav>
+    </header>
+
+    <main class="home-main">
+        <section class="hero">
+            <h1>مرحباً بك</h1>
+            <p>اختر ما تريد القيام به</p>
+        </section>
+
+        <div class="home-cards">
+            <a href="new-project.html" class="home-card card-primary">
+                <div class="card-icon">＋</div>
+                <div class="card-title">مشروع جديد</div>
+                <div class="card-desc">إنشاء مشروع مراجعة OCR جديد</div>
+            </a>
+
+            <a href="projects.html" class="home-card card-secondary">
+                <div class="card-icon">📂</div>
+                <div class="card-title">المشاريع</div>
+                <div class="card-desc">عرض وإدارة مشاريعك الحالية</div>
+                <div class="card-badge" id="projects-count">...</div>
+            </a>
+
+            <a href="settings.html" class="home-card card-neutral">
+                <div class="card-icon">⚙</div>
+                <div class="card-title">الإعدادات</div>
+                <div class="card-desc">تخصيص أداة المراجعة</div>
+            </a>
+
+            <a href="lan.html" class="home-card card-neutral">
+                <div class="card-icon">🌐</div>
+                <div class="card-title">مشروع شبكي</div>
+                <div class="card-desc">الانضمام لمشروع يعمل عليه آخرون على نفس الشبكة</div>
+            </a>
+
+            <div class="home-card card-disabled">
+                <div class="card-icon">☁</div>
+                <div class="card-title">مشروع سحابي</div>
+                <div class="card-desc">قريباً — التعاون عبر الإنترنت</div>
+                <div class="card-soon">قريباً</div>
+            </div>
+        </div>
+
+        <section class="recent-section">
+            <h2>آخر المشاريع</h2>
+            <div id="recent-projects"></div>
+        </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-overlay" id="settings-overlay"></div>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>الإعدادات</h3>
+                <button class="modal-close" id="settings-close">✕</button>
+            </div>
+            <div class="modal-body" id="settings-body">
+                <!-- shared settings component injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
