@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة صفحات المشروع — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            
+            <div>
+                <h1 style="font-size: 24px; color: #2c3e50;">إدارة صفحات المشروع</h1>
+                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;">جاري التحميل...</p>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                        <button id="dashboard-settings-btn" class="btn-secondary">إعدادات</button>
+                        <button id="back-to-review-btn" class="btn-secondary">⟵ العودة</button>
+                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX">⬇ تصدير</button>
+            </div>
+
+        </div>
+
+        <!-- Collaboration & Broadcasting Live Status Panel -->
+        <div id="dashboard-coop-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;">🌐 وسائل العمل والتعاون:</span>
+                    <button type="button" id="dash-lan-status" style="border: none; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c; cursor: pointer;" title="انقر لتفعيل/إيقاف وضع العمل المحلي">📡 محلي: متوقف</button>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; font-size: 13px;">
+                <span style="color: #64748b; font-weight: bold;">👥 الأعضاء المتصلون حالياً:</span>
+                <div id="dash-active-collaborators" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-stats-container" style="margin-bottom: 20px;"></div>
+
+        <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">الصفحة</th>
+                        <th>حالة النصوص (OCR)</th>
+                        <th>حالة التخطيط (Layout)</th>
+                        <th>حالة التدقيق (Review)</th>
+                        <th style="text-align: left; padding-left: 20px;">الإجراءات</th>
+                    </tr>
+                </thead>
+            <tbody id="pages-table-body">
+                </tbody>
+        </table>
+    </div>
+
+    <div id="paddle-ocr-modal" class="modal hidden">
+        <div class="modal-overlay" id="paddle-ocr-overlay"></div>
+        <div class="modal-box" style="width: 500px;">
+            <div class="modal-header">
+                <h3>إعدادات Parse Layout / OCR</h3>
+                <button class="modal-close" id="paddle-ocr-close">✕</button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="form-group">
+                    <label>أداة المعالجة (OCR Tool)</label>
+                    <div class="form-section">
+                        <div class="radio-group tool-option" id="tool-paddle-container">
+                            <label class="radio-item" style="font-size: 15px;">
+                                <input type="radio" name="ocr-tool" value="paddle" checked> 
+                                PaddleOCR (Online Demo)
+                            </label>
+                            <div class="section-hint" id="paddle-limit-hint" style="margin-right: 24px; margin-top: 4px;">
+                                متاح 3 ملفات مجانية يومياً. (المتبقي: <span id="paddle-files-left">3</span>)
+                            </div>
+                        </div>
+
+                        <div class="radio-group tool-option" style="margin-top: 14px;" id="tool-locro-container">
+                            <label class="radio-item" style="font-size: 15px;">
+                                <input type="radio" name="ocr-tool" value="locro"> 
+                                Locro Offline (ScreenAI)
+                            </label>
+                            
+                            <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">طريقة المسح (Scan Mode):</div>
+                                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                                    <label class="radio-item">
+                                        <input type="radio" name="locro-mode" value="full_page" checked> 
+                                        مسح الصفحة كاملة
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="locro-mode" value="bboxes"> 
+                                        مسح بناءً على الكتل الحالية (BBoxes)
+                                    </label>
+                                </div>
+                                <div class="section-hint" style="margin-top: 8px;" id="locro-mode-hint">
+                                    أداة محلية تعتمد على تقنية ScreenAI المدمجة مع متصفح كروم. تدعم معالجة النصوص بدقة فائقة مع إمكانية استخراج درجات الثقة (Confidence) للكلمات. سيتم تنزيل المحرك تلقائياً إذا لم يكن متوفراً.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="radio-group tool-option" style="margin-top: 14px;" id="tool-glens-container">
+                            <label class="radio-item" style="font-size: 15px;">
+                                <input type="radio" name="ocr-tool" value="glens"> 
+                                Google Lens OCR
+                            </label>
+                            
+                            <div id="glens-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">طريقة المسح (Scan Mode):</div>
+                                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                                    <label class="radio-item">
+                                        <input type="radio" name="glens-mode" value="full_page" checked> 
+                                        مسح الصفحة كاملة
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="glens-mode" value="bboxes"> 
+                                        مسح بناءً على الكتل الحالية (BBoxes)
+                                    </label>
+                                </div>
+                                <div class="section-hint" style="margin-top: 8px;" id="glens-mode-hint">
+                                    سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="radio-group tool-option" style="margin-top: 14px;" id="tool-llm-container">
+                            <label class="radio-item" style="font-size: 15px;">
+                                <input type="radio" name="ocr-tool" value="llm"> 
+                                LLM Vision API (Gemini, GPT, Custom)
+                            </label>
+                            
+                            <div id="llm-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 16px; background: #fdfaf6; border-radius: 6px; border: 1px solid #e2d9c8;">
+                                
+                                <div class="form-group" style="margin-bottom: 12px;">
+                                    <label style="font-size: 13px; font-weight: 600;">مزود الخدمة (Provider / Model):</label>
+                                  
+                                  <select id="llm-provider" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
+                                        <optgroup label="Google Gemini">
+                                            <option value="gemini/gemini-3.5-pro">Gemini 3.5 Pro</option>
+                                            <option value="gemini/gemini-3.5-flash">Gemini 3.5 Flash</option>
+                                            <option value="gemini/gemini-3-pro">Gemini 3 Pro</option>
+                                            <option value="gemini/gemini-3-flash">Gemini 3 Flash</option>
+                                            <option value="gemini/gemini-2.5-pro">Gemini 2.5 Pro</option>
+                                            <option value="gemini/gemini-2.5-flash">Gemini 2.5 Flash</option>
+                                        </optgroup>
+                                        <optgroup label="Anthropic Claude">
+                                            <option value="claude-opus-4-8">Claude Opus 4.8</option>
+                                            <option value="claude-opus-4-7">Claude Opus 4.7</option>
+                                            <option value="claude-sonnet-5">Claude Sonnet 5</option>
+                                            <option value="claude-fable-5">Claude Fable 5</option>
+                                            <option value="claude-sonnet-4-6">Claude Sonnet 4.6</option>
+                                        </optgroup>
+                                        <optgroup label="OpenAI GPT">
+                                            <option value="gpt-5.5">GPT-5.5</option>
+                                            <option value="gpt-5.4">GPT-5.4</option>
+                                            <option value="gpt-5.2">GPT-5.2</option>
+                                            <option value="gpt-4o">GPT-4o</option>
+                                        </optgroup>
+                                        <optgroup label="xAI Grok">
+                                            <option value="xai/grok-4-vision">Grok 4 Vision</option>
+                                            <option value="xai/grok-3-vision">Grok 3 Vision</option>
+                                        </optgroup>
+                                        <optgroup label="Alibaba Qwen">
+                                            <option value="qwen/qwen2.5-vl-72b-instruct">Qwen 2.5 VL 72B</option>
+                                            <option value="qwen/qwen3-vl">Qwen 3 VL</option>
+                                        </optgroup>
+                                        <optgroup label="Meta & Mistral & DeepSeek">
+                                            <option value="mistral/pixtral-large">Pixtral Large (Mistral)</option>
+                                            <option value="meta-llama/llama-4-maverick-vision">Llama 4 Maverick Vision</option>
+                                            <option value="meta-llama/llama-3.2-11b-vision-instruct">Llama 3.2 Vision 11B</option>
+                                            <option value="deepseek/deepseek-vl2">DeepSeek VL2</option>
+                                        </optgroup>
+                                        <optgroup label="Z.ai">
+                                            <option value="glm-4.6v">GLM-4.6V</option>
+                                            <option value="glm-4.5v">GLM-4.5V</option>
+                                        </optgroup>
+                                        <optgroup label="أخرى">
+                                            <option value="custom">سيرفر مخصص (Custom OpenAI Compatible)</option>
+                                        </optgroup>
+                                    </select>
+
+                                </div>
+
+                                <div id="llm-custom-fields" class="hidden" style="margin-bottom: 12px; padding: 10px; background: #fff; border: 1px dashed #ccc; border-radius: 4px;">
+                                    <div class="form-group" style="margin-bottom: 8px;">
+                                        <label style="font-size: 12px;">رابط الخادم (Base URL):</label>
+                                        <input type="text" id="llm-base-url" placeholder="مثال: https://inference.dahl.global/v1" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size: 12px;">اسم النموذج (Model Name):</label>
+                                        <input type="text" id="llm-model-name" placeholder="مثال: MiniMaxAI/MiniMax-M2.7" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 12px;">
+                                    <label style="font-size: 13px; font-weight: 600;">مفتاح الـ API (API Key):</label>
+                                    <input type="password" id="llm-api-key" placeholder="ادخل مفتاح API هنا..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
+                                </div>
+
+                                <label class="radio-item" style="font-size: 13px;">
+                                    <input type="checkbox" id="llm-remember-api" checked>
+                                    تذكر بيانات الـ API على هذا الجهاز
+                                </label>
+
+                                <div id="llm-prompt-container" style="margin-top:14px; border-top:1px solid #cbd5e1; padding-top:12px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                        <label style="font-size:13px; font-weight:bold; color:#334155;">تعليمة التوجيه للنموذج (LLM Prompt):</label>
+                                        <button type="button" id="reset-ocr-modal-prompt" style="background:none; border:none; color:#2563eb; font-size:12px; cursor:pointer; text-decoration:underline;">استعادة التعليمة العامة</button>
+                                    </div>
+                                    <textarea id="ocr-modal-llm-prompt" rows="5" style="width:100%; font-family:monospace, inherit; font-size:12px; line-height:1.4; padding:8px; border-radius:6px; border:1px solid #cbd5e1; direction:ltr; text-align:left;" placeholder="ادخل تعليمات الـ System Prompt هنا..."></textarea>
+                                    
+                                    <label class="radio-item" style="font-size:12.5px; margin-top:8px; display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                        <input type="checkbox" id="remember-prompt-for-project" style="width:15px; height:15px; cursor:pointer; accent-color:#2563eb;">
+                                        <span>تذكر هذه التعليمة لهذا المشروع فقط (حفظ في إعدادات المشروع)</span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>نطاق الصفحات</label>
+                    <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+                        <label class="radio-item">
+                            <input type="radio" name="ocr-range" value="all"> كامل الملف
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="ocr-range" value="selected" checked> نطاق محدد
+                        </label>
+                    </div>
+                    
+                    <div id="ocr-range-inputs" style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #ddd;">
+                        من صفحة 
+                        <input type="number" id="ocr-start-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                        إلى 
+                        <input type="number" id="ocr-end-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div class="section-hint" style="margin-top: 8px;" id="range-hint-text">
+                        تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.
+                    </div>
+                </div>
+
+                <div class="section-hint" style="background: #eaf2f8; padding: 10px; border-radius: 6px; color: #2980b9; display: flex; gap: 8px; align-items: flex-start;">
+                    <span style="font-size: 16px;">ℹ</span>
+                    <div>
+                        التقطيع الذكي مفعّل: سيقوم النظام تلقائياً بتجزئة الملفات التي تتجاوز 1000 صفحة، أو 200 ميجابايت، أو 200 صفحة كحد أقصى للدفعة الواحدة لضمان استقرار المعالجة.
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button id="start-ocr-btn" class="btn-success">بدء المعالجة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+    <script src="js/ui-shared.js"></script>
+    <script src="js/project-dashboard.js"></script>
+    
+    <div id="ocr-progress-modal" class="modal hidden" style="z-index: 4000;">
+        <div class="modal-overlay"></div>
+        <div class="modal-box" style="width: 400px; text-align: center;">
+            <div class="modal-body" style="padding: 30px 20px;">
+                <h3 style="margin-bottom: 12px; color: #2c3e50;">جاري المعالجة...</h3>
+                <p id="ocr-progress-message" style="font-size: 14px; color: #555; margin-bottom: 16px;">يرجى الانتظار</p>
+                <div class="progress-bar" style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden; width: 100%;">
+                    <div id="ocr-progress-fill" style="width: 0%; height: 100%; background: #3498db; transition: width 0.4s ease, background 0.4s;"></div>
+                </div>
+                <div class="section-hint" style="margin-top: 14px;">قد تستغرق هذه العملية بعض الوقت اعتماداً على حجم الملف وسرعة الإنترنت.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

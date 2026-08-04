@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصدير المشروع — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .export-container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        .export-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .export-card h3 { margin-top: 0; margin-bottom: 18px; color: #0f172a; font-size: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        .checkbox-group { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+        .format-specific-options { padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 12px; }
+    </style>
+</head>
+<body>
+    <main class="export-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div>
+                <h1 style="margin: 0; color: #1e293b;">تصدير المشروع</h1>
+                <p id="export-proj-title" style="color: #64748b; margin-top: 4px;">جاري التحميل...</p>
+            </div>
+            <button id="back-btn" class="btn-secondary">⟵ العودة</button>
+        </div>
+
+        <div class="export-card">
+            <h3>📑 نطاق الصفحات</h3>
+            <div class="checkbox-group">
+                <label class="radio-item"><input type="radio" name="exp-pages" value="all" checked> كل الصفحات</label>
+                <label class="radio-item"><input type="radio" name="exp-pages" value="range"> نطاق محدد</label>
+            </div>
+            <div id="exp-range-inputs" class="hidden" style="display:flex; gap:10px; align-items:center; margin-top: 10px;">
+                من <input type="number" id="exp-from" value="1" min="1" style="width:70px; padding:6px; border-radius:6px; border: 1px solid #ccc;">
+                إلى <input type="number" id="exp-to" value="1" min="1" style="width:70px; padding:6px; border-radius:6px; border: 1px solid #ccc;">
+            </div>
+        </div>
+
+        <div class="export-card">
+            <h3>💾 صيغ التصدير المطلوبة</h3>
+            <p style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 16px;">يمكنك اختيار أكثر من صيغة ليتم تصديرها معاً.</p>
+            <div class="checkbox-group" style="gap: 20px;">
+                <label class="option-item"><input type="checkbox" name="exp-format" value="docx" checked><span class="option-check"></span><span style="font-weight: bold;">DOCX (Word)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="txt"><span class="option-check"></span><span style="font-weight: bold;">TXT (نص)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="json"><span class="option-check"></span><span style="font-weight: bold;">JSON (بيانات خام)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="html"><span class="option-check"></span><span style="font-weight: bold;">HTML (ويب)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="epub3"><span class="option-check"></span><span style="font-weight: bold;">EPUB3 (كتاب إلكتروني)</span></label>
+            </div>
+
+            <!-- TXT Options -->
+            <div id="opts-txt" class="format-specific-options hidden">
+                <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات TXT</h4>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <label style="font-size: 13px;">الفاصل بين أعمدة الجداول:</label>
+                    <select id="exp-table-sep" style="padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="&#9;">Tab (مسافة جدولة)</option>
+                        <option value=" | ">| (خط عمودي)</option>
+                        <option value=", ">فاصلة (,)</option>
+                        <option value=" - ">شرطة (-)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- HTML/EPUB Options (Placeholders for Step 2) -->
+            <div id="opts-epub" class="format-specific-options hidden">
+                <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات HTML & EPUB3</h4>
+                <p style="font-size: 13px; color: #d97706; margin: 0;">(سيتم إضافة الإعدادات الخاصة بالشعر العمودي ومعايير الكتب العربية هنا في المرحلة القادمة)</p>
+            </div>
+        </div>
+
+        <div style="text-align: left; margin-top: 20px;">
+            <button id="execute-export-btn" class="btn-success" style="padding: 12px 30px; font-size: 16px;">تصدير الملفات المحددة</button>
+        </div>
+    </main>
+
+    <script src="js/sidebar.js"></script>
+    <script>
+        let currentProject = null;
+
+        async function initExportPage() {
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get('id');
+            if (!projectId) { window.location.href = 'projects.html'; return; }
+
+            currentProject = await window.pywebview.api.load_project(projectId);
+            document.getElementById('export-proj-title').textContent = currentProject.metadata?.title || 'مشروع بدون عنوان';
+            document.getElementById('exp-to').value = currentProject.pages.length;
+
+            document.getElementById('back-btn').addEventListener('click', () => window.history.back());
+
+            // Handle range toggle
+            document.querySelectorAll('input[name="exp-pages"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.getElementById('exp-range-inputs').classList.toggle('hidden', e.target.value !== 'range');
+                });
+            });
+
+            // Handle Option Blocks Visibility
+            document.querySelectorAll('input[name="exp-format"]').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
+                    document.getElementById('opts-txt').classList.toggle('hidden', !formats.includes('txt'));
+                    document.getElementById('opts-epub').classList.toggle('hidden', !(formats.includes('html') || formats.includes('epub3')));
+                });
+            });
+
+            document.getElementById('execute-export-btn').addEventListener('click', async () => {
+                const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
+                if (formats.length === 0) { alert('الرجاء تحديد صيغة تصدير واحدة على الأقل.'); return; }
+
+                const pagesMode = document.querySelector('input[name="exp-pages"]:checked').value;
+                let indices = Array.from({length: currentProject.pages.length}, (_, i) => i);
+                if (pagesMode === 'range') {
+                    const from = Math.max(1, parseInt(document.getElementById('exp-from').value) || 1) - 1;
+                    const to = Math.min(currentProject.pages.length, parseInt(document.getElementById('exp-to').value) || currentProject.pages.length) - 1;
+                    indices = Array.from({length: to - from + 1}, (_, i) => from + i);
+                }
+
+                const opts = {
+                    table_separator: document.getElementById('exp-table-sep') ? document.getElementById('exp-table-sep').value : '\t',
+                    text_mode: 'formatted'
+                };
+
+                // Request directory from Python backend
+                const outputDir = await window.pywebview.api.request_directory_dialog();
+                if (!outputDir) return; // User canceled dialog
+
+                const btn = document.getElementById('execute-export-btn');
+                btn.textContent = '⏳ جاري التصدير...'; btn.disabled = true;
+
+                try {
+                    for (const fmt of formats) {
+                        await window.pywebview.api.export_project(currentProject.id, fmt, indices, opts, outputDir);
+                    }
+                    alert('تم تصدير الملفات بنجاح ✓');
+                } catch (e) {
+                    alert('حدث خطأ أثناء التصدير.');
+                } finally {
+                    btn.textContent = 'تصدير الملفات المحددة'; btn.disabled = false;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.pywebview) initExportPage();
+            else window.addEventListener('pywebviewready', initExportPage);
+        });
+    </script>
+</body>
+</html>

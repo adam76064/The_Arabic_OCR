@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="home-page">
+
+    <main class="home-main">
+        <section class="hero">
+            <h1>آدم مصطفى يرحب بكم</h1>
+            <p>اختر ما تريد القيام به</p>
+        </section>
+
+        <div class="home-cards">
+            <a href="#" class="home-card card-primary trigger-new-project">
+                <div class="card-icon">＋</div>
+                <div class="card-title">مشروع جديد</div>
+                <div class="card-desc">إنشاء مشروع مراجعة OCR جديد</div>
+            </a>
+
+            <a href="projects.html" class="home-card card-secondary">
+                <div class="card-icon">📂</div>
+                <div class="card-title">المشاريع</div>
+                <div class="card-desc">عرض وإدارة مشاريعك الحالية</div>
+                <div class="card-badge" id="projects-count">...</div>
+            </a>
+
+            <a href="settings.html" class="home-card card-neutral">
+                <div class="card-icon">⚙</div>
+                <div class="card-title">الإعدادات</div>
+                <div class="card-desc">تخصيص أداة المراجعة</div>
+            </a>
+        </div>
+
+        <section class="recent-section">
+            <h2>آخر المشاريع</h2>
+            <div id="recent-projects"></div>
+        </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-overlay" id="settings-overlay"></div>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>الإعدادات</h3>
+                <button class="modal-close" id="settings-close">✕</button>
+            </div>
+            <div class="modal-body" id="settings-body">
+                <!-- shared settings component injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/project-creator.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

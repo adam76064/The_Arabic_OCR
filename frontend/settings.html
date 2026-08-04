@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <style>
+        .shortcut-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .shortcut-row:last-child { border-bottom: none; }
+        .shortcut-label { font-size: 13.5px; color: #333; }
+        .shortcut-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+        .shortcut-key-btn {
+            min-width: 130px;
+            text-align: center;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f8f9fa;
+            font-size: 12.5px;
+            font-family: monospace;
+            cursor: pointer;
+            direction: ltr;
+        }
+        .shortcut-key-btn.recording {
+            background: #fff3cd;
+            border-color: #f39c12;
+            color: #7a5b00;
+        }
+        .shortcut-reset-btn {
+            font-size: 11px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            color: #888;
+        }
+        .shortcut-reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+        .shortcut-category-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #888;
+            margin: 16px 0 4px;
+            text-transform: uppercase;
+        }
+        .shortcut-category-title:first-child { margin-top: 0; }
+    </style>
+</head>
+<body class="home-page">
+
+    <main class="home-main" style="max-width:980px; margin:0 auto; padding-top:10px; opacity: 0; transition: opacity 0.3s ease-in-out;">
+
+        <div class="sticky-nav-wrapper">
+            <div class="compact-settings-nav">
+                <h1 style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button type="button" id="btn-cancel-settings" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
+                    <button type="button" id="save-settings" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
+                    <div style="border-right: 1px solid #cbd5e1; padding-right: 10px; margin-right: 4px;">
+                        <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
+                            <span>⟵</span> <span>عودة</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-section-title">موقع حفظ البيانات (Data Storage)</div>
+            <div class="section-hint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
+            <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
+                <input type="text" id="app-data-path-input" readonly style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-family: inherit; background: #f8fafc; color: #475569; font-size: 13px;" dir="ltr">
+                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-right: 8px;">تغيير المجلد...</button>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">المراجعة</div>
+            <div class="setting-row">
+                <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
+                <span class="setting-label">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
+                <span class="setting-label">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
+                <span class="setting-label">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="show-iv" checked><span class="slider"></span></label>
+                <span class="setting-label">إظهار نافذة الصورة الكاملة</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
+                <span class="setting-label">إظهار نافذة الاقتطاع</span>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">الواجهة</div>
+            <div class="setting-row">
+                <span class="setting-label">تكبير الواجهة</span>
+                <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-right:12px;">
+                <span id="zoom-val">100%</span>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">التراجع والإعادة (Undo / Redo)</div>
+            <div class="setting-row">
+                <span class="setting-label">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
+                <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width:90px;">
+            </div>
+            <div class="section-hint" style="margin-top:8px;">
+                يشمل التراجع/الإعادة كل التغييرات في المشروع: ترتيب الكتل، حذفها، تحميل OCR، تغيير التنسيق أو المحتوى النصي، إلخ. إذا كان التغيير في صفحة أخرى، سينتقل التطبيق إليها تلقائياً.
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">التصنيفات المخصصة (Categories)</div>
+            <div class="section-hint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
+            
+            <div style="display:flex; gap:10px; margin-top:12px; align-items:center;">
+                <input type="text" id="new-cat-name" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
+                <input type="color" id="new-cat-color" value="#9b59b6" style="width:44px; height:38px; border:none; cursor:pointer; border-radius:4px;">
+                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;">إضافة</button>
+            </div>
+            
+            <div id="custom-categories-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">إعدادات الحذف والملفات (Deletion Preferences)</div>
+            <div class="section-hint">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
+            
+            <div class="setting-row">
+                <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
+                <span class="setting-label">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
+                <span class="setting-label">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
+            </div>
+
+            <div style="height: 1px; background: #e2e8f0; margin: 16px 0;"></div>
+
+            <div class="setting-row">
+                <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
+                <span class="setting-label">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
+            </div>
+            <div class="setting-row" style="margin-top:16px;">
+                <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
+                <span class="setting-label">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">تعليمات النماذج الذكية (LLM System Prompt)</div>
+            <div class="section-hint">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
+            
+            <div class="form-group" style="margin-top:12px;">
+                <textarea id="llm-system-prompt" rows="10" style="width:100%; font-family: monospace, inherit; font-size: 12.5px; line-height: 1.5; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; direction: ltr; text-align: left;"></textarea>
+            </div>
+            
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;">إعادة تعيين للتعليمة الافتراضية</button>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title">اختصارات لوحة المفاتيح</div>
+            <div class="section-hint">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
+            <div id="shortcuts-list" style="margin-top:10px;"></div>
+            <div style="margin-top:14px;">
+                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+            </div>
+        </div>
+    </main>
+    <script src="js/settings.js"></script>
+    <script>
+        // Local working copy of shortcut overrides, edited in the UI and
+        // only merged into window.__appSettings / persisted on Save.
+        let pendingShortcuts = {};
+        
+
+        function populateForm() {
+            document.getElementById('auto-mark-reviewed').checked = window.__appSettings.autoMarkReviewed !== false;
+            document.getElementById('auto-save-review').checked = window.__appSettings.autoSaveReview === true;
+            document.getElementById('auto-save-layout').checked = window.__appSettings.autoSaveLayout === true;
+            document.getElementById('show-iv').checked = !!window.__appSettings.showIV;
+            document.getElementById('show-cv').checked = !!window.__appSettings.showCV;
+            document.getElementById('ui-zoom').value = window.__appSettings.uiZoom;
+            document.getElementById('zoom-val').textContent = Math.round(window.__appSettings.uiZoom * 100) + '%';
+            document.getElementById('history-limit').value = window.__appSettings.historyLimit || 50;
+
+            // Deletion preferences
+            document.getElementById('prompt-delete-page').checked = window.__appSettings.promptDeletePage !== false;
+            document.getElementById('delete-page-files').checked = window.__appSettings.deletePageFiles === true;
+            document.getElementById('prompt-delete-project').checked = window.__appSettings.promptDeleteProject !== false;
+            document.getElementById('delete-project-files').checked = window.__appSettings.deleteProjectFiles !== false;
+
+            // LLM System Prompt
+            document.getElementById('llm-system-prompt').value = window.__appSettings.llmSystemPrompt || window.DEFAULT_LLM_PROMPT;
+
+            pendingShortcuts = Object.assign({}, window.__appSettings.keyboardShortcuts || {});
+            renderShortcutsList();
+            
+            // Reveal the UI smoothly after data is loaded
+            document.querySelector('.home-main').style.opacity = '1'; 
+            renderCustomCategories();
+        }
+
+        function renderShortcutsList() {
+            const container = document.getElementById('shortcuts-list');
+            container.innerHTML = '';
+            let lastCategory = null;
+
+            window.__KEYBOARD_COMMANDS.forEach(cmd => {
+                if (cmd.category !== lastCategory) {
+                    const title = document.createElement('div');
+                    title.className = 'shortcut-category-title';
+                    title.textContent = cmd.category;
+                    container.appendChild(title);
+                    lastCategory = cmd.category;
+                }
+
+                const row = document.createElement('div');
+                row.className = 'shortcut-row';
+
+                const label = document.createElement('span');
+                label.className = 'shortcut-label';
+                label.textContent = cmd.label;
+
+                const actions = document.createElement('div');
+                actions.className = 'shortcut-actions';
+
+                const keyBtn = document.createElement('button');
+                keyBtn.className = 'shortcut-key-btn';
+                keyBtn.type = 'button';
+                keyBtn.textContent = pendingShortcuts[cmd.id] || cmd.defaultKey;
+                keyBtn.addEventListener('click', () => startRecording(keyBtn, cmd));
+
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'shortcut-reset-btn';
+                resetBtn.type = 'button';
+                resetBtn.textContent = 'افتراضي';
+                resetBtn.title = 'إعادة تعيين لهذا الأمر فقط';
+                resetBtn.addEventListener('click', () => {
+                    delete pendingShortcuts[cmd.id];
+                    keyBtn.textContent = cmd.defaultKey;
+                });
+
+                actions.appendChild(keyBtn);
+                actions.appendChild(resetBtn);
+                row.appendChild(label);
+                row.appendChild(actions);
+                container.appendChild(row);
+            });
+        }
+
+        function startRecording(keyBtn, cmd) {
+            keyBtn.classList.add('recording');
+            const originalText = keyBtn.textContent;
+            keyBtn.textContent = 'اضغط أي مفتاح...';
+
+            const onKeydown = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (e.key === 'Escape') {
+                    document.removeEventListener('keydown', onKeydown, true);
+                    keyBtn.classList.remove('recording');
+                    keyBtn.textContent = originalText;
+                    return;
+                }
+
+                const combo = normalizeKeyCombo(e);
+                if (!combo) return; // modifier-only keydown, keep waiting
+
+                const hasModifier = combo.includes('Ctrl') || combo.includes('Alt');
+                const specialKeys = ['Delete','Backspace','PageUp','PageDown','Escape','Tab','Enter',
+                                     'Home','End','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+                const isSpecial = specialKeys.includes(combo) || /^F\d{1,2}$/.test(combo);
+
+                document.removeEventListener('keydown', onKeydown, true);
+                keyBtn.classList.remove('recording');
+
+                if (!hasModifier && !isSpecial) {
+                    showShortcutNotice('يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون مفتاحاً خاصاً', true);
+                    keyBtn.textContent = originalText;
+                    return;
+                }
+
+                pendingShortcuts[cmd.id] = combo;
+                keyBtn.textContent = combo;
+
+                const conflict = window.__KEYBOARD_COMMANDS.find(c =>
+                    c.id !== cmd.id && (pendingShortcuts[c.id] || c.defaultKey) === combo);
+                if (conflict) {
+                    showShortcutNotice(`تنبيه: هذا الاختصار مستخدم أيضاً لأمر "${conflict.label}"`, false);
+                }
+            };
+            document.addEventListener('keydown', onKeydown, true);
+        }
+
+        function showShortcutNotice(text, isError) {
+            let el = document.getElementById('shortcut-notice');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'shortcut-notice';
+                el.style.cssText = 'margin-top:8px;font-size:12.5px;';
+                document.getElementById('shortcuts-list').after(el);
+            }
+            el.style.color = isError ? '#e74c3c' : '#f39c12';
+            el.textContent = text;
+            setTimeout(() => { if (el) el.textContent = ''; }, 4000);
+        }
+
+        document.getElementById('shortcuts-reset-all').addEventListener('click', () => {
+            pendingShortcuts = {};
+            renderShortcutsList();
+        });
+
+        document.getElementById('ui-zoom').addEventListener('input', function() {
+            document.getElementById('zoom-val').textContent = Math.round(this.value * 100) + '%';
+        });
+        
+
+        document.getElementById('reset-llm-prompt-btn')?.addEventListener('click', () => {
+            if (confirm('هل أنت متأكد من إعادة تعيين تعليمات الذكاء الاصطناعي إلى التعليمة الافتراضية؟')) {
+                document.getElementById('llm-system-prompt').value = window.DEFAULT_LLM_PROMPT;
+            }
+        });
+
+        document.getElementById('save-settings').addEventListener('click', async () => {
+            window.__appSettings.autoMarkReviewed = document.getElementById('auto-mark-reviewed').checked;
+            window.__appSettings.autoSaveReview = document.getElementById('auto-save-review').checked;
+            window.__appSettings.autoSaveLayout = document.getElementById('auto-save-layout').checked;
+            window.__appSettings.showIV = document.getElementById('show-iv').checked;
+            window.__appSettings.showCV = document.getElementById('show-cv').checked;
+            window.__appSettings.uiZoom = parseFloat(document.getElementById('ui-zoom').value);
+            window.__appSettings.historyLimit = Math.max(5, parseInt(document.getElementById('history-limit').value) || 50);
+            window.__appSettings.keyboardShortcuts = Object.assign({}, pendingShortcuts);
+
+            // Deletion preferences
+            window.__appSettings.promptDeletePage = document.getElementById('prompt-delete-page').checked;
+            window.__appSettings.deletePageFiles = document.getElementById('delete-page-files').checked;
+            window.__appSettings.promptDeleteProject = document.getElementById('prompt-delete-project').checked;
+            window.__appSettings.deleteProjectFiles = document.getElementById('delete-project-files').checked;
+
+            // LLM System Prompt
+            window.__appSettings.llmSystemPrompt = document.getElementById('llm-system-prompt').value.trim() || window.DEFAULT_LLM_PROMPT;
+
+            const ok = await saveAppSettings();
+            alert(ok ? 'تم حفظ الإعدادات' : 'تم الحفظ محلياً فقط - تعذّر الحفظ الدائم');
+        });
+
+        window.addEventListener('appSettingsLoaded', populateForm);
+
+        // Data Storage Path Logic
+        async function initDataPath() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.get_app_data_path) {
+                const path = await window.pywebview.api.get_app_data_path();
+                document.getElementById('app-data-path-input').value = path;
+            }
+        }
+        
+        document.getElementById('btn-change-data-path').addEventListener('click', async () => {
+            if (!window.pywebview || !window.pywebview.api) return;
+            const btn = document.getElementById('btn-change-data-path');
+            const newPath = await window.pywebview.api.select_app_data_folder();
+            
+            if (newPath) {
+                const confirmMsg = `هل أنت متأكد من تغيير مجلد البيانات إلى:\n\n${newPath}\n\nسيتم نقل جميع مشاريعك وإعداداتك إلى هذا المجلد الجديد. قد تستغرق هذه العملية بعض الوقت حسب حجم بياناتك.`;
+                if (!confirm(confirmMsg)) return;
+
+                btn.disabled = true;
+                btn.textContent = 'جاري النقل...';
+                
+                try {
+                    const result = await window.pywebview.api.change_app_data_path(newPath);
+                    if (result.ok) {
+                        document.getElementById('app-data-path-input').value = newPath;
+                        alert('تم تغيير مجلد البيانات ونقل الملفات بنجاح.');
+                    } else {
+                        alert('فشل نقل مجلد البيانات: ' + result.error);
+                    }
+                } catch (e) {
+                    alert('حدث خطأ غير متوقع أثناء نقل البيانات.');
+                    console.error(e);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'تغيير المجلد...';
+                }
+            }
+        });
+
+        if (window.pywebview) {
+            initDataPath();
+        } else {
+            window.addEventListener('pywebviewready', initDataPath);
+        }
+
+        function renderCustomCategories() {
+            const container = document.getElementById('custom-categories-list');
+            container.innerHTML = '';
+            const customCats = window.__appSettings.customCategories || {};
+            
+            for (const [name, color] of Object.entries(customCats)) {
+                const row = document.createElement('div');
+                row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#f8f9fa; border:1px solid #e2e8f0; border-radius:6px;';
+                row.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:18px; height:18px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
+                        <span style="font-size:14px; font-weight:bold; color:#334155;">${name}</span>
+                    </div>
+                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">حذف</button>
+                `;
+                container.appendChild(row);
+            }
+        }
+
+        document.getElementById('add-cat-btn').addEventListener('click', () => {
+            const name = document.getElementById('new-cat-name').value.trim();
+            const color = document.getElementById('new-cat-color').value;
+            if (!name) return;
+            
+            window.__appSettings.customCategories = window.__appSettings.customCategories || {};
+            window.__appSettings.customCategories[name] = color;
+            document.getElementById('new-cat-name').value = '';
+            renderCustomCategories();
+        });
+
+        window.deleteCustomCategory = function(name) {
+            if (window.__appSettings.customCategories && window.__appSettings.customCategories[name]) {
+                delete window.__appSettings.customCategories[name];
+                renderCustomCategories();
+            }
+        };
+
+        const navigateBack = () => {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'projects.html';
+            }
+        };
+        document.getElementById('btn-back')?.addEventListener('click', navigateBack);
+        document.getElementById('btn-cancel-settings')?.addEventListener('click', navigateBack);
+    </script>
+    <script src="js/sidebar.js"></script>    
+</body>
+</html>
