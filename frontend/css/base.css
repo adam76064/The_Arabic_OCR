@@ -1,0 +1,24 @@
+/* base.css - reset and typography */
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-ar);
+  background: var(--color-bg);
+  color: var(--color-text);
+  direction: rtl;
+  line-height: 1.6;
+  font-size: var(--text-base);
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+input, select, textarea { font-family: inherit; }
+img { max-width: 100%; }
+.hidden { display: none !important; }
+
+/* Scrollbars minimal */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+@keyframes slideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }

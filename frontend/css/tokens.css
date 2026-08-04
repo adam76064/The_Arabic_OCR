@@ -1,0 +1,64 @@
+/* tokens.css - design system variables */
+:root {
+  /* Colors */
+  --color-primary: #3498db;
+  --color-primary-dark: #2980b9;
+  --color-success: #27ae60;
+  --color-success-dark: #219a52;
+  --color-danger: #e74c3c;
+  --color-warning: #f39c12;
+  --color-info: #3498db;
+  --color-bg: #f8fafc;
+  --color-bg-muted: #f0f2f5;
+  --color-surface: #ffffff;
+  --color-border: #e0e0e0;
+  --color-border-strong: #cbd5e1;
+  --color-text: #222222;
+  --color-text-muted: #666666;
+  --color-text-faint: #999999;
+  --color-sidebar: #1e293b;
+  --color-sidebar-hover: #334155;
+  --color-sidebar-active: #334155;
+
+  /* Night */
+  --color-bg-night: #1a1a2e;
+  --color-surface-night: #16213e;
+  --color-border-night: #2a2a4a;
+  --color-text-night: #e0e0e0;
+
+  /* Typography */
+  --font-ar: 'Segoe UI', Tahoma, 'Simplified Arabic', 'Traditional Arabic', sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 28px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,0.18);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --toolbar-height: 52px;
+  --block-font-default: 14px;
+}
