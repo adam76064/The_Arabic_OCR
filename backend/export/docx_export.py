@@ -1,4 +1,37 @@
-from .shared import *
+# docx_export.py - uses shared helpers (including private names)
+from .shared import (
+    SKIP_CATEGORIES, TEXT_CATEGORIES,
+    format_display_text, parse_inline_runs,
+    _strip_markdown_and_tags, _split_block_paragraphs,
+    _detect_text_direction, _extract_html_dir, _extract_html_align,
+    _extract_html_line_spacing, _extract_html_margin_bottom, _extract_html_margin_top,
+    _css_color_to_hex, _extract_css_colors, _style_from_tag,
+    _set_paragraph_spacing, _set_line_spacing, _add_page_break, _add_page_number_label,
+    _set_section_rtl, _set_style_rtl, _set_run_font_and_bidi,
+    _set_table_no_borders, _set_row_height, _set_cell_width, _set_cell_valign,
+    _apply_poetry_paragraph_layout_v169, _fill_poetry_cell,
+    _parse_poetry_lines, _add_poetry_docx,
+    _set_run_highlight_hex, _reorder_pPr, _apply_paragraph_layout, _add_formatted_paragraph,
+)
+# Also bring in constants that import * would normally bring but start without underscore
+from .shared import (
+    _BLOCK_BOUNDARY_RE, _TAG_RE, _MD_HEADER_RE, _MD_BOLD_RE, _MD_ITALIC_RE,
+    _ARABIC_CHAR_RE, _LATIN_CHAR_RE,
+    _MD_INLINE_TOKEN_RE, _BOLD_TAGS, _ITALIC_TAGS, _UNDERLINE_TAGS, _SUP_TAGS, _SUB_TAGS,
+    _CSS_BOLD_RE, _CSS_ITALIC_RE, _CSS_UNDERLINE_RE, _CSS_STRIKE_RE,
+    _CSS_BG_COLOR_RE, _CSS_FG_COLOR_RE, _STRIKE_TAGS, _NAMED_COLORS,
+    _PYTHON_DOCX_ALIGN_MAP, _OPENXML_JC_MAP, _PPR_CHILD_ORDER, _PPR_ORDER_INDEX,
+    _InlineRunParser,
+)
+import os, re, json
+from docx import Document
+from docx.shared import Pt, Cm, RGBColor
+from docx.enum.text import WD_LINE_SPACING, WD_ALIGN_PARAGRAPH, WD_BREAK
+from docx.enum.section import WD_ORIENT
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
+from docx.enum.table import WD_TABLE_DIRECTION
+
 import os, re, json
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor

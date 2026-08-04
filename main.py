@@ -1,11 +1,31 @@
 """
 Main entry - slim version using new organized backend/app/api.
+Fixes pywebview WinForms logging OSError on Windows when stdout is not available.
 """
 import os
 import sys
+import logging
+
+# --- Fix pywebview logging flood that causes OSError [WinError 1] on WinForms ---
+# pywebview's util.py does logger.debug(...) which tries to write to stderr.
+# When app is run without console (WinForms via pythonw), stderr handle is invalid -> OSError.
+# We silence all webview loggers and replace handlers with NullHandler to prevent "Logging error" tracebacks.
+try:
+    for name in ['webview', 'webview.platforms.winforms', 'webview.platforms.edgechromium', 'webview.util']:
+        lg = logging.getLogger(name)
+        lg.handlers = [logging.NullHandler()]
+        lg.setLevel(logging.CRITICAL)
+        lg.propagate = False
+    logging.getLogger().handlers = [logging.NullHandler()]
+    logging.basicConfig(level=logging.CRITICAL, handlers=[logging.NullHandler()])
+    # Prevent logging module from trying to print its own errors to stderr
+    logging.raiseExceptions = False
+except Exception:
+    pass
+
 import webview
 
-from backend.app.api import Api, cleanup_old_residue
+from backend.app.api import Api
 from backend.app.api import cleanup_old_residue as _cleanup
 
 def get_resource_path(relative_path):
@@ -14,9 +34,17 @@ def get_resource_path(relative_path):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 def main():
-    # Cleanup temp residue from previous runs
     try:
         _cleanup()
+    except Exception:
+        pass
+
+    # Extra safety: ensure webview logger is quiet before start
+    try:
+        # pywebview 4.x keeps logger in webview module? try both
+        if hasattr(webview, 'logger'):
+            webview.logger.disabled = False
+            webview.logger.setLevel(logging.WARNING)
     except Exception:
         pass
 
@@ -32,7 +60,9 @@ def main():
         min_size=(1000, 700),
     )
     api.set_window(window)
-    webview.start(debug=True)
+    # debug=False avoids verbose JS api logging, but we still want devtools? use False to avoid log flood.
+    # If you need debug, pass debug=True but logger is already silenced above.
+    webview.start(debug=False)
 
 if __name__ == '__main__':
     main()
