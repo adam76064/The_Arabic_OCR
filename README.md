@@ -4,7 +4,7 @@
 
 You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engines), lets you review and fix the text boxes, tables, and Quran verses visually, and exports a beautiful final document.
 
-**Same languages:** Python + HTML/CSS/JS, runs offline as a native window via `pywebview`.
+**languages:** Python + HTML/CSS/JS, runs offline as a native window via `pywebview`.
 
 ---
 
@@ -144,22 +144,6 @@ You can change location in **Settings → Data Folder**.
 - `typer` + `locro` – offline AI using Chrome's model
 
 See `requirements.txt` for exact versions.
-
----
-
-## ❓ FAQ
-
-**Q: I get `FolderDialog` error when changing data folder?**  
-Fixed in latest version – update via `git pull`.
-
-**Q: Sidebar doesn't collapse?**  
-Fixed – click `◁` to collapse, `▷` tab at right edge to expand. Console logs now visible with right-click → Inspect.
-
-**Q: DOCX export fails with `_set_section_rtl`?**  
-Fixed – it was due to `import *` skipping private helpers.
-
-**Q: PyWebView logs flood with `WinError 1`?**  
-Fixed – logger now silenced with `NullHandler`, but devtools still works (`debug=True`).
 
 ---
 
