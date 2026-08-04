@@ -82,8 +82,18 @@ async function initApp() {
     injectToolbar('sticky-toolbar', true);
     injectToolbar('text-preview-toolbar', false);
 
-    document.getElementById('sidebar-proj-title').textContent = currentProject.metadata?.title || '—';
-    document.getElementById('sidebar-proj-meta').textContent = currentProject.metadata?.author || '';
+    // Guarded - sidebar may be injected async, so check existence
+    const titleEl = document.getElementById('sidebar-proj-title');
+    if (titleEl) titleEl.textContent = currentProject.metadata?.title || '—';
+    const metaEl = document.getElementById('sidebar-proj-meta');
+    if (metaEl) metaEl.textContent = currentProject.metadata?.author || '';
+    // Also try after a short delay in case sidebar injection is still pending
+    setTimeout(() => {
+        const t = document.getElementById('sidebar-proj-title');
+        if (t) t.textContent = currentProject.metadata?.title || '—';
+        const m = document.getElementById('sidebar-proj-meta');
+        if (m) m.textContent = currentProject.metadata?.author || '';
+    }, 300);
 
     setupToolbar();
     setupCropControls();
