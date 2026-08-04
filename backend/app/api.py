@@ -827,8 +827,21 @@ class Api:
         return self.config_manager.get_data_path()
 
     def select_app_data_folder(self):
-        result = self._window.create_file_dialog(webview.FolderDialog, allow_multiple=False)
-        return result[0] if result else None
+        # Fixed: pywebview 4.x uses FileDialog.FOLDER, not FolderDialog
+        try:
+            result = self._window.create_file_dialog(webview.FileDialog.FOLDER)
+            # FileDialog.FOLDER returns list or string depending on version
+            if isinstance(result, (list, tuple)):
+                return result[0] if result else None
+            return result
+        except AttributeError:
+            # Fallback for older pywebview or if constant missing
+            try:
+                result = self._window.create_file_dialog(webview.FileDialog.FOLDER, allow_multiple=False)  # type: ignore
+                return result[0] if isinstance(result, (list, tuple)) and result else result
+            except Exception as e:
+                print(f"[Api] select_app_data_folder failed: {e}")
+                return None
 
     def change_app_data_path(self, new_path):
         success, msg = self.config_manager.change_data_path(new_path)

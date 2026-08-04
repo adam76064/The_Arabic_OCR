@@ -1,28 +1,31 @@
 /**
- * components/sidebar.js - collapsible sidebar with injection if missing
- * Merged logic from legacy sidebar.js + new token-based version
+ * components/sidebar.js - collapsible sidebar with injection
+ * Fixed: ensures has-sidebar, robust collapse, debug logs when debug=True
  */
 (function () {
-  const isCollapsedInitial = (() => {
+  console.log('[Sidebar] component loading...');
+
+  function readCollapsedState() {
     try {
-      return localStorage.getItem('sidebarCollapsed') === 'true' || localStorage.getItem('sidebarCollapsed') === '1';
-    } catch(e) { return false; }
-  })();
+      const v = localStorage.getItem('sidebarCollapsed');
+      return v === 'true' || v === '1';
+    } catch (e) { return false; }
+  }
 
   function injectSidebarIfNeeded() {
-    if (document.getElementById('sidebar')) {
-      // ensure collapsed state respected
-      if (isCollapsedInitial) {
-        document.getElementById('sidebar')?.classList.add('collapsed');
-        document.getElementById('sidebar-collapsed-tab')?.classList.remove('hidden');
-      }
-      return;
+    let sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+      console.log('[Sidebar] already exists, ensuring has-sidebar class');
+      document.body.classList.add('has-sidebar');
+      return sidebar;
     }
 
+    console.log('[Sidebar] injecting sidebar HTML');
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const isCollapsed = readCollapsedState();
 
     const sidebarHTML = `
-            <aside id="sidebar" class="${isCollapsedInitial ? 'collapsed' : ''}">
+            <aside id="sidebar" class="${isCollapsed ? 'collapsed' : ''}">
                 <div id="sidebar-toggle-row">
                     <span class="sidebar-app-name">◈ أداة مراجعة OCR</span>
                     <button id="toggle-sidebar" title="إخفاء الشريط الجانبي">◁</button>
@@ -39,11 +42,12 @@
                     <div class="sidebar-project-meta" id="sidebar-proj-meta"></div>
                 </div>
             </aside>
-            <button id="sidebar-collapsed-tab" class="${isCollapsedInitial ? '' : 'hidden'}" title="فتح الشريط الجانبي">▷</button>
+            <button id="sidebar-collapsed-tab" class="${isCollapsed ? '' : 'hidden'}" title="فتح الشريط الجانبي">▷</button>
         `;
 
     document.body.classList.add('has-sidebar');
     document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
+    return document.getElementById('sidebar');
   }
 
   function bindSidebarEvents() {
@@ -52,31 +56,44 @@
     const tabBtn = document.getElementById('sidebar-collapsed-tab');
     const exitBtn = document.getElementById('sidebar-exit-btn');
 
-    if (!sidebar) return;
-
-    function setCollapsed(collapsed) {
-      sidebar.classList.toggle('collapsed', collapsed);
-      if (tabBtn) tabBtn.classList.toggle('hidden', !collapsed);
-      try { localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0'); } catch(e) {}
+    if (!sidebar) {
+      console.warn('[Sidebar] bind failed - no sidebar element');
+      return;
     }
 
-    // restore
-    try {
-      const was = localStorage.getItem('sidebarCollapsed') === '1' || localStorage.getItem('sidebarCollapsed') === 'true';
-      setCollapsed(was);
-    } catch(e) {}
+    console.log('[Sidebar] binding events, sidebar found');
 
-    if (toggleBtn) {
+    function setCollapsed(collapsed) {
+      console.log('[Sidebar] setCollapsed', collapsed);
+      sidebar.classList.toggle('collapsed', collapsed);
+      if (tabBtn) tabBtn.classList.toggle('hidden', !collapsed);
+      try { localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+      // Also ensure body has class
+      document.body.classList.add('has-sidebar');
+    }
+
+    // Apply stored state on bind
+    setCollapsed(readCollapsedState());
+
+    // Remove any old listeners by cloning? Use once flag to avoid duplicate binds
+    if (toggleBtn && !toggleBtn._sidebarBound) {
       toggleBtn.addEventListener('click', () => {
+        console.log('[Sidebar] toggle clicked');
         const isCollapsed = sidebar.classList.contains('collapsed');
         setCollapsed(!isCollapsed);
       });
-    }
-    if (tabBtn) {
-      tabBtn.addEventListener('click', () => setCollapsed(false));
+      toggleBtn._sidebarBound = true;
     }
 
-    if (exitBtn) {
+    if (tabBtn && !tabBtn._sidebarBound) {
+      tabBtn.addEventListener('click', () => {
+        console.log('[Sidebar] tab clicked - expand');
+        setCollapsed(false);
+      });
+      tabBtn._sidebarBound = true;
+    }
+
+    if (exitBtn && !exitBtn._sidebarBound) {
       exitBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (confirm('هل أنت متأكد من الخروج من التطبيق؟')) {
@@ -87,9 +104,10 @@
           }
         }
       });
+      exitBtn._sidebarBound = true;
     }
 
-    // active link
+    // Active link
     const current = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.sidebar-link').forEach(link => {
       const href = link.getAttribute('href');
@@ -100,10 +118,18 @@
   }
 
   function initSidebar() {
+    console.log('[Sidebar] initSidebar called, readyState', document.readyState);
     injectSidebarIfNeeded();
-    bindSidebarEvents();
+    // Give DOM a tick before binding in case injection is async
+    setTimeout(bindSidebarEvents, 0);
+    setTimeout(bindSidebarEvents, 100);
   }
 
+  // Try multiple entry points
   document.addEventListener('DOMContentLoaded', initSidebar);
   window.addEventListener('pywebviewready', initSidebar);
+  // Also try immediately if DOM already loaded
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    setTimeout(initSidebar, 0);
+  }
 })();

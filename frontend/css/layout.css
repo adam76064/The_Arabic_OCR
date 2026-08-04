@@ -14,7 +14,7 @@ body.has-sidebar {
   color: #f8fafc;
   display:flex;
   flex-direction:column;
-  transition: margin-right 0.3s ease, width 0.3s ease;
+  transition: margin-right 0.3s ease, width 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   z-index:1000;
   flex-shrink:0;
   box-shadow: -2px 0 10px rgba(0,0,0,0.1);
@@ -22,7 +22,17 @@ body.has-sidebar {
   position:sticky;
   top:0;
 }
-#sidebar.collapsed { margin-right: calc(-1 * var(--sidebar-width)); }
+#sidebar.collapsed { 
+  margin-right: calc(-1 * var(--sidebar-width)); 
+  transform: translateX(20%);
+  visibility: hidden;
+  pointer-events: none;
+}
+#sidebar:not(.collapsed) {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
 
 #sidebar-toggle-row {
   display:flex; align-items:center; justify-content:space-between;

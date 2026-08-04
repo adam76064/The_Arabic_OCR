@@ -60,9 +60,10 @@ def main():
         min_size=(1000, 700),
     )
     api.set_window(window)
-    # debug=False avoids verbose JS api logging, but we still want devtools? use False to avoid log flood.
-    # If you need debug, pass debug=True but logger is already silenced above.
-    webview.start(debug=False)
+    # debug=True re-enabled so user can see JS console / inspect (right-click)
+    # Logging is already silenced above with NullHandler + CRITICAL + raiseExceptions=False,
+    # so the WinForms OSError flood won't happen even with debug=True.
+    webview.start(debug=True)
 
 if __name__ == '__main__':
     main()
