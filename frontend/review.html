@@ -266,24 +266,51 @@
         </div>
     </div>
 
-    <script src="js/settings.js"></script>
-    <script src="js/sidebar.js"></script>
-    <script src="js/block-context-menu.js"></script>
-    <script src="js/review.js"></script>
-    <script src="js/quran.js"></script>
+    <!-- New organized core -->
+    <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/sidebar.js"></script>
+    <script src="js/components/toolbar.js"></script>
 
+    <!-- Legacy shared -->
+    <script src="js/settings.js"></script>
     <script src="js/ui-shared.js"></script>
+
+    <!-- Table engine -->
     <script src="js/table-model.js"></script>
     <script src="js/table-selection.js"></script>
     <script src="js/table-toolbar.js"></script>
+
+    <!-- Formatting & canvas (modular) -->
     <script src="js/text-formatting.js"></script>
     <script src="js/toolbar.js"></script>
-
     <script src="js/canvas-rendering.js"></script>
     <script src="js/undo-redo.js"></script>
     <script src="js/keyboard-shortcuts.js"></script>
-
     <script src="js/text-tracking-engine.js"></script>
+
+    <!-- Context menu & review (main) -->
+    <script src="js/block-context-menu.js"></script>
+
+    <!-- New modular review pages (organized) -->
+    <script src="js/pages/review/state.js"></script>
+    <script src="js/pages/review/canvas.js"></script>
+    <script src="js/pages/review/panels.js"></script>
+    <script src="js/pages/review/editor.js"></script>
+    <script src="js/pages/review/tracking.js"></script>
+    <script src="js/pages/review/category.js"></script>
+    <script src="js/pages/review/preview.js"></script>
+
+    <!-- Main review orchestrator -->
+    <script src="js/review.js"></script>
+    <script src="js/pages/review/index.js"></script>
+
+    <!-- Quran -->
+    <script src="js/quran.js"></script>
    
 </body>
 </html>
