@@ -4,7 +4,7 @@
 
 You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engines), lets you review and fix the text boxes, tables, and Quran verses visually, and exports a beautiful final document.
 
-**languages:** Python + HTML/CSS/JS, runs offline as a native window via `pywebview`.
+**Same languages:** Python + HTML/CSS/JS, runs offline as a native window via `pywebview`.
 
 ---
 
@@ -147,11 +147,39 @@ See `requirements.txt` for exact versions.
 
 ---
 
+## ❓ FAQ
+
+**Q: I get `FolderDialog` error when changing data folder?**  
+Fixed in latest version – update via `git pull`.
+
+**Q: Sidebar doesn't collapse?**  
+Fixed – click `◁` to collapse, `▷` tab at right edge to expand. Console logs now visible with right-click → Inspect.
+
+**Q: DOCX export fails with `_set_section_rtl`?**  
+Fixed – it was due to `import *` skipping private helpers.
+
+**Q: PyWebView logs flood with `WinError 1`?**  
+Fixed – logger now silenced with `NullHandler`, but devtools still works (`debug=True`).
+
+**Q: I get `TypeError: (intermediate value)(...) is not a function` in preview.js?**
+Fixed – missing semicolon before IIFE `(function setupDashboard()` after `window.onLanUpdate = function(){}` caused JS to parse as function call. Added leading semicolon `;(function setupDashboard()`.
+
+**Q: Dashboard shows `ReferenceError: coopPollInterval is not defined`?**
+Fixed – `coopPollInterval` was used but not declared in collab.js modular split. Added `let coopPollInterval = null;` at top.
+
+**Q: Layout editor content auto-hides?**
+Fixed – body had `display:flex; flex-direction:column` inline + `has-sidebar` class sets `display:flex` row, causing conflict. Wrapped header+main in `#layout-main { flex:1; display:flex; flex-direction:column; height:100vh }` and body now flex row with sidebar + layout-main.
+
+**Q: `ReferenceError: debouncedTrackingUpdate is not defined` in editor.js?**
+Fixed – tracking.js had duplicate `const defaultTrackingConfig` causing SyntaxError, file failed to parse. Cleaned to single definitions and exposed `window.debouncedTrackingUpdate`, guarded calls in editor.js with `window.* || bare` fallback.
+
+---
+
 ## 📚 For Developers & AI Agents
 
 If you want to understand the code, add a new OCR engine, new export format, or contribute:
 
-👉 **Read `DEVELOPER_GUIDE.md`** – 60k words, explains every folder, file, function, coordinate system (72 DPI vs 200 DPI vs 1000 normalized), pipelines, data models, design tokens, and how to extend.
+👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system (now includes broken monoliths: review.js 1400→90 lines with 12 modules, layout-editor.js 1481→30 with 11 modules, project-dashboard.js 715→30 with 9 modules, plus tracking.js duplicate const fix) (72 DPI vs 200 DPI vs 1000 normalized), pipelines, data models, design tokens, and how to extend.
 
 Also see:
 - `ARCHITECTURE_PLAN.md` – initial rebuild plan

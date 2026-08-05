@@ -6,11 +6,21 @@
     <title>تخطيط الصفحة (Layout Editor) — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        body { margin: 0; display: flex; flex-direction: column; height: 100vh; background: #f0f2f5; overflow: hidden; }
+        /* Layout editor has its own flex column inside has-sidebar body */
+        #layout-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #f0f2f5;
+            overflow: hidden;
+            min-width: 0;
+        }
         
         .layout-toolbar {
             display: flex; gap: 10px; align-items: center; padding: 12px 20px; 
             background: white; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 10;
+            flex-shrink: 0;
         }
         
         .tool-group { display: flex; gap: 4px; border-left: 1px solid #eee; padding-left: 14px; margin-left: 4px; }
@@ -32,6 +42,7 @@
     </style>
 </head>
 <body>
+    <div id="layout-main">
     <header class="layout-toolbar">
         <button id="btn-back" class="btn-secondary">🔙 رجوع</button>
         <button id="prev-page" class="btn-secondary">السابق</button>
@@ -65,9 +76,29 @@
             <canvas id="layout-canvas"></canvas>
         </div>
     </main>
+    </div>
 
-    <script src="js/settings.js"></script>
-    <script src="js/ui-shared.js"></script>
-    <script src="js/layout-editor.js"></script>
+    <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/sidebar.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/pages/ui-shared.js"></script>
+    <!-- Layout Editor modular -->
+    <script src="js/pages/layout-editor/state.js"></script>
+    <script src="js/pages/layout-editor/history.js"></script>
+    <script src="js/pages/layout-editor/selection.js"></script>
+    <script src="js/pages/layout-editor/table-tools.js"></script>
+    <script src="js/pages/layout-editor/properties.js"></script>
+    <script src="js/pages/layout-editor/canvas.js"></script>
+    <script src="js/pages/layout-editor/toolbar.js"></script>
+    <script src="js/pages/layout-editor/navigation.js"></script>
+    <script src="js/pages/layout-editor/save.js"></script>
+    <script src="js/pages/layout-editor/events.js"></script>
+    <script src="js/pages/layout-editor/index.js"></script>
+    <script src="js/pages/layout-editor.js"></script>
 </body>
 </html>

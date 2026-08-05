@@ -159,53 +159,94 @@ The_Arabic_OCR/
 │   └── epub_builder.py              # Shim → backend.export.html_epub
 │
 ├── frontend/
-│   ├── index.html                   # Home + cards + recent projects + settings modal
-│   ├── projects.html                # Projects table with search + progress
-│   ├── review.html                  # Complex review UI (toolbar, crop, blocks, fullpage, preview, quran modal)
-│   ├── settings.html, export.html, project-dashboard.html, etc.
+│   ├── index.html                   # Home + cards + recent projects + settings modal (loads core + components + pages/home)
+│   ├── projects.html                # Projects table (core + pages/projects)
+│   ├── review.html                  # Complex review UI - now loads 20+ organized modules in correct order (vendor marked → core → components → tables → formatting → review legacy extracted → review modular broken monolith state first! → thin orchestrator → quran)
+│   ├── settings.html, export.html, project-dashboard.html, lan.html, layout-editor.html, etc. (all updated to new organized paths)
 │   ├── css/
 │   │   ├── tokens.css               # Design tokens --color-primary, --radius-md, --space-md, --font-ar, etc.
 │   │   ├── base.css                 # Reset, typography, scrollbars, RTL default
 │   │   ├── components.css           # Buttons .btn-primary/secondary/success/danger/icon, cards, modals, forms, switches, badges, dashboard-table
-│   │   ├── layout.css               # body.has-sidebar flex, #sidebar 240px, collapsed with margin-right + transform + visibility, toolbar, page-nav, sticky-nav
+│   │   ├── layout.css               # body.has-sidebar flex, #sidebar 240px, collapsed with margin-right + transform + visibility + pointer-events, toolbar, page-nav, sticky-nav
 │   │   ├── style.css                # ONLY @import tokens,base,components,layout (plus small global tweaks)
 │   │   ├── home.css                 # Hero, home-cards grid, recent-card, progress bars
 │   │   └── review.css               # Toolbar, editor-container, image-viewer (hidden), text-editor, crop-section, blocks-list, text-block (active/reviewed/drag), category-picker, fullpage-overlay
 │   └── js/
+│       ├── review.js                # THIN ORCHESTRATOR ~90 lines (was 1400-line monolith) – only initApp() + DOMContentLoaded, calls setup* from modules
 │       ├── core/
 │       │   ├── api.js               # AppApi.ready() promise, AppApi.call(method,...), wrappers getProjects etc.
 │       │   ├── store.js             # AppStore.get/set/subscribe, project/pageIndex/settings
 │       │   ├── utils.js             # escapeHtml, debounce, formatBytes, sleep
 │       │   └── events.js            # Default onPdfProgress/onPaddleProgress/onLanUpdate loggers if page didn't set
 │       ├── components/
-│       │   ├── sidebar.js           # Injection if missing, collapsed toggle, tab button, exit btn, active link handling, console.log for debug
+│       │   ├── sidebar.js           # Robust injection if missing, has-sidebar class, collapsed toggle with _sidebarBound guard, tab button, exit, console.log for debug
 │       │   ├── modal.js             # openModal/closeModal + AestheticDialog fallback
 │       │   ├── notifications.js     # showNotif tray bottom-left with colors
-│       │   └── toolbar.js           # injectToolbar fallback
+│       │   ├── toolbar.js           # Fallback toolbar injector (delegates to formatting toolbar if exists)
+│       │   ├── tables/
+│       │   │   ├── table-model.js   # TableModel.toModel() / fromModel()
+│       │   │   ├── table-selection.js # Table selection logic
+│       │   │   ├── table-toolbar.js # Table toolbar (merge/split)
+│       │   │   └── table-editor.js  # Table editor
+│       │   ├── formatting/
+│       │   │   ├── text-formatting.js # injectToolbar() builds formatting toolbar HTML
+│       │   │   └── toolbar.js       # Formatting toolbar logic (alignment, dir, color, etc.)
+│       │   └── quran/
+│       │       └── quran.js         # Quran modal: tabs, search, surah select, load-more, insertion with citation
 │       ├── pages/
-│       │   ├── home.js              # initHome: getProjects, badge count, recent 4 sorted by date
-│       │   ├── projects.js          # renderProjectsTable, search input, back btn, delete confirm with remember checkbox
+│       │   ├── home.js              # initHome: getProjects, badge count, recent 4 sorted
+│       │   ├── projects.js          # renderProjectsTable, search, back, delete confirm with remember
+│       │   ├── settings.js          # App settings persistence, blockFontSize, night mode, custom categories, shortcuts, data path
+│       │   ├── ui-shared.js         # AestheticDialog, saveAppSettings(), deleteConfirm, etc.
+│       │   ├── project-creator.js   # New project modal wizard
+│       │   ├── project-dashboard.js # THIN ORCHESTRATOR ~30 lines (was 715)
+│       │   ├── project-dashboard/   # Dashboard submodules
+│       │   │   ├── state.js         # Global state for dashboard
+│       │   │   ├── table.js         # Projects table rendering
+│       │   │   ├── stats.js         # OCR statistics and progress logic
+│       │   │   ├── ocr-modal.js     # OCR engine selection and configuration modal
+│       │   │   ├── progress.js      # Progress bar and status updates
+│       │   │   ├── export.js        # Export functionality
+│       │   │   ├── collab.js        # LAN collaboration status
+│       │   │   ├── llm.js           # LLM configuration logic
+│       │   │   └── index.js         # Dashboard entry point
+│       │   ├── project-settings.js  # Per-project settings
+│       │   ├── lan.js               # LAN page logic
+│       │   ├── layout-editor.js     # THIN ORCHESTRATOR ~30 lines (was 1481)
+│       │   ├── layout-editor/       # Layout editor submodules
+│       │   │   ├── state.js         # Global state for layout editor
+│       │   │   ├── history.js       # Undo/redo stack
+│       │   │   ├── selection.js     # Block selection logic
+│       │   │   ├── table-tools.js   # Table specific editing tools
+│       │   │   ├── properties.js    # Block properties sidebar
+│       │   │   ├── canvas.js        # Canvas rendering and interactions
+│       │   │   ├── toolbar.js       # Top toolbar actions
+│       │   │   ├── navigation.js    # Page navigation
+│       │   │   ├── save.js          # Saving logic to backend
+│       │   │   ├── events.js        # Event listeners routing
+│       │   │   └── index.js         # Layout editor entry point
 │       │   └── review/
-│       │       ├── state.js         # ReviewState singleton (project, pageIndex, selectedBlock, multiSelected, activeEditing, cropZoom, scaleRatio)
-│       │       ├── canvas.js        # ReviewCanvas facade wrapping drawBoxes/renderBboxes/handleCanvasClick (from canvas-rendering.js)
-│       │       ├── panels.js        # setupResize, updateSwitchBtnPosition, setupPanels (horizontal resize in side-by-side mode, vertical otherwise)
-│       │       ├── editor.js        # syncElementFromContent, refreshIndicators (wrapper around legacy globals)
-│       │       ├── tracking.js      # Loads trackingConfig from localStorage, updateTrackingHighlight via TextTrackingEngine
-│       │       ├── category.js      # openPicker facade
-│       │       ├── preview.js       # openPreview/closePreview
-│       │       └── index.js         # Orchestrator: logs new shell init, syncs AppStore, ensures panels setup after pywebview ready
-│       ├── marked.min.js            # Markdown parser for block rendering
-│       ├── settings.js              # App settings persistence, blockFontSize, night mode toggle, etc.
-│       ├── project-creator.js       # New project modal wizard
-│       ├── project-dashboard.js     # Batch OCR page: range select, engine select, key inputs, progress
-│       ├── canvas-rendering.js      # drawBoxes(), renderBboxes(), renderThumbCanvas(), handleCanvasClick() – scales native 72 DPI bbox via scaleRatioX/Y to image natural size
-│       ├── undo-redo.js             # pushHistory, performUndo/Redo, history stack per page
-│       ├── keyboard-shortcuts.js    # COMMAND_HANDLERS, isTypingInPlainFormField, arrow navigation, Ctrl+S
-│       ├── block-context-menu.js    # BLOCK_CONTEXT_MODALS_HTML, setupBlockContextMenu(), mergeSelectedBlocks() – right-click menu
-│       ├── text-tracking-engine.js  # getHighlightBBox(contentEl, element, config) – returns {bbox, type} for word/line/cell/block tracking
-│       ├── table-model.js           # TableModel.toModel() / fromModel() – DOM table ↔ abstract model
-│       ├── text-formatting.js       # injectToolbar() – builds formatting toolbar HTML
-│       └── quran.js                 # Quran modal: tabs (text search vs manual surah/ayah), table with select-all, load-more, insertion with citation
+│       │       ├── state.js         # REAL: globals currentProject, currentPageIndex, selectedBlockIndex, multiSelectedBlocks, activeEditingIndex, cropZoom, CROP_MIN/MAX, scaleRatioX/Y, cropPanX/Y, dragSrcIndex, BASE_CATEGORIES, getCategoryColors(), CATEGORY_ARABIC_MAP, getCategoryNameAR(), getAllCategories(), isTableLike(), ReviewState singleton + sync
+│       │       ├── navigation.js    # navigatePage(dir), moveFocusAndReview(dir) with auto-review and intra-table navigation
+│       │       ├── save.js          # saveBlockSilently(), autoSaveBlock() -> pywebview.api.update_page_ocr
+│       │       ├── fontzoom.js      # BLOCK_FONT_MIN/MAX/STEP/DEFAULT, setupBlockFontZoom(), applyBlockFontSize()
+│       │       ├── crop.js          # showCroppedView(bbox), applyCropZoom(), panCropViewTo(bbox) preserves zoom, setupCropControls()
+│       │       ├── fullpage.js      # setupFullPageView(), openFullPageView(), closeFullPageView()
+│       │       ├── panels.js        # setupResize(), updateSwitchBtnPosition(), setupPanels()/setupResizablePanels() + side-by-side toggle with persistence
+│       │       ├── editor.js        # REAL: updateReviewPanel(), updateBlockSelectionUI(), selectBlock(), syncElementFromContent(), refreshIndicatorsFor(), renderBlocksList() (full 200-line with table rendering via TableModel, focus/blur with tracking), setupBlocksListDelegation() (single delegated listener), setupBlockDrag(), reorderBlocks(), deleteBlock()
+│       │       ├── toolbar.js       # setupToolbar() with prev/next, undo/redo, formatting mousedown preventDefault, alignment buttons with cell selection via range.intersectsNode, direction buttons, thumb popup, save with force sync
+│       │       ├── category.js      # handleTableCategoryChange() with localStorage remember + AestheticDialog, setupCategoryPicker(), openCategoryPicker() with viewport-aware positioning
+│       │       ├── tracking.js      # defaultTrackingConfig, savedTrackingConfig from localStorage, track-settings-btn toggle, cfg-track checkboxes persistence, debounce(), updateTrackingHighlight() via TextTrackingEngine, debouncedTrackingUpdate
+│       │       ├── preview.js       # escapeHtml(), setupTextPreview IIFE + buildPreviewHTML() with tables/poetry/markdown, renderPreview(), save handling collecting touched pages, showNotif() tray, window.onLanUpdate (join/leave/edit), setupDashboard(), persistBrushEdit()
+│       │       ├── canvas.js        # Facade ReviewCanvas wrapping drawBoxes/renderBboxes/renderThumbCanvas/handleCanvasClick
+│       │       ├── canvas-rendering.js # drawBoxes(), renderBboxes(), renderThumbCanvas(), handleCanvasClick() scaling 72 DPI via scaleRatio
+│       │       ├── block-context-menu.js # BLOCK_CONTEXT_MODALS_HTML, setupBlockContextMenu(), merge/split engine
+│       │       ├── undo-redo.js     # pushHistory(), performUndo/Redo, setupUndo()
+│       │       ├── keyboard-shortcuts.js # COMMAND_HANDLERS, setupKeyboardShortcuts()
+│       │       ├── text-tracking-engine.js # TextTrackingEngine.getHighlightBBox()
+│       │       └── index.js         # Final orchestrator: logs new shell init, syncs AppStore, ensures panels setup after pywebview ready, wraps saveBlockSilently
+│       └── vendor/
+│           └── marked.min.js        # Markdown parser (third-party)
 │
 ├── data/
 │   └── Quran.json                   # Complete Quran dataset {id: {text, surah, surah_number, ayah_number, ...}}
@@ -674,23 +715,45 @@ Now ONLY:
 - `renderProjectsTable()` gets projects, tbody empty, if empty shows no projects row, else sorts, builds tr with title, author, date, total pages, progress bar, actions Open/Delete with data-id, binds Open to dashboard, Delete to `AestheticDialog.deleteConfirm` with remember checkbox (promptDeleteProject, deleteProjectFiles settings) or direct delete, calls `delete_project` and re-render
 - Listens DOMContentLoaded/pywebviewready
 
-#### `frontend/js/pages/review/` – Modular review
+#### `frontend/js/pages/review/` – Modular review (REAL implementations after breaking monolith, not facades) + FIXED tracking.js duplicate const bug
 
-**`state.js`**: `ReviewState` singleton `{project, pageIndex, selectedBlock, multiSelected Set, activeEditing, cropZoom, scaleRatioX/Y}`, `syncFromLegacy()` copies globals `currentProject` etc into ReviewState, `syncToLegacy()` exposes ReviewState to legacy globals, interval sync every 500ms, globals `ReviewState`, `ReviewStateSync`
+**`state.js`**: REAL globals `currentProject`, `currentPageIndex`, `selectedBlockIndex`, `multiSelectedBlocks`, `activeEditingIndex`, `cropZoom`, `CROP_MIN/MAX`, `scaleRatioX/Y`, `cropPanX/Y`, `dragSrcIndex`, `BASE_CATEGORIES`, `getCategoryColors()`, `CATEGORY_ARABIC_MAP`, `getCategoryNameAR()`, `getAllCategories()`, `isTableLike()`, `ReviewState` singleton + `syncFromLegacy/syncToLegacy`
 
-**`canvas.js`**: Facade `ReviewCanvas.drawBoxes`, `renderBboxes`, `renderThumb`, `handleClick` wrapping globals `drawBoxes`, `renderBboxes`, `renderThumbCanvas`, `handleCanvasClick` if available else warn
+**`navigation.js`**: `navigatePage(dir)` (selectBlock -1, activeEditing -1, updateReviewPanel), `moveFocusAndReview(dir)` with auto-review current block, intra-table cell-by-cell navigation via `tds[next]`, block-to-block skipping Picture, scrollIntoView + focus first td or content
 
-**`panels.js`**: `setupResize(handleId, panelId, minVal, maxVal)` mousedown stores startX/Y/H/W, mousemove computes delta, if side-by-side mode and crop-section horizontal resize else vertical, calls `updateSwitchBtnPosition` and `applyCropZoom`; `updateSwitchBtnPosition()` positions toggle button at 50% left = cropW when side-by-side else top = cropH left 50%; `setupPanels()` calls setupResize for crop and blocks, loads SideBySide pref from `__appSettings.reviewSideBySideMode`, updates position, resize listener, btn click toggles class, resets inline height/width, persists setting, re-fits crop after 50ms; globals `ReviewPanels`, `updateSwitchBtnPosition`, `setupResizablePanels`
+**`save.js`**: `saveBlockSilently()` → `pywebview.api.update_page_ocr`, `autoSaveBlock()` checks `autoSaveReview`
 
-**`editor.js`**: `syncElementFromContent(el, contentEl)` wrapper around global, fallback minimal, `refreshIndicators(wrapperEl, element)` wrapper, `ReviewEditor`
+**`fontzoom.js`**: `BLOCK_FONT_MIN/MAX/STEP/DEFAULT`, `setupBlockFontZoom()` reads `__appSettings.blockFontSize`, applies via `--block-font-size` CSS var + pct label, `applyBlockFontSize()`
 
-**`tracking.js`**: Loads `trackingConfig` from localStorage default `{cells:true, words:false, lines:false, block:false}`, `updateTrackingHighlight(contentEl, element)` calls `TextTrackingEngine.getHighlightBBox` with config, `setTrackingHighlight`, `panCropViewTo`, debounced version via `AppUtils.debounce` 120ms, `ReviewTracking`
+**`crop.js`**: `showCroppedView(bbox)` calculates scaled box `px=x*scaleRatio`, sets `crop-image` backgroundImage to page image, stores boxX/Y/W/H/naturalW/H, reset zoom, `applyCropZoom()` computes fit `min((vw-20)/bw)`, fs, bgW/H, ox/oy, transform, `panCropViewTo(bbox)` preserves zoom, `setupCropControls()` zoom in/out/reset
 
-**`category.js`**: `openPicker` facade over `openCategoryPicker`
+**`fullpage.js`**: `setupFullPageView()` close btn + canvas click -> handleCanvasClick + renderThumb, `openFullPageView()` shows overlay, draws boxes, `closeFullPageView()` hides
 
-**`preview.js`**: `openPreview`, `closePreview` toggling hidden class
+**`panels.js`**: `setupResize()`, `updateSwitchBtnPosition()` positions toggle button at 50% left=cropW in side-by-side else top=cropH left 50%, `setupPanels()`/`setupResizablePanels()` calls setupResize for crop+blocks, loads SideBySide pref, resize listener, toggle button click toggles class + resets inline + persists setting + re-fit crop
 
-**`index.js`**: Orchestrator logs new shell init, syncs `AppStore` settings, ensures `AppApi.ready().then(() => ReviewPanels.setupPanels())`, wraps `saveBlockSilently` if not already wrapped to hook notifications.
+**`editor.js`**: REAL full implementations: `updateReviewPanel()` sets total pages, current input, logical display, image src `file://appDataPath/...`, thumb images, onload calculates `scaleRatioX/Y = naturalWidth/native_width`, calls `renderBboxes`, `renderThumbCanvas`, `renderBlocksList`, `showCroppedView(null)`; `updateBlockSelectionUI()` toggles active-block class, re-renders bboxes/thumbs, shows crop; `selectBlock()` clears multiSelected, adds index, calls updateBlockSelectionUI + scrollIntoView; `syncElementFromContent()` handles Table via TableModel.toModel + fingerprint for bg/border changes + text join <br>, else innerHTML; `refreshIndicatorsFor()` toggles block-reviewed + re-renders bboxes/thumbs; `renderBlocksList()` full 200-line: skip Picture, wrapper active/reviewed, drag handle, label with color + getCategoryNameAR, review btn, delete btn, content contentEditable dir/align + category formatting (fontFamily, fontSize, lineSpacing, color, bg, bold, italic, underline), table rendering via TableModel.fromModel with border/bg/valign/dir/align, else marked.parse, focus/blur with preEditSnapshot + tracking immediate + input/keyup/click debouncedTrackingUpdate + blur auto-mark reviewed + pushHistory + autoSave + refreshIndicators; `setupBlocksListDelegation()` single delegated click handles review toggle, delete, label (openCategoryPicker), ctrl/meta multi-select, shift range; `setupBlockDrag()`, `reorderBlocks()`, `deleteBlock()`
+
+**`toolbar.js`**: `setupToolbar()` prev/next click -> navigatePage, undo/redo -> performUndo/Redo, formatting toolbar mousedown preventDefault, data-align buttons with table cell selection via `range.intersectsNode(td)` + style.textAlign + active toggle + sync + autoSave, data-dir similar, thumb-popup canvas click, toolbar-thumb-wrapper click openFullPageView, save-page click force sync active block + disabled + saveBlockSilently + showNotif
+
+**`category.js`**: `handleTableCategoryChange()` with localStorage remember + AestheticDialog, calls `auto_layout_table_block` + reload project, `setupCategoryPicker()` click outside hides, `openCategoryPicker()` builds list from getAllCategories() with color dot + Arabic name, click -> pushHistory + category change + if isTableLike -> handleTableCategoryChange else updateReviewPanel+autoSave, positions above/below based on viewport
+
+**`tracking.js`**: `defaultTrackingConfig`, `savedTrackingConfig` from localStorage, `__trackingConfig`, track-settings-btn toggle menu, forEach cfg-track checkbox checked from config + change listener saves localStorage + immediate updateTrackingHighlight if active, `debounce()`, `updateTrackingHighlight()` via TextTrackingEngine.getHighlightBBox + setTrackingHighlight + panCropViewTo, `debouncedTrackingUpdate`
+
+**`preview.js`**: `escapeHtml()`, IIFE `setupTextPreview()` with buildPreviewHTML() rendering tables via grid + poetry + markdown via marked, renderPreview() innerHTML, text-preview-btn click open, rawToggle change re-render, close click hide, save click collects touched pages via preview-block-chunk data-block-index, syncElementFromContent for tables or textContent vs innerHTML for raw, pushHistory + autoMarkReviewed, Promise.all update_page_ocr + notif + updateReviewPanel, `showNotif()` tray, `window.onLanUpdate` join/leave/edit notifs + updateReviewPanel if same page, `setupDashboard()` dashboard-btn -> project-dashboard.html, `persistBrushEdit()` for brush tool
+
+**`canvas.js`**: Facade ReviewCanvas wrapping drawBoxes etc.
+
+**`canvas-rendering.js`**: REAL: drawBoxes(), renderBboxes(), renderThumbCanvas(), handleCanvasClick() scaling 72 DPI via scaleRatio
+
+**`block-context-menu.js`**: BLOCK_CONTEXT_MODALS_HTML, setupBlockContextMenu(), mergeSelectedBlocks()
+
+**`undo-redo.js`**: pushHistory(), performUndo/Redo, setupUndo()
+
+**`keyboard-shortcuts.js`**: COMMAND_HANDLERS, setupKeyboardShortcuts()
+
+**`text-tracking-engine.js`**: TextTrackingEngine.getHighlightBBox()
+
+**`index.js`**: Final orchestrator: logs new shell init, syncs AppStore, ensures panels setup after pywebview ready, wraps saveBlockSilently
 
 #### Other legacy JS kept for compatibility (now modularized but still used)
 
@@ -938,9 +1001,15 @@ projects/
 ## Known Fixes in Rebuild (Summary of Commits)
 
 - `61dcede` – Full rebuild: organized backend/frontend, lightweight UI
-- `1228de4` – Fix review sidebar null + injection
-- `d079d2c` – Fix docx NameError + logging OSError + sidebar null guard
+- `1228de4` – Fix review.js:85 sidebar null + injection
+- `d079d2c` – Fix docx NameError _set_section_rtl + logging OSError WinError 1 + sidebar null guard
 - `d7d3f3b` – Fix FolderDialog AttributeError + enable debug console + robust sidebar collapse
+- `b7fd4c0` – Break monolith & full frontend reorg + delete legacy folder: review.js 1400→90 lines, 12 new review modules (state,navigation,save,fontzoom,crop,fullpage,panels,editor,toolbar,category,tracking,preview,canvas), organize all js into core/components/tables/formatting/quran/pages/review/vendor, update all 9 HTML files to new paths, delete frontend/js/legacy/
+- `ae1a8fb` – Fix tracking ReferenceError: debouncedTrackingUpdate not defined – duplicate const in tracking.js caused SyntaxError, file failed to parse, editor.js focus/input/keyup/click crashed, fixed by single definitions + window.* exposure + guarded calls in editor.js
+- `f096203` – Modulize layout-editor (1481→30) + project-dashboard (715→30): layout-editor broken into state/history/selection/table-tools/properties/canvas/toolbar/navigation/save/events/index, dashboard broken into state/table/stats/ocr-modal/progress/export/collab/llm/index, thin orchestrators, update layout-editor.html and project-dashboard.html to load new modular paths
+- `c7d9380` – Docs split README laypeople vs DEVELOPER_GUIDE
+- `b415353` – Fix canvas.js updateSelectionUI not defined (selection button) + preview.js IIFE semicolon + collab coopPollInterval + layout-editor auto-hide (flex row vs column wrapped in #layout-main)
+- `f9e6da2` – Fix review & dashboard & layout-editor runtime errors: preview.js IIFE missing semicolon -> TypeError (intermediate value)(...) is not a function, collab.js coopPollInterval not defined -> ReferenceError, layout-editor content auto-hides due to body flex column vs has-sidebar flex row conflict -> wrapped in #layout-main, tracking.js duplicate const fix + guarded editor.js calls
 
 All pushed to branch `arena/019fce12-the-arabic-ocr`, PR #1.
 

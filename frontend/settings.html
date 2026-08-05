@@ -187,7 +187,14 @@
             </div>
         </div>
     </main>
-    <script src="js/settings.js"></script>
+        <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/sidebar.js"></script>
+<script src="js/pages/settings.js"></script>
     <script>
         // Local working copy of shortcut overrides, edited in the UI and
         // only merged into window.__appSettings / persisted on Save.
@@ -459,6 +466,5 @@
         document.getElementById('btn-back')?.addEventListener('click', navigateBack);
         document.getElementById('btn-cancel-settings')?.addEventListener('click', navigateBack);
     </script>
-    <script src="js/sidebar.js"></script>    
 </body>
 </html>

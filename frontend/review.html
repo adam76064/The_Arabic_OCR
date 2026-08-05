@@ -6,12 +6,10 @@
     <title>مراجعة — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/review.css">
-    <!-- marked.js for markdown rendering -->
-    <script src="js/marked.min.js"></script>
+    <script src="js/vendor/marked.min.js"></script>
 </head>
 <body class="review-page">
 
-   
     <main id="main-content">
         <div class="toolbar">
             <div class="page-nav">
@@ -25,7 +23,6 @@
                 <button id="next-page" class="nav-btn" title="التالي">›</button>
             </div>
 
-            <!-- Thumbnail in toolbar (hover expands) -->
             <div id="toolbar-thumb-wrapper" title="معاينة الصفحة — انقر للتكبير">
                 <img id="thumb-image" src="" alt="thumbnail">
                 <canvas id="thumb-canvas"></canvas>
@@ -60,7 +57,6 @@
         </div>
 
         <div class="editor-container">
-            <!-- Left: page image viewer -->
             <div id="image-viewer">
                 <div id="image-wrapper">
                     <img id="page-image" src="" alt="Page">
@@ -68,13 +64,10 @@
                 </div>
             </div>
 
-            <!-- Right: text editor panel -->
             <div id="text-editor">
-                <!-- Formatting toolbar -->
                 <div id="sticky-toolbar" class="disabled"> </div>
                 
                 <div id="editor-panels-container">
-                    <!-- Crop viewer (resizable) -->
                     <div id="crop-section" class="resizable-panel">
                         <div class="panel-resize-handle" id="crop-resize-handle"></div>
                         <div id="crop-viewport">
@@ -90,13 +83,11 @@
                         </div>
                     </div>
 
-                    <!-- Blocks list (resizable) -->
                     <div id="blocks-list-wrapper" class="resizable-panel">
                         <div class="panel-resize-handle" id="blocks-resize-handle"></div>
                         <div id="blocks-list"></div>
                     </div>
 
-                    <!-- Floating Toggle Button: Direct child of container to prevent clipping/overlapping -->
                     <button type="button" id="toggle-layout-view-btn" class="handle-switch-btn" title="تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)">
                         <svg id="toggle-layout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M8 7h11M15 3l4 4-4 4M16 17H5M9 13l-4 4 4 4"/>
@@ -107,7 +98,6 @@
         </div>
     </main>
 
-    <!-- Full Page View Overlay -->
     <div id="fullpage-overlay" class="hidden">
         <div id="fullpage-header">
             <span>عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
@@ -121,34 +111,28 @@
         </div>
     </div>
 
-    <!-- Category picker dropdown (shared, positioned by JS) -->
     <div id="category-picker" class="hidden">
         <div class="category-picker-title">نوع الكتلة</div>
         <div id="category-picker-list"></div>
     </div>
 
-    
-    <!-- ===== TEXT PREVIEW OVERLAY ===== -->
     <div id="text-preview-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#fff;display:flex;flex-direction:column;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#2c3e50;color:white;flex-shrink:0;flex-wrap:wrap;gap:8px;">
             <span style="font-weight:700;">معاينة النص الكامل — قابل للتحرير</span>
             <div style="display:flex;gap:14px;align-items:center;">
-                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"
-                       title="عند التفعيل: يظهر النص كما هو مخزَّناً تماماً (بما فيه أي وسوم أو رموز Markdown ظاهرة). عند الإيقاف: يظهر نصاً منسّقاً ومقروءاً بلا وسوم.">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
                     <input type="checkbox" id="text-preview-raw-toggle">
                     عرض النص الخام
                 </label>
-                <button id="text-preview-save" class="btn-success" style="font-size:13px;" title="حفظ التعديلات على النص المعروض حالياً في كتلها الأصلية">حفظ التعديلات</button>
+                <button id="text-preview-save" class="btn-success" style="font-size:13px;">حفظ التعديلات</button>
                 <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
             </div>
         </div>
-        <!-- Same formatting toolbar as the per-block editor, acting on the preview body instead -->
        <div id="text-preview-toolbar" style="display:flex;gap:5px;padding:7px 10px;border-bottom:1px solid #eee;background:#f8f9fa;flex-shrink:0;flex-wrap:wrap;"></div>
         <div id="text-preview-body" contenteditable="true" dir="rtl"
              style="flex:1;overflow-y:auto;padding:40px;font-family:'Simplified Arabic',serif;font-size:18px;line-height:2;outline:none;"></div>
     </div>
 
-        <!-- ===== OCR RANGE MODAL ===== -->
     <div id="ocr-range-modal" class="modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-box">
@@ -178,7 +162,6 @@
         </div>
     </div>
 
-    <!-- ===== DASHBOARD OVERLAY ===== -->
     <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#f0f2f5;overflow-y:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#2c3e50;color:white;position:sticky;top:0;z-index:10;">
             <span style="font-weight:700;font-size:16px;">📊 لوحة تقدم المشروع</span>
@@ -187,9 +170,8 @@
         <div id="dashboard-body" style="padding:24px;max-width:900px;margin:0 auto;"></div>
     </div>
 
-    <!-- ===== NOTIFICATIONS TRAY ===== -->
     <div id="notif-tray" style="position:fixed;bottom:18px;left:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;"></div>
-<div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 5px 0; min-width: 160px; overflow: hidden;">
+    <div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 5px 0; min-width: 160px; overflow: hidden;">
         <div id="ctx-search-quran" style="padding: 10px 14px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
             <span>📖</span> بحث في القرآن الكريم
         </div>
@@ -203,19 +185,16 @@
                 <button class="modal-close" id="quran-close">✕</button>
             </div>
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding: 20px;">
-                
                 <div style="display: flex; gap: 10px; border-bottom: 2px solid #eee; margin-bottom: 16px;">
                     <button class="quran-tab-btn active" data-tab="quran-tab-text">البحث بالنص</button>
                     <button class="quran-tab-btn" data-tab="quran-tab-manual">تحديد السورة والآية</button>
                 </div>
-
                 <div id="quran-tab-text" class="quran-tab-content">
                     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
                         <input type="text" id="quran-search-input" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
                         <button id="quran-search-btn" class="btn-primary">بحث</button>
                     </div>
                 </div>
-
                 <div id="quran-tab-manual" class="quran-tab-content hidden">
                     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; background: #f8f9fa; padding: 14px; border-radius: 8px; border: 1px solid #eee;">
                         <div>
@@ -235,14 +214,11 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="quran-table-wrapper" style="margin-bottom: 16px;">
                     <table class="dashboard-table" style="margin-top: 0; border: none;">
                         <thead>
                             <tr>
-                                <th style="width: 50px; text-align: center;">
-                                    <input type="checkbox" id="quran-select-all" title="تحديد الكل" style="cursor: pointer; width: 16px; height: 16px;">
-                                </th>
+                                <th style="width: 50px; text-align: center;"><input type="checkbox" id="quran-select-all"></th>
                                 <th style="width: 110px;">السورة (الآية)</th>
                                 <th>النص القرآني</th>
                             </tr>
@@ -252,7 +228,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div style="display: flex; justify-content: space-between; align-items: center; background: #eaf4fd; padding: 12px 16px; border-radius: 8px; border: 1px solid #bce0fd;">
                     <label class="option-item" style="font-weight: bold; color: #2c3e50;">
                         <input type="checkbox" id="quran-add-citation" checked>
@@ -261,12 +236,11 @@
                     </label>
                     <button id="quran-insert-confirm" class="btn-success" disabled>إدراج التحديد</button>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- New organized core -->
+    <!-- Core -->
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
@@ -275,42 +249,45 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/components/toolbar.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/pages/ui-shared.js"></script>
 
-    <!-- Legacy shared -->
-    <script src="js/settings.js"></script>
-    <script src="js/ui-shared.js"></script>
+    <!-- Tables -->
+    <script src="js/components/tables/table-model.js"></script>
+    <script src="js/components/tables/table-selection.js"></script>
+    <script src="js/components/tables/table-toolbar.js"></script>
 
-    <!-- Table engine -->
-    <script src="js/table-model.js"></script>
-    <script src="js/table-selection.js"></script>
-    <script src="js/table-toolbar.js"></script>
+    <!-- Formatting -->
+    <script src="js/components/formatting/text-formatting.js"></script>
+    <script src="js/components/formatting/toolbar.js"></script>
 
-    <!-- Formatting & canvas (modular) -->
-    <script src="js/text-formatting.js"></script>
-    <script src="js/toolbar.js"></script>
-    <script src="js/canvas-rendering.js"></script>
-    <script src="js/undo-redo.js"></script>
-    <script src="js/keyboard-shortcuts.js"></script>
-    <script src="js/text-tracking-engine.js"></script>
+    <!-- Review - legacy extracted (actual implementations) -->
+    <script src="js/pages/review/canvas-rendering.js"></script>
+    <script src="js/pages/review/undo-redo.js"></script>
+    <script src="js/pages/review/keyboard-shortcuts.js"></script>
+    <script src="js/pages/review/text-tracking-engine.js"></script>
+    <script src="js/pages/review/block-context-menu.js"></script>
 
-    <!-- Context menu & review (main) -->
-    <script src="js/block-context-menu.js"></script>
-
-    <!-- New modular review pages (organized) -->
+    <!-- Review - broken monolith modules (organized) -->
     <script src="js/pages/review/state.js"></script>
-    <script src="js/pages/review/canvas.js"></script>
+    <script src="js/pages/review/navigation.js"></script>
+    <script src="js/pages/review/save.js"></script>
+    <script src="js/pages/review/fontzoom.js"></script>
+    <script src="js/pages/review/crop.js"></script>
+    <script src="js/pages/review/fullpage.js"></script>
     <script src="js/pages/review/panels.js"></script>
     <script src="js/pages/review/editor.js"></script>
-    <script src="js/pages/review/tracking.js"></script>
+    <script src="js/pages/review/toolbar.js"></script>
     <script src="js/pages/review/category.js"></script>
+    <script src="js/pages/review/tracking.js"></script>
     <script src="js/pages/review/preview.js"></script>
+    <script src="js/pages/review/canvas.js"></script>
 
-    <!-- Main review orchestrator -->
+    <!-- Thin orchestrator -->
     <script src="js/review.js"></script>
     <script src="js/pages/review/index.js"></script>
 
     <!-- Quran -->
-    <script src="js/quran.js"></script>
-   
+    <script src="js/components/quran/quran.js"></script>
 </body>
 </html>

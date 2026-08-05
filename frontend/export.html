@@ -46,7 +46,6 @@
                 <label class="option-item"><input type="checkbox" name="exp-format" value="epub3"><span class="option-check"></span><span style="font-weight: bold;">EPUB3 (كتاب إلكتروني)</span></label>
             </div>
 
-            <!-- TXT Options -->
             <div id="opts-txt" class="format-specific-options hidden">
                 <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات TXT</h4>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -60,10 +59,9 @@
                 </div>
             </div>
 
-            <!-- HTML/EPUB Options (Placeholders for Step 2) -->
             <div id="opts-epub" class="format-specific-options hidden">
                 <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات HTML & EPUB3</h4>
-                <p style="font-size: 13px; color: #d97706; margin: 0;">(سيتم إضافة الإعدادات الخاصة بالشعر العمودي ومعايير الكتب العربية هنا في المرحلة القادمة)</p>
+                <p style="font-size: 13px; color: #d97706; margin: 0;">(سيتم إضافة الإعدادات الخاصة بالشعر العمودي ومعايير الكتب العربية هنا)</p>
             </div>
         </div>
 
@@ -72,74 +70,72 @@
         </div>
     </main>
 
-    <script src="js/sidebar.js"></script>
+    <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/sidebar.js"></script>
+    <script src="js/pages/settings.js"></script>
     <script>
         let currentProject = null;
-
         async function initExportPage() {
             const params = new URLSearchParams(window.location.search);
             const projectId = params.get('id');
             if (!projectId) { window.location.href = 'projects.html'; return; }
-
             currentProject = await window.pywebview.api.load_project(projectId);
             document.getElementById('export-proj-title').textContent = currentProject.metadata?.title || 'مشروع بدون عنوان';
-            document.getElementById('exp-to').value = currentProject.pages.length;
-
-            document.getElementById('back-btn').addEventListener('click', () => window.history.back());
-
-            // Handle range toggle
+            const expTo = document.getElementById('exp-to');
+            if (expTo) expTo.value = currentProject.pages.length;
+            document.getElementById('back-btn')?.addEventListener('click', () => window.history.back());
             document.querySelectorAll('input[name="exp-pages"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    document.getElementById('exp-range-inputs').classList.toggle('hidden', e.target.value !== 'range');
+                    const el = document.getElementById('exp-range-inputs');
+                    if (el) el.classList.toggle('hidden', e.target.value !== 'range');
                 });
             });
-
-            // Handle Option Blocks Visibility
             document.querySelectorAll('input[name="exp-format"]').forEach(cb => {
                 cb.addEventListener('change', () => {
                     const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
-                    document.getElementById('opts-txt').classList.toggle('hidden', !formats.includes('txt'));
-                    document.getElementById('opts-epub').classList.toggle('hidden', !(formats.includes('html') || formats.includes('epub3')));
+                    const optsTxt = document.getElementById('opts-txt');
+                    const optsEpub = document.getElementById('opts-epub');
+                    if (optsTxt) optsTxt.classList.toggle('hidden', !formats.includes('txt'));
+                    if (optsEpub) optsEpub.classList.toggle('hidden', !(formats.includes('html') || formats.includes('epub3')));
                 });
             });
-
-            document.getElementById('execute-export-btn').addEventListener('click', async () => {
+            document.getElementById('execute-export-btn')?.addEventListener('click', async () => {
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
                 if (formats.length === 0) { alert('الرجاء تحديد صيغة تصدير واحدة على الأقل.'); return; }
-
-                const pagesMode = document.querySelector('input[name="exp-pages"]:checked').value;
+                const pagesMode = document.querySelector('input[name="exp-pages"]:checked')?.value || 'all';
                 let indices = Array.from({length: currentProject.pages.length}, (_, i) => i);
                 if (pagesMode === 'range') {
-                    const from = Math.max(1, parseInt(document.getElementById('exp-from').value) || 1) - 1;
-                    const to = Math.min(currentProject.pages.length, parseInt(document.getElementById('exp-to').value) || currentProject.pages.length) - 1;
+                    const from = Math.max(1, parseInt(document.getElementById('exp-from')?.value) || 1) - 1;
+                    const to = Math.min(currentProject.pages.length, parseInt(document.getElementById('exp-to')?.value) || currentProject.pages.length) - 1;
                     indices = Array.from({length: to - from + 1}, (_, i) => from + i);
                 }
-
                 const opts = {
                     table_separator: document.getElementById('exp-table-sep') ? document.getElementById('exp-table-sep').value : '\t',
                     text_mode: 'formatted'
                 };
-
-                // Request directory from Python backend
                 const outputDir = await window.pywebview.api.request_directory_dialog();
-                if (!outputDir) return; // User canceled dialog
-
+                if (!outputDir) return;
                 const btn = document.getElementById('execute-export-btn');
-                btn.textContent = '⏳ جاري التصدير...'; btn.disabled = true;
-
+                if (btn) { btn.textContent = '⏳ جاري التصدير...'; btn.disabled = true; }
                 try {
                     for (const fmt of formats) {
                         await window.pywebview.api.export_project(currentProject.id, fmt, indices, opts, outputDir);
                     }
-                    alert('تم تصدير الملفات بنجاح ✓');
+                    if (typeof showNotif === 'function') showNotif('تم تصدير الملفات بنجاح ✓', 'success');
+                    else alert('تم تصدير الملفات بنجاح ✓');
                 } catch (e) {
+                    console.error(e);
                     alert('حدث خطأ أثناء التصدير.');
                 } finally {
-                    btn.textContent = 'تصدير الملفات المحددة'; btn.disabled = false;
+                    if (btn) { btn.textContent = 'تصدير الملفات المحددة'; btn.disabled = false; }
                 }
             });
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (window.pywebview) initExportPage();
             else window.addEventListener('pywebviewready', initExportPage);
