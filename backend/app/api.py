@@ -211,9 +211,9 @@ class Api:
             return {'ok': False, 'error': str(e)}
 
     # --- OCR unified cleaning helper ---
-    def _apply_cleaning_to_elements(self, elements, text_config, page_data, engine_dpi=200.0, category_formatting=None):
+    def _apply_cleaning_to_elements(self, elements, text_config, page_data, engine_dpi=200.0, category_formatting=None, post_processing=None):
         return self.ocr_service.clean_existing_elements(
-            elements, page_data, engine_dpi=engine_dpi, text_config=text_config, category_formatting=category_formatting
+            elements, page_data, engine_dpi=engine_dpi, text_config=text_config, category_formatting=category_formatting, post_processing=post_processing
         )
 
     def _emit_paddle_progress(self, stage, message, percentage=0):
@@ -226,7 +226,10 @@ class Api:
 
     def trigger_paddle_ocr(self, project_id, start_idx, end_idx):
         project = self.project_manager.load_project(project_id)
-        text_config = project.get('metadata', {}).get('text_features', {})
+        meta = project.get('metadata', {}) if project else {}
+        text_config = meta.get('text_features', {})
+        cat_fmt = meta.get('category_formatting', {})
+        post_proc = meta.get('post_processing', {})
 
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
@@ -256,7 +259,7 @@ class Api:
                     actual_page_index = current_start + i
                     if actual_page_index < len(project['pages']):
                         pg_data = project['pages'][actual_page_index]
-                        cleaned_elements = self._apply_cleaning_to_elements(ocr_data, text_config, pg_data, engine_dpi=200.0)
+                        cleaned_elements = self._apply_cleaning_to_elements(ocr_data, text_config, pg_data, engine_dpi=200.0, category_formatting=cat_fmt, post_processing=post_proc)
                         project['pages'][actual_page_index]['ocr_data'] = cleaned_elements
                         project['pages'][actual_page_index]['status'] = 'pending'
                         self.project_manager.save_raw_ocr(project_id, actual_page_index, cleaned_elements)
@@ -275,7 +278,10 @@ class Api:
 
     def trigger_locro_ocr(self, project_id, start_idx, end_idx, mode):
         project = self.project_manager.load_project(project_id)
-        text_config = project.get('metadata', {}).get('text_features', {})
+        meta = project.get('metadata', {}) if project else {}
+        text_config = meta.get('text_features', {})
+        cat_fmt = meta.get('category_formatting', {})
+        post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
         pdf_path = project.get('pdf_path')
@@ -300,7 +306,7 @@ class Api:
                 blocks = run_locro_ocr(img_path)
 
                 if mode == 'full_page':
-                    cleaned_elements = self._apply_cleaning_to_elements(blocks, text_config, page_data, engine_dpi=300.0)
+                    cleaned_elements = self._apply_cleaning_to_elements(blocks, text_config, page_data, engine_dpi=300.0, category_formatting=cat_fmt, post_processing=post_proc)
                     project['pages'][current_idx]['ocr_data'] = cleaned_elements
                     project['pages'][current_idx]['status'] = 'pending'
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)
@@ -398,7 +404,10 @@ class Api:
 
     def trigger_google_lens_ocr(self, project_id, start_idx, end_idx, mode):
         project = self.project_manager.load_project(project_id)
-        text_config = project.get('metadata', {}).get('text_features', {})
+        meta = project.get('metadata', {}) if project else {}
+        text_config = meta.get('text_features', {})
+        cat_fmt = meta.get('category_formatting', {})
+        post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
         pdf_path = project.get('pdf_path')
@@ -442,7 +451,7 @@ class Api:
                         block['align'] = "right"
                         new_ocr_data.append(block)
 
-                    cleaned_data = self._apply_cleaning_to_elements(new_ocr_data, text_config, page_data, engine_dpi=200.0)
+                    cleaned_data = self._apply_cleaning_to_elements(new_ocr_data, text_config, page_data, engine_dpi=200.0, category_formatting=cat_fmt, post_processing=post_proc)
                     project['pages'][current_idx]['ocr_data'] = cleaned_data
                     project['pages'][current_idx]['status'] = 'pending'
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_data)
@@ -545,7 +554,10 @@ class Api:
 
     def trigger_llm_ocr(self, project_id, start_idx, end_idx, llm_config):
         project = self.project_manager.load_project(project_id)
-        text_config = project.get('metadata', {}).get('text_features', {})
+        meta = project.get('metadata', {}) if project else {}
+        text_config = meta.get('text_features', {})
+        cat_fmt = meta.get('category_formatting', {})
+        post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
         pdf_path = project.get('pdf_path')
@@ -599,7 +611,7 @@ class Api:
                         "align": "right"
                     })
 
-                cleaned_llm_data = self._apply_cleaning_to_elements(new_ocr_data, text_config, page_data, engine_dpi=1000.0)
+                cleaned_llm_data = self._apply_cleaning_to_elements(new_ocr_data, text_config, page_data, engine_dpi=1000.0, category_formatting=cat_fmt, post_processing=post_proc)
                 project['pages'][current_idx]['ocr_data'] = cleaned_llm_data
                 project['pages'][current_idx]['status'] = 'pending'
                 self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_llm_data)
