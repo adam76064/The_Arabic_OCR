@@ -1050,6 +1050,38 @@ Install: `pip install -r requirements.txt`
 
 ---
 
+## Post-Processing Module
+
+> **Branch:** `feature/post-processing-reading-order`  
+> **Module root:** `backend/post_processing/`
+
+The post-processing pipeline runs _after_ OCR extraction to automatically re-order bounding boxes into true **Arabic Reading Order (Top-to-Bottom, Right-to-Left)**.
+
+### Architecture
+
+```
+backend/post_processing/
+├── __init__.py                 # exports PostProcessingManager
+├── manager.py                  # PostProcessingManager orchestrator
+└── reading_order/
+    ├── __init__.py
+    └── sorter.py               # ArabicReadingOrderSorter pure-spatial algorithm
+```
+
+### Algorithm (Arabic Reading Order Sorter)
+
+1. **Multi-Column Vertical Gutter Detection (`sorter.py`)**  
+   - Projects bounding box X-spans across the page width.
+   - Detects vertical gutters (low-density X channels) in multi-column pages (e.g. 2-column layouts).
+   - In Arabic, partitions columns from **Right to Left** (Right Column = Column 1, Left Column = Column 2).
+
+2. **Horizontal Row/Line Grouping & RTL Sorting**  
+   - Within each column (or single-column page), sorts blocks by `y1` (top coordinate).
+   - Groups overlapping blocks into horizontal line rows.
+   - Sorts blocks within each row **Right to Left** (descending X coordinate: `x2`, `x1`).
+
+---
+
 ## License
 
 Same as original – open source. Feel free to contribute.

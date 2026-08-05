@@ -216,8 +216,40 @@
                 </div>
             </div>
 
+            <!-- ═══════════════════════════════════════════════════════
+                 POST-PROCESSING SECTION
+                 ═══════════════════════════════════════════════════════ -->
+            <div class="settings-card" id="post-processing-card">
+                <h3>📝 معالجة ما بعد OCR (Post-Processing)</h3>
+                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;">
+                    خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.
+                </p>
+
+                <!-- Arabic Reading Order Auto-Sorting Option -->
+                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;">📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
+                            <p style="margin: 0; font-size: 12px; color: #0284c7;">
+                                يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
+                            </p>
+                        </div>
+                        <label class="switch" style="flex-shrink: 0; margin-right: 12px;">
+                            <input type="checkbox" id="ps-sort-reading-order">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
+                            ⚡ ترتيب المربعات على الصفحات الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="settings-card">
                 <h3>🌐 المشاركة والعمل التعاوني (Cooperative Work)</h3>
+
                 <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;">تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).</p>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px;">

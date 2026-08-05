@@ -145,6 +145,9 @@ async function initSettings() {
 
     // 5. Category Formatting Rules
     initCategoryFormatting(meta.category_formatting || {});
+
+    // 6. Post-Processing Settings
+    initPostProcessingSettings(meta.post_processing || {});
 }
 
 // ─── CATEGORY FORMATTING MANAGER ───
@@ -320,6 +323,9 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
             numbers_option: document.querySelector('input[name="ps_numbers"]:checked')?.value || 'none',
             remove_all_tashkeel: tashkeelVal === 'remove_all',
             remove_tashkeel_keep_tanween: tashkeelVal === 'keep_tanween'
+        },
+        post_processing: {
+            auto_sort_reading_order: document.getElementById('ps-sort-reading-order')?.checked ?? false,
         }
     };
 
@@ -336,6 +342,33 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                 window.location.href = `project-dashboard.html?id=${currentProject.id}`;
             };
 
+            const showPostProcessingDialog = (onDone) => {
+                const hasPostProc = newMetadata.post_processing?.auto_sort_reading_order;
+                if (!hasPostProc || ocredPagesCount === 0 || !window.AestheticDialog?.confirm) {
+                    onDone(); return;
+                }
+                window.AestheticDialog.confirm({
+                    title: 'تطبيق ترتيب اتجاه القراءة العربي 📐',
+                    message: `هل ترغب في إعادة ترتيب المربعات النصية حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل) على كافة صفحات المشروع الآن؟<br><br>
+                        <strong>غير المراجَعة فقط</strong> ← يحفظ تعديلاتك اليدوية.<br>
+                        <strong>على الكل</strong> ← يُعيد الترتيب على جميع الصفحات.`,
+                    confirmText: 'تطبيق على غير المراجَعة فقط',
+                    cancelText: 'لا، تجاهل الآن',
+                    onConfirm: async () => {
+                        btn.textContent = 'جاري الترتيب... ⏳';
+                        try {
+                            const res = await window.pywebview.api.run_post_processing_to_project(currentProject.id, true);
+                            window.AestheticDialog?.alert?.({
+                                title: res?.ok ? 'تم ✨' : 'تنبيه',
+                                message: res?.ok ? `تم ترتيب المربعات في ${res.count} صفحة بنجاح.` : (res?.error || 'حدث خطأ.'),
+                                onOk: onDone
+                            });
+                        } catch (err) { onDone(); }
+                    },
+                    onCancel: onDone
+                });
+            };
+
             if (ocredPagesCount > 0 && window.AestheticDialog?.confirm) {
                 window.AestheticDialog.confirm({
                     title: 'تطبيق معالجة النصوص والتنسيقات 🎨',
@@ -350,24 +383,24 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                                 window.AestheticDialog.alert({
                                     title: 'تم بنجاح ✨',
                                     message: `تمت إعادة تطبيق المعالجة النصية والتنسيقات على <strong>${reapplyRes.count} صفحة</strong> بنجاح!`,
-                                    onOk: finishAndRedirect
+                                    onOk: () => showPostProcessingDialog(finishAndRedirect)
                                 });
                             } else {
                                 window.AestheticDialog.alert({
                                     title: 'تنبيه',
                                     message: 'حدث خطأ أثناء إعادة التطبيق: ' + (reapplyRes?.error || 'غير معروف'),
-                                    onOk: finishAndRedirect
+                                    onOk: () => showPostProcessingDialog(finishAndRedirect)
                                 });
                             }
                         } catch (reapplyErr) {
                             console.error('Reapply processing failed:', reapplyErr);
-                            finishAndRedirect();
+                            showPostProcessingDialog(finishAndRedirect);
                         }
                     },
-                    onCancel: finishAndRedirect
+                    onCancel: () => showPostProcessingDialog(finishAndRedirect)
                 });
             } else {
-                finishAndRedirect();
+                showPostProcessingDialog(finishAndRedirect);
             }
         } else {
             throw new Error(response?.error || 'Unknown error saving to disk');
@@ -397,3 +430,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.pywebview) initSettings();
     else window.addEventListener('pywebviewready', initSettings);
 });
+
+// ─── POST-PROCESSING SETTINGS ───────────────────────────────────────────────
+
+function initPostProcessingSettings(ppOpts) {
+    const sortToggle = document.getElementById('ps-sort-reading-order');
+    const runBtn = document.getElementById('btn-run-reading-order-sort');
+
+    if (!sortToggle) return;
+
+    sortToggle.checked = ppOpts.auto_sort_reading_order ?? false;
+
+    if (runBtn) {
+        runBtn.addEventListener('click', async () => {
+            if (!currentProject) return;
+            runBtn.disabled = true;
+            runBtn.textContent = '⏳ جاري الترتيب...';
+            try {
+                const res = await window.pywebview.api.apply_reading_order_sorting(
+                    currentProject.id, null, true
+                );
+                if (res?.ok) {
+                    if (window.AestheticDialog?.alert) {
+                        window.AestheticDialog.alert({
+                            title: 'تم بنجاح ✨',
+                            message: `تمت إعادة ترتيب المربعات النصية في ${res.count} صفحة حسب اتجاه القراءة العربي.`
+                        });
+                    } else {
+                        alert(`تمت إعادة ترتيب المربعات في ${res.count} صفحة.`);
+                    }
+                } else {
+                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                }
+            } catch (err) {
+                console.error('Reading order sorting error:', err);
+                alert('حدث خطأ أثناء إعادة ترتيب المربعات.');
+            } finally {
+                runBtn.disabled = false;
+                runBtn.textContent = '⚡ ترتيب المربعات على الصفحات الآن';
+            }
+        });
+    }
+}

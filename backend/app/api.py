@@ -29,6 +29,7 @@ from ..export import export_json, export_txt, export_docx, export_html, export_e
 from ..collab.discovery import LANDiscovery
 from ..collab.sync import LANSyncServer, LANSyncClient
 from ..utils.retriever import populate_layout_blocks_text
+from ..post_processing import PostProcessingManager
 from .events import EventEmitter
 
 
@@ -878,6 +879,89 @@ class Api:
             project['pages'][page_index]['status'] = 'pending'
             self.project_manager.save_raw_ocr(project_id, page_index, elements)
 
-        if project:
+    # ── Post-Processing ──────────────────────────────────────────────────
+
+    def apply_reading_order_sorting(self, project_id, page_indices=None, only_unreviewed=True):
+        """
+        Sort OCR bounding boxes into Arabic reading order (Top-to-Bottom, Right-to-Left).
+        """
+        try:
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+            pp_config = project.get('metadata', {}).get('post_processing', {})
+            # Ensure auto_sort_reading_order is enabled for this run
+            pp_config['auto_sort_reading_order'] = True
+            manager = PostProcessingManager(config=pp_config)
+
+            pages = project.get('pages', [])
+            indices = page_indices if page_indices is not None else list(range(len(pages)))
+            processed = 0
+
+            for i in indices:
+                if i >= len(pages):
+                    continue
+                page = pages[i]
+
+                if only_unreviewed:
+                    ocr_data = page.get('ocr_data', [])
+                    all_reviewed = all(
+                        b.get('reviewed') for b in ocr_data if b.get('text')
+                    )
+                    if all_reviewed and ocr_data:
+                        continue
+
+                page_height = page.get('height', 0.0)
+                ocr_data = page.get('ocr_data', [])
+
+                updated = manager.process_page(ocr_data, page_height=page_height)
+                page['ocr_data'] = updated
+                processed += 1
+
             self.project_manager.update_project(project_id, project)
-        return project
+            return {'ok': True, 'count': processed}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
+    def run_post_processing_to_project(self, project_id, only_unreviewed=True):
+        """
+        Apply all enabled post-processing steps to eligible pages of a project.
+        """
+        try:
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+            pp_config = project.get('metadata', {}).get('post_processing', {})
+
+            if not any(pp_config.values()):
+                return {'ok': True, 'count': 0, 'message': 'لا توجد خيارات معالجة مفعلة.'}
+
+            manager = PostProcessingManager(config=pp_config)
+            pages = project.get('pages', [])
+            processed = 0
+
+            for i, page in enumerate(pages):
+                if only_unreviewed:
+                    ocr_data = page.get('ocr_data', [])
+                    all_reviewed = all(b.get('reviewed') for b in ocr_data if b.get('text'))
+                    if all_reviewed and ocr_data:
+                        continue
+
+                page_height = page.get('height', 0.0)
+                ocr_data = page.get('ocr_data', [])
+
+                updated = manager.process_page(ocr_data, page_height=page_height)
+                page['ocr_data'] = updated
+                processed += 1
+
+            self.project_manager.update_project(project_id, project)
+            return {'ok': True, 'count': processed}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
