@@ -676,6 +676,7 @@ def _parse_poetry_lines(el):
 
     # --- Method 2: text field split on <br> and '|' ---
     raw = el.get('text', '')
+    temp_lines = []
     # Split on <br> tags
     verse_lines = re.split(r'<br\s*/?>', raw, flags=re.IGNORECASE)
     if len(verse_lines) <= 1:
@@ -686,9 +687,24 @@ def _parse_poetry_lines(el):
             continue
         if '|' in verse_clean:
             parts = verse_clean.split('|', 1)
-            lines.append((parts[0].strip(), parts[1].strip()))
+            temp_lines.append((parts[0].strip(), parts[1].strip()))
         else:
-            lines.append((verse_clean, ''))
+            temp_lines.append((verse_clean, None))
+            
+    i = 0
+    while i < len(temp_lines):
+        r, l = temp_lines[i]
+        if l is not None:
+            lines.append((r, l))
+            i += 1
+        else:
+            if i + 1 < len(temp_lines) and temp_lines[i+1][1] is None:
+                lines.append((r, temp_lines[i+1][0]))
+                i += 2
+            else:
+                lines.append((r, ''))
+                i += 1
+                
     return lines
 
 
