@@ -1080,7 +1080,12 @@ backend/post_processing/
    - Groups overlapping blocks into horizontal line rows.
    - Sorts blocks within each row **Right to Left** (descending X coordinate: `x2`, `x1`).
 
+3. **Automatic Execution Hook (`backend/core/ocr/service.py`)**  
+   - Integrated into `OCRService.standardize_and_clean()` — the central post-OCR method invoked by all OCR engines (Paddle, Google Lens, Locro, LLM Vision).
+   - Automatically executes `PostProcessingManager.process_page()` immediately upon recognition completion whenever post-processing options are enabled in project settings.
+
 ---
+
 
 ## License
 
