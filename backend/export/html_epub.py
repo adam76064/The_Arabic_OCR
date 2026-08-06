@@ -59,7 +59,7 @@ def _generate_poetry_html(el, cat):
     if not lines:
         return ''
     parts = []
-    if cat == 'شعر عمودي':
+    if cat == 'Vertical-poetry':
         parts.append("<table class='poetry-table poetry-amudi' dir='rtl'>")
         parts.append("<tbody>")
         for right_h, left_h in lines:
@@ -70,7 +70,7 @@ def _generate_poetry_html(el, cat):
             parts.append("</tr>")
         parts.append("</tbody>")
         parts.append("</table>")
-    elif cat == 'شعر متدرج':
+    elif cat == 'Staggered-poetry':
         parts.append("<table class='poetry-table poetry-mutadarij' dir='rtl'>")
         parts.append("<tbody>")
         for right_h, left_h in lines:
@@ -100,7 +100,7 @@ def _generate_body_html(project, page_indices):
             raw_text = el.get('text', '').strip()
             if not raw_text:
                 continue
-            if cat in ('شعر عمودي', 'شعر متدرج'):
+            if cat in ('Vertical-poetry', 'Staggered-poetry'):
                 poetry_html = _generate_poetry_html(el, cat)
                 if poetry_html:
                     html_parts.append(poetry_html)

@@ -19,6 +19,8 @@ class OCRHandler:
             "Table",
             "Text",
             "Title",
+            "Vertical-poetry",
+            "Staggered-poetry",
         ]
 
     def standardize_page_blocks(self, raw_blocks, native_w, native_h, current_dpi=200.0):

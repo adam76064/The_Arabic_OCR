@@ -140,8 +140,8 @@ def export_docx(project, page_indices, output_path, opts=None):
             
             block_font_size = el.get('font_size') or el.get('fontSize') or el.get('size')
 
-            # ── Poetry blocks (شعر عمودي & شعر متدرج) ──────────────────────────
-            if cat in ('شعر عمودي', 'شعر متدرج'):
+            # ── Poetry blocks (Vertical-poetry & Staggered-poetry) ──────────────────────────
+            if cat in ('Vertical-poetry', 'Staggered-poetry'):
                 _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=cat_fmt)
                 continue
 

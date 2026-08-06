@@ -169,7 +169,7 @@ def populate_layout_blocks_text(raw_ocr_blocks, current_layout_blocks, preserve_
     for block in current_layout_blocks:
         b_copy = dict(block)
 
-        if (b_copy.get("category") == "Table" or b_copy.get("category") == "شعر عمودي") and "table_structure" in b_copy:
+        if (b_copy.get("category") == "Table" or b_copy.get("category") == "Vertical-poetry") and "table_structure" in b_copy:
             b_copy = populate_table_cells_from_raw(raw_ocr_blocks, b_copy)
             updated_blocks.append(b_copy)
             continue

@@ -34,7 +34,10 @@ You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engine
 - **Team Work:** Share a project over local network (LAN) with password, see who is editing live
 
 - **Post-Processing (NEW):**
-  - **Arabic Reading Order Auto-Sorter** – Pure-spatial bounding box sorting algorithm that sorts OCR text blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left). Detects multi-column layouts (e.g., 2 columns), processes the Right Column first, and sorts within each row from Right to Left. Automatically applied upon completion of any OCR engine (Paddle, Google Lens, Locro, Vision LLM) if enabled.
+  - **Arabic Reading Order Auto-Sorter** – Pure-spatial bounding box sorting algorithm that sorts OCR text blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left). Detects multi-column layouts (e.g., 2 columns), processes the Right Column first, and sorts within each row from Right to Left.
+  - **Pagination Auto-Detector** – Cross-page and facing-page page number detector that scans header (top 15%) and footer (bottom 15%) regions, validates numeric sequences (ASCII, Arabic-Indic, Persian digits), and automatically annotates matching blocks with the `Page-number` category label (colored blue).
+  - **Unified Settings Apply** – When saving project settings, a single comprehensive prompt allows you to seamlessly apply text processing formats and post-processing algorithms (like reading order & pagination) to either all OCRed pages or just unreviewed ones in one optimized pass.
+
 
 ## 🚀 Installation
 

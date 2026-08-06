@@ -196,7 +196,7 @@ class Api:
                                 el['dir'] = fmt['dir']
                             if fmt.get('align') and not el.get('align'):
                                 el['align'] = fmt['align']
-                        if (cat == 'Table' or cat == 'شعر عمودي') and 'table_structure' in el:
+                        if (cat == 'Table' or cat == 'Vertical-poetry') and 'table_structure' in el:
                             cells = el['table_structure'].get('cells', [])
                             for c in cells:
                                 if c.get('text'):
@@ -205,6 +205,62 @@ class Api:
 
             self.project_manager.update_project(project_id, project)
             return {'ok': True, 'count': updated_count}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
+    def apply_project_settings_changes(self, project_id, apply_scope="unreviewed"):
+        if apply_scope == "none":
+            return {'ok': True, 'count': 0}
+            
+        try:
+            # 1. Reapply Text Processing
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+                
+            meta = project.get('metadata', {})
+            text_config = meta.get('text_features', {})
+            cat_fmt_map = meta.get('category_formatting', {})
+            cleaner = ArabicTextCleaner(text_config)
+
+            for page in project.get('pages', []):
+                ocr_data = page.get('ocr_data', [])
+                if not ocr_data:
+                    continue
+                    
+                if apply_scope == "unreviewed":
+                    all_reviewed = all(b.get('reviewed') for b in ocr_data if b.get('text'))
+                    if all_reviewed and ocr_data:
+                        continue
+
+                for el in ocr_data:
+                    cat = el.get('category', 'Text')
+                    if cat != 'Picture':
+                        if el.get('text'):
+                            el['text'] = cleaner.clean(el['text'])
+                        fmt = cat_fmt_map.get(cat, {})
+                        if fmt:
+                            if fmt.get('dir') and not el.get('dir'):
+                                el['dir'] = fmt['dir']
+                            if fmt.get('align') and not el.get('align'):
+                                el['align'] = fmt['align']
+                        if (cat == 'Table' or cat == 'Vertical-poetry') and 'table_structure' in el:
+                            cells = el['table_structure'].get('cells', [])
+                            for c in cells:
+                                if c.get('text'):
+                                    c['text'] = cleaner.clean(c['text'])
+                                    
+            self.project_manager.update_project(project_id, project)
+            
+            # 2. Run post processing
+            only_unreviewed = (apply_scope == "unreviewed")
+            res_pp = self.run_post_processing_to_project(project_id, only_unreviewed=only_unreviewed)
+            if not res_pp.get('ok'):
+                return res_pp
+                
+            return {'ok': True, 'count': 1}
         except Exception as e:
             import traceback
             traceback.print_exc()
@@ -938,6 +994,29 @@ class Api:
             traceback.print_exc()
             return {'ok': False, 'error': str(e)}
 
+    def apply_pagination_detection(self, project_id, page_indices=None, only_unreviewed=True):
+        """
+        Detect page numbers across project pages and annotate blocks with category="Page-number".
+        """
+        try:
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+            pp_config = project.get('metadata', {}).get('post_processing', {})
+            pp_config['detect_pagination'] = True
+            manager = PostProcessingManager(config=pp_config)
+
+            updated = manager.process_project_pages(project, page_indices=page_indices, only_unreviewed=only_unreviewed)
+            count = updated.get('_pagination_applied', 0)
+
+            self.project_manager.update_project(project_id, updated)
+            return {'ok': True, 'count': count}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
     def run_post_processing_to_project(self, project_id, only_unreviewed=True):
         """
         Apply all enabled post-processing steps to eligible pages of a project.
@@ -953,27 +1032,14 @@ class Api:
                 return {'ok': True, 'count': 0, 'message': 'لا توجد خيارات معالجة مفعلة.'}
 
             manager = PostProcessingManager(config=pp_config)
-            pages = project.get('pages', [])
-            processed = 0
+            updated = manager.process_project_pages(project, only_unreviewed=only_unreviewed)
+            processed = updated.get('_post_processing_applied', 0)
 
-            for i, page in enumerate(pages):
-                if only_unreviewed:
-                    ocr_data = page.get('ocr_data', [])
-                    all_reviewed = all(b.get('reviewed') for b in ocr_data if b.get('text'))
-                    if all_reviewed and ocr_data:
-                        continue
-
-                page_height = page.get('height', 0.0)
-                ocr_data = page.get('ocr_data', [])
-
-                updated = manager.process_page(ocr_data, page_height=page_height)
-                page['ocr_data'] = updated
-                processed += 1
-
-            self.project_manager.update_project(project_id, project)
+            self.project_manager.update_project(project_id, updated)
             return {'ok': True, 'count': processed}
         except Exception as e:
             import traceback
             traceback.print_exc()
             return {'ok': False, 'error': str(e)}
+
 

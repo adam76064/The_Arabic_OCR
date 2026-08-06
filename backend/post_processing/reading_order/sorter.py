@@ -136,7 +136,7 @@ class ArabicReadingOrderSorter:
             # Separate full-width headers (top 15%) and footers (bottom 85%)
             top_full = [b for b in full_width if b["bbox"][1] < max_y * 0.15]
             bottom_full = [b for b in full_width if b["bbox"][1] >= max_y * 0.85]
-            mid_full = [b for b in full_width if b not in set(top_full) and b not in set(bottom_full)]
+            mid_full = [b for b in full_width if max_y * 0.15 <= b["bbox"][1] < max_y * 0.85]
 
             result = []
             result.extend(_sort_column(top_full))

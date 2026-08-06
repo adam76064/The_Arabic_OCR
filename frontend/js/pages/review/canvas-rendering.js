@@ -57,7 +57,7 @@ function drawBoxes(canvas, ocrData, selectedIndex) {
 
     ocrData.forEach((el, i) => {
         // التصحيح التلقائي لإطار الجدول
-        if ((el.category === 'Table' || el.category === 'شعر عمودي') && el.table_structure && el.table_structure.cells && el.table_structure.cells.length > 0) {
+        if ((el.category === 'Table' || el.category === 'Vertical-poetry') && el.table_structure && el.table_structure.cells && el.table_structure.cells.length > 0) {
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
             el.table_structure.cells.forEach(cell => {
                 if (cell.bbox && cell.bbox.length === 4) {
@@ -99,7 +99,7 @@ function drawBoxes(canvas, ocrData, selectedIndex) {
             ctx.stroke(); ctx.fill();
 
             // رسم خلايا الجدول الداخلية
-            if ((el.category === 'Table' || el.category === 'شعر عمودي') && el.table_structure && el.table_structure.cells) {
+            if ((el.category === 'Table' || el.category === 'Vertical-poetry') && el.table_structure && el.table_structure.cells) {
                 const cx = px + pw / 2;
                 const cy = py + ph / 2;
                 

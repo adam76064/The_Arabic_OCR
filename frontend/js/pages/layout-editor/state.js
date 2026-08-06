@@ -32,7 +32,8 @@ const BASE_CATEGORIES = {
     'Caption':'#f39c12','Footnote':'#8e44ad','Formula':'#e74c3c',
     'List-item':'#3498db','Page-footer':'#95a5a6','Page-header':'#7f8c8d',
     'Picture':'#2c3e50','Section-header':'#1abc9c','Table':'#d35400',
-    'Text':'#2ecc71','Title':'#c0392b'
+    'Text':'#2ecc71','Title':'#c0392b', 'Page-number':'#0984e3',
+    'Vertical-poetry':'#e84393', 'Staggered-poetry':'#00cec9'
 };
 
 function getCategoryColors() {
@@ -50,7 +51,10 @@ const CATEGORY_ARABIC_MAP = {
     'Footnote': 'حاشية سفلية',
     'Page-header': 'رأس الصفحة',
     'Page-footer': 'تذييل الصفحة',
-    'Formula': 'معادلة رياضية'
+    'Formula': 'معادلة رياضية',
+    'Page-number': 'رقم الصفحة',
+    'Vertical-poetry': 'شعر عمودي',
+    'Staggered-poetry': 'شعر متدرج'
 };
 
 function getCategoryNameAR(catName) {
@@ -62,7 +66,7 @@ function getAllCategories() {
 }
 
 function isTableLike(category) {
-    return category === 'Table' || category === 'شعر عمودي';
+    return category === 'Table' || category === 'Vertical-poetry';
 }
 
 window.getCategoryColors = getCategoryColors;

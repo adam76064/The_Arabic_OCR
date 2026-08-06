@@ -154,8 +154,9 @@ async function initSettings() {
 const BASE_CATEGORIES = {
     'Caption':'#f39c12','Footnote':'#8e44ad','Formula':'#e74c3c',
     'List-item':'#3498db','Page-footer':'#95a5a6','Page-header':'#7f8c8d',
-    'Picture':'#2c3e50','Section-header':'#1abc9c','Table':'#d35400',
-    'Text':'#2ecc71','Title':'#c0392b'
+    'Page-number':'#0984e3','Picture':'#2c3e50','Section-header':'#1abc9c',
+    'Table':'#d35400','Text':'#2ecc71','Title':'#c0392b',
+    'Vertical-poetry':'#e84393', 'Staggered-poetry':'#00cec9'
 };
 
 const CATEGORY_ARABIC_MAP = {
@@ -169,7 +170,10 @@ const CATEGORY_ARABIC_MAP = {
     'Footnote': 'حاشية سفلية',
     'Page-header': 'رأس الصفحة',
     'Page-footer': 'تذييل الصفحة',
-    'Formula': 'معادلة رياضية'
+    'Page-number': 'رقم الصفحة',
+    'Formula': 'معادلة رياضية',
+    'Vertical-poetry': 'شعر عمودي',
+    'Staggered-poetry': 'شعر متدرج'
 };
 
 function getDynamicCategories() {
@@ -326,6 +330,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
         },
         post_processing: {
             auto_sort_reading_order: document.getElementById('ps-sort-reading-order')?.checked ?? false,
+            detect_pagination: document.getElementById('ps-detect-pagination')?.checked ?? false,
         }
     };
 
@@ -342,65 +347,67 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                 window.location.href = `project-dashboard.html?id=${currentProject.id}`;
             };
 
-            const showPostProcessingDialog = (onDone) => {
-                const hasPostProc = newMetadata.post_processing?.auto_sort_reading_order;
-                if (!hasPostProc || ocredPagesCount === 0 || !window.AestheticDialog?.confirm) {
-                    onDone(); return;
-                }
-                window.AestheticDialog.confirm({
-                    title: 'تطبيق ترتيب اتجاه القراءة العربي 📐',
-                    message: `هل ترغب في إعادة ترتيب المربعات النصية حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل) على كافة صفحات المشروع الآن؟<br><br>
-                        <strong>غير المراجَعة فقط</strong> ← يحفظ تعديلاتك اليدوية.<br>
-                        <strong>على الكل</strong> ← يُعيد الترتيب على جميع الصفحات.`,
-                    confirmText: 'تطبيق على غير المراجَعة فقط',
-                    cancelText: 'لا، تجاهل الآن',
-                    onConfirm: async () => {
-                        btn.textContent = 'جاري الترتيب... ⏳';
-                        try {
-                            const res = await window.pywebview.api.run_post_processing_to_project(currentProject.id, true);
-                            window.AestheticDialog?.alert?.({
-                                title: res?.ok ? 'تم ✨' : 'تنبيه',
-                                message: res?.ok ? `تم ترتيب المربعات في ${res.count} صفحة بنجاح.` : (res?.error || 'حدث خطأ.'),
-                                onOk: onDone
-                            });
-                        } catch (err) { onDone(); }
-                    },
-                    onCancel: onDone
-                });
-            };
-
             if (ocredPagesCount > 0 && window.AestheticDialog?.confirm) {
+                window.__selectedApplyScope = 'unreviewed';
+                const messageHtml = `
+                    <p style="margin-bottom: 12px; font-size: 14px; color: #334155;">
+                        تم حفظ إعدادات المشروع بنجاح!<br>
+                        يحتوي المشروع على <strong>${ocredPagesCount} صفحة مُعالجة سابقاً</strong>.<br>
+                        كيف تود تطبيق الإعدادات الجديدة (كإعدادات النصوص والتنسيقات، وترتيب المربعات، وترقيم الصفحات)؟
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="apply_scope" value="all" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على كافة الصفحات المُعالجة (المراجَعة وغير المراجَعة)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="apply_scope" value="unreviewed" checked onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على الصفحات غير المراجَعة فقط</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="apply_scope" value="none" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">عدم التطبيق الآن (تُطبق مستقبلاً فقط)</span>
+                        </label>
+                    </div>
+                `;
+
                 window.AestheticDialog.confirm({
-                    title: 'تطبيق معالجة النصوص والتنسيقات 🎨',
-                    message: `تم حفظ إعدادات المشروع بنجاح!<br><br>يحتوي المشروع على <strong>${ocredPagesCount} صفحة مُعالجة سابقاً</strong>.<br>هل ترغب في إعادة تطبيق القواعد والتنسيقات الجديدة (التشكيل، الأرقام، الكشيدة، خطوط وتنسيقات التصنيفات... إلخ) على كافة صفحات المشروع الآن؟`,
-                    confirmText: 'نعم، طبق على الصفحات',
-                    cancelText: 'لا، حفظ الإعدادات فقط',
+                    title: 'تطبيق الإعدادات الجديدة ⚙️',
+                    message: messageHtml,
+                    confirmText: 'تنفيذ',
+                    cancelText: 'إلغاء',
                     onConfirm: async () => {
-                        btn.textContent = 'جاري المعالجة... ⏳';
+                        const selectedScope = window.__selectedApplyScope || 'unreviewed';
+                        if (selectedScope === 'none') {
+                            finishAndRedirect();
+                            return;
+                        }
+                        
+                        btn.textContent = 'جاري التطبيق... ⏳';
                         try {
-                            const reapplyRes = await window.pywebview.api.reapply_text_processing_to_project(currentProject.id);
-                            if (reapplyRes && reapplyRes.ok) {
+                            const res = await window.pywebview.api.apply_project_settings_changes(currentProject.id, selectedScope);
+                            if (res && res.ok) {
                                 window.AestheticDialog.alert({
                                     title: 'تم بنجاح ✨',
-                                    message: `تمت إعادة تطبيق المعالجة النصية والتنسيقات على <strong>${reapplyRes.count} صفحة</strong> بنجاح!`,
-                                    onOk: () => showPostProcessingDialog(finishAndRedirect)
+                                    message: 'تمت معالجة وتطبيق الإعدادات بنجاح.',
+                                    onOk: finishAndRedirect
                                 });
                             } else {
                                 window.AestheticDialog.alert({
                                     title: 'تنبيه',
-                                    message: 'حدث خطأ أثناء إعادة التطبيق: ' + (reapplyRes?.error || 'غير معروف'),
-                                    onOk: () => showPostProcessingDialog(finishAndRedirect)
+                                    message: 'حدث خطأ أثناء التطبيق: ' + (res?.error || 'غير معروف'),
+                                    onOk: finishAndRedirect
                                 });
                             }
-                        } catch (reapplyErr) {
-                            console.error('Reapply processing failed:', reapplyErr);
-                            showPostProcessingDialog(finishAndRedirect);
+                        } catch (err) {
+                            console.error('Settings apply failed:', err);
+                            finishAndRedirect();
                         }
                     },
-                    onCancel: () => showPostProcessingDialog(finishAndRedirect)
+                    onCancel: finishAndRedirect
                 });
             } else {
-                showPostProcessingDialog(finishAndRedirect);
+                finishAndRedirect();
             }
         } else {
             throw new Error(response?.error || 'Unknown error saving to disk');
@@ -436,10 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function initPostProcessingSettings(ppOpts) {
     const sortToggle = document.getElementById('ps-sort-reading-order');
     const runBtn = document.getElementById('btn-run-reading-order-sort');
+    const pagToggle = document.getElementById('ps-detect-pagination');
+    const pagBtn = document.getElementById('btn-run-pagination-detect');
 
-    if (!sortToggle) return;
-
-    sortToggle.checked = ppOpts.auto_sort_reading_order ?? false;
+    if (sortToggle) sortToggle.checked = ppOpts.auto_sort_reading_order ?? false;
+    if (pagToggle) pagToggle.checked = ppOpts.detect_pagination ?? false;
 
     if (runBtn) {
         runBtn.addEventListener('click', async () => {
@@ -468,6 +476,37 @@ function initPostProcessingSettings(ppOpts) {
             } finally {
                 runBtn.disabled = false;
                 runBtn.textContent = '⚡ ترتيب المربعات على الصفحات الآن';
+            }
+        });
+    }
+
+    if (pagBtn) {
+        pagBtn.addEventListener('click', async () => {
+            if (!currentProject) return;
+            pagBtn.disabled = true;
+            pagBtn.textContent = '⏳ جاري كشف الأرقام...';
+            try {
+                const res = await window.pywebview.api.apply_pagination_detection(
+                    currentProject.id, null, true
+                );
+                if (res?.ok) {
+                    if (window.AestheticDialog?.alert) {
+                        window.AestheticDialog.alert({
+                            title: 'تم بنجاح ✨',
+                            message: `تم كشف وتوسيم ${res.count} مربع كأرقام صفحات بنجاح.`
+                        });
+                    } else {
+                        alert(`تم كشف وتوسيم ${res.count} مربع كأرقام صفحات.`);
+                    }
+                } else {
+                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                }
+            } catch (err) {
+                console.error('Pagination detection error:', err);
+                alert('حدث خطأ أثناء كشف أرقام الصفحات.');
+            } finally {
+                pagBtn.disabled = false;
+                pagBtn.textContent = '⚡ كشف أرقام الصفحات الآن';
             }
         });
     }

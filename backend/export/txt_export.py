@@ -15,15 +15,15 @@ def export_txt(project, page_indices, output_path, logical_start=1, opts=None):
 
             raw = el.get('text', '')
 
-            # Poetry: شعر عمودي & شعر متدرج in TXT
-            if cat in ('شعر عمودي', 'شعر متدرج'):
+            # Poetry: Vertical-poetry & Staggered-poetry in TXT
+            if cat in ('Vertical-poetry', 'Staggered-poetry'):
                 poetry_lines = _parse_poetry_lines(el)
                 if poetry_lines:
                     txt_rows = []
-                    if cat == 'شعر عمودي':
+                    if cat == 'Vertical-poetry':
                         for right_h, left_h in poetry_lines:
                             txt_rows.append(f"{right_h}  |  {left_h}")
-                    else:  # شعر متدرج
+                    else:  # Staggered-poetry
                         for right_h, left_h in poetry_lines:
                             txt_rows.append(f"{right_h}  |")
                             txt_rows.append(f"          |  {left_h}")

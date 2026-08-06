@@ -938,8 +938,8 @@ projects/
 
 ### Add new block category
 
-1. In `frontend/js/review.js` `BASE_CATEGORIES` dict add `'MyCategory':'#color'`
-2. Add Arabic name in `CATEGORY_ARABIC_MAP`
+1. In `frontend/js/pages/review/state.js` and `frontend/js/pages/layout-editor/state.js` add `'MyCategory':'#color'` to `BASE_CATEGORIES` (also add to `frontend/js/pages/project-settings.js` `BASE_CATEGORIES`)
+2. Add Arabic name in `CATEGORY_ARABIC_MAP` in all those files
 3. Backend `OCRHandler.categories` list add `'MyCategory'` (capitalized)
 4. Optionally add default formatting in `category_formatting` settings UI (`settings.js`)
 5. Export: add handling in `docx_export.py` / `html_epub.py` if special rendering needed (like poetry)
@@ -1052,10 +1052,10 @@ Install: `pip install -r requirements.txt`
 
 ## Post-Processing Module
 
-> **Branch:** `feature/post-processing-reading-order`  
+> **Branch:** `feature/post-processing-pagination`  
 > **Module root:** `backend/post_processing/`
 
-The post-processing pipeline runs _after_ OCR extraction to automatically re-order bounding boxes into true **Arabic Reading Order (Top-to-Bottom, Right-to-Left)**.
+The post-processing pipeline runs _after_ OCR extraction to automatically re-order bounding boxes into true **Arabic Reading Order (Top-to-Bottom, Right-to-Left)** and detect **Pagination (Page Numbers)** across project pages.
 
 ### Architecture
 
@@ -1063,26 +1063,35 @@ The post-processing pipeline runs _after_ OCR extraction to automatically re-ord
 backend/post_processing/
 ├── __init__.py                 # exports PostProcessingManager
 ├── manager.py                  # PostProcessingManager orchestrator
-└── reading_order/
-    ├── __init__.py
-    └── sorter.py               # ArabicReadingOrderSorter pure-spatial algorithm
+├── reading_order/
+│   ├── __init__.py
+│   └── sorter.py               # ArabicReadingOrderSorter pure-spatial algorithm
+└── pagination/
+    ├── __init__.py             # exports PaginationDetector
+    └── detector.py             # PaginationDetector algorithm
 ```
 
-### Algorithm (Arabic Reading Order Sorter)
+### Algorithms
 
-1. **Multi-Column Vertical Gutter Detection (`sorter.py`)**  
-   - Projects bounding box X-spans across the page width.
-   - Detects vertical gutters (low-density X channels) in multi-column pages (e.g. 2-column layouts).
+1. **Arabic Reading Order Sorter (`reading_order/sorter.py`)**  
+   - Projects bounding box X-spans to detect multi-column vertical gutters (e.g. 2-column layouts).
    - In Arabic, partitions columns from **Right to Left** (Right Column = Column 1, Left Column = Column 2).
+   - Within each column/line, sorts blocks **Right to Left** (descending X coordinate: `x2`, `x1`).
 
-2. **Horizontal Row/Line Grouping & RTL Sorting**  
-   - Within each column (or single-column page), sorts blocks by `y1` (top coordinate).
-   - Groups overlapping blocks into horizontal line rows.
-   - Sorts blocks within each row **Right to Left** (descending X coordinate: `x2`, `x1`).
+2. **Pagination Auto-Detector (`pagination/detector.py`)**  
+   - Scans candidate blocks in header (top 15%) and footer (bottom 15%) regions.
+   - Extracts standalone integer values (supporting ASCII `0-9`, Arabic-Indic `٠-٩`, and Persian `۰-۹` digits).
+   - Validates numeric sequence continuity ($v_{i+1} = v_i + 1$ or $+2$) across consecutive or facing pages.
+   - Annotates confirmed blocks with `category="Page-number"` and `is_page_number=True`.
 
 3. **Automatic Execution Hook (`backend/core/ocr/service.py`)**  
    - Integrated into `OCRService.standardize_and_clean()` — the central post-OCR method invoked by all OCR engines (Paddle, Google Lens, Locro, LLM Vision).
-   - Automatically executes `PostProcessingManager.process_page()` immediately upon recognition completion whenever post-processing options are enabled in project settings.
+   - Automatically executes `PostProcessingManager` immediately upon recognition completion whenever post-processing options are enabled in project settings.
+
+4. **Unified Settings Apply (`backend/app/api.py`)**
+   - Implemented `apply_project_settings_changes(project_id, apply_scope)` to apply both pre-processing text formatting rules and post-processing algorithms (like reading order and pagination) seamlessly in a single pass.
+   - Called from `frontend/js/pages/project-settings.js` with options to apply to "all" OCRed pages, "unreviewed" pages, or "none".
+   - Ensures robust and unified application of any future post-processing logic added to the `PostProcessingManager`.
 
 ---
 

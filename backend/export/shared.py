@@ -13,7 +13,8 @@ from docx.enum.table import WD_TABLE_DIRECTION
 
 # Categories rendered as flowing text (everything else is skipped or handled separately)
 TEXT_CATEGORIES = {'Text', 'Section-header', 'Title', 'Caption', 'Footnote', 'List-item'}
-SKIP_CATEGORIES = {'Picture', 'Page-header', 'Page-footer', 'Formula'}
+SKIP_CATEGORIES = {'Picture', 'Page-header', 'Page-footer', 'Page-number', 'Formula'}
+
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -522,8 +523,8 @@ def _set_run_font_and_bidi(run, font_name=None, font_size_pt=None, is_rtl=True):
 
 # ══════════════════════════════════════════════════════════════════════
 # ARABIC POETRY TABLE HELPERS
-# Handles شعر عمودي (classical 2-hemistich per row) and
-# شعر متدرج (staggered: hemistichs on alternating rows)
+# Handles Vertical-poetry (classical 2-hemistich per row) and
+# Staggered-poetry (staggered: hemistichs on alternating rows)
 # ══════════════════════════════════════════════════════════════════════
 
 def _set_table_no_borders(tbl):
@@ -695,11 +696,11 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
     """Add a poetry block as a borderless Word table with proportional columns,
     exact row heights, vertical bottom alignment, and soft-return justification.
 
-    شعر عمودي  — 3-column proportional layout:
+    Vertical-poetry  — 3-column proportional layout:
         [صدر البيت (7.2cm, 45%)] | [المسافة الفاصلة (1.6cm, 10%)] | [عجز البيت (7.2cm, 45%)]
         Exact fixed row height hides soft return; text is justified across full cell width.
 
-    شعر متدرج  — 2-column staggered layout:
+    Staggered-poetry  — 2-column staggered layout:
         Row 1: [صدر البيت (7.5cm)] | [empty (7.5cm)]
         Row 2: [empty (7.5cm)]     | [عجز البيت (7.5cm)]
     """
@@ -719,7 +720,7 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
     # (exact=True clamps height so the soft-return line break is hidden below cell boundary)
     row_height_twips = int(eff_font_size * 1.6 * 20)
 
-    if cat == 'شعر عمودي':
+    if cat == 'Vertical-poetry':
         # 3-column table with proportionate widths: 7.2 cm (45%), 1.6 cm (10%), 7.2 cm (45%)
         col_widths = [7.2, 1.6, 7.2]
         tbl = doc.add_table(rows=len(lines), cols=3)
@@ -741,7 +742,7 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
             _fill_poetry_cell(row.cells[2], left_text,  eff_font_name, eff_font_size,
                                effective_rtl, align='lowKashida', valign='bottom', soft_return=True)
 
-    elif cat == 'شعر متدرج':
+    elif cat == 'Staggered-poetry':
         # 2-column staggered layout: 7.5 cm / 7.5 cm
         col_widths = [7.5, 7.5]
         num_rows = len(lines) * 2

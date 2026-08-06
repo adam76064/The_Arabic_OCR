@@ -52,7 +52,8 @@ window.__appSettings = window.__appSettings || {
     deleteProjectFiles: true,
     llmSystemPrompt: window.DEFAULT_LLM_PROMPT,
     customCategories: {
-        'شعر عمودي': '#00796B' // Deep Teal (instead of #9b59b6)
+        'Page-number': '#0984e3',
+        'Vertical-poetry': '#e84393' // Deep Teal
     }
 };
 

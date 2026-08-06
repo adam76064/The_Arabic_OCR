@@ -178,8 +178,8 @@
         cfg = cfg || { cells: true, words: true, lines: true, block: true };
         const caretNode = getCaretContainerNode();
 
-        // 1. Table Cells Tracking (Table and شعر عمودي)
-        if ((blockData.category === 'Table' || blockData.category === 'شعر عمودي') && blockData.table_structure) {
+        // 1. Table Cells Tracking (Table and Vertical-poetry)
+        if ((blockData.category === 'Table' || blockData.category === 'Vertical-poetry') && blockData.table_structure) {
             if (!cfg.cells) return cfg.block && blockData.bbox ? { bbox: blockData.bbox, angle: blockData.angle_deg || 0, level: 'block' } : null;
             
             const td = caretNode?.closest?.('td, th');
