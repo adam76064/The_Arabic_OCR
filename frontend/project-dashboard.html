@@ -16,9 +16,9 @@
             </div>
             
             <div style="display: flex; gap: 10px;">
-                        <button id="dashboard-settings-btn" class="btn-secondary">إعدادات</button>
-                        <button id="back-to-review-btn" class="btn-secondary">⟵ العودة</button>
-                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX">⬇ تصدير</button>
+                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings">إعدادات</button>
+                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back">العودة</button>
+                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export">تصدير</button>
             </div>
 
         </div>
@@ -27,13 +27,13 @@
         <div id="dashboard-coop-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;">🌐 وسائل العمل والتعاون:</span>
-                    <button type="button" id="dash-lan-status" style="border: none; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c; cursor: pointer;" title="انقر لتفعيل/إيقاف وضع العمل المحلي">📡 محلي: متوقف</button>
+                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan">وسائل العمل والتعاون:</span>
+                    <button type="button" id="dash-lan-status" class="lan-status-badge is-off" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network">محلي: متوقف</button>
                 </div>
             </div>
             
             <div style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; font-size: 13px;">
-                <span style="color: #64748b; font-weight: bold;">👥 الأعضاء المتصلون حالياً:</span>
+                <span style="color: #64748b; font-weight: bold;" data-icon-label="user">الأعضاء المتصلون حالياً:</span>
                 <div id="dash-active-collaborators" style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>
                 </div>
@@ -261,6 +261,7 @@
         </div>
     </div>
 
+    <script src="js/icons.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
@@ -296,5 +297,6 @@
         </div>
     </div>
 
+    <script src="js/apply-icons.js"></script>
 </body>
 </html>

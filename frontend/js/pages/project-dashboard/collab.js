@@ -16,9 +16,10 @@ async function setupCollaborationPanel() {
 
     const renderBadges = () => {
         if (lanStatusEl) {
-            lanStatusEl.textContent = lanState ? '📡 محلي: 🟢 مفعل' : '📡 محلي: 🔴 متوقف';
-            lanStatusEl.style.background = lanState ? '#dcfce7' : '#fee2e2';
-            lanStatusEl.style.color = lanState ? '#15803d' : '#b91c1c';
+            const icon = window.AppIcons ? window.AppIcons.get('network') : '';
+            lanStatusEl.innerHTML = `${icon}<span>${lanState ? 'محلي: مفعل' : 'محلي: متوقف'}</span>`;
+            lanStatusEl.classList.toggle('is-on', lanState);
+            lanStatusEl.classList.toggle('is-off', !lanState);
         }
     };
     renderBadges();
@@ -47,10 +48,10 @@ async function setupCollaborationPanel() {
                 container.innerHTML = `<span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>`;
             } else {
                 container.innerHTML = allUsers.map(u => {
-                    const icon = u.type === 'lan' ? '💻' : '👤';
+                    const icon = window.AppIcons ? window.AppIcons.get(u.type === 'lan' ? 'lan' : 'user') : '';
                     const bg = u.type === 'lan' ? '#e0f2fe' : '#ffedd5';
                     const color = u.type === 'lan' ? '#0369a1' : '#c2410c';
-                    return `<span style="background:${bg}; color:${color}; padding: 3px 10px; border-radius: 12px; font-weight: bold; font-size: 12px;">${icon} ${u.name}</span>`;
+                    return `<span style="background:${bg}; color:${color}; padding: 3px 10px; border-radius: 12px; font-weight: bold; font-size: 12px; display:inline-flex; align-items:center; gap:5px;">${icon}<span>${u.name}</span></span>`;
                 }).join('');
             }
         } catch(e) {

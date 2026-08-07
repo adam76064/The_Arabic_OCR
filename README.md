@@ -38,6 +38,8 @@ You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engine
   - **Pagination Auto-Detector** – Cross-page and facing-page page number detector that scans header (top 15%) and footer (bottom 15%) regions, validates numeric sequences (ASCII, Arabic-Indic, Persian digits), and automatically annotates matching blocks with the `Page-number` category label (colored blue).
   - **Unified Settings Apply** – When saving project settings, a single comprehensive prompt allows you to seamlessly apply text processing formats and post-processing algorithms (like reading order & pagination) to either all OCRed pages or just unreviewed ones in one optimized pass.
 
+- **Consistent interface:** every toolbar, the sidebar, the dashboard, and the layout editor share one SVG icon language (stroke-based, matching the review page's formatting/table toolbars) — see `frontend/js/icons.js` and [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) for details.
+
 
 ## 🚀 Installation
 
@@ -157,7 +159,7 @@ See `requirements.txt` for exact versions.
 Fixed in latest version – update via `git pull`.
 
 **Q: Sidebar doesn't collapse?**  
-Fixed – click `◁` to collapse, `▷` tab at right edge to expand. Console logs now visible with right-click → Inspect.
+Fixed – click the collapse-arrow icon to collapse, the expand-arrow tab at the right edge to expand. Console logs now visible with right-click → Inspect.
 
 **Q: DOCX export fails with `_set_section_rtl`?**  
 Fixed – it was due to `import *` skipping private helpers.
@@ -181,13 +183,9 @@ Fixed – tracking.js had duplicate `const defaultTrackingConfig` causing Syntax
 
 ## 📚 For Developers & AI Agents
 
-If you want to understand the code, add a new OCR engine, new export format, or contribute:
+If you want to understand the code, add a new OCR engine, new export format, a new icon, or contribute:
 
-👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system (now includes broken monoliths: review.js 1400→90 lines with 12 modules, layout-editor.js 1481→30 with 11 modules, project-dashboard.js 715→30 with 9 modules, plus tracking.js duplicate const fix) (72 DPI vs 200 DPI vs 1000 normalized), pipelines, data models, design tokens, and how to extend.
-
-Also see:
-- `ARCHITECTURE_PLAN.md` – initial rebuild plan
-- `TODO.md` – phase checklist (all done)
+👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system (now includes broken monoliths: review.js 1400→90 lines with 12 modules, layout-editor.js 1481→30 with 11 modules, project-dashboard.js 715→30 with 9 modules, plus tracking.js duplicate const fix) (72 DPI vs 200 DPI vs 1000 normalized), pipelines, data models, design tokens, the shared SVG icon system, and how to extend. This is now the single canonical developer reference — the original rebuild/architecture plan has been folded into it (see the guide's "UI Icon System" and surrounding sections) rather than kept as a separate, driftable document.
 
 Old import paths still work via shim files (`backend/config_manager.py` → `backend.core.config` etc.) for backward compatibility.
 

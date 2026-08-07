@@ -16,8 +16,9 @@ async function scan() {
     projects.forEach(proj => {
         const card = document.createElement('div');
         card.className = 'home-card card-primary';
+        const icon = window.AppIcons ? window.AppIcons.get(proj.requires_password ? 'lock' : 'globe') : '';
         card.innerHTML = `
-            <div class="card-icon">${proj.requires_password ? '🔒' : '🌐'}</div>
+            <div class="card-icon" data-icon-applied="1">${icon}</div>
             <div class="card-title">${proj.name}</div>
             <div class="card-desc">المالك: ${proj.owner} — ${proj.page_count} صفحة</div>
         `;

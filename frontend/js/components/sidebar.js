@@ -24,25 +24,31 @@
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const isCollapsed = readCollapsedState();
 
+    // Icon names map to entries in AppIcons (js/icons.js), keeping this
+    // sidebar visually consistent with the review page's SVG toolbars
+    // instead of emoji. Falls back to plain text if icons.js hasn't
+    // loaded yet for some reason.
+    const icon = (name) => (window.AppIcons ? window.AppIcons.get(name) : '');
+
     const sidebarHTML = `
             <aside id="sidebar" class="${isCollapsed ? 'collapsed' : ''}">
                 <div id="sidebar-toggle-row">
-                    <span class="sidebar-app-name">◈ أداة مراجعة OCR</span>
-                    <button id="toggle-sidebar" title="إخفاء الشريط الجانبي">◁</button>
+                    <span class="sidebar-app-name">${icon('logo')} أداة مراجعة OCR</span>
+                    <button id="toggle-sidebar" title="إخفاء الشريط الجانبي">${icon('collapseRTL')}</button>
                 </div>
                 <nav class="sidebar-nav">
-                    <a href="index.html" class="sidebar-link ${currentPath === 'index.html' ? 'active' : ''}">🏠 الرئيسية</a>
-                    <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">📂 المشاريع</a>
-                    <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">＋ مشروع جديد</a>
-                    <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">⚙ الإعدادات</a>
-                    <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">❌ خروج</a>
+                    <a href="index.html" class="sidebar-link ${currentPath === 'index.html' ? 'active' : ''}">${icon('home')}<span>الرئيسية</span></a>
+                    <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">${icon('projects')}<span>المشاريع</span></a>
+                    <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">${icon('plus')}<span>مشروع جديد</span></a>
+                    <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">${icon('settings')}<span>الإعدادات</span></a>
+                    <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">${icon('exit')}<span>خروج</span></a>
                 </nav>
                 <div class="sidebar-project-info" id="sidebar-project-info" style="${currentPath.includes('review') ? '' : 'display:none;'}">
                     <div class="sidebar-project-title" id="sidebar-proj-title"></div>
                     <div class="sidebar-project-meta" id="sidebar-proj-meta"></div>
                 </div>
             </aside>
-            <button id="sidebar-collapsed-tab" class="${isCollapsed ? '' : 'hidden'}" title="فتح الشريط الجانبي">▷</button>
+            <button id="sidebar-collapsed-tab" class="${isCollapsed ? '' : 'hidden'}" title="فتح الشريط الجانبي">${icon('expandRTL')}</button>
         `;
 
     document.body.classList.add('has-sidebar');

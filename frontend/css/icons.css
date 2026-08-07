@@ -1,0 +1,69 @@
+/* icons.css — styling for the SVG icon system introduced to replace
+   emoji across the app (sidebar, dashboard, layout editor, review
+   toolbar). Kept separate from components.css so the icon-related rules
+   stay easy to find/maintain on their own. */
+
+/* Generic: any button/link that received an icon via data-icon or
+   data-icon-label should lay its svg + label out inline with a small
+   gap, matching the existing .toolbar-icon-btn / TAB_ICONS convention
+   already used by the review-page toolbars. */
+[data-icon-applied] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+[data-icon-applied] svg { flex-shrink: 0; }
+
+/* Card icons on the home page (previously emoji like ➕ 📂 ⚙) */
+.card-icon[data-icon-applied] {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-muted);
+  color: var(--color-primary);
+}
+.card-icon[data-icon-applied] svg { width: 22px; height: 22px; }
+
+/* Sidebar app-name icon: layout.css already flexes .sidebar-link, so we
+   only need to add the same inline layout for the app-name row and a
+   couple of new icon-specific tweaks. */
+.sidebar-app-name { display: inline-flex; align-items: center; gap: 8px; }
+.sidebar-link svg { flex-shrink: 0; opacity: 0.9; }
+#toggle-sidebar svg, #sidebar-collapsed-tab svg { display: block; }
+
+/* Dashboard LAN status pill (was a plain inline-styled emoji badge) */
+.lan-status-badge {
+  border: none;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.lan-status-badge.is-on  { background: #dcfce7; color: #15803d; }
+.lan-status-badge.is-off { background: #fee2e2; color: #b91c1c; }
+
+/* Status badges (page table, progress pills) now carry an icon + text,
+   built either declaratively (data-icon-applied, via apply-icons.js) or
+   programmatically (table.js's iconBadge() helper) -- style both the
+   same way so icon + label always line up with a small gap. */
+.status-badge,
+.status-badge[data-icon-applied] {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Layout-editor toolbar buttons already define their own tool-btn rules
+   in layout-editor.html; this just ensures icon + label spacing matches
+   everywhere else even if that inline stylesheet is later extracted. */
+.tool-btn[data-icon-applied] svg { margin-left: 0; }
+
+/* Night mode: keep icon colour readable */
+body.night-mode .card-icon[data-icon-applied] { background: #1f2f52; color: #7db8e8; }
+body.night-mode .lan-status-badge.is-on  { background: rgba(39,174,96,0.2); color: #2ecc71; }
+body.night-mode .lan-status-badge.is-off { background: rgba(231,76,60,0.2); color: #e74c3c; }

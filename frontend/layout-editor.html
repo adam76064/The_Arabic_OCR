@@ -44,30 +44,30 @@
 <body>
     <div id="layout-main">
     <header class="layout-toolbar">
-        <button id="btn-back" class="btn-secondary">🔙 رجوع</button>
-        <button id="prev-page" class="btn-secondary">السابق</button>
+        <button id="btn-back" class="btn-secondary" data-icon="back">رجوع</button>
+        <button id="prev-page" class="btn-secondary" data-icon="prev">السابق</button>
         <span style="font-weight: bold; font-size: 15px; margin: 0 10px; color: #2c3e50;">تخطيط صفحة <span id="page-num-display">...</span></span>
-        <button id="next-page" class="btn-secondary">التالي</button>
+        <button id="next-page" class="btn-secondary" data-icon="next">التالي</button>
         
         <div class="tool-group">
-            <button id="btn-undo" class="tool-btn" title="تراجع (Ctrl+Z)" disabled>↩️</button>
-            <button id="btn-redo" class="tool-btn" title="إعادة (Ctrl+Y)" disabled>↪️</button>
+            <button id="btn-undo" class="tool-btn" title="تراجع (Ctrl+Z)" data-icon="undo" disabled></button>
+            <button id="btn-redo" class="tool-btn" title="إعادة (Ctrl+Y)" data-icon="redo" disabled></button>
         </div>
 
         <div class="tool-group">
-            <button id="tool-select" class="tool-btn active-tool" title="تحديد الكتل والتعديل الداخلي للجداول">👆 تحديد</button>
-            <button id="tool-move" class="tool-btn" title="تحريك وتغيير حجم الكتل بالكامل">✥ تحريك</button>
-            <button id="tool-draw" class="tool-btn" title="رسم كتلة نصية جديدة">✏️ رسم</button>
-            <button id="tool-order" class="tool-btn" title="انقر على الكتل بالتسلسل لترتيبها">🔢 ترتيب</button>
+            <button id="tool-select" class="tool-btn active-tool" title="تحديد الكتل والتعديل الداخلي للجداول" data-icon="select">تحديد</button>
+            <button id="tool-move" class="tool-btn" title="تحريك وتغيير حجم الكتل بالكامل" data-icon="move">تحريك</button>
+            <button id="tool-draw" class="tool-btn" title="رسم كتلة نصية جديدة" data-icon="draw">رسم</button>
+            <button id="tool-order" class="tool-btn" title="انقر على الكتل بالتسلسل لترتيبها" data-icon="order">ترتيب</button>
         </div>
 
         <div class="tool-group">
-            <button id="btn-merge" class="tool-btn" title="دمج الكتل المحددة" disabled>🔗 دمج</button>
-            <button id="btn-delete" class="tool-btn danger" title="حذف الكتل المحددة" disabled>🗑️ حذف</button>
+            <button id="btn-merge" class="tool-btn" title="دمج الكتل المحددة" data-icon="merge" disabled>دمج</button>
+            <button id="btn-delete" class="tool-btn danger" title="حذف الكتل المحددة" data-icon="trash" disabled>حذف</button>
         </div>
 
         <div style="flex: 1;"></div>
-        <button id="btn-save" class="btn-success">💾 حفظ التخطيط</button>
+        <button id="btn-save" class="btn-success" data-icon="save">حفظ التخطيط</button>
     </header>
 
     <main id="canvas-container">
@@ -78,6 +78,7 @@
     </main>
     </div>
 
+    <script src="js/icons.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
@@ -100,5 +101,6 @@
     <script src="js/pages/layout-editor/events.js"></script>
     <script src="js/pages/layout-editor/index.js"></script>
     <script src="js/pages/layout-editor.js"></script>
+    <script src="js/apply-icons.js"></script>
 </body>
 </html>

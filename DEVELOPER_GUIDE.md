@@ -84,8 +84,7 @@ The_Arabic_OCR/
 ├── main.py                          # 70-line slim entry, disables noisy webview logger, enables debug devtools
 ├── requirements.txt                 # Minimal, sectioned deps
 ├── README.md                        # This file
-├── ARCHITECTURE_PLAN.md             # Initial rebuild plan
-├── TODO.md                          # Phase checklist
+├── DEVELOPER_GUIDE.md                # Canonical developer/architecture reference (absorbs the original rebuild plan)
 ├── .gitignore
 │
 ├── backend/
@@ -615,8 +614,59 @@ Now ONLY:
 @import url('base.css');
 @import url('components.css');
 @import url('layout.css');
+@import url('icons.css');
 /* small global tweaks: settings-card, tool-option.disabled, block-content table */
 ```
+
+#### `frontend/css/icons.css` — SVG icon system
+All emoji previously used in toolbars, the sidebar, the dashboard, and the
+layout editor have been replaced with inline SVG icons so the whole app
+matches the visual language the review page's formatting/table toolbars
+already used (`components/formatting/text-formatting.js`'s `TEXT_ICONS`,
+`components/tables/table-toolbar.js`'s `TABLE_ICONS`). Three small,
+focused pieces make this possible:
+
+- **`frontend/js/icons.js` (`AppIcons`)** — a single shared icon registry.
+  Each icon is an 18×18 stroke-based SVG using `currentColor`, so it
+  inherits whatever text colour the surrounding button/link already has
+  (including night mode, with zero extra CSS). `AppIcons.get('save')`
+  returns the SVG string; `AppIcons.inject(selector, name)` prepends it
+  into every match. Add new shared icons here — page-local icon sets
+  (like `TEXT_ICONS`/`TABLE_ICONS`) stay local since only one toolbar
+  uses them.
+- **`frontend/js/apply-icons.js` (`AppApplyIcons(root?)`)** — a tiny
+  declarative helper that runs on `DOMContentLoaded`. Static HTML opts in
+  with `data-icon="name"` (replaces the element's content with
+  `icon + <span>label</span>`, preserving any label text) or
+  `data-icon-label="name"` (same, for header-style elements). Pages that
+  inject new buttons dynamically after load should call
+  `window.AppApplyIcons(containerEl)` on the new markup.
+- **`frontend/css/icons.css`** — additive layout rules for icon+label
+  pairs (`[data-icon-applied]`), plus the `.lan-status-badge` /
+  `.status-badge` styling that replaced a few emoji + inline-style badges
+  (dashboard LAN status pill, OCR/review status pills). It only adds new,
+  narrowly-scoped rules — it never overrides `components.css` or
+  `layout.css`.
+
+Pages using this system: `index.html` (home cards), `projects.html`
+(back button), `lan.html` + `js/pages/lan.js` (card icons), `review.html`
+(the outer toolbar — undo/redo/save/preview/dashboard/search — now
+matches the inner sticky formatting toolbar's SVG style), `layout-editor.html`
+(all toolbar buttons), and `project-dashboard.html` +
+`js/pages/project-dashboard/{collab,progress,table}.js` (header buttons,
+LAN status pill, collaborator pills, and OCR/review status badges via a
+small local `iconBadge(name, label)` helper).
+
+**Deliberately left as-is:** the plain "✕" close glyph used throughout
+modals and the `⋮⋮` drag handle / `✕` delete button inside individual
+review blocks — these are monochrome typographic symbols already
+consistent with an icon-only look and used identically everywhere, so
+touching them would mean editing every modal and every rendered block for
+no visual gain. The right-click table context-menu icons in
+`js/pages/layout-editor/table-tools.js` and
+`js/components/tables/table-editor.js` (`⬆️⬇️➡️⬅️🗑️🔗`) are a flagged
+follow-up: they're built as inline JS template strings rather than
+declarative markup, so migrating them cleanly deserves its own small pass.
 
 #### `frontend/css/home.css`
 - Home page: `.home-main` 40px 32px max 1100px centered, hero h1 28px, p muted
@@ -678,7 +728,7 @@ Now ONLY:
 - `readCollapsedState()` from localStorage `sidebarCollapsed` true/1
 - `injectSidebarIfNeeded()`:
   - If `#sidebar` exists, ensures `has-sidebar` class, respects collapsed state, returns existing
-  - Else builds HTML string with `currentPath` active detection, `isCollapsed` class, links: Home, Projects, + New Project (trigger-new-project), Settings, Exit danger, project info block (visible only if path includes review) with title/meta placeholders, collapsed tab button `▷`
+  - Else builds HTML string with `currentPath` active detection, `isCollapsed` class, links: Home, Projects, + New Project (trigger-new-project), Settings, Exit danger, project info block (visible only if path includes review) with title/meta placeholders, collapsed tab button (SVG expand-arrow icon via `AppIcons`, see "UI Icon System" above — previously a raw `▷` glyph)
   - Adds `has-sidebar` to body, inserts afterbegin
 - `bindSidebarEvents()`:
   - Gets sidebar, toggle, tab, exit

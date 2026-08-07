@@ -20,7 +20,8 @@ function setupProgressReceiver() {
             setTimeout(() => { modal.classList.add('hidden'); }, 4000);
             
         } else if (payload.stage === 'completed') {
-            msgEl.innerHTML = `<span style="color: #27ae60; font-weight: bold;">✔ ${payload.message}</span>`;
+            const icon = window.AppIcons ? window.AppIcons.get('check') : '';
+            msgEl.innerHTML = `<span style="color: #27ae60; font-weight: bold; display:inline-flex; align-items:center; gap:6px;">${icon}<span>${payload.message}</span></span>`;
             fillEl.style.background = '#27ae60';
             fillEl.style.width = '100%';
             

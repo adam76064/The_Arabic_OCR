@@ -17,20 +17,20 @@
 
         <div class="home-cards">
             <a href="#" class="home-card card-primary trigger-new-project">
-                <div class="card-icon">＋</div>
+                <div class="card-icon" data-icon="plus"></div>
                 <div class="card-title">مشروع جديد</div>
                 <div class="card-desc">إنشاء مشروع مراجعة OCR جديد</div>
             </a>
 
             <a href="projects.html" class="home-card card-secondary">
-                <div class="card-icon">📂</div>
+                <div class="card-icon" data-icon="projects"></div>
                 <div class="card-title">المشاريع</div>
                 <div class="card-desc">عرض وإدارة مشاريعك الحالية</div>
                 <div class="card-badge" id="projects-count">...</div>
             </a>
 
             <a href="settings.html" class="home-card card-neutral">
-                <div class="card-icon">⚙</div>
+                <div class="card-icon" data-icon="settings"></div>
                 <div class="card-title">الإعدادات</div>
                 <div class="card-desc">تخصيص أداة المراجعة</div>
             </a>
@@ -57,6 +57,7 @@
     </div>
 
     <!-- New organized core -->
+    <script src="js/icons.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
@@ -71,5 +72,6 @@
     <script src="js/pages/project-creator.js"></script>
     <script src="js/pages/home.js"></script>
     <!-- Legacy archived in js/legacy/ (home.js.legacy) -- no longer loaded -->
+    <script src="js/apply-icons.js"></script>
 </body>
 </html>

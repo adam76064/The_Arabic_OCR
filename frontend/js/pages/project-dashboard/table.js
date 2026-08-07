@@ -2,6 +2,15 @@
  * pages/project-dashboard/table.js - extracted from monolith
  */
 
+// Small helper: builds an "icon + label" status-badge string from the
+// shared AppIcons set (js/icons.js), so the OCR/review status pills use
+// the same SVG icon language as the review-page toolbar instead of the
+// previous ✔/⏳ text glyphs.
+function iconBadge(iconName, label) {
+    const icon = window.AppIcons ? window.AppIcons.get(iconName) : '';
+    return `${icon}<span>${label}</span>`;
+}
+
 function renderPagesTable() {
     const tbody = document.getElementById('pages-table-body');
     tbody.innerHTML = '';
@@ -29,7 +38,7 @@ function renderPagesTable() {
             <td><strong>${pageNum}</strong></td>
             <td>
                 <span class="status-badge ${isOcred ? 'parsed' : 'unparsed'}">
-                    ${isOcred ? '✔ تم استخراج النص' : '⏳ بانتظار OCR'}
+                    ${isOcred ? iconBadge('check', 'تم استخراج النص') : iconBadge('clock', 'بانتظار OCR')}
                 </span>
             </td>
             <td>
@@ -39,7 +48,7 @@ function renderPagesTable() {
             </td>
             <td>
                 <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isReviewed ? 'background: #d1fae5; color: #059669;' : 'background: #fef3c7; color: #d97706;'}">
-                    ${isReviewed ? '✔ تمت المراجعة' : '⏳ بانتظار المراجعة'}
+                    ${isReviewed ? iconBadge('check', 'تمت المراجعة') : iconBadge('clock', 'بانتظار المراجعة')}
                 </span>
             </td>
             <td style="text-align: left; display: flex; gap: 8px; justify-content: flex-end;">
