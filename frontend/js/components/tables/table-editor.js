@@ -108,6 +108,11 @@ window.TableEditor = {
         const cell = ts.cells[hitCellIdx];
         if (!cell) return;
 
+        // Icons come from the shared AppIcons registry (js/icons.js) so this
+        // right-click menu matches the SVG icon language used everywhere
+        // else in the app instead of emoji.
+        const icon = (name) => (window.AppIcons ? window.AppIcons.get(name) : '');
+
         const menu = document.createElement('div');
         menu.id = 'canvas-context-menu';
         menu.style.cssText = `
@@ -135,35 +140,35 @@ window.TableEditor = {
         };
 
         if (window.selectedTableCells && window.selectedTableCells.length > 1) {
-            menu.appendChild(createItem('دمج الخلايا المحددة', '🔗', () => {
+            menu.appendChild(createItem('دمج الخلايا المحددة', icon('merge'), () => {
                 this.mergeCells(tableBlock, window.selectedTableCells);
                 window.selectedTableCells = [];
             }));
             menu.appendChild(divider());
         }
 
-        menu.appendChild(createItem('إضافة صف للأعلى', '⬆️', () => {
+        menu.appendChild(createItem('إضافة صف للأعلى', icon('rowAbove'), () => {
             const y = (ts.rows_y[cell.row] + (ts.rows_y[Math.max(0, cell.row-1)] || ts.rows_y[0])) / 2;
             ts.rows_y.splice(cell.row, 0, y); this.rebuildGrid(ts);
         }));
-        menu.appendChild(createItem('إضافة صف للأسفل', '⬇️', () => {
+        menu.appendChild(createItem('إضافة صف للأسفل', icon('rowBelow'), () => {
             const y = (ts.rows_y[cell.row+1] + (ts.rows_y[cell.row+2] || ts.rows_y[ts.rows_y.length-1])) / 2;
             ts.rows_y.splice(cell.row+1, 0, y); this.rebuildGrid(ts);
         }));
         menu.appendChild(divider());
-        menu.appendChild(createItem('إضافة عمود لليمين', '➡️', () => {
+        menu.appendChild(createItem('إضافة عمود لليمين', icon('colRight'), () => {
             const x = (ts.cols_x[cell.col+1] + (ts.cols_x[cell.col+2] || ts.cols_x[ts.cols_x.length-1])) / 2;
             ts.cols_x.splice(cell.col+1, 0, x); this.rebuildGrid(ts);
         }));
-        menu.appendChild(createItem('إضافة عمود لليسار', '⬅️', () => {
+        menu.appendChild(createItem('إضافة عمود لليسار', icon('colLeft'), () => {
             const x = (ts.cols_x[cell.col] + (ts.cols_x[Math.max(0, cell.col-1)] || ts.cols_x[0])) / 2;
             ts.cols_x.splice(cell.col, 0, x); this.rebuildGrid(ts);
         }));
         menu.appendChild(divider());
-        menu.appendChild(createItem('حذف الصف الحالي', '🗑️', () => {
+        menu.appendChild(createItem('حذف الصف الحالي', icon('trash'), () => {
             if (ts.rows_y.length > 2) { ts.rows_y.splice(cell.row+1, 1); this.rebuildGrid(ts); }
         }, true));
-        menu.appendChild(createItem('حذف العمود الحالي', '🗑️', () => {
+        menu.appendChild(createItem('حذف العمود الحالي', icon('trash'), () => {
             if (ts.cols_x.length > 2) { ts.cols_x.splice(cell.col+1, 1); this.rebuildGrid(ts); }
         }, true));
 

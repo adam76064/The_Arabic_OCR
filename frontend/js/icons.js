@@ -29,6 +29,16 @@
     redo:        S('<path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/>'),
     trash:       S('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>'),
     merge:       S('<path d="M8 6h8"/><path d="M8 18h8"/><path d="M12 6v12"/><path d="M4 12h4"/><path d="M16 12h4"/>'),
+    // Table row/column insertion + split icons -- paths match table-toolbar.js's
+    // TABLE_ICONS exactly, so the layout-editor's right-click table menu
+    // (table-tools.js) looks identical to the review page's table toolbar
+    // even though the two don't share a script include.
+    rowAbove:    S('<rect x="3" y="11" width="18" height="10" rx="1"/><path d="M12 8V2M9 5l3-3 3 3"/>'),
+    rowBelow:    S('<rect x="3" y="3" width="18" height="10" rx="1"/><path d="M12 16v6M9 19l3 3 3-3"/>'),
+    colLeft:     S('<rect x="11" y="3" width="10" height="18" rx="1"/><path d="M8 12H2M5 9l-3 3 3 3"/>'),
+    colRight:    S('<rect x="3" y="3" width="10" height="18" rx="1"/><path d="M16 12h6M19 9l3 3-3 3"/>'),
+    splitV:      S('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18"/><path d="M9 9l-2-2 2-2M15 9l2-2-2-2M9 15l-2 2 2 2M15 15l2 2-2 2" opacity=".7"/>'),
+    splitH:      S('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18"/><path d="M9 9l-2-2 2-2M15 9l2-2-2-2M9 15l-2 2 2 2M15 15l2 2-2 2" opacity=".7"/>'),
     export:      S('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>'),
     close:       S('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'),
     check:       S('<polyline points="20 6 9 17 4 12"/>'),

@@ -234,6 +234,11 @@ window.TableEditor = {
         const cell = ts.cells[hitCellIdx];
         if (!cell) return;
 
+        // Icons come from the shared AppIcons registry (js/icons.js) so this
+        // right-click menu matches the SVG icon language used everywhere
+        // else in the app instead of emoji.
+        const icon = (name) => (window.AppIcons ? window.AppIcons.get(name) : '');
+
         const menu = document.createElement('div');
         menu.id = 'canvas-context-menu';
         menu.style.cssText = `
@@ -262,23 +267,23 @@ window.TableEditor = {
         };
 
         if (selectedTableCells.cellIndices && selectedTableCells.cellIndices.length > 1) {
-            menu.appendChild(createItem('دمج الخلايا المحددة', '🔗', () => {
+            menu.appendChild(createItem('دمج الخلايا المحددة', icon('merge'), () => {
                 this.mergeCells(tableBlock, selectedTableCells.cellIndices);
                 selectedTableCells = { blockIdx: null, cellIndices: [] }; 
             }));
             menu.appendChild(divider());
         }
 
-        menu.appendChild(createItem('إضافة صف للأعلى', '⬆️', () => this.addRowCol(tableBlock, 'row_above', cell)));
-        menu.appendChild(createItem('إضافة صف للأسفل', '⬇️', () => this.addRowCol(tableBlock, 'row_below', cell)));
-        menu.appendChild(createItem('إضافة عمود لليمين', '➡️', () => this.addRowCol(tableBlock, 'col_right', cell)));
-        menu.appendChild(createItem('إضافة عمود لليسار', '⬅️', () => this.addRowCol(tableBlock, 'col_left', cell)));
+        menu.appendChild(createItem('إضافة صف للأعلى', icon('rowAbove'), () => this.addRowCol(tableBlock, 'row_above', cell)));
+        menu.appendChild(createItem('إضافة صف للأسفل', icon('rowBelow'), () => this.addRowCol(tableBlock, 'row_below', cell)));
+        menu.appendChild(createItem('إضافة عمود لليمين', icon('colRight'), () => this.addRowCol(tableBlock, 'col_right', cell)));
+        menu.appendChild(createItem('إضافة عمود لليسار', icon('colLeft'), () => this.addRowCol(tableBlock, 'col_left', cell)));
         menu.appendChild(divider());
-        menu.appendChild(createItem('حذف الصف الحالي', '🗑️', () => this.removeRowCol(tableBlock, 'row', cell), true));
-        menu.appendChild(createItem('حذف العمود الحالي', '🗑️', () => this.removeRowCol(tableBlock, 'col', cell), true));
+        menu.appendChild(createItem('حذف الصف الحالي', icon('trash'), () => this.removeRowCol(tableBlock, 'row', cell), true));
+        menu.appendChild(createItem('حذف العمود الحالي', icon('trash'), () => this.removeRowCol(tableBlock, 'col', cell), true));
 
-        menu.appendChild(createItem('تقسيم الخلية (عمودياً من المنتصف)', '↔️', () => this.bisectCell(tableBlock, hitCellIdx, 'v')));
-        menu.appendChild(createItem('تقسيم الخلية (أفقياً من المنتصف)', '↕️', () => this.bisectCell(tableBlock, hitCellIdx, 'h')));
+        menu.appendChild(createItem('تقسيم الخلية (عمودياً من المنتصف)', icon('splitV'), () => this.bisectCell(tableBlock, hitCellIdx, 'v')));
+        menu.appendChild(createItem('تقسيم الخلية (أفقياً من المنتصف)', icon('splitH'), () => this.bisectCell(tableBlock, hitCellIdx, 'h')));
         menu.appendChild(divider());
 
         document.body.appendChild(menu);
