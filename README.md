@@ -36,8 +36,7 @@ You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engine
 - **Post-Processing (NEW):**
   - **Arabic Reading Order Auto-Sorter** – Pure-spatial bounding box sorting algorithm that sorts OCR text blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left). Detects multi-column layouts (e.g., 2 columns), processes the Right Column first, and sorts within each row from Right to Left.
   - **Pagination Auto-Detector** – Cross-page and facing-page page number detector that scans header (top 15%) and footer (bottom 15%) regions, validates numeric sequences (ASCII, Arabic-Indic, Persian digits), and automatically annotates matching blocks with the `Page-number` category label (colored blue).
-  - **Unified Settings Apply** – When saving project settings, a single comprehensive prompt allows you to seamlessly apply text processing formats and post-processing algorithms (like reading order & pagination) to either all OCRed pages or just unreviewed ones in one optimized pass.
-
+  
 - **Consistent interface:** every toolbar, the sidebar, the dashboard, and the layout editor share one SVG icon language (stroke-based, matching the review page's formatting/table toolbars) — see `frontend/js/icons.js` and [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) for details.
 
 
@@ -153,47 +152,17 @@ See `requirements.txt` for exact versions.
 
 ---
 
-## ❓ FAQ
-
-**Q: I get `FolderDialog` error when changing data folder?**  
-Fixed in latest version – update via `git pull`.
-
-**Q: Sidebar doesn't collapse?**  
-Fixed – click the collapse-arrow icon to collapse, the expand-arrow tab at the right edge to expand. Console logs now visible with right-click → Inspect.
-
-**Q: DOCX export fails with `_set_section_rtl`?**  
-Fixed – it was due to `import *` skipping private helpers.
-
-**Q: PyWebView logs flood with `WinError 1`?**  
-Fixed – logger now silenced with `NullHandler`, but devtools still works (`debug=True`).
-
-**Q: I get `TypeError: (intermediate value)(...) is not a function` in preview.js?**
-Fixed – missing semicolon before IIFE `(function setupDashboard()` after `window.onLanUpdate = function(){}` caused JS to parse as function call. Added leading semicolon `;(function setupDashboard()`.
-
-**Q: Dashboard shows `ReferenceError: coopPollInterval is not defined`?**
-Fixed – `coopPollInterval` was used but not declared in collab.js modular split. Added `let coopPollInterval = null;` at top.
-
-**Q: Layout editor content auto-hides?**
-Fixed – body had `display:flex; flex-direction:column` inline + `has-sidebar` class sets `display:flex` row, causing conflict. Wrapped header+main in `#layout-main { flex:1; display:flex; flex-direction:column; height:100vh }` and body now flex row with sidebar + layout-main.
-
-**Q: `ReferenceError: debouncedTrackingUpdate is not defined` in editor.js?**
-Fixed – tracking.js had duplicate `const defaultTrackingConfig` causing SyntaxError, file failed to parse. Cleaned to single definitions and exposed `window.debouncedTrackingUpdate`, guarded calls in editor.js with `window.* || bare` fallback.
-
----
-
 ## 📚 For Developers & AI Agents
 
 If you want to understand the code, add a new OCR engine, new export format, a new icon, or contribute:
 
-👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system (now includes broken monoliths: review.js 1400→90 lines with 12 modules, layout-editor.js 1481→30 with 11 modules, project-dashboard.js 715→30 with 9 modules, plus tracking.js duplicate const fix) (72 DPI vs 200 DPI vs 1000 normalized), pipelines, data models, design tokens, the shared SVG icon system, and how to extend. This is now the single canonical developer reference — the original rebuild/architecture plan has been folded into it (see the guide's "UI Icon System" and surrounding sections) rather than kept as a separate, driftable document.
-
-Old import paths still work via shim files (`backend/config_manager.py` → `backend.core.config` etc.) for backward compatibility.
+👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system, pipelines, data models, design tokens, the shared SVG icon system, and how to extend. This is now the single canonical developer reference.
 
 ---
 
 ## 📄 License
 
-Open source – same as original. Feel free to use, modify, and contribute.
+Open source. Feel free to use, modify, and contribute.
 
 ---
 
@@ -203,7 +172,5 @@ Open source – same as original. Feel free to use, modify, and contribute.
 - Rebuilt & organized by Arena AI Agent (Claude, GPT, etc.)
 - Quran dataset `data/Quran.json` – Uthmani text
 - Table detection algorithms based on classic computer vision (blob, column finding, row grouping)
-
-**God be with you – and happy OCR!**
 
 If this tool helped you digitize an Arabic book, please star ⭐ the repo!
