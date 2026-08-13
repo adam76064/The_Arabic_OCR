@@ -241,6 +241,12 @@ window.AppLocales.en = {
     'table.bottom': 'Vertical align bottom',
     'table.deleteRow': 'Delete row',
     'table.deleteCol': 'Delete column',
-    'table.delete': 'Delete entire table'
+    'table.delete': 'Delete entire table',
+    'format.right': 'Align right',
+    'format.center': 'Center',
+    'format.left': 'Align left',
+    'format.justifyShort': 'Justify',
+    'format.rtlShort': 'Right-to-left direction',
+    'format.ltrShort': 'Left-to-right direction'
   }
 };

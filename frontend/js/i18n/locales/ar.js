@@ -241,6 +241,12 @@ window.AppLocales.ar = {
     'table.bottom': 'محاذاة عمودية لأسفل',
     'table.deleteRow': 'حذف الصف',
     'table.deleteCol': 'حذف العمود',
-    'table.delete': 'حذف الجدول بالكامل'
+    'table.delete': 'حذف الجدول بالكامل',
+    'format.right': 'محاذاة يمين',
+    'format.center': 'توسيط',
+    'format.left': 'محاذاة يسار',
+    'format.justifyShort': 'ضبط',
+    'format.rtlShort': 'اتجاه من اليمين',
+    'format.ltrShort': 'اتجاه من اليسار'
   }
 };

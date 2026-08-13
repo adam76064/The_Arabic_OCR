@@ -241,6 +241,12 @@ window.AppLocales.de = {
     'table.bottom': 'Unten ausrichten',
     'table.deleteRow': 'Zeile löschen',
     'table.deleteCol': 'Spalte löschen',
-    'table.delete': 'Gesamte Tabelle löschen'
+    'table.delete': 'Gesamte Tabelle löschen',
+    'format.right': 'Rechtsbündig',
+    'format.center': 'Zentrieren',
+    'format.left': 'Linksbündig',
+    'format.justifyShort': 'Blocksatz',
+    'format.rtlShort': 'Rechts-nach-links-Richtung',
+    'format.ltrShort': 'Links-nach-rechts-Richtung'
   }
 };
