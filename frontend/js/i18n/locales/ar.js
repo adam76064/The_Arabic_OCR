@@ -457,6 +457,11 @@ window.AppLocales.ar = {
     'preview.saved': 'تم حفظ التعديلات في الكتل الخاصة بها ✓',
     'preview.saveError': 'حدث خطأ أثناء الحفظ',
     'preview.noChanges': 'لم يتم إجراء أي تعديلات للحفظ',
-    'preview.done': '✔ تمت'
+    'preview.done': '✔ تمت',
+    'editor.dragReorder': 'اسحب لإعادة الترتيب',
+    'editor.changeType': 'انقر لتغيير النوع',
+    'editor.done': '✔ تمت',
+    'editor.reviewed': 'مراجَع',
+    'editor.deleteUndo': 'حذف (يمكن التراجع)'
   }
 };

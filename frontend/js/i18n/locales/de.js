@@ -457,6 +457,11 @@ window.AppLocales.de = {
     'preview.saved': 'Änderungen wurden in ihren Blöcken gespeichert ✓',
     'preview.saveError': 'Beim Speichern ist ein Fehler aufgetreten',
     'preview.noChanges': 'Es gibt keine Änderungen zum Speichern',
-    'preview.done': '✔ Erledigt'
+    'preview.done': '✔ Erledigt',
+    'editor.dragReorder': 'Zum Neuordnen ziehen',
+    'editor.changeType': 'Klicken, um den Typ zu ändern',
+    'editor.done': '✔ Erledigt',
+    'editor.reviewed': 'Geprüft',
+    'editor.deleteUndo': 'Löschen (kann rückgängig gemacht werden)'
   }
 };

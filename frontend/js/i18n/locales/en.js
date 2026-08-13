@@ -457,6 +457,11 @@ window.AppLocales.en = {
     'preview.saved': 'Edits were saved to their blocks ✓',
     'preview.saveError': 'An error occurred while saving',
     'preview.noChanges': 'There are no changes to save',
-    'preview.done': '✔ Done'
+    'preview.done': '✔ Done',
+    'editor.dragReorder': 'Drag to reorder',
+    'editor.changeType': 'Click to change type',
+    'editor.done': '✔ Done',
+    'editor.reviewed': 'Reviewed',
+    'editor.deleteUndo': 'Delete (can be undone)'
   }
 };
