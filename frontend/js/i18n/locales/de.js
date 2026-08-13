@@ -447,6 +447,8 @@ window.AppLocales.de = {
     'ps.every10': 'Alle 10 Minuten',
     'ps.every15': 'Alle 15 Minuten',
     'ps.every30': 'Alle 30 Minuten',
-    'ps.disableAutosave': 'Automatisches Speichern deaktivieren'
+    'ps.disableAutosave': 'Automatisches Speichern deaktivieren',
+    'ps.postHint2': 'Automatische Optionen, die nach der Textextraktion Textfelder organisieren und die korrekte arabische Lesereihenfolge berechnen.',
+    'ps.readingOrderHint': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten (rechte Spalte zuerst).'
   }
 };

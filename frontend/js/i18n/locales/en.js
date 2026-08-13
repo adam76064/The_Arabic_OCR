@@ -447,6 +447,8 @@ window.AppLocales.en = {
     'ps.every10': 'Every 10 minutes',
     'ps.every15': 'Every 15 minutes',
     'ps.every30': 'Every 30 minutes',
-    'ps.disableAutosave': 'Disable automatic saving'
+    'ps.disableAutosave': 'Disable automatic saving',
+    'ps.postHint2': 'Automatic options applied after text extraction to organize text boxes and calculate the correct Arabic reading order.',
+    'ps.readingOrderHint': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages (right column first).'
   }
 };
