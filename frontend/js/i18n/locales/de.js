@@ -420,6 +420,23 @@ window.AppLocales.de = {
     'projectSettings.save': 'Einstellungen speichern',
     'projectSettings.sorting': '⏳ Wird sortiert…',
     'projectSettings.detecting': '⏳ Seitennummern werden erkannt…',
-    'sidebar.exitConfirm': 'Möchten Sie die Anwendung wirklich beenden?'
+    'sidebar.exitConfirm': 'Möchten Sie die Anwendung wirklich beenden?',
+    'ocr.provider': 'Anbieter / Modell:',
+    'ocr.other': 'Andere',
+    'ocr.custom': 'Benutzerdefinierter Server (OpenAI-kompatibel)',
+    'ocr.baseUrl': 'Server-URL (Basis-URL):',
+    'ocr.modelName': 'Modellname:',
+    'ocr.apiKey': 'API-Schlüssel:',
+    'ocr.apiPlaceholder': 'API-Schlüssel eingeben…',
+    'ocr.rememberApi': 'API-Daten auf diesem Gerät speichern',
+    'ocr.prompt': 'Modellanweisung (LLM-Prompt):',
+    'ocr.restorePrompt': 'Globale Anweisung wiederherstellen',
+    'ocr.promptPlaceholder': 'System-Prompt-Anweisungen eingeben…',
+    'ocr.rememberPrompt': 'Diese Anweisung nur für dieses Projekt speichern',
+    'ocr.range': 'Seitenbereich',
+    'ocr.fullFile': 'Gesamte Datei',
+    'ocr.selected': 'Ausgewählter Bereich',
+    'ocr.fromPage': 'Von Seite',
+    'ocr.to': 'Bis'
   }
 };

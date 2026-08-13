@@ -420,6 +420,23 @@ window.AppLocales.ar = {
     'projectSettings.save': 'حفظ الإعدادات',
     'projectSettings.sorting': '⏳ جاري الترتيب...',
     'projectSettings.detecting': '⏳ جاري كشف الأرقام...',
-    'sidebar.exitConfirm': 'هل أنت متأكد من الخروج من التطبيق؟'
+    'sidebar.exitConfirm': 'هل أنت متأكد من الخروج من التطبيق؟',
+    'ocr.provider': 'مزود الخدمة (Provider / Model):',
+    'ocr.other': 'أخرى',
+    'ocr.custom': 'سيرفر مخصص (Custom OpenAI Compatible)',
+    'ocr.baseUrl': 'رابط الخادم (Base URL):',
+    'ocr.modelName': 'اسم النموذج (Model Name):',
+    'ocr.apiKey': 'مفتاح الـ API (API Key):',
+    'ocr.apiPlaceholder': 'ادخل مفتاح API هنا...',
+    'ocr.rememberApi': 'تذكر بيانات الـ API على هذا الجهاز',
+    'ocr.prompt': 'تعليمة التوجيه للنموذج (LLM Prompt):',
+    'ocr.restorePrompt': 'استعادة التعليمة العامة',
+    'ocr.promptPlaceholder': 'ادخل تعليمات الـ System Prompt هنا...',
+    'ocr.rememberPrompt': 'تذكر هذه التعليمة لهذا المشروع فقط (حفظ في إعدادات المشروع)',
+    'ocr.range': 'نطاق الصفحات',
+    'ocr.fullFile': 'كامل الملف',
+    'ocr.selected': 'نطاق محدد',
+    'ocr.fromPage': 'من صفحة',
+    'ocr.to': 'إلى'
   }
 };

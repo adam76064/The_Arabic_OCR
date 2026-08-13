@@ -420,6 +420,23 @@ window.AppLocales.en = {
     'projectSettings.save': 'Save settings',
     'projectSettings.sorting': '⏳ Sorting…',
     'projectSettings.detecting': '⏳ Detecting page numbers…',
-    'sidebar.exitConfirm': 'Are you sure you want to exit the application?'
+    'sidebar.exitConfirm': 'Are you sure you want to exit the application?',
+    'ocr.provider': 'Provider / model:',
+    'ocr.other': 'Other',
+    'ocr.custom': 'Custom server (OpenAI compatible)',
+    'ocr.baseUrl': 'Server URL (base URL):',
+    'ocr.modelName': 'Model name:',
+    'ocr.apiKey': 'API key:',
+    'ocr.apiPlaceholder': 'Enter API key…',
+    'ocr.rememberApi': 'Remember API details on this device',
+    'ocr.prompt': 'Model instruction (LLM prompt):',
+    'ocr.restorePrompt': 'Restore global instruction',
+    'ocr.promptPlaceholder': 'Enter system-prompt instructions…',
+    'ocr.rememberPrompt': 'Remember this instruction only for this project',
+    'ocr.range': 'Page range',
+    'ocr.fullFile': 'Entire file',
+    'ocr.selected': 'Selected range',
+    'ocr.fromPage': 'From page',
+    'ocr.to': 'To'
   }
 };
