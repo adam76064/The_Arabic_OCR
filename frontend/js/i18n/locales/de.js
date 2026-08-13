@@ -570,6 +570,21 @@ window.AppLocales.de = {
     'shortcut.crop-zoom-out': 'Ausschnitt verkleinern',
     'shortcut.crop-zoom-reset': 'Ausschnittzoom zurücksetzen',
     'shortcut.focus-next-block': 'Zum nächsten Block (automatisch speichern)',
-    'shortcut.focus-prev-block': 'Zum vorherigen Block (automatisch speichern)'
+    'shortcut.focus-prev-block': 'Zum vorherigen Block (automatisch speichern)',
+    'shortcut.fmt-bold': 'Fett',
+    'shortcut.fmt-italic': 'Kursiv',
+    'shortcut.fmt-underline': 'Unterstreichen',
+    'shortcut.fmt-strike': 'Durchstreichen',
+    'shortcut.fmt-superscript': 'Hochgestellt',
+    'shortcut.fmt-subscript': 'Tiefgestellt',
+    'shortcut.fmt-remove': 'Formatierung-entfernen-Pinsel',
+    'shortcut.brush-tashkeel': 'Diakritika-entfernen-Pinsel',
+    'shortcut.brush-format': 'Formatierung-kopieren-Pinsel',
+    'shortcut.align-right': 'Rechtsbündig',
+    'shortcut.align-left': 'Linksbündig',
+    'shortcut.align-center': 'Zentrieren',
+    'shortcut.align-justify': 'Blocksatz',
+    'shortcut.dir-rtl': 'Textrichtung: rechts nach links',
+    'shortcut.dir-ltr': 'Textrichtung: links nach rechts'
   }
 };

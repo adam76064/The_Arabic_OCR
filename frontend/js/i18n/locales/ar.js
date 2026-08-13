@@ -570,6 +570,21 @@ window.AppLocales.ar = {
     'shortcut.crop-zoom-out': 'تصغير الاقتطاع',
     'shortcut.crop-zoom-reset': 'إعادة ضبط تكبير الاقتطاع',
     'shortcut.focus-next-block': 'الانتقال للكتلة التالية (حفظ تلقائي)',
-    'shortcut.focus-prev-block': 'الانتقال للكتلة السابقة (حفظ تلقائي)'
+    'shortcut.focus-prev-block': 'الانتقال للكتلة السابقة (حفظ تلقائي)',
+    'shortcut.fmt-bold': 'غامق',
+    'shortcut.fmt-italic': 'مائل',
+    'shortcut.fmt-underline': 'تسطير',
+    'shortcut.fmt-strike': 'يتوسطه خط',
+    'shortcut.fmt-superscript': 'نص علوي',
+    'shortcut.fmt-subscript': 'نص سفلي',
+    'shortcut.fmt-remove': 'فرشاة إزالة التنسيق',
+    'shortcut.brush-tashkeel': 'فرشاة إزالة التشكيل',
+    'shortcut.brush-format': 'فرشاة نسخ التنسيق',
+    'shortcut.align-right': 'محاذاة لليمين',
+    'shortcut.align-left': 'محاذاة لليسار',
+    'shortcut.align-center': 'محاذاة للوسط',
+    'shortcut.align-justify': 'ضبط (محاذاة الطرفين)',
+    'shortcut.dir-rtl': 'اتجاه النص: من اليمين لليسار',
+    'shortcut.dir-ltr': 'اتجاه النص: من اليسار لليمين'
   }
 };

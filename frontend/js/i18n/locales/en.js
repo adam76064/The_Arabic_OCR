@@ -570,6 +570,21 @@ window.AppLocales.en = {
     'shortcut.crop-zoom-out': 'Zoom crop out',
     'shortcut.crop-zoom-reset': 'Reset crop zoom',
     'shortcut.focus-next-block': 'Go to next block (auto-save)',
-    'shortcut.focus-prev-block': 'Go to previous block (auto-save)'
+    'shortcut.focus-prev-block': 'Go to previous block (auto-save)',
+    'shortcut.fmt-bold': 'Bold',
+    'shortcut.fmt-italic': 'Italic',
+    'shortcut.fmt-underline': 'Underline',
+    'shortcut.fmt-strike': 'Strikethrough',
+    'shortcut.fmt-superscript': 'Superscript',
+    'shortcut.fmt-subscript': 'Subscript',
+    'shortcut.fmt-remove': 'Remove-formatting brush',
+    'shortcut.brush-tashkeel': 'Remove-diacritics brush',
+    'shortcut.brush-format': 'Copy-formatting brush',
+    'shortcut.align-right': 'Align right',
+    'shortcut.align-left': 'Align left',
+    'shortcut.align-center': 'Align center',
+    'shortcut.align-justify': 'Justify',
+    'shortcut.dir-rtl': 'Text direction: right to left',
+    'shortcut.dir-ltr': 'Text direction: left to right'
   }
 };
