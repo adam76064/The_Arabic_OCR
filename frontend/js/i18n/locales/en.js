@@ -498,6 +498,20 @@ window.AppLocales.en = {
     'dashboard.unknownError': 'Unknown error',
     'dashboard.deletePageTitle': 'Delete page',
     'dashboard.deletePageMessage': 'Are you sure you want to delete page <strong>{page}</strong> from this project?',
-    'dashboard.deletePageFiles': 'Also delete images and related files for this page from disk'
+    'dashboard.deletePageFiles': 'Also delete images and related files for this page from disk',
+    'quran.contextSearch': 'Search the Holy Quran',
+    'quran.title': 'Insert Quran verse',
+    'quran.textSearch': 'Search by text',
+    'quran.manual': 'Select surah and verse',
+    'quran.searchPlaceholder': 'Type a word or sentence to search…',
+    'quran.search': 'Search',
+    'quran.surah': 'Surah',
+    'quran.fromAyah': 'From verse',
+    'quran.toAyah': 'To verse',
+    'quran.browse': 'Browse',
+    'quran.surahAyah': 'Surah (verse)',
+    'quran.text': 'Quran text',
+    'quran.citation': 'Add citation',
+    'quran.insertSelection': 'Insert selection'
   }
 };

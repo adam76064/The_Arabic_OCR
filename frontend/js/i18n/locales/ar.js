@@ -498,6 +498,20 @@ window.AppLocales.ar = {
     'dashboard.unknownError': 'خطأ غير معروف',
     'dashboard.deletePageTitle': 'حذف الصفحة',
     'dashboard.deletePageMessage': 'هل أنت متأكد من رغبتك في حذف الصفحة رقم <strong>{page}</strong> من هذا المشروع؟',
-    'dashboard.deletePageFiles': 'حذف الصور والملفات المرتبطة بهذه الصفحة من القرص الصلب أيضاً'
+    'dashboard.deletePageFiles': 'حذف الصور والملفات المرتبطة بهذه الصفحة من القرص الصلب أيضاً',
+    'quran.contextSearch': 'بحث في القرآن الكريم',
+    'quran.title': 'إدراج آية قرآنية',
+    'quran.textSearch': 'البحث بالنص',
+    'quran.manual': 'تحديد السورة والآية',
+    'quran.searchPlaceholder': 'اكتب كلمة أو جملة للبحث...',
+    'quran.search': 'بحث',
+    'quran.surah': 'السورة',
+    'quran.fromAyah': 'من آية',
+    'quran.toAyah': 'إلى آية',
+    'quran.browse': 'استعراض',
+    'quran.surahAyah': 'السورة (الآية)',
+    'quran.text': 'النص القرآني',
+    'quran.citation': 'إضافة التخريج',
+    'quran.insertSelection': 'إدراج التحديد'
   }
 };

@@ -182,36 +182,36 @@
         <div class="modal-overlay" id="quran-overlay"></div>
         <div class="modal-box" style="width: 700px; max-width: 95vw; display: flex; flex-direction: column; max-height: 85vh;">
             <div class="modal-header">
-                <h3>إدراج آية قرآنية</h3>
+                <h3 data-i18n="quran.title">إدراج آية قرآنية</h3>
                 <button class="modal-close" id="quran-close">✕</button>
             </div>
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding: 20px;">
                 <div style="display: flex; gap: 10px; border-bottom: 2px solid #eee; margin-bottom: 16px;">
-                    <button class="quran-tab-btn active" data-tab="quran-tab-text">البحث بالنص</button>
-                    <button class="quran-tab-btn" data-tab="quran-tab-manual">تحديد السورة والآية</button>
+                    <button class="quran-tab-btn active" data-tab="quran-tab-text" data-i18n="quran.textSearch">البحث بالنص</button>
+                    <button class="quran-tab-btn" data-tab="quran-tab-manual" data-i18n="quran.manual">تحديد السورة والآية</button>
                 </div>
                 <div id="quran-tab-text" class="quran-tab-content">
                     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                        <input type="text" id="quran-search-input" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
-                        <button id="quran-search-btn" class="btn-primary">بحث</button>
+                        <input type="text" id="quran-search-input" data-i18n-placeholder="quran.searchPlaceholder" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <button id="quran-search-btn" class="btn-primary" data-i18n="quran.search">بحث</button>
                     </div>
                 </div>
                 <div id="quran-tab-manual" class="quran-tab-content hidden">
                     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; background: #f8f9fa; padding: 14px; border-radius: 8px; border: 1px solid #eee;">
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">السورة</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.surah">السورة</label>
                             <select id="quran-surah-select" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;"></select>
                         </div>
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">من آية</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.fromAyah">من آية</label>
                             <input type="number" id="quran-ayah-from" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
                         </div>
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">إلى آية</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.toAyah">إلى آية</label>
                             <input type="number" id="quran-ayah-to" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
                         </div>
                         <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
-                            <button id="quran-fetch-manual-btn" class="btn-secondary">استعراض</button>
+                            <button id="quran-fetch-manual-btn" class="btn-secondary" data-i18n="quran.browse">استعراض</button>
                         </div>
                     </div>
                 </div>
@@ -220,8 +220,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 50px; text-align: center;"><input type="checkbox" id="quran-select-all"></th>
-                                <th style="width: 110px;">السورة (الآية)</th>
-                                <th>النص القرآني</th>
+                                <th style="width: 110px;" data-i18n="quran.surahAyah">السورة (الآية)</th>
+                                <th data-i18n="quran.text">النص القرآني</th>
                             </tr>
                         </thead>
                         <tbody id="quran-results-tbody">
@@ -235,7 +235,7 @@
                         <span class="option-check"></span>
                         <span>إضافة التخريج (مثال: [الفاتحة :5])</span>
                     </label>
-                    <button id="quran-insert-confirm" class="btn-success" disabled>إدراج التحديد</button>
+                    <button id="quran-insert-confirm" class="btn-success" disabled data-i18n="quran.insertSelection">إدراج التحديد</button>
                 </div>
             </div>
         </div>

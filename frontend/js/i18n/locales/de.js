@@ -498,6 +498,20 @@ window.AppLocales.de = {
     'dashboard.unknownError': 'Unbekannter Fehler',
     'dashboard.deletePageTitle': 'Seite löschen',
     'dashboard.deletePageMessage': 'Möchten Sie Seite <strong>{page}</strong> aus diesem Projekt wirklich löschen?',
-    'dashboard.deletePageFiles': 'Bilder und verknüpfte Dateien dieser Seite ebenfalls vom Datenträger löschen'
+    'dashboard.deletePageFiles': 'Bilder und verknüpfte Dateien dieser Seite ebenfalls vom Datenträger löschen',
+    'quran.contextSearch': 'Im Koran suchen',
+    'quran.title': 'Koranvers einfügen',
+    'quran.textSearch': 'Nach Text suchen',
+    'quran.manual': 'Sure und Vers auswählen',
+    'quran.searchPlaceholder': 'Wort oder Satz zum Suchen eingeben…',
+    'quran.search': 'Suchen',
+    'quran.surah': 'Sure',
+    'quran.fromAyah': 'Von Vers',
+    'quran.toAyah': 'Bis Vers',
+    'quran.browse': 'Durchsuchen',
+    'quran.surahAyah': 'Sure (Vers)',
+    'quran.text': 'Korantext',
+    'quran.citation': 'Quellenangabe hinzufügen',
+    'quran.insertSelection': 'Auswahl einfügen'
   }
 };
