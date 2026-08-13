@@ -268,7 +268,9 @@
 
                 const label = document.createElement('span');
                 label.className = 'shortcut-label';
-                label.textContent = window.AppI18n.t(`shortcut.${cmd.id}`) || cmd.label;
+                const shortcutKey = `shortcut.${cmd.id}`;
+                const shortcutLabel = window.AppI18n.t(shortcutKey);
+                label.textContent = shortcutLabel === shortcutKey ? cmd.label : shortcutLabel;
 
                 const actions = document.createElement('div');
                 actions.className = 'shortcut-actions';
@@ -336,7 +338,9 @@
                 const conflict = window.__KEYBOARD_COMMANDS.find(c =>
                     c.id !== cmd.id && (pendingShortcuts[c.id] || c.defaultKey) === combo);
                 if (conflict) {
-                    showShortcutNotice(window.AppI18n.t('shortcut.conflict', { command: window.AppI18n.t(`shortcut.${conflict.id}`) || conflict.label }), false);
+                    const conflictKey = `shortcut.${conflict.id}`;
+                    const conflictLabel = window.AppI18n.t(conflictKey);
+                    showShortcutNotice(window.AppI18n.t('shortcut.conflict', { command: conflictLabel === conflictKey ? conflict.label : conflictLabel }), false);
                 }
             };
             document.addEventListener('keydown', onKeydown, true);
