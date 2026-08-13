@@ -398,6 +398,9 @@ window.AppLocales.ar = {
     'dashboard.pythonError': 'حدث خطأ في بايثون: ',
     'dashboard.apiRequired': 'يرجى إدخال مفتاح الـ API للنموذج المختار!',
     'dashboard.customRequired': 'يرجى إدخال رابط الخادم (Base URL) واسم النموذج للخادم المخصص!',
-    'dashboard.fatal': 'حدث خطأ حرج:\n'
+    'dashboard.fatal': 'حدث خطأ حرج:\n',
+    'collab.lanOn': 'محلي: مفعل',
+    'collab.lanOff': 'محلي: متوقف',
+    'collab.noMembers': 'لا يوجد أعضاء متصلون حالياً'
   }
 };

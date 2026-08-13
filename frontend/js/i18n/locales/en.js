@@ -398,6 +398,9 @@ window.AppLocales.en = {
     'dashboard.pythonError': 'Python error: ',
     'dashboard.apiRequired': 'Enter an API key for the selected model.',
     'dashboard.customRequired': 'Enter both the base URL and model name for the custom server.',
-    'dashboard.fatal': 'A critical error occurred:\n'
+    'dashboard.fatal': 'A critical error occurred:\n',
+    'collab.lanOn': 'Local: on',
+    'collab.lanOff': 'Local: off',
+    'collab.noMembers': 'No members are currently connected'
   }
 };

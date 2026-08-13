@@ -398,6 +398,9 @@ window.AppLocales.de = {
     'dashboard.pythonError': 'Python-Fehler: ',
     'dashboard.apiRequired': 'Geben Sie einen API-Schlüssel für das ausgewählte Modell ein.',
     'dashboard.customRequired': 'Geben Sie Basis-URL und Modellnamen für den benutzerdefinierten Server ein.',
-    'dashboard.fatal': 'Ein kritischer Fehler ist aufgetreten:\n'
+    'dashboard.fatal': 'Ein kritischer Fehler ist aufgetreten:\n',
+    'collab.lanOn': 'Lokal: aktiv',
+    'collab.lanOff': 'Lokal: aus',
+    'collab.noMembers': 'Derzeit sind keine Mitglieder verbunden'
   }
 };
