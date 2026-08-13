@@ -445,10 +445,10 @@ function initPostProcessingSettings(ppOpts) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
                             title: window.AppI18n.t('projectSettings.successTitle'),
-                            message: `تمت إعادة ترتيب المربعات النصية في ${res.count} صفحة حسب اتجاه القراءة العربي.`
+                            message: window.AppI18n.t('projectSettings.sortSuccess', { count: res.count })
                         });
                     } else {
-                        alert(`تمت إعادة ترتيب المربعات في ${res.count} صفحة.`);
+                        alert(window.AppI18n.t('projectSettings.sortSuccessShort', { count: res.count }));
                     }
                 } else {
                     alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
@@ -476,10 +476,10 @@ function initPostProcessingSettings(ppOpts) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
                             title: window.AppI18n.t('projectSettings.successTitle'),
-                            message: `تم كشف وتوسيم ${res.count} مربع كأرقام صفحات بنجاح.`
+                            message: window.AppI18n.t('projectSettings.paginationSuccess', { count: res.count })
                         });
                     } else {
-                        alert(`تم كشف وتوسيم ${res.count} مربع كأرقام صفحات.`);
+                        alert(window.AppI18n.t('projectSettings.paginationSuccess', { count: res.count }));
                     }
                 } else {
                     alert('حدث خطأ: ' + (res?.error || 'غير معروف'));

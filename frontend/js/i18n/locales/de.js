@@ -610,6 +610,9 @@ window.AppLocales.de = {
     'projectSettings.ownerPasswordRequired': 'Geben Sie das lokale Netzwerkpasswort des Besitzers ein.',
     'projectSettings.lanSaved': 'Passwort gespeichert und lokaler Netzwerkmodus erfolgreich verbunden 📡',
     'projectSettings.strongPassword': '✓ Sehr starkes Passwort',
-    'projectSettings.passwordWeak': 'Das lokale Netzwerkpasswort erfüllt die Sicherheitsanforderungen nicht: {errors}'
+    'projectSettings.passwordWeak': 'Das lokale Netzwerkpasswort erfüllt die Sicherheitsanforderungen nicht: {errors}',
+    'projectSettings.sortSuccess': 'Textfelder wurden auf {count} Seiten nach arabischer Lesereihenfolge neu geordnet.',
+    'projectSettings.sortSuccessShort': 'Felder wurden auf {count} Seiten neu geordnet.',
+    'projectSettings.paginationSuccess': '{count} Felder wurden als Seitennummern erkannt und markiert.'
   }
 };

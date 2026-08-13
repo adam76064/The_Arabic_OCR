@@ -610,6 +610,9 @@ window.AppLocales.en = {
     'projectSettings.ownerPasswordRequired': 'Enter the owner’s local-network password.',
     'projectSettings.lanSaved': 'Password saved and local-network mode connected successfully 📡',
     'projectSettings.strongPassword': '✓ Very strong password',
-    'projectSettings.passwordWeak': 'The local-network password does not meet security requirements: {errors}'
+    'projectSettings.passwordWeak': 'The local-network password does not meet security requirements: {errors}',
+    'projectSettings.sortSuccess': 'Text boxes were reordered on {count} pages according to Arabic reading order.',
+    'projectSettings.sortSuccessShort': 'Boxes were reordered on {count} pages.',
+    'projectSettings.paginationSuccess': '{count} boxes were detected and labeled as page numbers.'
   }
 };

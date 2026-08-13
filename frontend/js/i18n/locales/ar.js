@@ -610,6 +610,9 @@ window.AppLocales.ar = {
     'projectSettings.ownerPasswordRequired': 'يرجى إدخال كلمة مرور الشبكة المحلية للمالك',
     'projectSettings.lanSaved': 'تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡',
     'projectSettings.strongPassword': '✓ كلمة مرور قوية جداً',
-    'projectSettings.passwordWeak': 'كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: {errors}'
+    'projectSettings.passwordWeak': 'كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: {errors}',
+    'projectSettings.sortSuccess': 'تمت إعادة ترتيب المربعات النصية في {count} صفحة حسب اتجاه القراءة العربي.',
+    'projectSettings.sortSuccessShort': 'تمت إعادة ترتيب المربعات في {count} صفحة.',
+    'projectSettings.paginationSuccess': 'تم كشف وتوسيم {count} مربع كأرقام صفحات بنجاح.'
   }
 };
