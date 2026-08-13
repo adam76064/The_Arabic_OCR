@@ -18,14 +18,14 @@
     <main class="export-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <div>
-                <h1 style="margin: 0; color: #1e293b;">تصدير المشروع</h1>
-                <p id="export-proj-title" style="color: #64748b; margin-top: 4px;">جاري التحميل...</p>
+                <h1 style="margin: 0; color: #1e293b;" data-i18n="export.title">تصدير المشروع</h1>
+                <p id="export-proj-title" style="color: #64748b; margin-top: 4px;" data-i18n="export.loading">جاري التحميل...</p>
             </div>
-            <button id="back-btn" class="btn-secondary">⟵ العودة</button>
+            <button id="back-btn" class="btn-secondary" data-i18n="export.back">⟵ العودة</button>
         </div>
 
         <div class="export-card">
-            <h3>📑 نطاق الصفحات</h3>
+            <h3 data-i18n="export.pages">📑 نطاق الصفحات</h3>
             <div class="checkbox-group">
                 <label class="radio-item"><input type="radio" name="exp-pages" value="all" checked> كل الصفحات</label>
                 <label class="radio-item"><input type="radio" name="exp-pages" value="range"> نطاق محدد</label>
@@ -37,20 +37,20 @@
         </div>
 
         <div class="export-card">
-            <h3>💾 صيغ التصدير المطلوبة</h3>
-            <p style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 16px;">يمكنك اختيار أكثر من صيغة ليتم تصديرها معاً.</p>
+            <h3 data-i18n="export.formats">💾 صيغ التصدير المطلوبة</h3>
+            <p style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 16px;" data-i18n="export.formatsHint">يمكنك اختيار أكثر من صيغة ليتم تصديرها معاً.</p>
             <div class="checkbox-group" style="gap: 20px;">
                 <label class="option-item"><input type="checkbox" name="exp-format" value="docx" checked><span class="option-check"></span><span style="font-weight: bold;">DOCX (Word)</span></label>
-                <label class="option-item"><input type="checkbox" name="exp-format" value="txt"><span class="option-check"></span><span style="font-weight: bold;">TXT (نص)</span></label>
-                <label class="option-item"><input type="checkbox" name="exp-format" value="json"><span class="option-check"></span><span style="font-weight: bold;">JSON (بيانات خام)</span></label>
-                <label class="option-item"><input type="checkbox" name="exp-format" value="html"><span class="option-check"></span><span style="font-weight: bold;">HTML (ويب)</span></label>
-                <label class="option-item"><input type="checkbox" name="exp-format" value="epub3"><span class="option-check"></span><span style="font-weight: bold;">EPUB3 (كتاب إلكتروني)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="txt"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="export.txt">TXT (نص)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="json"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="export.json">JSON (بيانات خام)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="html"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="export.html">HTML (ويب)</span></label>
+                <label class="option-item"><input type="checkbox" name="exp-format" value="epub3"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="export.epub">EPUB3 (كتاب إلكتروني)</span></label>
             </div>
 
             <div id="opts-txt" class="format-specific-options hidden">
-                <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات TXT</h4>
+                <h4 style="margin: 0 0 10px 0; color: #334155;" data-i18n="export.txtSettings">إعدادات TXT</h4>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <label style="font-size: 13px;">الفاصل بين أعمدة الجداول:</label>
+                    <label style="font-size: 13px;" data-i18n="export.tableSeparator">الفاصل بين أعمدة الجداول:</label>
                     <select id="exp-table-sep" style="padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
                         <option value="&#9;">Tab (مسافة جدولة)</option>
                         <option value=" | ">| (خط عمودي)</option>
@@ -61,13 +61,13 @@
             </div>
 
             <div id="opts-epub" class="format-specific-options hidden">
-                <h4 style="margin: 0 0 10px 0; color: #334155;">إعدادات HTML & EPUB3</h4>
+                <h4 style="margin: 0 0 10px 0; color: #334155;" data-i18n="export.epubSettings">إعدادات HTML & EPUB3</h4>
                 <p style="font-size: 13px; color: #d97706; margin: 0;">(سيتم إضافة الإعدادات الخاصة بالشعر العمودي ومعايير الكتب العربية هنا)</p>
             </div>
         </div>
 
-        <div style="text-align: left; margin-top: 20px;">
-            <button id="execute-export-btn" class="btn-success" style="padding: 12px 30px; font-size: 16px;">تصدير الملفات المحددة</button>
+        <div style="text-align: end; margin-top: 20px;">
+            <button id="execute-export-btn" class="btn-success" style="padding: 12px 30px; font-size: 16px;" data-i18n="export.execute">تصدير الملفات المحددة</button>
         </div>
     </main>
 
@@ -91,7 +91,7 @@
             const projectId = params.get('id');
             if (!projectId) { window.location.href = 'projects.html'; return; }
             currentProject = await window.pywebview.api.load_project(projectId);
-            document.getElementById('export-proj-title').textContent = currentProject.metadata?.title || 'مشروع بدون عنوان';
+            document.getElementById('export-proj-title').textContent = currentProject.metadata?.title || window.AppI18n.t('export.untitled');
             const expTo = document.getElementById('exp-to');
             if (expTo) expTo.value = currentProject.pages.length;
             document.getElementById('back-btn')?.addEventListener('click', () => window.history.back());
@@ -112,7 +112,7 @@
             });
             document.getElementById('execute-export-btn')?.addEventListener('click', async () => {
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
-                if (formats.length === 0) { alert('الرجاء تحديد صيغة تصدير واحدة على الأقل.'); return; }
+                if (formats.length === 0) { alert(window.AppI18n.t('export.none')); return; }
                 const pagesMode = document.querySelector('input[name="exp-pages"]:checked')?.value || 'all';
                 let indices = Array.from({length: currentProject.pages.length}, (_, i) => i);
                 if (pagesMode === 'range') {
@@ -127,16 +127,16 @@
                 const outputDir = await window.pywebview.api.request_directory_dialog();
                 if (!outputDir) return;
                 const btn = document.getElementById('execute-export-btn');
-                if (btn) { btn.textContent = '⏳ جاري التصدير...'; btn.disabled = true; }
+                if (btn) { btn.textContent = window.AppI18n.t('export.exporting'); btn.disabled = true; }
                 try {
                     for (const fmt of formats) {
                         await window.pywebview.api.export_project(currentProject.id, fmt, indices, opts, outputDir);
                     }
-                    if (typeof showNotif === 'function') showNotif('تم تصدير الملفات بنجاح ✓', 'success');
-                    else alert('تم تصدير الملفات بنجاح ✓');
+                    if (typeof showNotif === 'function') showNotif(window.AppI18n.t('export.success'), 'success');
+                    else alert(window.AppI18n.t('export.success'));
                 } catch (e) {
                     console.error(e);
-                    alert('حدث خطأ أثناء التصدير.');
+                    alert(window.AppI18n.t('export.error'));
                 } finally {
                     if (btn) { btn.textContent = 'تصدير الملفات المحددة'; btn.disabled = false; }
                 }
