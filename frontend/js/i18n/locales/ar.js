@@ -560,6 +560,16 @@ window.AppLocales.ar = {
     'shortcut.redo': 'إعادة',
     'shortcut.export': 'تصدير المشروع',
     'shortcut.text-preview': 'معاينة النص الكامل',
-    'shortcut.dashboard': 'لوحة التقدم'
+    'shortcut.dashboard': 'لوحة التقدم',
+    'shortcut.delete-block': 'حذف الكتلة المحددة',
+    'shortcut.toggle-reviewed': 'تبديل حالة المراجعة للكتلة المحددة',
+    'shortcut.block-font-increase': 'تكبير حجم عرض النص',
+    'shortcut.block-font-decrease': 'تصغير حجم عرض النص',
+    'shortcut.block-font-reset': 'إعادة ضبط حجم عرض النص',
+    'shortcut.crop-zoom-in': 'تكبير الاقتطاع',
+    'shortcut.crop-zoom-out': 'تصغير الاقتطاع',
+    'shortcut.crop-zoom-reset': 'إعادة ضبط تكبير الاقتطاع',
+    'shortcut.focus-next-block': 'الانتقال للكتلة التالية (حفظ تلقائي)',
+    'shortcut.focus-prev-block': 'الانتقال للكتلة السابقة (حفظ تلقائي)'
   }
 };

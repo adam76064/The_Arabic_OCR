@@ -560,6 +560,16 @@ window.AppLocales.de = {
     'shortcut.redo': 'Wiederholen',
     'shortcut.export': 'Projekt exportieren',
     'shortcut.text-preview': 'Volltextvorschau',
-    'shortcut.dashboard': 'Fortschritts-Dashboard'
+    'shortcut.dashboard': 'Fortschritts-Dashboard',
+    'shortcut.delete-block': 'Ausgewählten Block löschen',
+    'shortcut.toggle-reviewed': 'Prüfstatus des ausgewählten Blocks umschalten',
+    'shortcut.block-font-increase': 'Textanzeige vergrößern',
+    'shortcut.block-font-decrease': 'Textanzeige verkleinern',
+    'shortcut.block-font-reset': 'Textanzeige zurücksetzen',
+    'shortcut.crop-zoom-in': 'Ausschnitt vergrößern',
+    'shortcut.crop-zoom-out': 'Ausschnitt verkleinern',
+    'shortcut.crop-zoom-reset': 'Ausschnittzoom zurücksetzen',
+    'shortcut.focus-next-block': 'Zum nächsten Block (automatisch speichern)',
+    'shortcut.focus-prev-block': 'Zum vorherigen Block (automatisch speichern)'
   }
 };

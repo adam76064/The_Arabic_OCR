@@ -560,6 +560,16 @@ window.AppLocales.en = {
     'shortcut.redo': 'Redo',
     'shortcut.export': 'Export project',
     'shortcut.text-preview': 'Full-text preview',
-    'shortcut.dashboard': 'Progress dashboard'
+    'shortcut.dashboard': 'Progress dashboard',
+    'shortcut.delete-block': 'Delete selected block',
+    'shortcut.toggle-reviewed': 'Toggle review state for selected block',
+    'shortcut.block-font-increase': 'Increase text display size',
+    'shortcut.block-font-decrease': 'Decrease text display size',
+    'shortcut.block-font-reset': 'Reset text display size',
+    'shortcut.crop-zoom-in': 'Zoom crop in',
+    'shortcut.crop-zoom-out': 'Zoom crop out',
+    'shortcut.crop-zoom-reset': 'Reset crop zoom',
+    'shortcut.focus-next-block': 'Go to next block (auto-save)',
+    'shortcut.focus-prev-block': 'Go to previous block (auto-save)'
   }
 };
