@@ -555,6 +555,11 @@ window.AppLocales.en = {
     'shortcut.load-ocr-page': 'Load OCR page',
     'shortcut.open-fullpage': 'Open full-page view',
     'shortcut.toggle-sidebar': 'Show/hide sidebar',
-    'shortcut.project-settings': 'Project settings'
+    'shortcut.project-settings': 'Project settings',
+    'shortcut.undo': 'Undo',
+    'shortcut.redo': 'Redo',
+    'shortcut.export': 'Export project',
+    'shortcut.text-preview': 'Full-text preview',
+    'shortcut.dashboard': 'Progress dashboard'
   }
 };

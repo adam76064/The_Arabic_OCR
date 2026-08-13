@@ -555,6 +555,11 @@ window.AppLocales.de = {
     'shortcut.load-ocr-page': 'OCR-Seite laden',
     'shortcut.open-fullpage': 'Ganzseitenansicht öffnen',
     'shortcut.toggle-sidebar': 'Seitenleiste ein-/ausblenden',
-    'shortcut.project-settings': 'Projekteinstellungen'
+    'shortcut.project-settings': 'Projekteinstellungen',
+    'shortcut.undo': 'Rückgängig',
+    'shortcut.redo': 'Wiederholen',
+    'shortcut.export': 'Projekt exportieren',
+    'shortcut.text-preview': 'Volltextvorschau',
+    'shortcut.dashboard': 'Fortschritts-Dashboard'
   }
 };

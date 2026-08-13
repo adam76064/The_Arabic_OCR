@@ -555,6 +555,11 @@ window.AppLocales.ar = {
     'shortcut.load-ocr-page': 'تحميل صفحة OCR',
     'shortcut.open-fullpage': 'عرض الصفحة بالحجم الكامل',
     'shortcut.toggle-sidebar': 'إظهار/إخفاء الشريط الجانبي',
-    'shortcut.project-settings': 'إعدادات المشروع'
+    'shortcut.project-settings': 'إعدادات المشروع',
+    'shortcut.undo': 'تراجع',
+    'shortcut.redo': 'إعادة',
+    'shortcut.export': 'تصدير المشروع',
+    'shortcut.text-preview': 'معاينة النص الكامل',
+    'shortcut.dashboard': 'لوحة التقدم'
   }
 };
