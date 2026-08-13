@@ -124,6 +124,22 @@ window.AppLocales.en = {
     'export.exporting': '⏳ Exporting…',
     'export.success': 'Files exported successfully ✓',
     'export.error': 'An error occurred during export.',
-    'export.untitled': 'Untitled project'
+    'export.untitled': 'Untitled project',
+    'projects.back': 'Back',
+    'projects.backTitle': 'Back to the home page',
+    'projects.title': 'Projects',
+    'projects.search': 'Search…',
+    'projects.name': 'Title',
+    'projects.author': 'Author',
+    'projects.created': 'Created',
+    'projects.pages': 'Pages',
+    'projects.progress': 'Progress',
+    'projects.actions': 'Actions',
+    'projects.loading': 'Loading…',
+    'lan.title': 'Local network projects',
+    'lan.rescan': 'Scan again',
+    'lan.join': 'Join project',
+    'lan.password': 'Password',
+    'lan.confirmJoin': 'Join'
   }
 };

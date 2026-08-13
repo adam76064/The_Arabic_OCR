@@ -13,26 +13,26 @@
     <main class="home-main">
         <div class="page-title-row">
             <div style="display: flex; align-items: center; gap: 14px;">
-                <button id="back-btn" class="btn-secondary" title="العودة للصفحة الرئيسية" data-icon="back">العودة</button>
-                <h1 style="margin: 0;">المشاريع</h1>
+                <button id="back-btn" class="btn-secondary" data-i18n-title="projects.backTitle" title="العودة للصفحة الرئيسية" data-icon="back" data-i18n="projects.back">العودة</button>
+                <h1 style="margin: 0;" data-i18n="projects.title">المشاريع</h1>
             </div>
-            <input type="text" id="search-input" placeholder="بحث..." class="search-box">
+            <input type="text" id="search-input" data-i18n-placeholder="projects.search" placeholder="بحث..." class="search-box">
         </div>
 
         <div class="table-wrapper">
             <table id="projects-table">
                 <thead>
                     <tr>
-                        <th>العنوان</th>
-                        <th>المؤلف</th>
-                        <th>تاريخ الإنشاء</th>
-                        <th>الصفحات</th>
-                        <th>التقدم</th>
-                        <th>إجراءات</th>
+                        <th data-i18n="projects.name">العنوان</th>
+                        <th data-i18n="projects.author">المؤلف</th>
+                        <th data-i18n="projects.created">تاريخ الإنشاء</th>
+                        <th data-i18n="projects.pages">الصفحات</th>
+                        <th data-i18n="projects.progress">التقدم</th>
+                        <th data-i18n="projects.actions">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="projects-tbody">
-                    <tr id="loading-row"><td colspan="6" style="text-align:center; color:#aaa; padding:40px;">جار التحميل...</td></tr>
+                    <tr id="loading-row"><td colspan="6" style="text-align:center; color:#aaa; padding:40px;" data-i18n="projects.loading">جار التحميل...</td></tr>
                 </tbody>
             </table>
         </div>

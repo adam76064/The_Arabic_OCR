@@ -124,6 +124,22 @@ window.AppLocales.ar = {
     'export.exporting': '⏳ جاري التصدير...',
     'export.success': 'تم تصدير الملفات بنجاح ✓',
     'export.error': 'حدث خطأ أثناء التصدير.',
-    'export.untitled': 'مشروع بدون عنوان'
+    'export.untitled': 'مشروع بدون عنوان',
+    'projects.back': 'العودة',
+    'projects.backTitle': 'العودة للصفحة الرئيسية',
+    'projects.title': 'المشاريع',
+    'projects.search': 'بحث...',
+    'projects.name': 'العنوان',
+    'projects.author': 'المؤلف',
+    'projects.created': 'تاريخ الإنشاء',
+    'projects.pages': 'الصفحات',
+    'projects.progress': 'التقدم',
+    'projects.actions': 'إجراءات',
+    'projects.loading': 'جار التحميل...',
+    'lan.title': 'مشاريع الشبكة المحلية',
+    'lan.rescan': 'إعادة البحث',
+    'lan.join': 'الانضمام للمشروع',
+    'lan.password': 'كلمة المرور',
+    'lan.confirmJoin': 'انضمام'
   }
 };

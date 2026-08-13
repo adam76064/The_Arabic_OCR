@@ -12,8 +12,8 @@
 
     <main class="home-main">
         <div class="page-title-row">
-            <h1>مشاريع الشبكة المحلية</h1>
-            <button id="rescan-btn" class="btn-primary" data-icon="scan">إعادة البحث</button>
+            <h1 data-i18n="lan.title">مشاريع الشبكة المحلية</h1>
+            <button id="rescan-btn" class="btn-primary" data-icon="scan" data-i18n="lan.rescan">إعادة البحث</button>
         </div>
         <div id="lan-status" style="margin-bottom:16px; color:#888; font-size:14px;">جارٍ البحث عن مشاريع على الشبكة...</div>
         <div id="lan-results" class="home-cards"></div>
@@ -22,14 +22,14 @@
     <div class="modal hidden" id="lan-join-modal">
         <div class="modal-overlay"></div>
         <div class="modal-box">
-            <div class="modal-header"><h3>الانضمام للمشروع</h3><button class="modal-close" id="lan-join-close">✕</button></div>
+            <div class="modal-header"><h3 data-i18n="lan.join">الانضمام للمشروع</h3><button class="modal-close" id="lan-join-close">✕</button></div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>كلمة المرور</label>
+                    <label data-i18n="lan.password">كلمة المرور</label>
                     <input type="password" id="lan-join-password">
                 </div>
                 <div class="form-actions">
-                    <button id="lan-join-confirm" class="btn-success">انضمام</button>
+                    <button id="lan-join-confirm" class="btn-success" data-i18n="lan.confirmJoin">انضمام</button>
                 </div>
             </div>
         </div>

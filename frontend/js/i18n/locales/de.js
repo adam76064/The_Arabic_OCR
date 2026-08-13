@@ -124,6 +124,22 @@ window.AppLocales.de = {
     'export.exporting': '⏳ Export wird ausgeführt…',
     'export.success': 'Dateien wurden erfolgreich exportiert ✓',
     'export.error': 'Beim Export ist ein Fehler aufgetreten.',
-    'export.untitled': 'Unbenanntes Projekt'
+    'export.untitled': 'Unbenanntes Projekt',
+    'projects.back': 'Zurück',
+    'projects.backTitle': 'Zur Startseite',
+    'projects.title': 'Projekte',
+    'projects.search': 'Suchen…',
+    'projects.name': 'Titel',
+    'projects.author': 'Autor',
+    'projects.created': 'Erstellt',
+    'projects.pages': 'Seiten',
+    'projects.progress': 'Fortschritt',
+    'projects.actions': 'Aktionen',
+    'projects.loading': 'Wird geladen…',
+    'lan.title': 'Lokale Netzwerkprojekte',
+    'lan.rescan': 'Erneut suchen',
+    'lan.join': 'Projekt beitreten',
+    'lan.password': 'Passwort',
+    'lan.confirmJoin': 'Beitreten'
   }
 };
