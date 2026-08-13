@@ -586,6 +586,13 @@ window.AppLocales.en = {
     'shortcut.align-justify': 'Justify',
     'shortcut.dir-rtl': 'Text direction: right to left',
     'shortcut.dir-ltr': 'Text direction: left to right',
-    'settings.delete': 'Delete'
+    'settings.delete': 'Delete',
+    'dash.freeLimit': 'Three free files are available daily. Remaining:',
+    'dash.scanMode': 'Scan mode:',
+    'dash.fullScan': 'Scan full page',
+    'dash.blockScan': 'Scan current blocks (BBoxes)',
+    'dash.lensHint': 'The page will be sent to Google Lens; text and bounding boxes will be built automatically.',
+    'dash.startRangeHint': 'The default range starts at the first unprocessed page.',
+    'dash.smartChunking': 'Smart chunking is enabled: files exceeding 1,000 pages, 200 MB, or 200 pages per batch are automatically split for stable processing.'
   }
 };

@@ -586,6 +586,13 @@ window.AppLocales.de = {
     'shortcut.align-justify': 'Blocksatz',
     'shortcut.dir-rtl': 'Textrichtung: rechts nach links',
     'shortcut.dir-ltr': 'Textrichtung: links nach rechts',
-    'settings.delete': 'Löschen'
+    'settings.delete': 'Löschen',
+    'dash.freeLimit': 'Drei kostenlose Dateien sind täglich verfügbar. Verbleibend:',
+    'dash.scanMode': 'Scanmodus:',
+    'dash.fullScan': 'Gesamte Seite scannen',
+    'dash.blockScan': 'Aktuelle Blöcke scannen (BBoxes)',
+    'dash.lensHint': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
+    'dash.startRangeHint': 'Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.',
+    'dash.smartChunking': 'Intelligente Aufteilung ist aktiviert: Dateien über 1.000 Seiten, 200 MB oder 200 Seiten pro Stapel werden für stabile Verarbeitung automatisch geteilt.'
   }
 };

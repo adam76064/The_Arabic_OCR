@@ -586,6 +586,13 @@ window.AppLocales.ar = {
     'shortcut.align-justify': 'ضبط (محاذاة الطرفين)',
     'shortcut.dir-rtl': 'اتجاه النص: من اليمين لليسار',
     'shortcut.dir-ltr': 'اتجاه النص: من اليسار لليمين',
-    'settings.delete': 'حذف'
+    'settings.delete': 'حذف',
+    'dash.freeLimit': 'متاح 3 ملفات مجانية يومياً. (المتبقي:',
+    'dash.scanMode': 'طريقة المسح (Scan Mode):',
+    'dash.fullScan': 'مسح الصفحة كاملة',
+    'dash.blockScan': 'مسح بناءً على الكتل الحالية (BBoxes)',
+    'dash.lensHint': 'سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.',
+    'dash.startRangeHint': 'تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.',
+    'dash.smartChunking': 'التقطيع الذكي مفعّل: سيقوم النظام تلقائياً بتجزئة الملفات التي تتجاوز 1000 صفحة، أو 200 ميجابايت، أو 200 صفحة كحد أقصى للدفعة الواحدة لضمان استقرار المعالجة.'
   }
 };
