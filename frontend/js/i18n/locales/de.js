@@ -472,6 +472,12 @@ window.AppLocales.de = {
     'properties.coordinates': '2. Wortkoordinaten (präzise)',
     'properties.smear': '3. Bildverarbeitung (gescannt)',
     'properties.tableLayout': '🛠️ Tabelle layouten',
-    'properties.tableHint': '(Mit Rechtsklick Tabellenzellen zusammenführen und bearbeiten)'
+    'properties.tableHint': '(Mit Rechtsklick Tabellenzellen zusammenführen und bearbeiten)',
+    'preview.newMember': 'Neues Mitglied',
+    'preview.member': 'Mitglied',
+    'preview.cloudUser': 'Cloud-Benutzer',
+    'preview.memberJoined': '👤 {user} ist der Cloud-Gruppe beigetreten',
+    'preview.memberLeft': '👤 {user} hat die Cloud-Gruppe verlassen',
+    'preview.pageEdited': '✏️ {user} hat Seite {page} bearbeitet'
   }
 };

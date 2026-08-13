@@ -125,13 +125,13 @@ window.onLanUpdate = function(payload) {
     const type = payload.type;
     if ((type === 'presence' || type === 'user_joining' || type === 'user_leaving') && (meta.notif_join !== false)) {
         if (type === 'user_joining' || (type === 'presence' && payload.status === 'join')) {
-            showNotif(`👤 ${payload.username || 'عضو جديد'} انضم إلى المجموعة السحابية`, 'info');
+            showNotif(previewText('preview.memberJoined', { user: payload.username || previewText('preview.newMember') }), 'info');
         } else if (type === 'user_leaving' || (type === 'presence' && payload.status === 'leave')) {
-            showNotif(`👤 ${payload.username || 'عضو'} غادر المجموعة السحابية`, 'info');
+            showNotif(previewText('preview.memberLeft', { user: payload.username || previewText('preview.member') }), 'info');
         }
     }
     if (type === 'sync_update') {
-        if (meta.notif_edit !== false) showNotif(`✏️ ${payload.username || 'مستخدم سحابي'} عدّل صفحة ${(payload.page_index||0)+1}`, 'info');
+        if (meta.notif_edit !== false) showNotif(previewText('preview.pageEdited', { user: payload.username || previewText('preview.cloudUser'), page: (payload.page_index || 0) + 1 }), 'info');
         const pg = currentProject?.pages[payload.page_index];
         if (pg) { 
             pg.ocr_data = payload.ocr_data; 

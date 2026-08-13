@@ -472,6 +472,12 @@ window.AppLocales.ar = {
     'properties.coordinates': '2. إحداثيات الكلمات (دقيق)',
     'properties.smear': '3. معالجة الصور (ممسوح ضوئياً)',
     'properties.tableLayout': '🛠️ تخطيط الجدول',
-    'properties.tableHint': '(انقر بالزر الأيمن داخل خلايا الجدول للدمج والتعديل)'
+    'properties.tableHint': '(انقر بالزر الأيمن داخل خلايا الجدول للدمج والتعديل)',
+    'preview.newMember': 'عضو جديد',
+    'preview.member': 'عضو',
+    'preview.cloudUser': 'مستخدم سحابي',
+    'preview.memberJoined': '👤 {user} انضم إلى المجموعة السحابية',
+    'preview.memberLeft': '👤 {user} غادر المجموعة السحابية',
+    'preview.pageEdited': '✏️ {user} عدّل صفحة {page}'
   }
 };

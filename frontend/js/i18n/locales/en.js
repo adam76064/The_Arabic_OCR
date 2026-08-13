@@ -472,6 +472,12 @@ window.AppLocales.en = {
     'properties.coordinates': '2. Word coordinates (precise)',
     'properties.smear': '3. Image processing (scanned)',
     'properties.tableLayout': '🛠️ Layout table',
-    'properties.tableHint': '(Right-click table cells to merge and edit them)'
+    'properties.tableHint': '(Right-click table cells to merge and edit them)',
+    'preview.newMember': 'New member',
+    'preview.member': 'Member',
+    'preview.cloudUser': 'Cloud user',
+    'preview.memberJoined': '👤 {user} joined the cloud group',
+    'preview.memberLeft': '👤 {user} left the cloud group',
+    'preview.pageEdited': '✏️ {user} edited page {page}'
   }
 };
