@@ -419,6 +419,7 @@ window.AppLocales.de = {
     'projectSettings.saving': 'Wird gespeichert…',
     'projectSettings.save': 'Einstellungen speichern',
     'projectSettings.sorting': '⏳ Wird sortiert…',
-    'projectSettings.detecting': '⏳ Seitennummern werden erkannt…'
+    'projectSettings.detecting': '⏳ Seitennummern werden erkannt…',
+    'sidebar.exitConfirm': 'Möchten Sie die Anwendung wirklich beenden?'
   }
 };

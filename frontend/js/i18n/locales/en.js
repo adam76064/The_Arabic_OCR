@@ -419,6 +419,7 @@ window.AppLocales.en = {
     'projectSettings.saving': 'Saving…',
     'projectSettings.save': 'Save settings',
     'projectSettings.sorting': '⏳ Sorting…',
-    'projectSettings.detecting': '⏳ Detecting page numbers…'
+    'projectSettings.detecting': '⏳ Detecting page numbers…',
+    'sidebar.exitConfirm': 'Are you sure you want to exit the application?'
   }
 };

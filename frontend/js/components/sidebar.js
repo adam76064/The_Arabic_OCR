@@ -104,7 +104,7 @@
     if (exitBtn && !exitBtn._sidebarBound) {
       exitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (confirm('هل أنت متأكد من الخروج من التطبيق؟')) {
+        if (confirm(window.AppI18n.t('sidebar.exitConfirm'))) {
           if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.close_app === 'function') {
             window.pywebview.api.close_app();
           } else {

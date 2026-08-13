@@ -419,6 +419,7 @@ window.AppLocales.ar = {
     'projectSettings.saving': 'جاري الحفظ...',
     'projectSettings.save': 'حفظ الإعدادات',
     'projectSettings.sorting': '⏳ جاري الترتيب...',
-    'projectSettings.detecting': '⏳ جاري كشف الأرقام...'
+    'projectSettings.detecting': '⏳ جاري كشف الأرقام...',
+    'sidebar.exitConfirm': 'هل أنت متأكد من الخروج من التطبيق؟'
   }
 };
