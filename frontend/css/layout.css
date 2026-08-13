@@ -14,7 +14,7 @@ body.has-sidebar {
   color: #f8fafc;
   display:flex;
   flex-direction:column;
-  transition: margin-right 0.3s ease, width 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  transition: margin-inline-start 0.3s ease, width 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   z-index:1000;
   flex-shrink:0;
   box-shadow: -2px 0 10px rgba(0,0,0,0.1);
@@ -23,7 +23,7 @@ body.has-sidebar {
   top:0;
 }
 #sidebar.collapsed { 
-  margin-right: calc(-1 * var(--sidebar-width)); 
+  margin-inline-start: calc(-1 * var(--sidebar-width));
   transform: translateX(20%);
   visibility: hidden;
   pointer-events: none;
@@ -48,7 +48,7 @@ body.has-sidebar {
 .sidebar-link {
   display:flex; align-items:center; gap:10px; padding:12px 20px;
   color:#cbd5e1; text-decoration:none; font-size:14px; font-weight:500;
-  transition: background 0.2s, color 0.2s; border:none; background:transparent; width:100%; text-align:right; cursor:pointer;
+  transition: background 0.2s, color 0.2s; border:none; background:transparent; width:100%; text-align: start; cursor:pointer;
 }
 .sidebar-link:hover, .sidebar-link.active { background: var(--color-sidebar-hover); color:#ffffff; }
 .sidebar-link-accent { color:#38bdf8; }
@@ -111,6 +111,6 @@ body.night-mode .sticky-nav-wrapper { background:#0f172a !important; border-bott
 body.night-mode .compact-settings-nav h1 { color:#f8fafc !important; }
 
 /* Mirror the sidebar shell when the selected interface language is LTR. */
-html[dir="ltr"] #sidebar { box-shadow: 2px 0 10px rgba(0,0,0,0.1); transition: margin-left 0.3s ease, width 0.3s ease, transform 0.3s ease, visibility 0.3s ease; }
-html[dir="ltr"] #sidebar.collapsed { margin-right: 0; margin-left: calc(-1 * var(--sidebar-width)); transform: translateX(-20%); }
+html[dir="ltr"] #sidebar { box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+html[dir="ltr"] #sidebar.collapsed { transform: translateX(-20%); }
 html[dir="ltr"] #sidebar-collapsed-tab { right: auto; left: 0; border-right: 1px solid var(--color-sidebar-hover); border-left: none; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.15); }
