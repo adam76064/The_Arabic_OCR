@@ -14,17 +14,17 @@
     <main id="main-content">
         <div class="toolbar">
             <div class="page-nav">
-                <button id="prev-page" class="nav-btn" title="السابق">‹</button>
+                <button id="prev-page" class="nav-btn" data-i18n-title="review.previous" title="السابق">‹</button>
                 <span class="page-indicator">
                     صفحة الكتاب: <strong id="logical-page-display">1</strong>
                     &nbsp;|&nbsp; PDF:
                     <input type="number" id="current-page-num" value="1">
                     من <span id="total-pages">1</span>
                 </span>
-                <button id="next-page" class="nav-btn" title="التالي">›</button>
+                <button id="next-page" class="nav-btn" data-i18n-title="review.next" title="التالي">›</button>
             </div>
 
-            <div id="toolbar-thumb-wrapper" title="معاينة الصفحة — انقر للتكبير">
+            <div id="toolbar-thumb-wrapper" data-i18n-title="review.thumb" title="معاينة الصفحة — انقر للتكبير">
                 <img id="thumb-image" src="" alt="thumbnail">
                 <canvas id="thumb-canvas"></canvas>
                 <div id="toolbar-thumb-popup">
@@ -33,11 +33,11 @@
                 </div>
             </div>
 
-            <button id="undo-btn" class="btn-icon" title="تراجع" data-icon="undo"></button>
-            <button id="redo-btn" class="btn-icon" title="إعادة" data-icon="redo"></button>
-            <button id="save-page" class="btn-icon" title="حفظ التعديلات (Ctrl+S)" data-icon="save"></button>
-            <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview">عرض النص</button>
-            <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard">لوحة</button>
+            <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo"></button>
+            <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo"></button>
+            <button id="save-page" class="btn-icon" data-i18n-title="review.save" title="حفظ التعديلات (Ctrl+S)" data-icon="save"></button>
+            <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview" data-i18n="review.text">عرض النص</button>
+            <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard" data-i18n="review.dashboard">لوحة</button>
 
             <div class="page-nav" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
                 <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" title="تصغير حجم عرض النص">A-</button>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="page-nav" style="position: relative; margin-right: 15px;">
-                <button id="track-settings-btn" class="btn-secondary" title="إعدادات التتبع" data-icon="search">التتبع</button>
+                <button id="track-settings-btn" class="btn-secondary" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
                 <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
                     <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> تتبع خلايا الجداول</label>
                     <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> تتبع الكلمات</label>
@@ -72,7 +72,7 @@
                     <div id="crop-section" class="resizable-panel">
                         <div class="panel-resize-handle" id="crop-resize-handle"></div>
                         <div id="crop-viewport">
-                            <div id="crop-placeholder">اختر كتلة نصية لعرضها هنا</div>
+                            <div id="crop-placeholder" data-i18n="review.cropPlaceholder">اختر كتلة نصية لعرضها هنا</div>
                             <div id="crop-viewer" class="hidden">
                                 <div id="crop-image"></div>
                             </div>
@@ -101,8 +101,8 @@
 
     <div id="fullpage-overlay" class="hidden">
         <div id="fullpage-header">
-            <span>عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
-            <button id="close-fullpage-btn">✕ إغلاق</button>
+            <span data-i18n="review.fullPage">عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
+            <button id="close-fullpage-btn" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="fullpage-body">
             <div id="fullpage-wrapper">
@@ -113,13 +113,13 @@
     </div>
 
     <div id="category-picker" class="hidden">
-        <div class="category-picker-title">نوع الكتلة</div>
+        <div class="category-picker-title" data-i18n="review.category">نوع الكتلة</div>
         <div id="category-picker-list"></div>
     </div>
 
     <div id="text-preview-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#fff;display:flex;flex-direction:column;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#2c3e50;color:white;flex-shrink:0;flex-wrap:wrap;gap:8px;">
-            <span style="font-weight:700;">معاينة النص الكامل — قابل للتحرير</span>
+            <span style="font-weight:700;" data-i18n="review.fullText">معاينة النص الكامل — قابل للتحرير</span>
             <div style="display:flex;gap:14px;align-items:center;">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
                     <input type="checkbox" id="text-preview-raw-toggle">
@@ -137,15 +137,15 @@
     <div id="ocr-range-modal" class="modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-box">
-            <div class="modal-header"><h3>تحميل صفحة OCR</h3><button class="modal-close" id="ocr-range-close">✕</button></div>
+            <div class="modal-header"><h3 data-i18n="review.ocrLoad">تحميل صفحة OCR</h3><button class="modal-close" id="ocr-range-close">✕</button></div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>ملف JSON</label>
-                    <button id="ocr-range-pick-file" class="btn-secondary">اختر ملف JSON</button>
-                    <div id="ocr-range-path" class="path-display">لم يُختر ملف</div>
+                    <label data-i18n="review.jsonFile">ملف JSON</label>
+                    <button id="ocr-range-pick-file" class="btn-secondary" data-i18n="review.chooseJson">اختر ملف JSON</button>
+                    <div id="ocr-range-path" class="path-display" data-i18n="review.noFile">لم يُختر ملف</div>
                 </div>
                 <div class="form-group">
-                    <label>تطبيق على</label>
+                    <label data-i18n="review.applyTo">تطبيق على</label>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
                         <label class="radio-item"><input type="radio" name="ocr-range-mode" value="current" checked> الصفحة الحالية فقط</label>
                         <label class="radio-item"><input type="radio" name="ocr-range-mode" value="range"> نطاق صفحات</label>
@@ -157,7 +157,7 @@
                     <span style="font-size:12px;color:#888;">(أرقام PDF)</span>
                 </div>
                 <div class="form-actions" style="margin-top:16px;">
-                    <button id="ocr-range-confirm" class="btn-success">تطبيق</button>
+                    <button id="ocr-range-confirm" class="btn-success" data-i18n="review.apply">تطبيق</button>
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@
 
     <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#f0f2f5;overflow-y:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#2c3e50;color:white;position:sticky;top:0;z-index:10;">
-            <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard">لوحة تقدم المشروع</span>
+            <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard" data-i18n="review.projectProgress">لوحة تقدم المشروع</span>
             <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
         </div>
         <div id="dashboard-body" style="padding:24px;max-width:900px;margin:0 auto;"></div>
