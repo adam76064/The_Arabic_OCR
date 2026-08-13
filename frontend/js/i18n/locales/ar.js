@@ -370,6 +370,13 @@ window.AppLocales.ar = {
     'shortcut.category.block': 'الكتلة النصية',
     'shortcut.category.crop': 'الاقتطاع',
     'shortcut.category.formatting': 'تنسيق النص',
-    'shortcut.category.alignment': 'محاذاة الكتلة'
+    'shortcut.category.alignment': 'محاذاة الكتلة',
+    'table.merge': 'دمج الخلايا المحددة',
+    'table.addRowAbove': 'إضافة صف للأعلى',
+    'table.addRowBelow': 'إضافة صف للأسفل',
+    'table.addColRight': 'إضافة عمود لليمين',
+    'table.addColLeft': 'إضافة عمود لليسار',
+    'table.deleteCurrentRow': 'حذف الصف الحالي',
+    'table.deleteCurrentCol': 'حذف العمود الحالي'
   }
 };

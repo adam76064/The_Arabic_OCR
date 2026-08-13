@@ -370,6 +370,13 @@ window.AppLocales.de = {
     'shortcut.category.block': 'Textblock',
     'shortcut.category.crop': 'Ausschnitt',
     'shortcut.category.formatting': 'Textformatierung',
-    'shortcut.category.alignment': 'Blockausrichtung'
+    'shortcut.category.alignment': 'Blockausrichtung',
+    'table.merge': 'Ausgewählte Zellen zusammenführen',
+    'table.addRowAbove': 'Zeile oberhalb hinzufügen',
+    'table.addRowBelow': 'Zeile unterhalb hinzufügen',
+    'table.addColRight': 'Spalte rechts hinzufügen',
+    'table.addColLeft': 'Spalte links hinzufügen',
+    'table.deleteCurrentRow': 'Aktuelle Zeile löschen',
+    'table.deleteCurrentCol': 'Aktuelle Spalte löschen'
   }
 };

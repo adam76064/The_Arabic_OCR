@@ -370,6 +370,13 @@ window.AppLocales.en = {
     'shortcut.category.block': 'Text block',
     'shortcut.category.crop': 'Crop',
     'shortcut.category.formatting': 'Text formatting',
-    'shortcut.category.alignment': 'Block alignment'
+    'shortcut.category.alignment': 'Block alignment',
+    'table.merge': 'Merge selected cells',
+    'table.addRowAbove': 'Add row above',
+    'table.addRowBelow': 'Add row below',
+    'table.addColRight': 'Add column to the right',
+    'table.addColLeft': 'Add column to the left',
+    'table.deleteCurrentRow': 'Delete current row',
+    'table.deleteCurrentCol': 'Delete current column'
   }
 };

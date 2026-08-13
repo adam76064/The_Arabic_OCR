@@ -1,5 +1,7 @@
 // frontend/js/table-editor.js
 
+const tableEditorText = (key) => window.AppI18n?.t(key) || key;
+
 window.TableEditor = {
     activeHandle: null,
     contextMenu: null,
@@ -120,12 +122,12 @@ window.TableEditor = {
             background: white; border: 1px solid #cbd5e1; border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 10000;
             font-family: sans-serif; font-size: 13px; color: #334155; min-width: 180px;
-            overflow: hidden; direction: rtl;
+            overflow: hidden; direction: inherit;
         `;
 
         const createItem = (text, icon, onClick, danger=false) => {
             const div = document.createElement('div');
-            div.innerHTML = `<span style="margin-left: 8px;">${icon}</span> ${text}`;
+            div.innerHTML = `<span style="margin-inline-end: 8px;">${icon}</span> ${text}`;
             div.style.cssText = `padding: 10px 16px; cursor: pointer; display: flex; align-items: center; transition: background 0.2s; ${danger ? 'color: #e74c3c;' : ''}`;
             div.onmouseover = () => div.style.background = danger ? '#fef2f2' : '#f1f5f9';
             div.onmouseout = () => div.style.background = 'white';
@@ -140,35 +142,35 @@ window.TableEditor = {
         };
 
         if (window.selectedTableCells && window.selectedTableCells.length > 1) {
-            menu.appendChild(createItem('دمج الخلايا المحددة', icon('merge'), () => {
+            menu.appendChild(createItem(tableEditorText('table.merge'), icon('merge'), () => {
                 this.mergeCells(tableBlock, window.selectedTableCells);
                 window.selectedTableCells = [];
             }));
             menu.appendChild(divider());
         }
 
-        menu.appendChild(createItem('إضافة صف للأعلى', icon('rowAbove'), () => {
+        menu.appendChild(createItem(tableEditorText('table.addRowAbove'), icon('rowAbove'), () => {
             const y = (ts.rows_y[cell.row] + (ts.rows_y[Math.max(0, cell.row-1)] || ts.rows_y[0])) / 2;
             ts.rows_y.splice(cell.row, 0, y); this.rebuildGrid(ts);
         }));
-        menu.appendChild(createItem('إضافة صف للأسفل', icon('rowBelow'), () => {
+        menu.appendChild(createItem(tableEditorText('table.addRowBelow'), icon('rowBelow'), () => {
             const y = (ts.rows_y[cell.row+1] + (ts.rows_y[cell.row+2] || ts.rows_y[ts.rows_y.length-1])) / 2;
             ts.rows_y.splice(cell.row+1, 0, y); this.rebuildGrid(ts);
         }));
         menu.appendChild(divider());
-        menu.appendChild(createItem('إضافة عمود لليمين', icon('colRight'), () => {
+        menu.appendChild(createItem(tableEditorText('table.addColRight'), icon('colRight'), () => {
             const x = (ts.cols_x[cell.col+1] + (ts.cols_x[cell.col+2] || ts.cols_x[ts.cols_x.length-1])) / 2;
             ts.cols_x.splice(cell.col+1, 0, x); this.rebuildGrid(ts);
         }));
-        menu.appendChild(createItem('إضافة عمود لليسار', icon('colLeft'), () => {
+        menu.appendChild(createItem(tableEditorText('table.addColLeft'), icon('colLeft'), () => {
             const x = (ts.cols_x[cell.col] + (ts.cols_x[Math.max(0, cell.col-1)] || ts.cols_x[0])) / 2;
             ts.cols_x.splice(cell.col, 0, x); this.rebuildGrid(ts);
         }));
         menu.appendChild(divider());
-        menu.appendChild(createItem('حذف الصف الحالي', icon('trash'), () => {
+        menu.appendChild(createItem(tableEditorText('table.deleteCurrentRow'), icon('trash'), () => {
             if (ts.rows_y.length > 2) { ts.rows_y.splice(cell.row+1, 1); this.rebuildGrid(ts); }
         }, true));
-        menu.appendChild(createItem('حذف العمود الحالي', icon('trash'), () => {
+        menu.appendChild(createItem(tableEditorText('table.deleteCurrentCol'), icon('trash'), () => {
             if (ts.cols_x.length > 2) { ts.cols_x.splice(cell.col+1, 1); this.rebuildGrid(ts); }
         }, true));
 
