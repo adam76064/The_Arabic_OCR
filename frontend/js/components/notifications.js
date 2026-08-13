@@ -7,7 +7,7 @@
     const tray = document.getElementById('notif-tray') || (() => {
       const t = document.createElement('div');
       t.id = 'notif-tray';
-      t.style.cssText = 'position:fixed;bottom:18px;left:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;';
+      t.style.cssText = 'position:fixed;bottom:18px;inset-inline-start:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;';
       document.body.appendChild(t);
       return t;
     })();

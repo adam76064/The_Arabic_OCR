@@ -23,6 +23,8 @@
     }
   });
 
+  const modalText = (key) => global.AppI18n?.t(key) || key;
+
   // Aesthetic dialog fallback (kept from original)
   if (!global.AestheticDialog) {
     global.AestheticDialog = {
@@ -35,8 +37,8 @@
             <div class="modal-header"><h3>${title}</h3><button class="modal-close">✕</button></div>
             <div class="modal-body">${contentHtml}
               <div class="form-actions" style="margin-top:16px">
-                <button class="btn-secondary aes-btn-cancel">إلغاء</button>
-                <button class="btn-primary aes-btn-confirm">تأكيد</button>
+                <button class="btn-secondary aes-btn-cancel">${modalText('dialog.cancel')}</button>
+                <button class="btn-primary aes-btn-confirm">${modalText('dialog.confirm')}</button>
               </div>
             </div>
           </div>
