@@ -478,6 +478,7 @@ window.AppLocales.ar = {
     'preview.cloudUser': 'مستخدم سحابي',
     'preview.memberJoined': '👤 {user} انضم إلى المجموعة السحابية',
     'preview.memberLeft': '👤 {user} غادر المجموعة السحابية',
-    'preview.pageEdited': '✏️ {user} عدّل صفحة {page}'
+    'preview.pageEdited': '✏️ {user} عدّل صفحة {page}',
+    'review.loadFailed': 'تعذّر تحميل المشروع'
   }
 };

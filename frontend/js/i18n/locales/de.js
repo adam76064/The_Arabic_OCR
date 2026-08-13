@@ -478,6 +478,7 @@ window.AppLocales.de = {
     'preview.cloudUser': 'Cloud-Benutzer',
     'preview.memberJoined': '👤 {user} ist der Cloud-Gruppe beigetreten',
     'preview.memberLeft': '👤 {user} hat die Cloud-Gruppe verlassen',
-    'preview.pageEdited': '✏️ {user} hat Seite {page} bearbeitet'
+    'preview.pageEdited': '✏️ {user} hat Seite {page} bearbeitet',
+    'review.loadFailed': 'Projekt konnte nicht geladen werden'
   }
 };
