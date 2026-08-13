@@ -224,6 +224,23 @@ window.AppLocales.de = {
     'format.alignLeft': 'Linksbündig',
     'format.justify': 'Blocksatz',
     'format.rtl': 'Rechts nach links (RTL)',
-    'format.ltr': 'Links nach rechts (LTR)'
+    'format.ltr': 'Links nach rechts (LTR)',
+    'table.insert': 'Tabelle einfügen',
+    'table.textToTable': 'Text in Tabelle umwandeln',
+    'table.tableToText': 'Tabelle in Text umwandeln',
+    'table.rowAbove': 'Zeile oberhalb einfügen',
+    'table.rowBelow': 'Zeile unterhalb einfügen',
+    'table.colRight': 'Spalte rechts einfügen',
+    'table.colLeft': 'Spalte links einfügen',
+    'table.merge': 'Ausgewählte Zellen zusammenführen',
+    'table.split': 'Zelle teilen',
+    'table.borders': 'Tabellenrahmen',
+    'table.fill': 'Zellenfüllfarbe',
+    'table.top': 'Oben ausrichten',
+    'table.middle': 'Mittig ausrichten',
+    'table.bottom': 'Unten ausrichten',
+    'table.deleteRow': 'Zeile löschen',
+    'table.deleteCol': 'Spalte löschen',
+    'table.delete': 'Gesamte Tabelle löschen'
   }
 };

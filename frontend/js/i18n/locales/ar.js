@@ -224,6 +224,23 @@ window.AppLocales.ar = {
     'format.tables': 'الجداول',
     'format.processing': 'معالجة النصوص',
     'format.quranTitle': 'إدراج آية قرآنية (بحث أو اختيار)',
-    'format.quran': 'إدراج آية'
+    'format.quran': 'إدراج آية',
+    'table.insert': 'إدراج جدول',
+    'table.textToTable': 'تحويل النص إلى جدول',
+    'table.tableToText': 'تحويل الجدول إلى نص',
+    'table.rowAbove': 'إدراج صف لأعلى',
+    'table.rowBelow': 'إدراج صف لأسفل',
+    'table.colRight': 'إدراج عمود لليمين',
+    'table.colLeft': 'إدراج عمود لليسار',
+    'table.merge': 'دمج الخلايا المحددة',
+    'table.split': 'تقسيم الخلية',
+    'table.borders': 'حدود الجدول',
+    'table.fill': 'لون تعبئة الخلية',
+    'table.top': 'محاذاة عمودية لأعلى',
+    'table.middle': 'محاذاة عمودية للوسط',
+    'table.bottom': 'محاذاة عمودية لأسفل',
+    'table.deleteRow': 'حذف الصف',
+    'table.deleteCol': 'حذف العمود',
+    'table.delete': 'حذف الجدول بالكامل'
   }
 };

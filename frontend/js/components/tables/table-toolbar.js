@@ -23,38 +23,40 @@ const TABLE_ICONS = {
     fill: `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;pointer-events:none;"><path d="M19 11l-8-8-8.5 8.5a2 2 0 0 0 0 2.8l5.7 5.7a2 2 0 0 0 2.8 0L19 11z"/><path d="M5 14h10"/><path d="M17 17c0 1.1.9 3 2 3s2-1.9 2-3c0-1.5-2-3.5-2-3.5S17 15.5 17 17z"/></svg>`,
 };
 
+const tableText = (key) => window.AppI18n?.t(key) || key;
+
 const TABLE_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" id="tb-insert-table" title="إدراج جدول">${TABLE_ICONS.insertTable}</button>
-    <button class="toolbar-icon-btn" id="tb-text-to-table" title="تحويل النص إلى جدول">${TABLE_ICONS.textToTable}</button>
-    <button class="toolbar-icon-btn" id="tb-table-to-text" title="تحويل الجدول إلى نص">${TABLE_ICONS.tableToText}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-table" title="${tableText('table.insert')}">${TABLE_ICONS.insertTable}</button>
+    <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
+    <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-insert-row-above" title="إدراج صف لأعلى">${TABLE_ICONS.insertRowAbove}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-row-below" title="إدراج صف لأسفل">${TABLE_ICONS.insertRowBelow}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-col-right" title="إدراج عمود لليمين">${TABLE_ICONS.insertColRight}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-col-left" title="إدراج عمود لليسار">${TABLE_ICONS.insertColLeft}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-row-above" title="${tableText('table.rowAbove')}">${TABLE_ICONS.insertRowAbove}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-row-below" title="${tableText('table.rowBelow')}">${TABLE_ICONS.insertRowBelow}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-col-right" title="${tableText('table.colRight')}">${TABLE_ICONS.insertColRight}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-col-left" title="${tableText('table.colLeft')}">${TABLE_ICONS.insertColLeft}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-merge-cells" title="دمج الخلايا المحددة">${TABLE_ICONS.merge}</button>
-    <button class="toolbar-icon-btn" id="tb-split-cell" title="تقسيم الخلية">${TABLE_ICONS.split}</button>
+    <button class="toolbar-icon-btn" id="tb-merge-cells" title="${tableText('table.merge')}">${TABLE_ICONS.merge}</button>
+    <button class="toolbar-icon-btn" id="tb-split-cell" title="${tableText('table.split')}">${TABLE_ICONS.split}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-borders" title="حدود الجدول">${TABLE_ICONS.borders}</button>
-    <label class="toolbar-icon-color-label" title="لون تعبئة الخلية">
+    <button class="toolbar-icon-btn" id="tb-borders" title="${tableText('table.borders')}">${TABLE_ICONS.borders}</button>
+    <label class="toolbar-icon-color-label" title="${tableText('table.fill')}">
         ${TABLE_ICONS.fill}
         <span class="toolbar-icon-color-bar" id="tb-fill-color-bar" style="background:#fde68a;"></span>
         <input type="color" id="tb-fill-color" value="#fde68a">
     </label>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-valign-top" title="محاذاة عمودية لأعلى">${TABLE_ICONS.valignTop}</button>
-    <button class="toolbar-icon-btn" id="tb-valign-middle" title="محاذاة عمودية للوسط">${TABLE_ICONS.valignMiddle}</button>
-    <button class="toolbar-icon-btn" id="tb-valign-bottom" title="محاذاة عمودية لأسفل">${TABLE_ICONS.valignBottom}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-top" title="${tableText('table.top')}">${TABLE_ICONS.valignTop}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-middle" title="${tableText('table.middle')}">${TABLE_ICONS.valignMiddle}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-bottom" title="${tableText('table.bottom')}">${TABLE_ICONS.valignBottom}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-delete-row" title="حذف الصف" style="color: #ef4444;">${TABLE_ICONS.deleteRow}</button>
-    <button class="toolbar-icon-btn" id="tb-delete-col" title="حذف العمود" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
-    <button class="toolbar-icon-btn" id="tb-delete-table" title="حذف الجدول بالكامل" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-row" title="${tableText('table.deleteRow')}" style="color: #ef4444;">${TABLE_ICONS.deleteRow}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-col" title="${tableText('table.deleteCol')}" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-table" title="${tableText('table.delete')}" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
 `;
 
 // ── Helpers shared between the toolbar buttons and the context menu ─────
@@ -118,7 +120,7 @@ function doSplit(cell) {
     if (!cell) return;
     const table = cell.closest('table');
     window.AestheticDialog.show(
-        "تقسيم الخلية",
+        "${tableText('table.split')}",
         `<div class="aes-group"><label>عدد الأعمدة داخل هذه الخلية:</label><input type="number" id="split-c" value="2" min="1"></div>
          <div class="aes-group"><label>عدد الصفوف داخل هذه الخلية:</label><input type="number" id="split-r" value="1" min="1"></div>`,
         (modal) => {
@@ -203,7 +205,7 @@ function doDeleteTable(cell) {
 
 function bordersDialog(cells) {
     window.AestheticDialog.show(
-        "حدود الجدول",
+        "${tableText('table.borders')}",
         `<div class="aes-group"><label>سُمك الحد (px):</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
          <div class="aes-group"><label>نمط الحد:</label>
             <select id="border-style">
@@ -267,13 +269,13 @@ const TableContextMenu = {
             `<div class="ctx-item ${opts.danger ? 'danger' : ''} ${opts.disabled ? 'disabled' : ''}" data-action="${action}">${icon} <span>${label}</span></div>`;
 
         this.menuEl.innerHTML = [
-            item('insertRowAbove', TABLE_ICONS.insertRowAbove, 'إدراج صف لأعلى'),
-            item('insertRowBelow', TABLE_ICONS.insertRowBelow, 'إدراج صف لأسفل'),
-            item('insertColRight', TABLE_ICONS.insertColRight, 'إدراج عمود لليمين'),
-            item('insertColLeft', TABLE_ICONS.insertColLeft, 'إدراج عمود لليسار'),
+            item('insertRowAbove', TABLE_ICONS.insertRowAbove, tableText('table.rowAbove')),
+            item('insertRowBelow', TABLE_ICONS.insertRowBelow, tableText('table.rowBelow')),
+            item('insertColRight', TABLE_ICONS.insertColRight, tableText('table.colRight')),
+            item('insertColLeft', TABLE_ICONS.insertColLeft, tableText('table.colLeft')),
             '<hr>',
-            item('mergeCells', TABLE_ICONS.merge, 'دمج الخلايا المحددة', { disabled: !multi }),
-            item('splitCell', TABLE_ICONS.split, 'تقسيم الخلية', { disabled: multi }),
+            item('mergeCells', TABLE_ICONS.merge, tableText('table.merge'), { disabled: !multi }),
+            item('splitCell', TABLE_ICONS.split, tableText('table.split'), { disabled: multi }),
             '<hr>',
             item('borders', TABLE_ICONS.borders, 'حدود...'),
             item('fill', iconSm(TABLE_ICONS.fill), 'لون التعبئة...'),
@@ -281,9 +283,9 @@ const TableContextMenu = {
             item('valignMiddle', iconSm(TABLE_ICONS.valignMiddle), 'محاذاة للوسط'),
             item('valignBottom', iconSm(TABLE_ICONS.valignBottom), 'محاذاة لأسفل'),
             '<hr>',
-            item('deleteRow', TABLE_ICONS.deleteRow, 'حذف الصف', { danger: true }),
-            item('deleteCol', TABLE_ICONS.deleteCol, 'حذف العمود', { danger: true }),
-            item('deleteTable', TABLE_ICONS.deleteTable, 'حذف الجدول بالكامل', { danger: true }),
+            item('deleteRow', TABLE_ICONS.deleteRow, tableText('table.deleteRow'), { danger: true }),
+            item('deleteCol', TABLE_ICONS.deleteCol, tableText('table.deleteCol'), { danger: true }),
+            item('deleteTable', TABLE_ICONS.deleteTable, tableText('table.delete'), { danger: true }),
         ].join('');
 
         this.menuEl.querySelectorAll('.ctx-item').forEach(el => {
@@ -346,7 +348,7 @@ const TableToolbar = {
             const target = window.lastFocusedEditable;
             if (!target) { alert("انقر داخل مربع النص أولاً"); return; }
             window.AestheticDialog.show(
-                "إدراج جدول",
+                "${tableText('table.insert')}",
                 `<div class="aes-group"><label>عدد الأعمدة:</label><input type="number" id="tbl-cols" value="3" min="1"></div>
                  <div class="aes-group"><label>عدد الصفوف:</label><input type="number" id="tbl-rows" value="3" min="1"></div>`,
                 (modal) => {
@@ -421,7 +423,7 @@ const TableToolbar = {
 
             if (table) {
                 window.AestheticDialog.show(
-                    "تحويل الجدول إلى نص",
+                    "${tableText('table.tableToText')}",
                     `<div class="aes-group">
                         <label>الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):</label>
                         <input type="text" id="tbl-sep-to-text" value=" - ">

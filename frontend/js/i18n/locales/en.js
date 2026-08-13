@@ -224,6 +224,23 @@ window.AppLocales.en = {
     'format.alignLeft': 'Align left',
     'format.justify': 'Justify',
     'format.rtl': 'Right to left (RTL)',
-    'format.ltr': 'Left to right (LTR)'
+    'format.ltr': 'Left to right (LTR)',
+    'table.insert': 'Insert table',
+    'table.textToTable': 'Convert text to table',
+    'table.tableToText': 'Convert table to text',
+    'table.rowAbove': 'Insert row above',
+    'table.rowBelow': 'Insert row below',
+    'table.colRight': 'Insert column right',
+    'table.colLeft': 'Insert column left',
+    'table.merge': 'Merge selected cells',
+    'table.split': 'Split cell',
+    'table.borders': 'Table borders',
+    'table.fill': 'Cell fill color',
+    'table.top': 'Vertical align top',
+    'table.middle': 'Vertical align middle',
+    'table.bottom': 'Vertical align bottom',
+    'table.deleteRow': 'Delete row',
+    'table.deleteCol': 'Delete column',
+    'table.delete': 'Delete entire table'
   }
 };
