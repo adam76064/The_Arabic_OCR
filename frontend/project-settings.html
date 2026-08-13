@@ -70,13 +70,13 @@
                         <label class="radio-item"><input type="radio" name="ps_tashkeel" value="remove_all"> إزالة الكل</label>
                     </div>
                     <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;">التنوين المنصوب:</span>
+                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.tanween">التنوين المنصوب:</span>
                         <label class="radio-item"><input type="radio" name="ps_tanween" value="none"> بلا تغيير</label>
                         <label class="radio-item"><input type="radio" name="ps_tanween" value="before_alf"> قبل الألف (كتابًا)</label>
                         <label class="radio-item"><input type="radio" name="ps_tanween" value="on_alf"> على الألف (كتاباً)</label>
                     </div>
                     <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;">صيغة الأرقام:</span>
+                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.numbers">صيغة الأرقام:</span>
                         <label class="radio-item"><input type="radio" name="ps_numbers" value="none"> إبقاؤها كما هي</label>
                         <label class="radio-item"><input type="radio" name="ps_numbers" value="to_arabic"> تحويل إلى أرقام عربية (1, 2, 3)</label>
                         <label class="radio-item"><input type="radio" name="ps_numbers" value="to_hindu"> تحويل إلى أرقام هندية (١, ٢, ٣)</label>
@@ -85,12 +85,12 @@
             </div>
 
             <div class="settings-card">
-                <h3>🎨 تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</p>
+                <h3 data-i18n="ps.categoryFormatting">🎨 تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.categoryHint">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</p>
                 
                 <div class="settings-row" style="align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 18px;">
                     <div style="flex: 2;">
-                        <label style="font-weight: bold; font-size: 14px; color: #1e293b; display: block; margin-bottom: 4px;">اختر التصنيف للتعديل:</label>
+                        <label style="font-weight: bold; font-size: 14px; color: #1e293b; display: block; margin-bottom: 4px;" data-i18n="ps.chooseCategory">اختر التصنيف للتعديل:</label>
                         <select id="cat-fmt-select" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
                             <option value="Text">نص عادي (Text)</option>
                             <option value="Title">عنوان رئيسي (Title)</option>
@@ -108,16 +108,16 @@
 
                 <div id="cat-fmt-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
                     <div class="grid-options" style="margin-bottom: 16px;">
-                        <label class="option-item"><input type="checkbox" id="cf-bold"><span class="option-check"></span><span style="font-weight: bold;">غمق (Bold)</span></label>
-                        <label class="option-item"><input type="checkbox" id="cf-italic"><span class="option-check"></span><span style="font-style: italic;">مائل (Italic)</span></label>
-                        <label class="option-item"><input type="checkbox" id="cf-underline"><span class="option-check"></span><span style="text-decoration: underline;">تسطير (Underline)</span></label>
+                        <label class="option-item"><input type="checkbox" id="cf-bold"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="ps.bold">غمق (Bold)</span></label>
+                        <label class="option-item"><input type="checkbox" id="cf-italic"><span class="option-check"></span><span style="font-style: italic;" data-i18n="ps.italic">مائل (Italic)</span></label>
+                        <label class="option-item"><input type="checkbox" id="cf-underline"><span class="option-check"></span><span style="text-decoration: underline;" data-i18n="ps.underline">تسطير (Underline)</span></label>
                     </div>
 
                     <div class="settings-row" style="margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>نوع الخط (Font Family)</label>
+                            <label data-i18n="ps.fontFamily">نوع الخط (Font Family)</label>
                             <select id="cf-font-family" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="">الافتراضي</option>
+                                <option value="" data-i18n="ps.default">الافتراضي</option>
                                 <option value="Arial">Arial</option>
                                 <option value="Simplified Arabic">Simplified Arabic</option>
                                 <option value="Traditional Arabic">Traditional Arabic</option>
@@ -128,7 +128,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>حجم الخط (Font Size)</label>
+                            <label data-i18n="ps.fontSize">حجم الخط (Font Size)</label>
                             <select id="cf-font-size" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
                                 <option value="">الافتراضي</option>
                                 <option value="10pt">10 pt (صغير جداً)</option>
@@ -144,19 +144,19 @@
 
                     <div class="settings-row" style="margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>الاتجاه (Direction)</label>
+                            <label data-i18n="ps.direction">الاتجاه (Direction)</label>
                             <select id="cf-direction" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="rtl">من اليمين لليسار (RTL)</option>
-                                <option value="ltr">من اليسار لليمين (LTR)</option>
+                                <option value="rtl" data-i18n="ps.rtl">من اليمين لليسار (RTL)</option>
+                                <option value="ltr" data-i18n="ps.ltr">من اليسار لليمين (LTR)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>المحاذاة (Alignment)</label>
+                            <label data-i18n="ps.alignment">المحاذاة (Alignment)</label>
                             <select id="cf-align" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="right">يمين (Right)</option>
-                                <option value="center">وسط (Center)</option>
-                                <option value="left">يسار (Left)</option>
-                                <option value="justify">ضبط (Justify)</option>
+                                <option value="right" data-i18n="ps.right">يمين (Right)</option>
+                                <option value="center" data-i18n="ps.center">وسط (Center)</option>
+                                <option value="left" data-i18n="ps.left">يسار (Left)</option>
+                                <option value="justify" data-i18n="ps.justify">ضبط (Justify)</option>
                             </select>
                         </div>
                     </div>
