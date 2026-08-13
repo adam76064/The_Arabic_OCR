@@ -172,6 +172,19 @@ window.AppLocales.de = {
     'review.currentPage': 'Nur aktuelle Seite',
     'review.pageRange': 'Seitenbereich',
     'review.apply': 'Anwenden',
-    'review.projectProgress': 'Projektfortschritts-Dashboard'
+    'review.projectProgress': 'Projektfortschritts-Dashboard',
+    'layout.back': 'Zurück',
+    'layout.previous': 'Vorherige',
+    'layout.page': 'Seitenlayout',
+    'layout.next': 'Nächste',
+    'layout.undo': 'Rückgängig (Ctrl+Z)',
+    'layout.redo': 'Wiederholen (Ctrl+Y)',
+    'layout.select': 'Auswählen',
+    'layout.move': 'Verschieben',
+    'layout.draw': 'Zeichnen',
+    'layout.order': 'Sortieren',
+    'layout.merge': 'Zusammenführen',
+    'layout.delete': 'Löschen',
+    'layout.save': 'Layout speichern'
   }
 };

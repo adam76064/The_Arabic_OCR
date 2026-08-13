@@ -172,6 +172,19 @@ window.AppLocales.ar = {
     'review.currentPage': 'الصفحة الحالية فقط',
     'review.pageRange': 'نطاق صفحات',
     'review.apply': 'تطبيق',
-    'review.projectProgress': 'لوحة تقدم المشروع'
+    'review.projectProgress': 'لوحة تقدم المشروع',
+    'layout.back': 'رجوع',
+    'layout.previous': 'السابق',
+    'layout.page': 'تخطيط صفحة',
+    'layout.next': 'التالي',
+    'layout.undo': 'تراجع (Ctrl+Z)',
+    'layout.redo': 'إعادة (Ctrl+Y)',
+    'layout.select': 'تحديد',
+    'layout.move': 'تحريك',
+    'layout.draw': 'رسم',
+    'layout.order': 'ترتيب',
+    'layout.merge': 'دمج',
+    'layout.delete': 'حذف',
+    'layout.save': 'حفظ التخطيط'
   }
 };

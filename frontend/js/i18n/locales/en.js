@@ -172,6 +172,19 @@ window.AppLocales.en = {
     'review.currentPage': 'Current page only',
     'review.pageRange': 'Page range',
     'review.apply': 'Apply',
-    'review.projectProgress': 'Project progress dashboard'
+    'review.projectProgress': 'Project progress dashboard',
+    'layout.back': 'Back',
+    'layout.previous': 'Previous',
+    'layout.page': 'Page layout',
+    'layout.next': 'Next',
+    'layout.undo': 'Undo (Ctrl+Z)',
+    'layout.redo': 'Redo (Ctrl+Y)',
+    'layout.select': 'Select',
+    'layout.move': 'Move',
+    'layout.draw': 'Draw',
+    'layout.order': 'Order',
+    'layout.merge': 'Merge',
+    'layout.delete': 'Delete',
+    'layout.save': 'Save layout'
   }
 };
