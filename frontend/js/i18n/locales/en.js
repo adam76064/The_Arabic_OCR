@@ -519,6 +519,18 @@ window.AppLocales.en = {
     'ps.medium': '16 pt (medium)',
     'ps.large': '18 pt (large)',
     'ps.xlarge': '24 pt (very large)',
-    'ps.hugeTitle': '32 pt (huge title)'
+    'ps.hugeTitle': '32 pt (huge title)',
+    'table.splitCols': 'Number of columns inside this cell:',
+    'table.splitRows': 'Number of rows inside this cell:',
+    'table.borderWidth': 'Border width (px):',
+    'table.borderStyle': 'Border style:',
+    'table.solid': 'Solid',
+    'table.dashed': 'Dashed',
+    'table.dotted': 'Dotted',
+    'table.double': 'Double',
+    'table.none': 'No border',
+    'table.borderColor': 'Border color:',
+    'table.fillTitle': 'Fill color',
+    'table.chooseBackground': 'Choose background color:'
   }
 };

@@ -519,6 +519,18 @@ window.AppLocales.ar = {
     'ps.medium': '16 pt (متوسط)',
     'ps.large': '18 pt (كبير)',
     'ps.xlarge': '24 pt (كبير جداً)',
-    'ps.hugeTitle': '32 pt (عنوان ضخم)'
+    'ps.hugeTitle': '32 pt (عنوان ضخم)',
+    'table.splitCols': 'عدد الأعمدة داخل هذه الخلية:',
+    'table.splitRows': 'عدد الصفوف داخل هذه الخلية:',
+    'table.borderWidth': 'سُمك الحد (px):',
+    'table.borderStyle': 'نمط الحد:',
+    'table.solid': 'متصل',
+    'table.dashed': 'متقطع',
+    'table.dotted': 'منقط',
+    'table.double': 'مزدوج',
+    'table.none': 'بدون حدود',
+    'table.borderColor': 'لون الحد:',
+    'table.fillTitle': 'لون التعبئة',
+    'table.chooseBackground': 'اختر لون الخلفية:'
   }
 };

@@ -519,6 +519,18 @@ window.AppLocales.de = {
     'ps.medium': '16 pt (mittel)',
     'ps.large': '18 pt (groß)',
     'ps.xlarge': '24 pt (sehr groß)',
-    'ps.hugeTitle': '32 pt (sehr großer Titel)'
+    'ps.hugeTitle': '32 pt (sehr großer Titel)',
+    'table.splitCols': 'Anzahl der Spalten in dieser Zelle:',
+    'table.splitRows': 'Anzahl der Zeilen in dieser Zelle:',
+    'table.borderWidth': 'Rahmenbreite (px):',
+    'table.borderStyle': 'Rahmenstil:',
+    'table.solid': 'Durchgezogen',
+    'table.dashed': 'Gestrichelt',
+    'table.dotted': 'Gepunktet',
+    'table.double': 'Doppelt',
+    'table.none': 'Kein Rahmen',
+    'table.borderColor': 'Rahmenfarbe:',
+    'table.fillTitle': 'Füllfarbe',
+    'table.chooseBackground': 'Hintergrundfarbe auswählen:'
   }
 };

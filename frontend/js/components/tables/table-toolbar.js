@@ -121,8 +121,8 @@ function doSplit(cell) {
     const table = cell.closest('table');
     window.AestheticDialog.show(
         "${tableText('table.split')}",
-        `<div class="aes-group"><label>عدد الأعمدة داخل هذه الخلية:</label><input type="number" id="split-c" value="2" min="1"></div>
-         <div class="aes-group"><label>عدد الصفوف داخل هذه الخلية:</label><input type="number" id="split-r" value="1" min="1"></div>`,
+        `<div class="aes-group"><label>${tableText('table.splitCols')}</label><input type="number" id="split-c" value="2" min="1"></div>
+         <div class="aes-group"><label>${tableText('table.splitRows')}</label><input type="number" id="split-r" value="1" min="1"></div>`,
         (modal) => {
             const sc = parseInt(modal.querySelector('#split-c').value) || 1;
             const sr = parseInt(modal.querySelector('#split-r').value) || 1;
@@ -206,17 +206,17 @@ function doDeleteTable(cell) {
 function bordersDialog(cells) {
     window.AestheticDialog.show(
         "${tableText('table.borders')}",
-        `<div class="aes-group"><label>سُمك الحد (px):</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
-         <div class="aes-group"><label>نمط الحد:</label>
+        `<div class="aes-group"><label>${tableText('table.borderWidth')}</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
+         <div class="aes-group"><label>${tableText('table.borderStyle')}</label>
             <select id="border-style">
-                <option value="solid">متصل</option>
-                <option value="dashed">متقطع</option>
-                <option value="dotted">منقط</option>
-                <option value="double">مزدوج</option>
-                <option value="none">بدون حدود</option>
+                <option value="solid">${tableText('table.solid')}</option>
+                <option value="dashed">${tableText('table.dashed')}</option>
+                <option value="dotted">${tableText('table.dotted')}</option>
+                <option value="double">${tableText('table.double')}</option>
+                <option value="none">${tableText('table.none')}</option>
             </select>
          </div>
-         <div class="aes-group"><label>لون الحد:</label><input type="color" id="border-color" value="#cbd5e1"></div>`,
+         <div class="aes-group"><label>${tableText('table.borderColor')}</label><input type="color" id="border-color" value="#cbd5e1"></div>`,
         (modal) => {
             const width = parseInt(modal.querySelector('#border-width').value) || 0;
             const style = modal.querySelector('#border-style').value;
@@ -278,7 +278,7 @@ const TableContextMenu = {
             item('splitCell', TABLE_ICONS.split, tableText('table.split'), { disabled: multi }),
             '<hr>',
             item('borders', TABLE_ICONS.borders, 'حدود...'),
-            item('fill', iconSm(TABLE_ICONS.fill), 'لون التعبئة...'),
+            item('fill', iconSm(TABLE_ICONS.fill), tableText('table.fillTitle') + '...'),
             item('valignTop', iconSm(TABLE_ICONS.valignTop), 'محاذاة لأعلى'),
             item('valignMiddle', iconSm(TABLE_ICONS.valignMiddle), 'محاذاة للوسط'),
             item('valignBottom', iconSm(TABLE_ICONS.valignBottom), 'محاذاة لأسفل'),
@@ -308,8 +308,8 @@ const TableContextMenu = {
             case 'splitCell': doSplit(cell); break;
             case 'borders': bordersDialog(cells); break;
             case 'fill':
-                window.AestheticDialog.show("لون التعبئة",
-                    `<div class="aes-group"><label>اختر لون الخلفية:</label><input type="color" id="fill-color" value="#fde68a"></div>`,
+                window.AestheticDialog.show(tableText('table.fillTitle'),
+                    `<div class="aes-group"><label>${tableText('table.chooseBackground')}</label><input type="color" id="fill-color" value="#fde68a"></div>`,
                     (modal) => applyFill(cells, modal.querySelector('#fill-color').value));
                 break;
             case 'valignTop': applyValign(cells, 'top'); break;
