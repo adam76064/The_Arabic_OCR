@@ -327,6 +327,19 @@ window.AppLocales.de = {
     'ps.right': 'Rechts',
     'ps.center': 'Zentriert',
     'ps.left': 'Links',
-    'ps.justify': 'Blocksatz'
+    'ps.justify': 'Blocksatz',
+    'ps.lineSpacing': 'Zeilenabstand',
+    'ps.single': '1.0 (einfach)',
+    'ps.double': '2.0 (doppelt)',
+    'ps.before': 'Absatzabstand (davor)',
+    'ps.after': 'Absatzabstand (danach)',
+    'ps.textColor': 'Textfarbe',
+    'ps.highlight': 'Hervorhebungs-/Hintergrundfarbe',
+    'ps.transparent': 'Transparent / keine Hervorhebung',
+    'ps.postProcessing': '📝 Nachbearbeitung',
+    'ps.postHint': 'Automatische Optionen, die nach der Textextraktion Textfelder und Lesereihenfolge organisieren.',
+    'ps.readingOrder': '📐 Felder nach arabischer Lesereihenfolge sortieren (rechts nach links, oben nach unten)',
+    'ps.runReadingOrder': '⚡ Felder auf Seiten jetzt sortieren',
+    'ps.pagination': '🔢 Automatische Seitennummernerkennung'
   }
 };

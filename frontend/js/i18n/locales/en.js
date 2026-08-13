@@ -327,6 +327,19 @@ window.AppLocales.en = {
     'ps.right': 'Right',
     'ps.center': 'Center',
     'ps.left': 'Left',
-    'ps.justify': 'Justify'
+    'ps.justify': 'Justify',
+    'ps.lineSpacing': 'Line spacing',
+    'ps.single': '1.0 (single)',
+    'ps.double': '2.0 (double)',
+    'ps.before': 'Paragraph spacing (before)',
+    'ps.after': 'Paragraph spacing (after)',
+    'ps.textColor': 'Text color',
+    'ps.highlight': 'Highlight / background color',
+    'ps.transparent': 'Transparent / no highlight',
+    'ps.postProcessing': '📝 Post-processing',
+    'ps.postHint': 'Automatic options applied after text extraction to organize text boxes and reading order.',
+    'ps.readingOrder': '📐 Sort boxes by Arabic reading order (right to left, top to bottom)',
+    'ps.runReadingOrder': '⚡ Sort boxes on pages now',
+    'ps.pagination': '🔢 Automatic page-number detection'
   }
 };

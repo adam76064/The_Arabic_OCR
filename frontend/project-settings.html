@@ -163,19 +163,19 @@
 
                     <div class="settings-row" style="margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>تباعد الأسطر (Line Spacing)</label>
+                            <label data-i18n="ps.lineSpacing">تباعد الأسطر (Line Spacing)</label>
                             <select id="cf-line-spacing" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
                                 <option value="">الافتراضي</option>
-                                <option value="1.0">1.0 (مفرد)</option>
+                                <option value="1.0" data-i18n="ps.single">1.0 (مفرد)</option>
                                 <option value="1.15">1.15</option>
                                 <option value="1.5">1.5</option>
-                                <option value="2.0">2.0 (مزدوج)</option>
+                                <option value="2.0" data-i18n="ps.double">2.0 (مزدوج)</option>
                                 <option value="2.5">2.5</option>
                                 <option value="3.0">3.0</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>تباعد الفقرات (قبل)</label>
+                            <label data-i18n="ps.before">تباعد الفقرات (قبل)</label>
                             <select id="cf-space-before" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
                                 <option value="">الافتراضي</option>
                                 <option value="0pt">0 pt</option>
@@ -186,7 +186,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>تباعد الفقرات (بعد)</label>
+                            <label data-i18n="ps.after">تباعد الفقرات (بعد)</label>
                             <select id="cf-space-after" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
                                 <option value="">الافتراضي</option>
                                 <option value="0pt">0 pt</option>
@@ -200,17 +200,17 @@
 
                     <div class="settings-row">
                         <div class="form-group">
-                            <label>لون النص (Text Color)</label>
+                            <label data-i18n="ps.textColor">لون النص (Text Color)</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
                                 <input type="color" id="cf-color-picker" value="#000000" style="width: 40px; height: 36px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
                                 <input type="text" id="cf-color" value="#000000" style="flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>لون التظليل / الخلفية (Highlight)</label>
+                            <label data-i18n="ps.highlight">لون التظليل / الخلفية (Highlight)</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
                                 <input type="color" id="cf-bg-picker" value="#ffffff" style="width: 40px; height: 36px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
-                                <input type="text" id="cf-bg-color" value="" placeholder="شفاف / بلا تظليل" style="flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
+                                <input type="text" id="cf-bg-color" value="" data-i18n-placeholder="ps.transparent" placeholder="شفاف / بلا تظليل" style="flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                  POST-PROCESSING SECTION
                  ═══════════════════════════════════════════════════════ -->
             <div class="settings-card" id="post-processing-card">
-                <h3>📝 معالجة ما بعد OCR (Post-Processing)</h3>
+                <h3 data-i18n="ps.postProcessing">📝 معالجة ما بعد OCR (Post-Processing)</h3>
                 <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;">
                     خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.
                 </p>
@@ -230,7 +230,7 @@
                 <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
-                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;">📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
+                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;" data-i18n="ps.readingOrder">📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
                             <p style="margin: 0; font-size: 12px; color: #0284c7;">
                                 يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
                             </p>
@@ -251,7 +251,7 @@
                 <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
-                            <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;">🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
+                            <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;" data-i18n="ps.pagination">🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
                             <p style="margin: 0; font-size: 12px; color: #16a34a;">
                                 يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
                             </p>

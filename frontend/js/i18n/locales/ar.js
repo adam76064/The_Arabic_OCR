@@ -327,6 +327,19 @@ window.AppLocales.ar = {
     'ps.right': 'يمين (Right)',
     'ps.center': 'وسط (Center)',
     'ps.left': 'يسار (Left)',
-    'ps.justify': 'ضبط (Justify)'
+    'ps.justify': 'ضبط (Justify)',
+    'ps.lineSpacing': 'تباعد الأسطر (Line Spacing)',
+    'ps.single': '1.0 (مفرد)',
+    'ps.double': '2.0 (مزدوج)',
+    'ps.before': 'تباعد الفقرات (قبل)',
+    'ps.after': 'تباعد الفقرات (بعد)',
+    'ps.textColor': 'لون النص (Text Color)',
+    'ps.highlight': 'لون التظليل / الخلفية (Highlight)',
+    'ps.transparent': 'شفاف / بلا تظليل',
+    'ps.postProcessing': '📝 معالجة ما بعد OCR (Post-Processing)',
+    'ps.postHint': 'خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.',
+    'ps.readingOrder': '📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)',
+    'ps.runReadingOrder': '⚡ ترتيب المربعات على الصفحات الآن',
+    'ps.pagination': '🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)'
   }
 };
