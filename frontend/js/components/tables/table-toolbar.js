@@ -439,26 +439,26 @@ const TableToolbar = {
                     }
                 );
             } else {
-                alert("يرجى وضع المؤشر داخل جدول أولاً.");
+                alert(tableText('table.clickTable'));
             }
         });
 
         container.querySelector('#tb-merge-cells')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (cells.length < 2) { alert("يرجى تحديد أكثر من خلية أولاً (اسحب الماوس عبر الخلايا)."); return; }
+            if (cells.length < 2) { alert(tableText('table.selectMultiple')); return; }
             doMerge(cells);
         });
 
         container.querySelector('#tb-split-cell')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
             const cell = cells[0] || window.getSelection().anchorNode?.parentNode?.closest('td, th');
-            if (!cell) { alert("يرجى النقر داخل خلية أولاً."); return; }
+            if (!cell) { alert(tableText('table.clickCell')); return; }
             doSplit(cell);
         });
 
         container.querySelector('#tb-borders')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى تحديد خلية أو أكثر أولاً."); return; }
+            if (!cells.length) { alert(tableText('table.selectCells')); return; }
             bordersDialog(cells);
         });
 
@@ -473,7 +473,7 @@ const TableToolbar = {
         ['top', 'middle', 'bottom'].forEach(pos => {
             container.querySelector(`#tb-valign-${pos}`)?.addEventListener('click', () => {
                 const { cells } = currentTableTarget();
-                if (!cells.length) { alert("يرجى تحديد خلية أو أكثر أولاً."); return; }
+                if (!cells.length) { alert(tableText('table.selectCells')); return; }
                 applyValign(cells, pos);
             });
         });
@@ -482,39 +482,39 @@ const TableToolbar = {
         // ── Rows & Cols Insertion Buttons ──
         container.querySelector('#tb-insert-row-above')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertRowMatching(cells[0], 'above');
         });
         container.querySelector('#tb-insert-row-below')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertRowMatching(cells[0], 'below');
         });
         container.querySelector('#tb-insert-col-right')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertColMatching(cells[0], 'right');
         });
         container.querySelector('#tb-insert-col-left')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertColMatching(cells[0], 'left');
         });
 
         // ── Deletion Buttons ──
         container.querySelector('#tb-delete-row')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الخلية المراد حذف صفها."); return; }
+            if (!cells.length) { alert(tableText('table.clickRowCell')); return; }
             doDeleteRow(cells[0]);
         });
         container.querySelector('#tb-delete-col')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الخلية المراد حذف عمودها."); return; }
+            if (!cells.length) { alert(tableText('table.clickColCell')); return; }
             doDeleteCol(cells[0]);
         });
         container.querySelector('#tb-delete-table')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الجدول المراد حذفه."); return; }
+            if (!cells.length) { alert(tableText('table.clickDeleteTable')); return; }
             doDeleteTable(cells[0]);
         });
 

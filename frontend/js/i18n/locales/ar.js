@@ -536,6 +536,14 @@ window.AppLocales.ar = {
     'table.selectText': 'يرجى تحديد النص المراد تحويله أولاً.',
     'table.columnCount': 'عدد الأعمدة:',
     'table.rowCount': 'عدد الصفوف:',
-    'table.separatorHint': 'الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):'
+    'table.separatorHint': 'الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):',
+    'table.clickTable': 'يرجى وضع المؤشر داخل جدول أولاً.',
+    'table.selectMultiple': 'يرجى تحديد أكثر من خلية أولاً (اسحب الماوس عبر الخلايا).',
+    'table.clickCell': 'يرجى النقر داخل خلية أولاً.',
+    'table.selectCells': 'يرجى تحديد خلية أو أكثر أولاً.',
+    'table.clickOrSelectCell': 'يرجى النقر داخل خلية أولاً أو تحديدها.',
+    'table.clickRowCell': 'يرجى النقر داخل الخلية المراد حذف صفها.',
+    'table.clickColCell': 'يرجى النقر داخل الخلية المراد حذف عمودها.',
+    'table.clickDeleteTable': 'يرجى النقر داخل الجدول المراد حذفه.'
   }
 };

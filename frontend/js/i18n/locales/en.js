@@ -536,6 +536,14 @@ window.AppLocales.en = {
     'table.selectText': 'Select the text to convert first.',
     'table.columnCount': 'Number of columns:',
     'table.rowCount': 'Number of rows:',
-    'table.separatorHint': 'Column separator, for example - , or a space:'
+    'table.separatorHint': 'Column separator, for example - , or a space:',
+    'table.clickTable': 'Place the cursor inside a table first.',
+    'table.selectMultiple': 'Select more than one cell first by dragging across cells.',
+    'table.clickCell': 'Click inside a cell first.',
+    'table.selectCells': 'Select one or more cells first.',
+    'table.clickOrSelectCell': 'Click inside a cell or select it first.',
+    'table.clickRowCell': 'Click inside a cell in the row to delete.',
+    'table.clickColCell': 'Click inside a cell in the column to delete.',
+    'table.clickDeleteTable': 'Click inside the table to delete first.'
   }
 };

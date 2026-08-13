@@ -536,6 +536,14 @@ window.AppLocales.de = {
     'table.selectText': 'Wählen Sie zuerst den umzuwandelnden Text aus.',
     'table.columnCount': 'Anzahl der Spalten:',
     'table.rowCount': 'Anzahl der Zeilen:',
-    'table.separatorHint': 'Spaltentrennzeichen, z. B. - , oder ein Leerzeichen:'
+    'table.separatorHint': 'Spaltentrennzeichen, z. B. - , oder ein Leerzeichen:',
+    'table.clickTable': 'Setzen Sie den Cursor zuerst in eine Tabelle.',
+    'table.selectMultiple': 'Wählen Sie zuerst mehrere Zellen durch Ziehen aus.',
+    'table.clickCell': 'Klicken Sie zuerst in eine Zelle.',
+    'table.selectCells': 'Wählen Sie zuerst eine oder mehrere Zellen aus.',
+    'table.clickOrSelectCell': 'Klicken Sie zuerst in eine Zelle oder wählen Sie sie aus.',
+    'table.clickRowCell': 'Klicken Sie in eine Zelle der zu löschenden Zeile.',
+    'table.clickColCell': 'Klicken Sie in eine Zelle der zu löschenden Spalte.',
+    'table.clickDeleteTable': 'Klicken Sie zuerst in die zu löschende Tabelle.'
   }
 };
