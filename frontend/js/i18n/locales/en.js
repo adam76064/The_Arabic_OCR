@@ -264,6 +264,24 @@ window.AppLocales.en = {
     'dashboard.waitingReview': 'Waiting for review',
     'dashboard.layout': 'Layout',
     'dashboard.review': 'Review',
-    'dashboard.delete': 'Delete'
+    'dashboard.delete': 'Delete',
+    'dashStats.all': 'All',
+    'dashStats.layout': 'Layout',
+    'dashStats.review': 'Review',
+    'dashStats.reviewed': 'Reviewed',
+    'dashStats.extracted': 'Text extracted',
+    'dashStats.waitingOcr': 'Waiting for OCR',
+    'dashStats.overall': 'Overall review progress',
+    'dashStats.processing': 'Processing statistics',
+    'dashStats.map': 'Page map',
+    'dashStats.ocrPresent': 'OCR available',
+    'dashStats.laidOut': 'Layout complete',
+    'dashStats.members': 'Member participation',
+    'dashStats.user': 'User',
+    'dashStats.blocks': 'Blocks',
+    'dashStats.pages': 'Pages',
+    'dashStats.participation': 'Participation',
+    'dashStats.pageTitle': 'Page {page} ({status})',
+    'dashStats.reviewedCount': '{reviewed} of {total} pages reviewed'
   }
 };

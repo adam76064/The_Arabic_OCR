@@ -264,6 +264,24 @@ window.AppLocales.de = {
     'dashboard.waitingReview': 'Warten auf Prüfung',
     'dashboard.layout': 'Layout',
     'dashboard.review': 'Prüfen',
-    'dashboard.delete': 'Löschen'
+    'dashboard.delete': 'Löschen',
+    'dashStats.all': 'Alle',
+    'dashStats.layout': 'Layout',
+    'dashStats.review': 'Prüfung',
+    'dashStats.reviewed': 'Geprüft',
+    'dashStats.extracted': 'Text extrahiert',
+    'dashStats.waitingOcr': 'Warten auf OCR',
+    'dashStats.overall': 'Gesamtfortschritt der Prüfung',
+    'dashStats.processing': 'Verarbeitungsstatistik',
+    'dashStats.map': 'Seitenübersicht',
+    'dashStats.ocrPresent': 'OCR vorhanden',
+    'dashStats.laidOut': 'Layout abgeschlossen',
+    'dashStats.members': 'Mitgliederbeteiligung',
+    'dashStats.user': 'Benutzer',
+    'dashStats.blocks': 'Blöcke',
+    'dashStats.pages': 'Seiten',
+    'dashStats.participation': 'Beteiligung',
+    'dashStats.pageTitle': 'Seite {page} ({status})',
+    'dashStats.reviewedCount': '{reviewed} von {total} Seiten geprüft'
   }
 };

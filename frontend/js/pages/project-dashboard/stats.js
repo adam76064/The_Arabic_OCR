@@ -1,3 +1,5 @@
+const dashboardStatsText = (key, replacements) => window.AppI18n?.t(key, replacements) || key;
+
 /**
  * pages/project-dashboard/stats.js - extracted from monolith
  */
@@ -36,10 +38,10 @@ function renderDashboardStats() {
 
     // Bar chart via inline SVG (تمت إضافة عمود التخطيط)
     const barData = [
-        { label: 'الكل', val: total, color: '#95a5a6' },
+        { label: dashboardStatsText('dashStats.all'), val: total, color: '#95a5a6' },
         { label: 'OCR', val: ocred, color: '#3498db' },
-        { label: 'تخطيط', val: layoutCount, color: '#0369a1' },
-        { label: 'مراجعة', val: reviewed, color: '#27ae60' },
+        { label: dashboardStatsText('dashStats.layout'), val: layoutCount, color: '#0369a1' },
+        { label: dashboardStatsText('dashStats.review'), val: reviewed, color: '#27ae60' },
     ];
     const maxVal = Math.max(total, 1);
     const bars = barData.map((d, i) => {
@@ -66,8 +68,8 @@ function renderDashboardStats() {
         
         if (isReviewed) fill = '#a9dfbf'; // reviewed
         
-        const statusText = isReviewed ? 'تمت المراجعة' : isOcred ? 'تم استخراج النص' : 'بانتظار OCR';
-        const title = `صفحة ${i+1} (${statusText})`;
+        const statusText = isReviewed ? dashboardStatsText('dashStats.reviewed') : isOcred ? dashboardStatsText('dashStats.extracted') : dashboardStatsText('dashStats.waitingOcr');
+        const title = dashboardStatsText('dashStats.pageTitle', { page: i + 1, status: statusText });
         return `<div title="${title}" style="width:20px;height:20px;border-radius:3px;background:${fill};cursor:pointer;border:1px solid rgba(0,0,0,0.08);transition:transform 0.15s;" onclick="window.location.href='review.html?id=${currentProjectId}&page=${i}'"></div>`;
     }).join('');
 
@@ -91,7 +93,7 @@ function renderDashboardStats() {
     container.innerHTML = `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
             <div style="background:white;border-radius:10px;padding:20px;border:1px solid #e0e0e0;box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
-                <div style="font-size:13px;color:#888;margin-bottom:4px;">التقدم الكلي للمراجعة</div>
+                <div style="font-size:13px;color:#888;margin-bottom:4px;">${dashboardStatsText('dashStats.overall')}</div>
                 <div style="font-size:36px;font-weight:800;color:#27ae60;">${pct}%</div>
                 <div style="height:8px;background:#eee;border-radius:4px;margin-top:10px;overflow:hidden;">
                     <div style="width:${pct}%;height:100%;background:#27ae60;border-radius:4px;transition:width .5s;"></div>
@@ -99,31 +101,31 @@ function renderDashboardStats() {
                 <div style="font-size:12px;color:#888;margin-top:6px;">${reviewed} من ${total} صفحة مراجَعة</div>
             </div>
             <div style="background:white;border-radius:10px;padding:20px;border:1px solid #e0e0e0;box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
-                <div style="font-size:13px;color:#888;margin-bottom:10px;">إحصائيات المعالجة</div>
+                <div style="font-size:13px;color:#888;margin-bottom:10px;">${dashboardStatsText('dashStats.processing')}</div>
                 <svg viewBox="-10 0 ${barData.length * 75 + 30} 160" width="100%" height="130" style="overflow: visible;">
                     ${bars.join('')}
                 </svg>
             </div>
         </div>
         <div style="background:white;border-radius:10px;padding:20px;border:1px solid #e0e0e0;box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
-            <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:12px;">خريطة الصفحات</div>
+            <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:12px;">${dashboardStatsText('dashStats.map')}</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;">${gridCells}</div>
             <div style="display:flex;gap:14px;margin-top:14px;font-size:12px;color:#888;">
-                <span><span style="display:inline-block;width:12px;height:12px;background:#eee;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #ddd;"></span>بانتظار OCR</span>
-                <span><span style="display:inline-block;width:12px;height:12px;background:#aed6f1;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #99c9e8;"></span>OCR موجود</span>
-                <span><span style="display:inline-block;width:12px;height:12px;background:#bae6fd;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #7dd3fc;"></span>تم التخطيط</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#eee;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #ddd;"></span>${dashboardStatsText('dashStats.waitingOcr')}</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#aed6f1;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #99c9e8;"></span>${dashboardStatsText('dashStats.ocrPresent')}</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#bae6fd;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #7dd3fc;"></span>${dashboardStatsText('dashStats.laidOut')}</span>
                 <span><span style="display:inline-block;width:12px;height:12px;background:#a9dfbf;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #8cc9a5;"></span>تمت المراجَعة</span>
             </div>
         </div>
         ${userRows ? `
         <div style="background:white;border-radius:10px;border:1px solid #e0e0e0;overflow:hidden;margin-top:20px;box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
-            <div style="padding:14px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">مشاركة الأعضاء</div>
+            <div style="padding:14px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">${dashboardStatsText('dashStats.members')}</div>
             <table style="width:100%;border-collapse:collapse;">
                 <thead><tr style="background:#f8f9fa;">
-                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">المستخدم</th>
-                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">الكتل</th>
-                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">الصفحات</th>
-                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">المشاركة</th>
+                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">${dashboardStatsText('dashStats.user')}</th>
+                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">${dashboardStatsText('dashStats.blocks')}</th>
+                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">${dashboardStatsText('dashStats.pages')}</th>
+                    <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;">${dashboardStatsText('dashStats.participation')}</th>
                 </tr></thead>
                 <tbody>${userRows}</tbody>
             </table>

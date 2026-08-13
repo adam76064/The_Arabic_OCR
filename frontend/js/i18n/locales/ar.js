@@ -264,6 +264,24 @@ window.AppLocales.ar = {
     'dashboard.waitingReview': 'بانتظار المراجعة',
     'dashboard.layout': 'تخطيط (Layout)',
     'dashboard.review': 'مراجعة',
-    'dashboard.delete': 'حذف'
+    'dashboard.delete': 'حذف',
+    'dashStats.all': 'الكل',
+    'dashStats.layout': 'تخطيط',
+    'dashStats.review': 'مراجعة',
+    'dashStats.reviewed': 'تمت المراجعة',
+    'dashStats.extracted': 'تم استخراج النص',
+    'dashStats.waitingOcr': 'بانتظار OCR',
+    'dashStats.overall': 'التقدم الكلي للمراجعة',
+    'dashStats.processing': 'إحصائيات المعالجة',
+    'dashStats.map': 'خريطة الصفحات',
+    'dashStats.ocrPresent': 'OCR موجود',
+    'dashStats.laidOut': 'تم التخطيط',
+    'dashStats.members': 'مشاركة الأعضاء',
+    'dashStats.user': 'المستخدم',
+    'dashStats.blocks': 'الكتل',
+    'dashStats.pages': 'الصفحات',
+    'dashStats.participation': 'المشاركة',
+    'dashStats.pageTitle': 'صفحة {page} ({status})',
+    'dashStats.reviewedCount': '{reviewed} من {total} صفحة مراجَعة'
   }
 };
