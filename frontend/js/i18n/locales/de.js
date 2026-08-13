@@ -548,6 +548,13 @@ window.AppLocales.de = {
     'shortcut.default': 'Standard',
     'shortcut.pressKey': 'Beliebige Taste drücken…',
     'shortcut.invalid': 'Das Kürzel muss Ctrl oder Alt enthalten oder eine Sondertaste sein.',
-    'shortcut.conflict': 'Hinweis: Dieses Kürzel wird auch für „{command}“ verwendet.'
+    'shortcut.conflict': 'Hinweis: Dieses Kürzel wird auch für „{command}“ verwendet.',
+    'shortcut.save-page': 'Seite speichern',
+    'shortcut.prev-page': 'Vorherige Seite',
+    'shortcut.next-page': 'Nächste Seite',
+    'shortcut.load-ocr-page': 'OCR-Seite laden',
+    'shortcut.open-fullpage': 'Ganzseitenansicht öffnen',
+    'shortcut.toggle-sidebar': 'Seitenleiste ein-/ausblenden',
+    'shortcut.project-settings': 'Projekteinstellungen'
   }
 };

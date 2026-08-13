@@ -548,6 +548,13 @@ window.AppLocales.en = {
     'shortcut.default': 'Default',
     'shortcut.pressKey': 'Press any key…',
     'shortcut.invalid': 'The shortcut must include Ctrl or Alt, or be a special key.',
-    'shortcut.conflict': 'Notice: this shortcut is also used by “{command}”'
+    'shortcut.conflict': 'Notice: this shortcut is also used by “{command}”',
+    'shortcut.save-page': 'Save page',
+    'shortcut.prev-page': 'Previous page',
+    'shortcut.next-page': 'Next page',
+    'shortcut.load-ocr-page': 'Load OCR page',
+    'shortcut.open-fullpage': 'Open full-page view',
+    'shortcut.toggle-sidebar': 'Show/hide sidebar',
+    'shortcut.project-settings': 'Project settings'
   }
 };

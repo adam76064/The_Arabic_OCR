@@ -548,6 +548,13 @@ window.AppLocales.ar = {
     'shortcut.default': 'افتراضي',
     'shortcut.pressKey': 'اضغط أي مفتاح...',
     'shortcut.invalid': 'يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون مفتاحاً خاصاً',
-    'shortcut.conflict': 'تنبيه: هذا الاختصار مستخدم أيضاً لأمر "{command}"'
+    'shortcut.conflict': 'تنبيه: هذا الاختصار مستخدم أيضاً لأمر "{command}"',
+    'shortcut.save-page': 'حفظ الصفحة',
+    'shortcut.prev-page': 'الصفحة السابقة',
+    'shortcut.next-page': 'الصفحة التالية',
+    'shortcut.load-ocr-page': 'تحميل صفحة OCR',
+    'shortcut.open-fullpage': 'عرض الصفحة بالحجم الكامل',
+    'shortcut.toggle-sidebar': 'إظهار/إخفاء الشريط الجانبي',
+    'shortcut.project-settings': 'إعدادات المشروع'
   }
 };
