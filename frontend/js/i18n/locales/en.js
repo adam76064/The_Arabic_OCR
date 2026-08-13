@@ -414,6 +414,11 @@ window.AppLocales.en = {
     'table.deleteCurrentRow': 'Delete current row',
     'table.deleteCurrentCol': 'Delete current column',
     'table.splitVertical': 'Split cell vertically in the middle',
-    'table.splitHorizontal': 'Split cell horizontally in the middle'
+    'table.splitHorizontal': 'Split cell horizontally in the middle',
+    'projectSettings.loadFailed': 'Unable to load project',
+    'projectSettings.saving': 'Saving…',
+    'projectSettings.save': 'Save settings',
+    'projectSettings.sorting': '⏳ Sorting…',
+    'projectSettings.detecting': '⏳ Detecting page numbers…'
   }
 };

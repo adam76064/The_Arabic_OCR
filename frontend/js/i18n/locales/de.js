@@ -414,6 +414,11 @@ window.AppLocales.de = {
     'table.deleteCurrentRow': 'Aktuelle Zeile löschen',
     'table.deleteCurrentCol': 'Aktuelle Spalte löschen',
     'table.splitVertical': 'Zelle mittig vertikal teilen',
-    'table.splitHorizontal': 'Zelle mittig horizontal teilen'
+    'table.splitHorizontal': 'Zelle mittig horizontal teilen',
+    'projectSettings.loadFailed': 'Projekt konnte nicht geladen werden',
+    'projectSettings.saving': 'Wird gespeichert…',
+    'projectSettings.save': 'Einstellungen speichern',
+    'projectSettings.sorting': '⏳ Wird sortiert…',
+    'projectSettings.detecting': '⏳ Seitennummern werden erkannt…'
   }
 };

@@ -9,7 +9,7 @@ async function initSettings() {
 
     // Load project data
     currentProject = await window.pywebview.api.load_project(projectId);
-    if (!currentProject) { alert('تعذّر تحميل المشروع'); return; }
+    if (!currentProject) { alert(window.AppI18n.t('projectSettings.loadFailed')); return; }
 
     const meta = currentProject.metadata || {};
 
@@ -281,7 +281,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
 
     saveCurrentCategoryFormattingUI(activeCategory);
     const btn = document.getElementById('btn-save');
-    btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+    btn.disabled = true; btn.textContent = window.AppI18n.t('projectSettings.saving');
 
     const tashkeelVal = document.querySelector('input[name="ps_tashkeel"]:checked').value;
 
@@ -402,7 +402,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
         } else {
             alert('حدث خطأ أثناء الحفظ.');
         }
-        btn.disabled = false; btn.textContent = 'حفظ الإعدادات';
+        btn.disabled = false; btn.textContent = window.AppI18n.t('projectSettings.save');
     }
 });
 
@@ -436,7 +436,7 @@ function initPostProcessingSettings(ppOpts) {
         runBtn.addEventListener('click', async () => {
             if (!currentProject) return;
             runBtn.disabled = true;
-            runBtn.textContent = '⏳ جاري الترتيب...';
+            runBtn.textContent = window.AppI18n.t('projectSettings.sorting');
             try {
                 const res = await window.pywebview.api.apply_reading_order_sorting(
                     currentProject.id, null, true
@@ -458,7 +458,7 @@ function initPostProcessingSettings(ppOpts) {
                 alert('حدث خطأ أثناء إعادة ترتيب المربعات.');
             } finally {
                 runBtn.disabled = false;
-                runBtn.textContent = '⚡ ترتيب المربعات على الصفحات الآن';
+                runBtn.textContent = window.AppI18n.t('ps.runReadingOrder');
             }
         });
     }
@@ -467,7 +467,7 @@ function initPostProcessingSettings(ppOpts) {
         pagBtn.addEventListener('click', async () => {
             if (!currentProject) return;
             pagBtn.disabled = true;
-            pagBtn.textContent = '⏳ جاري كشف الأرقام...';
+            pagBtn.textContent = window.AppI18n.t('projectSettings.detecting');
             try {
                 const res = await window.pywebview.api.apply_pagination_detection(
                     currentProject.id, null, true
@@ -489,7 +489,7 @@ function initPostProcessingSettings(ppOpts) {
                 alert('حدث خطأ أثناء كشف أرقام الصفحات.');
             } finally {
                 pagBtn.disabled = false;
-                pagBtn.textContent = '⚡ كشف أرقام الصفحات الآن';
+                pagBtn.textContent = window.AppI18n.t('ps.runPagination');
             }
         });
     }

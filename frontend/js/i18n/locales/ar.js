@@ -414,6 +414,11 @@ window.AppLocales.ar = {
     'table.deleteCurrentRow': 'حذف الصف الحالي',
     'table.deleteCurrentCol': 'حذف العمود الحالي',
     'table.splitVertical': 'تقسيم الخلية (عمودياً من المنتصف)',
-    'table.splitHorizontal': 'تقسيم الخلية (أفقياً من المنتصف)'
+    'table.splitHorizontal': 'تقسيم الخلية (أفقياً من المنتصف)',
+    'projectSettings.loadFailed': 'تعذّر تحميل المشروع',
+    'projectSettings.saving': 'جاري الحفظ...',
+    'projectSettings.save': 'حفظ الإعدادات',
+    'projectSettings.sorting': '⏳ جاري الترتيب...',
+    'projectSettings.detecting': '⏳ جاري كشف الأرقام...'
   }
 };
