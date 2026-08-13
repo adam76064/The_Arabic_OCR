@@ -449,6 +449,9 @@ window.AppLocales.de = {
     'ps.every30': 'Alle 30 Minuten',
     'ps.disableAutosave': 'Automatisches Speichern deaktivieren',
     'ps.postHint2': 'Automatische Optionen, die nach der Textextraktion Textfelder organisieren und die korrekte arabische Lesereihenfolge berechnen.',
-    'ps.readingOrderHint': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten (rechte Spalte zuerst).'
+    'ps.readingOrderHint': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten (rechte Spalte zuerst).',
+    'review.autoTableMessage': 'Die Struktur (Zeilen und Spalten) für den ausgewählten Block <strong>"{category}"</strong> automatisch per OCR erkennen?',
+    'review.rememberChoice': 'Meine Auswahl merken und nicht erneut fragen',
+    'review.autoTableTitle': 'Automatische Layouterkennung 📊'
   }
 };

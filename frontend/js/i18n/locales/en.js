@@ -449,6 +449,9 @@ window.AppLocales.en = {
     'ps.every30': 'Every 30 minutes',
     'ps.disableAutosave': 'Disable automatic saving',
     'ps.postHint2': 'Automatic options applied after text extraction to organize text boxes and calculate the correct Arabic reading order.',
-    'ps.readingOrderHint': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages (right column first).'
+    'ps.readingOrderHint': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages (right column first).',
+    'review.autoTableMessage': 'Automatically detect the structure (rows and columns) for the selected <strong>"{category}"</strong> block using OCR?',
+    'review.rememberChoice': 'Remember my choice and do not ask again',
+    'review.autoTableTitle': 'Automatic layout detection 📊'
   }
 };
