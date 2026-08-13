@@ -606,6 +606,8 @@ window.AppLocales.de = {
     'projectSettings.applyQuestion': 'Wie sollen die neuen Einstellungen für Text, Formatierung, Feldreihenfolge und Seitennummerierung angewendet werden?',
     'projectSettings.applyAll': 'Auf alle verarbeiteten Seiten anwenden, geprüft und ungeprüft',
     'projectSettings.applyUnreviewed': 'Nur auf ungeprüfte Seiten anwenden',
-    'projectSettings.applyLater': 'Jetzt nicht anwenden; nur für zukünftige Seiten verwenden'
+    'projectSettings.applyLater': 'Jetzt nicht anwenden; nur für zukünftige Seiten verwenden',
+    'projectSettings.ownerPasswordRequired': 'Geben Sie das lokale Netzwerkpasswort des Besitzers ein.',
+    'projectSettings.lanSaved': 'Passwort gespeichert und lokaler Netzwerkmodus erfolgreich verbunden 📡'
   }
 };

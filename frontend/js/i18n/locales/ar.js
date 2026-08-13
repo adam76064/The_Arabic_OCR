@@ -606,6 +606,8 @@ window.AppLocales.ar = {
     'projectSettings.applyQuestion': 'كيف تود تطبيق الإعدادات الجديدة، مثل النص والتنسيق وترتيب المربعات وترقيم الصفحات؟',
     'projectSettings.applyAll': 'تطبيق على كافة الصفحات المُعالجة، المراجَعة وغير المراجَعة',
     'projectSettings.applyUnreviewed': 'تطبيق على الصفحات غير المراجَعة فقط',
-    'projectSettings.applyLater': 'عدم التطبيق الآن، وتطبيقها مستقبلاً فقط'
+    'projectSettings.applyLater': 'عدم التطبيق الآن، وتطبيقها مستقبلاً فقط',
+    'projectSettings.ownerPasswordRequired': 'يرجى إدخال كلمة مرور الشبكة المحلية للمالك',
+    'projectSettings.lanSaved': 'تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡'
   }
 };

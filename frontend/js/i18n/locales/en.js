@@ -606,6 +606,8 @@ window.AppLocales.en = {
     'projectSettings.applyQuestion': 'How would you like to apply the new settings, such as text, formatting, box order, and page numbering?',
     'projectSettings.applyAll': 'Apply to all processed pages, reviewed and unreviewed',
     'projectSettings.applyUnreviewed': 'Apply only to unreviewed pages',
-    'projectSettings.applyLater': 'Do not apply now; use only for future pages'
+    'projectSettings.applyLater': 'Do not apply now; use only for future pages',
+    'projectSettings.ownerPasswordRequired': 'Enter the owner’s local-network password.',
+    'projectSettings.lanSaved': 'Password saved and local-network mode connected successfully 📡'
   }
 };

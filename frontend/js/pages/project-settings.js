@@ -104,7 +104,7 @@ async function initSettings() {
     if (btnLinkLan) {
         btnLinkLan.addEventListener('click', async () => {
             const pw = memberLanPwdInput.value;
-            if (!pw) { alert('يرجى إدخال كلمة مرور الشبكة المحلية للمالك'); return; }
+            if (!pw) { alert(window.AppI18n.t('projectSettings.ownerPasswordRequired')); return; }
             
             currentProject.metadata.lan_password = pw;
             currentProject.metadata.lan_broadcasting = true;
@@ -113,7 +113,7 @@ async function initSettings() {
 
             await window.pywebview.api.update_project_metadata(currentProject.id, currentProject.metadata);
             await window.pywebview.api.toggle_broadcasting(currentProject.id, 'lan', true);
-            alert('تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡');
+            alert(window.AppI18n.t('projectSettings.lanSaved'));
         });
     }
 
