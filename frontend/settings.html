@@ -283,7 +283,7 @@
                 resetBtn.className = 'shortcut-reset-btn';
                 resetBtn.type = 'button';
                 resetBtn.textContent = 'افتراضي';
-                resetBtn.title = 'إعادة تعيين لهذا الأمر فقط';
+                resetBtn.title = window.AppI18n.t('settings.resetShortcut');
                 resetBtn.addEventListener('click', () => {
                     delete pendingShortcuts[cmd.id];
                     keyBtn.textContent = cmd.defaultKey;
@@ -366,7 +366,7 @@
         
 
         document.getElementById('reset-llm-prompt-btn')?.addEventListener('click', () => {
-            if (confirm('هل أنت متأكد من إعادة تعيين تعليمات الذكاء الاصطناعي إلى التعليمة الافتراضية؟')) {
+            if (confirm(window.AppI18n.t('settings.resetPromptConfirm'))) {
                 document.getElementById('llm-system-prompt').value = window.DEFAULT_LLM_PROMPT;
             }
         });
@@ -391,7 +391,7 @@
             window.__appSettings.llmSystemPrompt = document.getElementById('llm-system-prompt').value.trim() || window.DEFAULT_LLM_PROMPT;
 
             const ok = await saveAppSettings();
-            alert(ok ? 'تم حفظ الإعدادات' : 'تم الحفظ محلياً فقط - تعذّر الحفظ الدائم');
+            alert(ok ? window.AppI18n.t('settings.saved') : window.AppI18n.t('settings.saveLocalOnly'));
         });
 
         window.addEventListener('appSettingsLoaded', populateForm);
@@ -428,7 +428,7 @@
                 if (!confirm(confirmMsg)) return;
 
                 btn.disabled = true;
-                btn.textContent = 'جاري النقل...';
+                btn.textContent = window.AppI18n.t('settings.moving');
                 
                 try {
                     const result = await window.pywebview.api.change_app_data_path(newPath);
@@ -436,10 +436,10 @@
                         document.getElementById('app-data-path-input').value = newPath;
                         alert('تم تغيير مجلد البيانات ونقل الملفات بنجاح.');
                     } else {
-                        alert('فشل نقل مجلد البيانات: ' + result.error);
+                        alert(window.AppI18n.t('settings.moveFailed', { error: result.error }));
                     }
                 } catch (e) {
-                    alert('حدث خطأ غير متوقع أثناء نقل البيانات.');
+                    alert(window.AppI18n.t('settings.moveError'));
                     console.error(e);
                 } finally {
                     btn.disabled = false;

@@ -356,6 +356,13 @@ window.AppLocales.en = {
     'ps.notifications': '🔔 Project notifications',
     'ps.memberJoin': 'Member joins/leaves',
     'ps.pageReviewDone': 'Page review completed',
-    'ps.liveEdit': 'Live edit from a collaborator'
+    'ps.liveEdit': 'Live edit from a collaborator',
+    'settings.resetShortcut': 'Reset only this command',
+    'settings.resetPromptConfirm': 'Reset the AI instructions to their default prompt?',
+    'settings.saved': 'Settings saved',
+    'settings.saveLocalOnly': 'Saved locally only — permanent save failed',
+    'settings.moving': 'Moving…',
+    'settings.moveFailed': 'Could not move the data folder: {error}',
+    'settings.moveError': 'An unexpected error occurred while moving data.'
   }
 };

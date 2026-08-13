@@ -356,6 +356,13 @@ window.AppLocales.de = {
     'ps.notifications': '🔔 Projektbenachrichtigungen',
     'ps.memberJoin': 'Mitglied tritt bei/verlässt',
     'ps.pageReviewDone': 'Seitenprüfung abgeschlossen',
-    'ps.liveEdit': 'Live-Bearbeitung durch Mitwirkende'
+    'ps.liveEdit': 'Live-Bearbeitung durch Mitwirkende',
+    'settings.resetShortcut': 'Nur diesen Befehl zurücksetzen',
+    'settings.resetPromptConfirm': 'KI-Anweisungen auf die Standardanweisung zurücksetzen?',
+    'settings.saved': 'Einstellungen gespeichert',
+    'settings.saveLocalOnly': 'Nur lokal gespeichert — dauerhaftes Speichern fehlgeschlagen',
+    'settings.moving': 'Wird verschoben…',
+    'settings.moveFailed': 'Datenordner konnte nicht verschoben werden: {error}',
+    'settings.moveError': 'Beim Verschieben der Daten ist ein unerwarteter Fehler aufgetreten.'
   }
 };

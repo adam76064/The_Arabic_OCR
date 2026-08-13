@@ -356,6 +356,13 @@ window.AppLocales.ar = {
     'ps.notifications': '🔔 إشعارات المشروع',
     'ps.memberJoin': 'دخول/خروج عضو',
     'ps.pageReviewDone': 'إنهاء مراجعة صفحة',
-    'ps.liveEdit': 'تعديل حي من مشترك'
+    'ps.liveEdit': 'تعديل حي من مشترك',
+    'settings.resetShortcut': 'إعادة تعيين لهذا الأمر فقط',
+    'settings.resetPromptConfirm': 'هل أنت متأكد من إعادة تعيين تعليمات الذكاء الاصطناعي إلى التعليمة الافتراضية؟',
+    'settings.saved': 'تم حفظ الإعدادات',
+    'settings.saveLocalOnly': 'تم الحفظ محلياً فقط - تعذّر الحفظ الدائم',
+    'settings.moving': 'جاري النقل...',
+    'settings.moveFailed': 'فشل نقل مجلد البيانات: {error}',
+    'settings.moveError': 'حدث خطأ غير متوقع أثناء نقل البيانات.'
   }
 };
