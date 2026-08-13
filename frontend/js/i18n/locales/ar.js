@@ -401,6 +401,7 @@ window.AppLocales.ar = {
     'dashboard.fatal': 'حدث خطأ حرج:\n',
     'collab.lanOn': 'محلي: مفعل',
     'collab.lanOff': 'محلي: متوقف',
-    'collab.noMembers': 'لا يوجد أعضاء متصلون حالياً'
+    'collab.noMembers': 'لا يوجد أعضاء متصلون حالياً',
+    'review.navigateChange': 'تم الانتقال للصفحة {page} لعرض التغيير'
   }
 };

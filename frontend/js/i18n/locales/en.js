@@ -401,6 +401,7 @@ window.AppLocales.en = {
     'dashboard.fatal': 'A critical error occurred:\n',
     'collab.lanOn': 'Local: on',
     'collab.lanOff': 'Local: off',
-    'collab.noMembers': 'No members are currently connected'
+    'collab.noMembers': 'No members are currently connected',
+    'review.navigateChange': 'Navigated to page {page} to show the change'
   }
 };

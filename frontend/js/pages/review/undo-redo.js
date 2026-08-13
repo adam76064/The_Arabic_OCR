@@ -37,7 +37,7 @@ function applyHistoryEntry(fromStack, toStack) {
         selectBlock(-1);
         activeEditingIndex = -1;
         updateReviewPanel();
-        showNotif(`تم الانتقال للصفحة ${entry.pageIndex + (currentProject.metadata?.logical_start || 1)} לעرض التغيير`, 'info');
+        showNotif(window.AppI18n.t('review.navigateChange', { page: entry.pageIndex + (currentProject.metadata?.logical_start || 1) }), 'info');
     } else {
         selectBlock(-1);
         activeEditingIndex = -1;

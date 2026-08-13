@@ -401,6 +401,7 @@ window.AppLocales.de = {
     'dashboard.fatal': 'Ein kritischer Fehler ist aufgetreten:\n',
     'collab.lanOn': 'Lokal: aktiv',
     'collab.lanOff': 'Lokal: aus',
-    'collab.noMembers': 'Derzeit sind keine Mitglieder verbunden'
+    'collab.noMembers': 'Derzeit sind keine Mitglieder verbunden',
+    'review.navigateChange': 'Zu Seite {page} gewechselt, um die Änderung anzuzeigen'
   }
 };
