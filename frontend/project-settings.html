@@ -282,7 +282,7 @@
                             <h4 style="margin: 0; color: #0369a1; font-size: 16px;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode) 📡</h4>
                             <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;" data-i18n="ps.stopped">🔴 متوقف</span>
                         </div>
-                        <p style="font-size: 13px; color: #0369a1; margin-bottom: 14px;">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
+                        <p style="font-size: 13px; color: #0369a1; margin-bottom: 14px;" data-i18n="ps.lanHint">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
                         
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <label class="setting-row" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #e0f2fe; cursor: pointer;">
@@ -309,8 +309,8 @@
                                 <!-- Member Section -->
                                 <div id="lan-tab-member-sec" class="hidden">
                                     <div class="form-group" style="margin-bottom: 8px;">
-                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;">كلمة مرور المالك للدخول</label>
-                                        <input type="password" id="member-lan-password" placeholder="أدخل كلمة مرور الشبكة المحلية..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
+                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;" data-i18n="ps.ownerPassword">كلمة مرور المالك للدخول</label>
+                                        <input type="password" id="member-lan-password" data-i18n-placeholder="ps.memberPlaceholder" placeholder="أدخل كلمة مرور الشبكة المحلية..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
                                     </div>
                                     <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية 📡</button>
                                 </div>
@@ -323,15 +323,15 @@
                 <!-- Google Drive Auto-Save Settings -->
                 <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <span style="font-weight: bold; font-size: 14px; color: #1e293b; display: block;">المزامنة التلقائية لـ Google Drive (Auto-Save):</span>
-                        <span style="font-size: 12px; color: #64748b;">حفظ نسخة احتياطية سحابية تلقائياً لمنع فقدان التعديلات عند انقطاع الاتصال.</span>
+                        <span style="font-weight: bold; font-size: 14px; color: #1e293b; display: block;" data-i18n="ps.driveAutosave">المزامنة التلقائية لـ Google Drive (Auto-Save):</span>
+                        <span style="font-size: 12px; color: #64748b;" data-i18n="ps.driveHint">حفظ نسخة احتياطية سحابية تلقائياً لمنع فقدان التعديلات عند انقطاع الاتصال.</span>
                     </div>
                     <select id="ps-autosave-interval" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: white;">
-                        <option value="5" selected>كل 5 دقائق (الافتراضي)</option>
-                        <option value="10">كل 10 دقائق</option>
-                        <option value="15">كل 15 دقيقة</option>
-                        <option value="30">كل 30 دقيقة</option>
-                        <option value="0">إيقاف الحفظ التلقائي</option>
+                        <option value="5" selected data-i18n="ps.every5">كل 5 دقائق (الافتراضي)</option>
+                        <option value="10" data-i18n="ps.every10">كل 10 دقائق</option>
+                        <option value="15" data-i18n="ps.every15">كل 15 دقيقة</option>
+                        <option value="30" data-i18n="ps.every30">كل 30 دقيقة</option>
+                        <option value="0" data-i18n="ps.disableAutosave">إيقاف الحفظ التلقائي</option>
                     </select>
                 </div>
             </div>

@@ -437,6 +437,16 @@ window.AppLocales.en = {
     'ocr.fullFile': 'Entire file',
     'ocr.selected': 'Selected range',
     'ocr.fromPage': 'From page',
-    'ocr.to': 'To'
+    'ocr.to': 'To',
+    'ps.lanHint': 'Allows devices on the same router to discover each other and work together.',
+    'ps.ownerPassword': 'Owner password to join',
+    'ps.memberPlaceholder': 'Enter local-network password…',
+    'ps.driveAutosave': 'Google Drive automatic synchronization:',
+    'ps.driveHint': 'Automatically save a cloud backup to avoid losing edits during a connection interruption.',
+    'ps.every5': 'Every 5 minutes (default)',
+    'ps.every10': 'Every 10 minutes',
+    'ps.every15': 'Every 15 minutes',
+    'ps.every30': 'Every 30 minutes',
+    'ps.disableAutosave': 'Disable automatic saving'
   }
 };

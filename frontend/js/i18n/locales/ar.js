@@ -437,6 +437,16 @@ window.AppLocales.ar = {
     'ocr.fullFile': 'كامل الملف',
     'ocr.selected': 'نطاق محدد',
     'ocr.fromPage': 'من صفحة',
-    'ocr.to': 'إلى'
+    'ocr.to': 'إلى',
+    'ps.lanHint': 'يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.',
+    'ps.ownerPassword': 'كلمة مرور المالك للدخول',
+    'ps.memberPlaceholder': 'أدخل كلمة مرور الشبكة المحلية...',
+    'ps.driveAutosave': 'المزامنة التلقائية لـ Google Drive (Auto-Save):',
+    'ps.driveHint': 'حفظ نسخة احتياطية سحابية تلقائياً لمنع فقدان التعديلات عند انقطاع الاتصال.',
+    'ps.every5': 'كل 5 دقائق (الافتراضي)',
+    'ps.every10': 'كل 10 دقائق',
+    'ps.every15': 'كل 15 دقيقة',
+    'ps.every30': 'كل 30 دقيقة',
+    'ps.disableAutosave': 'إيقاف الحفظ التلقائي'
   }
 };

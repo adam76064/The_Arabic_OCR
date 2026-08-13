@@ -437,6 +437,16 @@ window.AppLocales.de = {
     'ocr.fullFile': 'Gesamte Datei',
     'ocr.selected': 'Ausgewählter Bereich',
     'ocr.fromPage': 'Von Seite',
-    'ocr.to': 'Bis'
+    'ocr.to': 'Bis',
+    'ps.lanHint': 'Ermöglicht Geräten am selben Router die automatische Erkennung und Zusammenarbeit.',
+    'ps.ownerPassword': 'Besitzerpasswort zum Beitreten',
+    'ps.memberPlaceholder': 'Passwort für lokales Netzwerk eingeben…',
+    'ps.driveAutosave': 'Automatische Google-Drive-Synchronisierung:',
+    'ps.driveHint': 'Automatisch eine Cloud-Sicherung speichern, um Änderungen bei Verbindungsabbruch nicht zu verlieren.',
+    'ps.every5': 'Alle 5 Minuten (Standard)',
+    'ps.every10': 'Alle 10 Minuten',
+    'ps.every15': 'Alle 15 Minuten',
+    'ps.every30': 'Alle 30 Minuten',
+    'ps.disableAutosave': 'Automatisches Speichern deaktivieren'
   }
 };
