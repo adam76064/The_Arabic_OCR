@@ -1,3 +1,5 @@
+const quranText = (key, replacements) => window.AppI18n?.t(key, replacements) || key;
+
 let savedSelectionRange = null;
 let savedEditableTarget = null;
 let quranSurahs = [];
@@ -107,7 +109,7 @@ function openQuranModal(initialSearchQuery) {
     modal.classList.remove('hidden');
     
     document.getElementById('quran-results-tbody').innerHTML = 
-        `<tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;">لا توجد نتائج. ابحث لإظهار الآيات.</td></tr>`;
+        `<tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;">${quranText('quran.emptyPrompt')}</td></tr>`;
     document.getElementById('quran-insert-confirm').disabled = true;
     document.getElementById('quran-select-all').checked = false;
 
@@ -146,7 +148,7 @@ function setupQuranModal() {
         const insertBtn = document.getElementById('quran-insert-confirm');
         const checkedCount = document.querySelectorAll('.quran-ayah-checkbox:checked').length;
         insertBtn.disabled = checkedCount === 0;
-        insertBtn.textContent = checkedCount > 0 ? `إدراج (${checkedCount}) آية` : 'إدراج التحديد';
+        insertBtn.textContent = checkedCount > 0 ? quranText('quran.insertCount', { count: checkedCount }) : quranText('quran.insertSelection');
     });
 }
 
@@ -158,7 +160,7 @@ async function triggerQuranSearch() {
     if (!query) return;
     
     const tbody = document.getElementById('quran-results-tbody');
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">⏳ جاري البحث...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">${quranText('quran.searching')}</td></tr>`;
     
     currentQuranResults = await window.pywebview.api.quran_search(query);
     renderQuranBatch(false);
@@ -170,7 +172,7 @@ async function triggerQuranManualFetch() {
     const toAyah = document.getElementById('quran-ayah-to').value;
     
     const tbody = document.getElementById('quran-results-tbody');
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">⏳ جاري الجلب...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">${quranText('quran.fetching')}</td></tr>`;
     
     currentQuranResults = await window.pywebview.api.quran_get_range(surahId, fromAyah, toAyah);
     renderQuranBatch(false);
@@ -185,11 +187,11 @@ function renderQuranBatch(isAppending = false) {
         quranRenderIndex = 0;
         document.getElementById('quran-select-all').checked = false;
         insertBtn.disabled = true;
-        insertBtn.textContent = 'إدراج التحديد';
+        insertBtn.textContent = quranText('quran.insertSelection');
     }
 
     if (!currentQuranResults || currentQuranResults.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c; padding: 20px;">لم يتم العثور على نتائج.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c; padding: 20px;">${quranText('quran.noResults')}</td></tr>`;
         return;
     }
 
@@ -235,7 +237,7 @@ function renderQuranBatch(isAppending = false) {
         cb.addEventListener('change', () => {
             const checkedCount = document.querySelectorAll('.quran-ayah-checkbox:checked').length;
             insertBtn.disabled = checkedCount === 0;
-            insertBtn.textContent = checkedCount > 0 ? `إدراج (${checkedCount}) آية` : 'إدراج التحديد';
+            insertBtn.textContent = checkedCount > 0 ? quranText('quran.insertCount', { count: checkedCount }) : quranText('quran.insertSelection');
         });
     });
 }

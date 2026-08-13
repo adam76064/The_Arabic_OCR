@@ -247,6 +247,13 @@ window.AppLocales.ar = {
     'format.left': 'محاذاة يسار',
     'format.justifyShort': 'ضبط',
     'format.rtlShort': 'اتجاه من اليمين',
-    'format.ltrShort': 'اتجاه من اليسار'
+    'format.ltrShort': 'اتجاه من اليسار',
+    'quran.emptyPrompt': 'لا توجد نتائج. ابحث لإظهار الآيات.',
+    'quran.insertSelection': 'إدراج التحديد',
+    'quran.searching': '⏳ جاري البحث...',
+    'quran.fetching': '⏳ جاري الجلب...',
+    'quran.noResults': 'لم يتم العثور على نتائج.',
+    'quran.insertCount': 'إدراج ({count}) آية',
+    'quran.loadMore': 'تحميل المزيد ({count}) ▾'
   }
 };

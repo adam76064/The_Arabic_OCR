@@ -247,6 +247,13 @@ window.AppLocales.de = {
     'format.left': 'Linksbündig',
     'format.justifyShort': 'Blocksatz',
     'format.rtlShort': 'Rechts-nach-links-Richtung',
-    'format.ltrShort': 'Links-nach-rechts-Richtung'
+    'format.ltrShort': 'Links-nach-rechts-Richtung',
+    'quran.emptyPrompt': 'Keine Ergebnisse. Suchen Sie, um Verse anzuzeigen.',
+    'quran.insertSelection': 'Auswahl einfügen',
+    'quran.searching': '⏳ Suche läuft…',
+    'quran.fetching': '⏳ Wird abgerufen…',
+    'quran.noResults': 'Keine Ergebnisse gefunden.',
+    'quran.insertCount': '{count} Vers(e) einfügen',
+    'quran.loadMore': 'Mehr laden ({count}) ▾'
   }
 };

@@ -247,6 +247,13 @@ window.AppLocales.en = {
     'format.left': 'Align left',
     'format.justifyShort': 'Justify',
     'format.rtlShort': 'Right-to-left direction',
-    'format.ltrShort': 'Left-to-right direction'
+    'format.ltrShort': 'Left-to-right direction',
+    'quran.emptyPrompt': 'No results. Search to display verses.',
+    'quran.insertSelection': 'Insert selection',
+    'quran.searching': '⏳ Searching…',
+    'quran.fetching': '⏳ Fetching…',
+    'quran.noResults': 'No results found.',
+    'quran.insertCount': 'Insert ({count}) verse(s)',
+    'quran.loadMore': 'Load more ({count}) ▾'
   }
 };
