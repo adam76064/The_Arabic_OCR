@@ -402,6 +402,9 @@ window.AppLocales.en = {
     'collab.lanOn': 'Local: on',
     'collab.lanOff': 'Local: off',
     'collab.noMembers': 'No members are currently connected',
-    'review.navigateChange': 'Navigated to page {page} to show the change'
+    'review.navigateChange': 'Navigated to page {page} to show the change',
+    'layout.saving': '⏳ Saving…',
+    'layout.saved': '✔ Saved',
+    'layout.error': '❌ Error'
   }
 };

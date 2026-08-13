@@ -402,6 +402,9 @@ window.AppLocales.de = {
     'collab.lanOn': 'Lokal: aktiv',
     'collab.lanOff': 'Lokal: aus',
     'collab.noMembers': 'Derzeit sind keine Mitglieder verbunden',
-    'review.navigateChange': 'Zu Seite {page} gewechselt, um die Änderung anzuzeigen'
+    'review.navigateChange': 'Zu Seite {page} gewechselt, um die Änderung anzuzeigen',
+    'layout.saving': '⏳ Wird gespeichert…',
+    'layout.saved': '✔ Gespeichert',
+    'layout.error': '❌ Fehler'
   }
 };

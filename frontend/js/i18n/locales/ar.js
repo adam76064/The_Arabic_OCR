@@ -402,6 +402,9 @@ window.AppLocales.ar = {
     'collab.lanOn': 'محلي: مفعل',
     'collab.lanOff': 'محلي: متوقف',
     'collab.noMembers': 'لا يوجد أعضاء متصلون حالياً',
-    'review.navigateChange': 'تم الانتقال للصفحة {page} لعرض التغيير'
+    'review.navigateChange': 'تم الانتقال للصفحة {page} لعرض التغيير',
+    'layout.saving': '⏳ جاري الحفظ...',
+    'layout.saved': '✔ تم الحفظ',
+    'layout.error': '❌ خطأ'
   }
 };
