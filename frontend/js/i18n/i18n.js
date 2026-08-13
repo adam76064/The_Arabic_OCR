@@ -22,7 +22,12 @@
 
   function getLanguage() {
     const configured = global.__appSettings && global.__appSettings.interfaceLanguage;
-    return isSupported(configured) ? configured : FALLBACK_LANGUAGE;
+    if (isSupported(configured)) return configured;
+    try {
+      const cached = localStorage.getItem('interfaceLanguage');
+      if (isSupported(cached)) return cached;
+    } catch (_) {}
+    return FALLBACK_LANGUAGE;
   }
 
   function t(key, replacements = {}) {
@@ -62,11 +67,17 @@
     if (!isSupported(language)) throw new Error(`Unsupported interface language: ${language}`);
     global.__appSettings = global.__appSettings || {};
     global.__appSettings.interfaceLanguage = language;
+    try { localStorage.setItem('interfaceLanguage', language); } catch (_) {}
     applyDocumentLanguage();
     if (persist && typeof global.saveAppSettings === 'function') await global.saveAppSettings();
   }
 
-  global.AppI18n = { FALLBACK_LANGUAGE, supportedLanguages, getLanguage, setLanguage, t, applyDocumentLanguage };
+  function categoryLabel(category) { return t(`category.${category}`) === `category.${category}` ? category : t(`category.${category}`); }
+
+  global.AppI18n = { FALLBACK_LANGUAGE, supportedLanguages, getLanguage, setLanguage, t, categoryLabel, applyDocumentLanguage };
   document.addEventListener('DOMContentLoaded', applyDocumentLanguage);
-  global.addEventListener('appSettingsLoaded', applyDocumentLanguage);
+  global.addEventListener('appSettingsLoaded', () => {
+    try { localStorage.setItem('interfaceLanguage', getLanguage()); } catch (_) {}
+    applyDocumentLanguage();
+  });
 })(window);

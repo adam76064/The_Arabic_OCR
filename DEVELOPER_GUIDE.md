@@ -1025,6 +1025,8 @@ frontend/js/i18n/
     └── de.js            # German catalog and LTR metadata
 ```
 
+`bootstrap.js` runs from each page head before styles load. It reads the cached `localStorage.interfaceLanguage` value and sets the document `lang` and `dir` before first paint. `i18n.js` then reconciles that cache with persisted app settings after pywebview becomes ready.
+
 `i18n.js` exposes `window.AppI18n`:
 
 - `AppI18n.t(key, replacements)` resolves a message, with Arabic as the fallback.
@@ -1037,7 +1039,7 @@ Use declarative keys for static markup, for example `<span data-i18n="nav.projec
 ### Add a language
 
 1. Add `frontend/js/i18n/locales/<code>.js`. Register `window.AppLocales.<code>` with `meta` (`name`, `nativeName`, `direction`) and a complete `messages` object. Use `direction: 'rtl'` only where appropriate.
-2. Add the locale script before `js/i18n/i18n.js` in every frontend HTML entry point. This explicit loading is intentional: the app uses regular scripts rather than a bundler.
+2. Add the locale script before `js/i18n/i18n.js` in every frontend HTML entry point; retain `js/i18n/bootstrap.js` immediately after the character-set meta tag. This explicit loading is intentional: the app uses regular scripts rather than a bundler.
 3. Add an option to the `#interface-language` selector in `frontend/settings.html` and translate its label in every catalog.
 4. Mark static UI with `data-i18n`; translate dynamically generated labels through `AppI18n.t()`. Keep keys semantic and grouped by feature (`nav.*`, `settings.*`), rather than using source text as keys.
 5. Verify both the new language and Arabic. Check `document.documentElement.lang`, `document.documentElement.dir`, sidebar placement/collapse behavior, form alignment, dialogs, and a reload after saving settings.

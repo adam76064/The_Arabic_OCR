@@ -159,30 +159,13 @@ const BASE_CATEGORIES = {
     'Vertical-poetry':'#e84393', 'Staggered-poetry':'#00cec9'
 };
 
-const CATEGORY_ARABIC_MAP = {
-    'Text': 'نص عادي',
-    'Table': 'جدول',
-    'Title': 'عنوان رئيسي',
-    'Section-header': 'عنوان فرعي',
-    'Picture': 'صورة / رسم',
-    'Caption': 'تسمية توضيحية',
-    'List-item': 'عنصر قائمة',
-    'Footnote': 'حاشية سفلية',
-    'Page-header': 'رأس الصفحة',
-    'Page-footer': 'تذييل الصفحة',
-    'Page-number': 'رقم الصفحة',
-    'Formula': 'معادلة رياضية',
-    'Vertical-poetry': 'شعر عمودي',
-    'Staggered-poetry': 'شعر متدرج'
-};
-
 function getDynamicCategories() {
     const custom = window.__appSettings?.customCategories || {};
     return Object.keys({ ...BASE_CATEGORIES, ...custom });
 }
 
 function getCategoryLabelAR(catName) {
-    return CATEGORY_ARABIC_MAP[catName] || catName;
+    return window.AppI18n?.categoryLabel(catName) || catName;
 }
 
 let categoryFormatting = {};
