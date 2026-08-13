@@ -12,14 +12,14 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             
             <div>
-                <h1 style="font-size: 24px; color: #2c3e50;">إدارة صفحات المشروع</h1>
-                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;">جاري التحميل...</p>
+                <h1 style="font-size: 24px; color: #2c3e50;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
+                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;" data-i18n="dash.loading">جاري التحميل...</p>
             </div>
             
             <div style="display: flex; gap: 10px;">
-                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings">إعدادات</button>
-                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back">العودة</button>
-                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export">تصدير</button>
+                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
+                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back" data-i18n="dash.back">العودة</button>
+                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export" data-i18n="dash.export">تصدير</button>
             </div>
 
         </div>
@@ -28,15 +28,15 @@
         <div id="dashboard-coop-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan">وسائل العمل والتعاون:</span>
+                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan" data-i18n="dash.collab">وسائل العمل والتعاون:</span>
                     <button type="button" id="dash-lan-status" class="lan-status-badge is-off" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network">محلي: متوقف</button>
                 </div>
             </div>
             
             <div style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; font-size: 13px;">
-                <span style="color: #64748b; font-weight: bold;" data-icon-label="user">الأعضاء المتصلون حالياً:</span>
+                <span style="color: #64748b; font-weight: bold;" data-icon-label="user" data-i18n="dash.members">الأعضاء المتصلون حالياً:</span>
                 <div id="dash-active-collaborators" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>
+                    <span style="color: #94a3b8; font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>
                 </div>
             </div>
         </div>
@@ -46,11 +46,11 @@
         <table class="dashboard-table">
                 <thead>
                     <tr>
-                        <th style="width: 80px;">الصفحة</th>
-                        <th>حالة النصوص (OCR)</th>
-                        <th>حالة التخطيط (Layout)</th>
-                        <th>حالة التدقيق (Review)</th>
-                        <th style="text-align: left; padding-left: 20px;">الإجراءات</th>
+                        <th style="width: 80px;" data-i18n="dash.page">الصفحة</th>
+                        <th data-i18n="dash.ocr">حالة النصوص (OCR)</th>
+                        <th data-i18n="dash.layout">حالة التخطيط (Layout)</th>
+                        <th data-i18n="dash.review">حالة التدقيق (Review)</th>
+                        <th style="text-align: left; padding-left: 20px;" data-i18n="dash.actions">الإجراءات</th>
                     </tr>
                 </thead>
             <tbody id="pages-table-body">
@@ -62,13 +62,13 @@
         <div class="modal-overlay" id="paddle-ocr-overlay"></div>
         <div class="modal-box" style="width: 500px;">
             <div class="modal-header">
-                <h3>إعدادات Parse Layout / OCR</h3>
+                <h3 data-i18n="dash.ocrSettings">إعدادات Parse Layout / OCR</h3>
                 <button class="modal-close" id="paddle-ocr-close">✕</button>
             </div>
             <div class="modal-body">
                 
                 <div class="form-group">
-                    <label>أداة المعالجة (OCR Tool)</label>
+                    <label data-i18n="dash.tool">أداة المعالجة (OCR Tool)</label>
                     <div class="form-section">
                         <div class="radio-group tool-option" id="tool-paddle-container">
                             <label class="radio-item" style="font-size: 15px;">
@@ -87,7 +87,7 @@
                             </label>
                             
                             <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">طريقة المسح (Scan Mode):</div>
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;" data-i18n="dash.scanMode">طريقة المسح (Scan Mode):</div>
                                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                                     <label class="radio-item">
                                         <input type="radio" name="locro-mode" value="full_page" checked> 
@@ -227,7 +227,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>نطاق الصفحات</label>
+                    <label data-i18n="dash.pageRange">نطاق الصفحات</label>
                     <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
                         <label class="radio-item">
                             <input type="radio" name="ocr-range" value="all"> كامل الملف
@@ -256,7 +256,7 @@
                 </div>
 
                 <div class="form-actions" style="margin-top: 20px;">
-                    <button id="start-ocr-btn" class="btn-success">بدء المعالجة</button>
+                    <button id="start-ocr-btn" class="btn-success" data-i18n="dash.start">بدء المعالجة</button>
                 </div>
             </div>
         </div>
