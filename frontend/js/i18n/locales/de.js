@@ -382,6 +382,14 @@ window.AppLocales.de = {
     'ocr.allPages': 'Alle Buchseiten werden verarbeitet.',
     'ocr.defaultRange': 'Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.',
     'ocr.lensFull': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
-    'ocr.lensBlocks': 'Der ursprüngliche Seitentext wird abgerufen und räumlich mit aktuellen Textblöcken abgeglichen, um das Layout beizubehalten.'
+    'ocr.lensBlocks': 'Der ursprüngliche Seitentext wird abgerufen und räumlich mit aktuellen Textblöcken abgeglichen, um das Layout beizubehalten.',
+    'block.quran': '📖 Koranvers suchen',
+    'block.merge': '🔗 Ausgewählte Blöcke zusammenführen',
+    'block.split': '✂️ Block am Cursor teilen',
+    'block.splitTitle': '✂️ Block teilen',
+    'block.splitHint': 'Bewegen Sie den Zeiger, um die Schnittposition (rote Linie) festzulegen, und bestätigen Sie dann die Teilung.',
+    'block.horizontal': 'Horizontal teilen (zwei Zeilen)',
+    'block.vertical': 'Vertikal teilen (zwei Spalten)',
+    'block.confirmSplit': 'Teilung bestätigen'
   }
 };

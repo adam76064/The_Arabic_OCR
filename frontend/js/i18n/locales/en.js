@@ -382,6 +382,14 @@ window.AppLocales.en = {
     'ocr.allPages': 'All book pages will be processed.',
     'ocr.defaultRange': 'The default range starts at the first unprocessed page.',
     'ocr.lensFull': 'The page will be sent to Google Lens and text with bounding boxes will be created automatically.',
-    'ocr.lensBlocks': 'Original page text will be fetched and spatially matched with current text blocks to preserve the layout.'
+    'ocr.lensBlocks': 'Original page text will be fetched and spatially matched with current text blocks to preserve the layout.',
+    'block.quran': '📖 Search Quran verse',
+    'block.merge': '🔗 Merge selected blocks',
+    'block.split': '✂️ Split block at cursor',
+    'block.splitTitle': '✂️ Split block',
+    'block.splitHint': 'Move the pointer to set the cut position (red line), then confirm the split.',
+    'block.horizontal': 'Horizontal split (two rows)',
+    'block.vertical': 'Vertical split (two columns)',
+    'block.confirmSplit': 'Confirm split'
   }
 };
