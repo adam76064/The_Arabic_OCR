@@ -270,38 +270,38 @@
             </div>
 
             <div class="settings-card">
-                <h3>🌐 المشاركة والعمل التعاوني (Cooperative Work)</h3>
+                <h3 data-i18n="ps.collaboration">🌐 المشاركة والعمل التعاوني (Cooperative Work)</h3>
 
-                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;">تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).</p>
+                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="ps.collabHint">تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).</p>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px;">
                     
                     <!-- LAN Cooperative Box -->
                     <div style="background: #f0f9ff; padding: 18px; border-radius: 10px; border: 1px solid #bae6fd;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="margin: 0; color: #0369a1; font-size: 16px;">وضع العمل المحلي (LAN Mode) 📡</h4>
-                            <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;">🔴 متوقف</span>
+                            <h4 style="margin: 0; color: #0369a1; font-size: 16px;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode) 📡</h4>
+                            <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;" data-i18n="ps.stopped">🔴 متوقف</span>
                         </div>
                         <p style="font-size: 13px; color: #0369a1; margin-bottom: 14px;">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
                         
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <label class="setting-row" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #e0f2fe; cursor: pointer;">
-                                <span style="font-size: 14px; font-weight: bold; color: #0f172a;">تفعيل وضع الشبكة المحلية</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #0f172a;" data-i18n="ps.enableLan">تفعيل وضع الشبكة المحلية</span>
                                 <span class="switch"><input type="checkbox" id="ps-lan-broadcast"><span class="slider"></span></span>
                             </label>
                             
                             <!-- LAN Mode Action Tabs -->
                             <div style="background: white; border-radius: 8px; border: 1px solid #bae6fd; padding: 12px;">
                                 <div style="display: flex; gap: 8px; border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 6px;">
-                                    <button type="button" id="lan-tab-host-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #0369a1; border-bottom: 2px solid #0369a1; cursor: pointer; padding: 4px 8px;">تحديد كلمة السر (المالك)</button>
-                                    <button type="button" id="lan-tab-member-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #64748b; cursor: pointer; padding: 4px 8px;">ربط بكلمة سر (عضو)</button>
+                                    <button type="button" id="lan-tab-host-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #0369a1; border-bottom: 2px solid #0369a1; cursor: pointer; padding: 4px 8px;" data-i18n="ps.hostPassword">تحديد كلمة السر (المالك)</button>
+                                    <button type="button" id="lan-tab-member-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #64748b; cursor: pointer; padding: 4px 8px;" data-i18n="ps.memberPassword">ربط بكلمة سر (عضو)</button>
                                 </div>
 
                                 <!-- Host Section -->
                                 <div id="lan-tab-host-sec">
                                     <div class="form-group" style="margin: 0;">
-                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;">كلمة مرور الشبكة المحلية</label>
-                                        <input type="password" id="ps-lan-password" placeholder="أدخل كلمة مرور قوية للمشروع..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
+                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;" data-i18n="ps.lanPassword">كلمة مرور الشبكة المحلية</label>
+                                        <input type="password" id="ps-lan-password" data-i18n-placeholder="ps.passwordPlaceholder" placeholder="أدخل كلمة مرور قوية للمشروع..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
                                         <div id="lan-pwd-feedback" style="font-size: 11px; margin-top: 4px; color: #dc2626;"></div>
                                     </div>
                                 </div>
@@ -312,7 +312,7 @@
                                         <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;">كلمة مرور المالك للدخول</label>
                                         <input type="password" id="member-lan-password" placeholder="أدخل كلمة مرور الشبكة المحلية..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
                                     </div>
-                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;">حفظ وربط بالشبكة المحلية 📡</button>
+                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية 📡</button>
                                 </div>
                             </div>
                         </div>
@@ -337,11 +337,11 @@
             </div>
 
             <div class="settings-card">
-                <h3>🔔 إشعارات المشروع</h3>
+                <h3 data-i18n="ps.notifications">🔔 إشعارات المشروع</h3>
                 <div class="settings-row" style="gap: 24px;">
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label><span class="setting-label">دخول/خروج عضو</span></div>
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label><span class="setting-label">إنهاء مراجعة صفحة</span></div>
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-edit"><span class="slider"></span></label><span class="setting-label">تعديل حي من مشترك</span></div>
+                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.memberJoin">دخول/خروج عضو</span></div>
+                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.pageReviewDone">إنهاء مراجعة صفحة</span></div>
+                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-edit"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.liveEdit">تعديل حي من مشترك</span></div>
                 </div>
             </div>
         </form>

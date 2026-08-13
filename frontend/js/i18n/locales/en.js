@@ -340,6 +340,22 @@ window.AppLocales.en = {
     'ps.postHint': 'Automatic options applied after text extraction to organize text boxes and reading order.',
     'ps.readingOrder': '📐 Sort boxes by Arabic reading order (right to left, top to bottom)',
     'ps.runReadingOrder': '⚡ Sort boxes on pages now',
-    'ps.pagination': '🔢 Automatic page-number detection'
+    'ps.pagination': '🔢 Automatic page-number detection',
+    'ps.paginationHint': 'Detects standalone page numbers at page tops and bottoms and labels them automatically as Page-number.',
+    'ps.runPagination': '⚡ Detect page numbers now',
+    'ps.collaboration': '🌐 Sharing and collaboration',
+    'ps.collabHint': 'Enable collaborative work and live synchronization through the local network and cloud.',
+    'ps.lanMode': 'Local network mode (LAN) 📡',
+    'ps.stopped': '🔴 Stopped',
+    'ps.enableLan': 'Enable local-network mode',
+    'ps.hostPassword': 'Set password (owner)',
+    'ps.memberPassword': 'Connect with password (member)',
+    'ps.lanPassword': 'Local-network password',
+    'ps.passwordPlaceholder': 'Enter a strong project password…',
+    'ps.linkLan': 'Save and connect to local network 📡',
+    'ps.notifications': '🔔 Project notifications',
+    'ps.memberJoin': 'Member joins/leaves',
+    'ps.pageReviewDone': 'Page review completed',
+    'ps.liveEdit': 'Live edit from a collaborator'
   }
 };

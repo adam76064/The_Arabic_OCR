@@ -340,6 +340,22 @@ window.AppLocales.ar = {
     'ps.postHint': 'خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.',
     'ps.readingOrder': '📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)',
     'ps.runReadingOrder': '⚡ ترتيب المربعات على الصفحات الآن',
-    'ps.pagination': '🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)'
+    'ps.pagination': '🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)',
+    'ps.paginationHint': 'يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).',
+    'ps.runPagination': '⚡ كشف أرقام الصفحات الآن',
+    'ps.collaboration': '🌐 المشاركة والعمل التعاوني (Cooperative Work)',
+    'ps.collabHint': 'تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).',
+    'ps.lanMode': 'وضع العمل المحلي (LAN Mode) 📡',
+    'ps.stopped': '🔴 متوقف',
+    'ps.enableLan': 'تفعيل وضع الشبكة المحلية',
+    'ps.hostPassword': 'تحديد كلمة السر (المالك)',
+    'ps.memberPassword': 'ربط بكلمة سر (عضو)',
+    'ps.lanPassword': 'كلمة مرور الشبكة المحلية',
+    'ps.passwordPlaceholder': 'أدخل كلمة مرور قوية للمشروع...',
+    'ps.linkLan': 'حفظ وربط بالشبكة المحلية 📡',
+    'ps.notifications': '🔔 إشعارات المشروع',
+    'ps.memberJoin': 'دخول/خروج عضو',
+    'ps.pageReviewDone': 'إنهاء مراجعة صفحة',
+    'ps.liveEdit': 'تعديل حي من مشترك'
   }
 };

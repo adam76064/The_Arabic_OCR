@@ -340,6 +340,22 @@ window.AppLocales.de = {
     'ps.postHint': 'Automatische Optionen, die nach der Textextraktion Textfelder und Lesereihenfolge organisieren.',
     'ps.readingOrder': '📐 Felder nach arabischer Lesereihenfolge sortieren (rechts nach links, oben nach unten)',
     'ps.runReadingOrder': '⚡ Felder auf Seiten jetzt sortieren',
-    'ps.pagination': '🔢 Automatische Seitennummernerkennung'
+    'ps.pagination': '🔢 Automatische Seitennummernerkennung',
+    'ps.paginationHint': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.',
+    'ps.runPagination': '⚡ Seitennummern jetzt erkennen',
+    'ps.collaboration': '🌐 Freigabe und Zusammenarbeit',
+    'ps.collabHint': 'Kollaboratives Arbeiten und Live-Synchronisierung über lokales Netzwerk und Cloud aktivieren.',
+    'ps.lanMode': 'Lokaler Netzwerkmodus (LAN) 📡',
+    'ps.stopped': '🔴 Angehalten',
+    'ps.enableLan': 'Lokalen Netzwerkmodus aktivieren',
+    'ps.hostPassword': 'Passwort festlegen (Besitzer)',
+    'ps.memberPassword': 'Mit Passwort verbinden (Mitglied)',
+    'ps.lanPassword': 'Lokales Netzwerkpasswort',
+    'ps.passwordPlaceholder': 'Starkes Projektpasswort eingeben…',
+    'ps.linkLan': 'Speichern und mit lokalem Netzwerk verbinden 📡',
+    'ps.notifications': '🔔 Projektbenachrichtigungen',
+    'ps.memberJoin': 'Mitglied tritt bei/verlässt',
+    'ps.pageReviewDone': 'Seitenprüfung abgeschlossen',
+    'ps.liveEdit': 'Live-Bearbeitung durch Mitwirkende'
   }
 };
