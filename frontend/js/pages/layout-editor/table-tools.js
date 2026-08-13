@@ -2,6 +2,8 @@
  * pages/layout-editor/table-tools.js - TableEditor engine
  */
 
+const layoutTableText = (key) => window.AppI18n?.t(key) || key;
+
 window.TableEditor = {
     activeHandle: null,
     contextMenu: null,
@@ -246,13 +248,13 @@ window.TableEditor = {
             background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
             z-index: 10000; font-family: system-ui, sans-serif; font-size: 13px; color: #374151;
-            min-width: 200px; overflow: hidden; direction: rtl; display: flex; flex-direction: column;
+            min-width: 200px; overflow: hidden; direction: inherit; display: flex; flex-direction: column;
             padding: 6px 0;
         `;
 
         const createItem = (text, icon, onClick, danger=false) => {
             const div = document.createElement('div');
-            div.innerHTML = `<span style="margin-left: 10px; font-size: 15px;">${icon}</span> <span>${text}</span>`;
+            div.innerHTML = `<span style="margin-inline-end: 10px; font-size: 15px;">${icon}</span> <span>${text}</span>`;
             div.style.cssText = `padding: 8px 16px; cursor: pointer; display: flex; align-items: center; transition: background 0.15s; ${danger ? 'color: #dc2626;' : 'color: #1f2937;'}`;
             div.onmouseover = () => div.style.background = danger ? '#fef2f2' : '#f3f4f6';
             div.onmouseout = () => div.style.background = 'transparent';
@@ -267,23 +269,23 @@ window.TableEditor = {
         };
 
         if (selectedTableCells.cellIndices && selectedTableCells.cellIndices.length > 1) {
-            menu.appendChild(createItem('دمج الخلايا المحددة', icon('merge'), () => {
+            menu.appendChild(createItem(layoutTableText('table.merge'), icon('merge'), () => {
                 this.mergeCells(tableBlock, selectedTableCells.cellIndices);
                 selectedTableCells = { blockIdx: null, cellIndices: [] }; 
             }));
             menu.appendChild(divider());
         }
 
-        menu.appendChild(createItem('إضافة صف للأعلى', icon('rowAbove'), () => this.addRowCol(tableBlock, 'row_above', cell)));
-        menu.appendChild(createItem('إضافة صف للأسفل', icon('rowBelow'), () => this.addRowCol(tableBlock, 'row_below', cell)));
-        menu.appendChild(createItem('إضافة عمود لليمين', icon('colRight'), () => this.addRowCol(tableBlock, 'col_right', cell)));
-        menu.appendChild(createItem('إضافة عمود لليسار', icon('colLeft'), () => this.addRowCol(tableBlock, 'col_left', cell)));
+        menu.appendChild(createItem(layoutTableText('table.addRowAbove'), icon('rowAbove'), () => this.addRowCol(tableBlock, 'row_above', cell)));
+        menu.appendChild(createItem(layoutTableText('table.addRowBelow'), icon('rowBelow'), () => this.addRowCol(tableBlock, 'row_below', cell)));
+        menu.appendChild(createItem(layoutTableText('table.addColRight'), icon('colRight'), () => this.addRowCol(tableBlock, 'col_right', cell)));
+        menu.appendChild(createItem(layoutTableText('table.addColLeft'), icon('colLeft'), () => this.addRowCol(tableBlock, 'col_left', cell)));
         menu.appendChild(divider());
-        menu.appendChild(createItem('حذف الصف الحالي', icon('trash'), () => this.removeRowCol(tableBlock, 'row', cell), true));
-        menu.appendChild(createItem('حذف العمود الحالي', icon('trash'), () => this.removeRowCol(tableBlock, 'col', cell), true));
+        menu.appendChild(createItem(layoutTableText('table.deleteCurrentRow'), icon('trash'), () => this.removeRowCol(tableBlock, 'row', cell), true));
+        menu.appendChild(createItem(layoutTableText('table.deleteCurrentCol'), icon('trash'), () => this.removeRowCol(tableBlock, 'col', cell), true));
 
-        menu.appendChild(createItem('تقسيم الخلية (عمودياً من المنتصف)', icon('splitV'), () => this.bisectCell(tableBlock, hitCellIdx, 'v')));
-        menu.appendChild(createItem('تقسيم الخلية (أفقياً من المنتصف)', icon('splitH'), () => this.bisectCell(tableBlock, hitCellIdx, 'h')));
+        menu.appendChild(createItem(layoutTableText('table.splitVertical'), icon('splitV'), () => this.bisectCell(tableBlock, hitCellIdx, 'v')));
+        menu.appendChild(createItem(layoutTableText('table.splitHorizontal'), icon('splitH'), () => this.bisectCell(tableBlock, hitCellIdx, 'h')));
         menu.appendChild(divider());
 
         document.body.appendChild(menu);

@@ -405,6 +405,15 @@ window.AppLocales.en = {
     'review.navigateChange': 'Navigated to page {page} to show the change',
     'layout.saving': '⏳ Saving…',
     'layout.saved': '✔ Saved',
-    'layout.error': '❌ Error'
+    'layout.error': '❌ Error',
+    'table.merge': 'Merge selected cells',
+    'table.addRowAbove': 'Add row above',
+    'table.addRowBelow': 'Add row below',
+    'table.addColRight': 'Add column right',
+    'table.addColLeft': 'Add column left',
+    'table.deleteCurrentRow': 'Delete current row',
+    'table.deleteCurrentCol': 'Delete current column',
+    'table.splitVertical': 'Split cell vertically in the middle',
+    'table.splitHorizontal': 'Split cell horizontally in the middle'
   }
 };

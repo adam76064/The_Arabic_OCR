@@ -405,6 +405,15 @@ window.AppLocales.ar = {
     'review.navigateChange': 'تم الانتقال للصفحة {page} لعرض التغيير',
     'layout.saving': '⏳ جاري الحفظ...',
     'layout.saved': '✔ تم الحفظ',
-    'layout.error': '❌ خطأ'
+    'layout.error': '❌ خطأ',
+    'table.merge': 'دمج الخلايا المحددة',
+    'table.addRowAbove': 'إضافة صف للأعلى',
+    'table.addRowBelow': 'إضافة صف للأسفل',
+    'table.addColRight': 'إضافة عمود لليمين',
+    'table.addColLeft': 'إضافة عمود لليسار',
+    'table.deleteCurrentRow': 'حذف الصف الحالي',
+    'table.deleteCurrentCol': 'حذف العمود الحالي',
+    'table.splitVertical': 'تقسيم الخلية (عمودياً من المنتصف)',
+    'table.splitHorizontal': 'تقسيم الخلية (أفقياً من المنتصف)'
   }
 };

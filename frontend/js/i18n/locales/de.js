@@ -405,6 +405,15 @@ window.AppLocales.de = {
     'review.navigateChange': 'Zu Seite {page} gewechselt, um die Änderung anzuzeigen',
     'layout.saving': '⏳ Wird gespeichert…',
     'layout.saved': '✔ Gespeichert',
-    'layout.error': '❌ Fehler'
+    'layout.error': '❌ Fehler',
+    'table.merge': 'Ausgewählte Zellen zusammenführen',
+    'table.addRowAbove': 'Zeile oberhalb hinzufügen',
+    'table.addRowBelow': 'Zeile unterhalb hinzufügen',
+    'table.addColRight': 'Spalte rechts hinzufügen',
+    'table.addColLeft': 'Spalte links hinzufügen',
+    'table.deleteCurrentRow': 'Aktuelle Zeile löschen',
+    'table.deleteCurrentCol': 'Aktuelle Spalte löschen',
+    'table.splitVertical': 'Zelle mittig vertikal teilen',
+    'table.splitHorizontal': 'Zelle mittig horizontal teilen'
   }
 };
