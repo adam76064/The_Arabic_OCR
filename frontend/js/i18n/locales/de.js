@@ -512,6 +512,13 @@ window.AppLocales.de = {
     'quran.surahAyah': 'Sure (Vers)',
     'quran.text': 'Korantext',
     'quran.citation': 'Quellenangabe hinzufügen',
-    'quran.insertSelection': 'Auswahl einfügen'
+    'quran.insertSelection': 'Auswahl einfügen',
+    'ps.tiny': '10 pt (sehr klein)',
+    'ps.small': '12 pt (klein)',
+    'ps.normal': '14 pt (normal)',
+    'ps.medium': '16 pt (mittel)',
+    'ps.large': '18 pt (groß)',
+    'ps.xlarge': '24 pt (sehr groß)',
+    'ps.hugeTitle': '32 pt (sehr großer Titel)'
   }
 };

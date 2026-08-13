@@ -512,6 +512,13 @@ window.AppLocales.en = {
     'quran.surahAyah': 'Surah (verse)',
     'quran.text': 'Quran text',
     'quran.citation': 'Add citation',
-    'quran.insertSelection': 'Insert selection'
+    'quran.insertSelection': 'Insert selection',
+    'ps.tiny': '10 pt (very small)',
+    'ps.small': '12 pt (small)',
+    'ps.normal': '14 pt (normal)',
+    'ps.medium': '16 pt (medium)',
+    'ps.large': '18 pt (large)',
+    'ps.xlarge': '24 pt (very large)',
+    'ps.hugeTitle': '32 pt (huge title)'
   }
 };

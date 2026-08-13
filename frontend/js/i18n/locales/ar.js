@@ -512,6 +512,13 @@ window.AppLocales.ar = {
     'quran.surahAyah': 'السورة (الآية)',
     'quran.text': 'النص القرآني',
     'quran.citation': 'إضافة التخريج',
-    'quran.insertSelection': 'إدراج التحديد'
+    'quran.insertSelection': 'إدراج التحديد',
+    'ps.tiny': '10 pt (صغير جداً)',
+    'ps.small': '12 pt (صغير)',
+    'ps.normal': '14 pt (عادي)',
+    'ps.medium': '16 pt (متوسط)',
+    'ps.large': '18 pt (كبير)',
+    'ps.xlarge': '24 pt (كبير جداً)',
+    'ps.hugeTitle': '32 pt (عنوان ضخم)'
   }
 };
