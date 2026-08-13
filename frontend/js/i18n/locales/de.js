@@ -390,6 +390,7 @@ window.AppLocales.de = {
     'block.splitHint': 'Bewegen Sie den Zeiger, um die Schnittposition (rote Linie) festzulegen, und bestätigen Sie dann die Teilung.',
     'block.horizontal': 'Horizontal teilen (zwei Zeilen)',
     'block.vertical': 'Vertikal teilen (zwei Spalten)',
-    'block.confirmSplit': 'Teilung bestätigen'
+    'block.confirmSplit': 'Teilung bestätigen',
+    'review.pageSaved': 'Seite wurde erfolgreich gespeichert'
   }
 };

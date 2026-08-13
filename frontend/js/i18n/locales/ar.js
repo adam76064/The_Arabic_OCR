@@ -390,6 +390,7 @@ window.AppLocales.ar = {
     'block.splitHint': 'مرّر الماوس لتحديد مكان القص (الخط الأحمر) ثم اعتمد التقسيم.',
     'block.horizontal': 'قص أفقي (سطرين)',
     'block.vertical': 'قص عمودي (عمودين)',
-    'block.confirmSplit': 'اعتماد التقسيم'
+    'block.confirmSplit': 'اعتماد التقسيم',
+    'review.pageSaved': 'تم حفظ الصفحة بنجاح'
   }
 };

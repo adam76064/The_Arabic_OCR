@@ -390,6 +390,7 @@ window.AppLocales.en = {
     'block.splitHint': 'Move the pointer to set the cut position (red line), then confirm the split.',
     'block.horizontal': 'Horizontal split (two rows)',
     'block.vertical': 'Vertical split (two columns)',
-    'block.confirmSplit': 'Confirm split'
+    'block.confirmSplit': 'Confirm split',
+    'review.pageSaved': 'Page saved successfully'
   }
 };
