@@ -22,13 +22,13 @@
     <main class="settings-container" style="max-width: 980px; margin: 10px auto; padding: 0 20px;">
         <div class="sticky-nav-wrapper">
             <div class="compact-settings-nav">
-                <h1 id="page-title-display" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">جاري التحميل...</h1>
+                <h1 id="page-title-display" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;" data-i18n="ps.loading">جاري التحميل...</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <button type="button" id="btn-cancel" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
-                    <button type="submit" form="project-settings-form" id="btn-save" class="btn-success" style="font-size: 13px; padding: 6px 16px;">حفظ الإعدادات</button>
+                    <button type="button" id="btn-cancel" class="btn-plain" style="font-size: 13.5px;" data-i18n="ps.cancel">إلغاء</button>
+                    <button type="submit" form="project-settings-form" id="btn-save" class="btn-success" style="font-size: 13px; padding: 6px 16px;" data-i18n="ps.save">حفظ الإعدادات</button>
                     <div style="border-right: 1px solid #cbd5e1; padding-right: 10px; margin-right: 4px;">
                         <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span>⟵</span> <span>عودة</span>
+                            <span>⟵</span> <span data-i18n="ps.back">عودة</span>
                         </button>
                     </div>
                 </div>
@@ -37,34 +37,34 @@
 
         <form id="project-settings-form">
             <div class="settings-card">
-                <h3>📚 البيانات الأساسية</h3>
+                <h3 data-i18n="ps.metadata">📚 البيانات الأساسية</h3>
                 <div class="settings-row">
-                    <div class="form-group"><label>عنوان الكتاب</label><input type="text" id="ps-title" required></div>
-                    <div class="form-group"><label>المؤلف</label><input type="text" id="ps-author"></div>
+                    <div class="form-group"><label data-i18n="ps.title">عنوان الكتاب</label><input type="text" id="ps-title" required></div>
+                    <div class="form-group"><label data-i18n="ps.author">المؤلف</label><input type="text" id="ps-author"></div>
                 </div>
                 <div class="settings-row">
-                    <div class="form-group"><label>دار النشر</label><input type="text" id="ps-publisher"></div>
-                    <div class="form-group"><label>بداية ترقيم الصفحات (PDF)</label><input type="number" id="ps-logical-start" min="1"></div>
+                    <div class="form-group"><label data-i18n="ps.publisher">دار النشر</label><input type="text" id="ps-publisher"></div>
+                    <div class="form-group"><label data-i18n="ps.pageStart">بداية ترقيم الصفحات (PDF)</label><input type="number" id="ps-logical-start" min="1"></div>
                 </div>
             </div>
 
             <div class="settings-card">
-                <h3>⚙️ قواعد معالجة النصوص (OCR)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</p>
+                <h3 data-i18n="ps.processing">⚙️ قواعد معالجة النصوص (OCR)</h3>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.processingHint">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</p>
                 
                 <div class="grid-options" style="margin-bottom: 20px;">
-                    <label class="option-item"><input type="checkbox" id="ps-remove-kasheeda"><span class="option-check"></span><span>إزالة الكشيدة (التطويل ـ)</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-clean-lines"><span class="option-check"></span><span>إزالة الأسطر الزائدة</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-clean-spaces"><span class="option-check"></span><span>إزالة المسافات المتكررة</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-fix-punct"><span class="option-check"></span><span>تصحيح علامات الترقيم</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-fix-waw"><span class="option-check"></span><span>لصق واو العطف</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-super-footnotes"><span class="option-check"></span><span>أرقام الحواشي كنص علوي</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-norm-hamza"><span class="option-check"></span><span>توحيد صور الهمزة</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-remove-kasheeda"><span class="option-check"></span><span data-i18n="ps.removeKasheeda">إزالة الكشيدة (التطويل ـ)</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-clean-lines"><span class="option-check"></span><span data-i18n="ps.cleanLines">إزالة الأسطر الزائدة</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-clean-spaces"><span class="option-check"></span><span data-i18n="ps.cleanSpaces">إزالة المسافات المتكررة</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-fix-punct"><span class="option-check"></span><span data-i18n="ps.fixPunctuation">تصحيح علامات الترقيم</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-fix-waw"><span class="option-check"></span><span data-i18n="ps.fixWaw">لصق واو العطف</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-super-footnotes"><span class="option-check"></span><span data-i18n="ps.footnotes">أرقام الحواشي كنص علوي</span></label>
+                    <label class="option-item"><input type="checkbox" id="ps-norm-hamza"><span class="option-check"></span><span data-i18n="ps.hamza">توحيد صور الهمزة</span></label>
                 </div>
 
                 <div class="settings-row">
                     <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;">التعامل مع التشكيل:</span>
+                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.tashkeel">التعامل مع التشكيل:</span>
                         <label class="radio-item"><input type="radio" name="ps_tashkeel" value="none"> إبقاؤه كما هو</label>
                         <label class="radio-item"><input type="radio" name="ps_tashkeel" value="keep_tanween"> الاحتفاظ بالتنوين والشدة فقط</label>
                         <label class="radio-item"><input type="radio" name="ps_tashkeel" value="remove_all"> إزالة الكل</label>
