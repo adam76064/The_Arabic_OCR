@@ -491,6 +491,8 @@ window.AppLocales.de = {
     'title.layout': 'Seitenlayout — OCR-Prüfwerkzeug',
     'title.dashboard': 'Projektseiten verwalten — OCR-Prüfwerkzeug',
     'title.projectSettings': 'Projekteinstellungen — OCR-Prüfwerkzeug',
-    'title.review': 'Projekt prüfen — OCR-Prüfwerkzeug'
+    'title.review': 'Projekt prüfen — OCR-Prüfwerkzeug',
+    'projects.deleteMessage': 'Möchten Sie <strong>{title}</strong> wirklich löschen?',
+    'projects.deleteFiles': 'Projektordner und alle Dateien ebenfalls vom Datenträger löschen'
   }
 };

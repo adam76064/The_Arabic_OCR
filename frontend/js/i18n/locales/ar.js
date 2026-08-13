@@ -491,6 +491,8 @@ window.AppLocales.ar = {
     'title.layout': 'تخطيط الصفحة (Layout Editor) — أداة مراجعة OCR',
     'title.dashboard': 'إدارة صفحات المشروع — أداة مراجعة OCR',
     'title.projectSettings': 'إعدادات المشروع — أداة مراجعة OCR',
-    'title.review': 'مراجعة المشروع — أداة مراجعة OCR'
+    'title.review': 'مراجعة المشروع — أداة مراجعة OCR',
+    'projects.deleteMessage': 'هل أنت متأكد من رغبتك في حذف المشروع <strong>{title}</strong>؟',
+    'projects.deleteFiles': 'حذف مجلد وملفات المشروع بالكامل من القرص الصلب أيضاً'
   }
 };

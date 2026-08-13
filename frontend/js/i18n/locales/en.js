@@ -491,6 +491,8 @@ window.AppLocales.en = {
     'title.layout': 'Page layout — OCR Review Tool',
     'title.dashboard': 'Project page management — OCR Review Tool',
     'title.projectSettings': 'Project settings — OCR Review Tool',
-    'title.review': 'Review project — OCR Review Tool'
+    'title.review': 'Review project — OCR Review Tool',
+    'projects.deleteMessage': 'Are you sure you want to delete <strong>{title}</strong>?',
+    'projects.deleteFiles': 'Also delete the project folder and all files from disk'
   }
 };

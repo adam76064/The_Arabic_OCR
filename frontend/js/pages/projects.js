@@ -60,8 +60,8 @@ async function renderProjectsTable() {
       if (prompt && window.AestheticDialog?.deleteConfirm) {
         window.AestheticDialog.deleteConfirm({
           title:window.AppI18n.t('projects.deleteTitle'),
-          message:`هل أنت متأكد من رغبتك في حذف المشروع <strong>${projTitle}</strong>؟`,
-          deleteFilesLabel:'حذف مجلد وملفات المشروع بالكامل من القرص الصلب أيضاً',
+          message:window.AppI18n.t('projects.deleteMessage', { title: projTitle }),
+          deleteFilesLabel:window.AppI18n.t('projects.deleteFiles'),
           defaultDeleteFiles,
           showRemember:true,
           onConfirm: async ({deleteFiles, remember})=>{
