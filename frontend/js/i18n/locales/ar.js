@@ -608,6 +608,8 @@ window.AppLocales.ar = {
     'projectSettings.applyUnreviewed': 'تطبيق على الصفحات غير المراجَعة فقط',
     'projectSettings.applyLater': 'عدم التطبيق الآن، وتطبيقها مستقبلاً فقط',
     'projectSettings.ownerPasswordRequired': 'يرجى إدخال كلمة مرور الشبكة المحلية للمالك',
-    'projectSettings.lanSaved': 'تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡'
+    'projectSettings.lanSaved': 'تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡',
+    'projectSettings.strongPassword': '✓ كلمة مرور قوية جداً',
+    'projectSettings.passwordWeak': 'كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: {errors}'
   }
 };

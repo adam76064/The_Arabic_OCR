@@ -132,7 +132,7 @@ async function initSettings() {
             if (feedbackEl) feedbackEl.innerHTML = '⚠️ ' + res.errors.join(' | ');
             return false;
         }
-        if (feedbackEl) feedbackEl.innerHTML = '<span style="color:#15803d;">✓ كلمة مرور قوية جداً</span>';
+        if (feedbackEl) feedbackEl.innerHTML = `<span style="color:#15803d;">${window.AppI18n.t('projectSettings.strongPassword')}</span>`;
         return true;
     };
 
@@ -274,7 +274,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
     if (lanPwd) {
         const vLan = await window.pywebview.api.validate_password_strength(lanPwd);
         if (!vLan.valid) {
-            alert('كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: ' + vLan.errors.join(', '));
+            alert(window.AppI18n.t('projectSettings.passwordWeak', { errors: vLan.errors.join(', ') }));
             return;
         }
     }

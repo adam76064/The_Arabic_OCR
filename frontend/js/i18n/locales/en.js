@@ -608,6 +608,8 @@ window.AppLocales.en = {
     'projectSettings.applyUnreviewed': 'Apply only to unreviewed pages',
     'projectSettings.applyLater': 'Do not apply now; use only for future pages',
     'projectSettings.ownerPasswordRequired': 'Enter the owner’s local-network password.',
-    'projectSettings.lanSaved': 'Password saved and local-network mode connected successfully 📡'
+    'projectSettings.lanSaved': 'Password saved and local-network mode connected successfully 📡',
+    'projectSettings.strongPassword': '✓ Very strong password',
+    'projectSettings.passwordWeak': 'The local-network password does not meet security requirements: {errors}'
   }
 };
