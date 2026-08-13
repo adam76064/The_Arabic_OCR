@@ -22,21 +22,23 @@ const TEXT_ICONS = {
     dirLtr: `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;"><path d="M3 6h12M3 12h8M3 18h12"/><path d="M17 9l4 3l-4 3"/><path d="M21 12h-6"/></svg>`,
 };
 
+const textToolText = (key) => window.AppI18n?.t(key) || key;
+
 const TEXT_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" data-cmd="bold" title="غامق (Bold)">${TEXT_ICONS.bold}</button>
-    <button class="toolbar-icon-btn" data-cmd="italic" title="مائل (Italic)">${TEXT_ICONS.italic}</button>
-    <button class="toolbar-icon-btn" data-cmd="underline" title="تسطير (Underline)">${TEXT_ICONS.underline}</button>
-    <button class="toolbar-icon-btn" data-cmd="strikeThrough" title="يتوسطه خط (Strikethrough)">${TEXT_ICONS.strikeThrough}</button>
-    <button class="toolbar-icon-btn" data-cmd="superscript" title="نص علوي (Superscript)">${TEXT_ICONS.superscript}</button>
-    <button class="toolbar-icon-btn" data-cmd="subscript" title="نص سفلي (Subscript)">${TEXT_ICONS.subscript}</button>
+    <button class="toolbar-icon-btn" data-cmd="bold" title="${textToolText('format.bold')}">${TEXT_ICONS.bold}</button>
+    <button class="toolbar-icon-btn" data-cmd="italic" title="${textToolText('format.italic')}">${TEXT_ICONS.italic}</button>
+    <button class="toolbar-icon-btn" data-cmd="underline" title="${textToolText('format.underline')}">${TEXT_ICONS.underline}</button>
+    <button class="toolbar-icon-btn" data-cmd="strikeThrough" title="${textToolText('format.strike')}">${TEXT_ICONS.strikeThrough}</button>
+    <button class="toolbar-icon-btn" data-cmd="superscript" title="${textToolText('format.superscript')}">${TEXT_ICONS.superscript}</button>
+    <button class="toolbar-icon-btn" data-cmd="subscript" title="${textToolText('format.subscript')}">${TEXT_ICONS.subscript}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <label class="toolbar-icon-color-label" title="لون النص">
+    <label class="toolbar-icon-color-label" title="${textToolText('format.textColor')}">
         <span class="toolbar-icon-letter">A</span>
         <span class="toolbar-icon-color-bar" id="tf-fore-color-bar" style="background:#e74c3c;"></span>
         <input type="color" data-color-cmd="foreColor" value="#e74c3c">
     </label>
-    <label class="toolbar-icon-color-label" title="لون التظليل">
+    <label class="toolbar-icon-color-label" title="${textToolText('format.highlight')}">
         ${TEXT_ICONS.highlight}
         <span class="toolbar-icon-color-bar" id="tf-hilite-color-bar" style="background:#ffff00;"></span>
         <input type="color" data-color-cmd="hiliteColor" value="#ffff00">
@@ -44,17 +46,17 @@ const TEXT_TOOLBAR_HTML = `
     <span class="toolbar-icon-sep"></span>
 
     <select class="toolbar-select dynamic-font-dropdown" data-cmd="fontName" style="max-width: 130px;">
-        <option value="">الخط...</option>
+        <option value="">${textToolText('format.font')}</option>
         <option value="Arial">Arial</option>
         <option value="'Simplified Arabic'">Simplified Arabic</option>
     </select>
     <select class="toolbar-select" data-cmd="fontSize">
-        <option value="">الحجم...</option>
+        <option value="">${textToolText('format.size')}</option>
         <option value="1">10 pt</option><option value="2">13 pt</option><option value="3">16 pt</option>
         <option value="4">18 pt</option><option value="5">24 pt</option><option value="6">32 pt</option><option value="7">48 pt</option>
     </select>
-    <select class="toolbar-select block-only-tool" data-style-cmd="lineHeight" style="max-width: 90px;" title="تباعد الأسطر (Line Spacing)">
-        <option value="">الأسطر...</option>
+    <select class="toolbar-select block-only-tool" data-style-cmd="lineHeight" style="max-width: 90px;" title="${textToolText('format.lineSpacing')}">
+        <option value="">${textToolText('format.lines')}</option>
         <option value="1.0">1.0</option>
         <option value="1.15">1.15</option>
         <option value="1.5">1.5</option>
@@ -63,7 +65,7 @@ const TEXT_TOOLBAR_HTML = `
         <option value="3.0">3.0</option>
     </select>
     <select class="toolbar-select block-only-tool" data-style-cmd="marginTop" style="max-width: 90px;" title="تباعد الفقرات قبل (Space Before)">
-        <option value="">قبل...</option>
+        <option value="">${textToolText('format.before')}</option>
         <option value="0pt">0 pt</option>
         <option value="6pt">6 pt</option>
         <option value="12pt">12 pt</option>
@@ -71,7 +73,7 @@ const TEXT_TOOLBAR_HTML = `
         <option value="24pt">24 pt</option>
     </select>
     <select class="toolbar-select block-only-tool" data-style-cmd="marginBottom" style="max-width: 90px;" title="تباعد الفقرات بعد (Space After)">
-        <option value="">بعد...</option>
+        <option value="">${textToolText('format.after')}</option>
         <option value="0pt">0 pt</option>
         <option value="6pt">6 pt</option>
         <option value="12pt">12 pt</option>
@@ -80,18 +82,18 @@ const TEXT_TOOLBAR_HTML = `
     </select>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn brush-btn" data-brush="tashkeel" title="إزالة التشكيل">${TEXT_ICONS.tashkeel}</button>
-    <button class="toolbar-icon-btn brush-btn" data-brush="format" title="نسخ التنسيق">${TEXT_ICONS.formatPainter}</button>
-    <button class="toolbar-icon-btn brush-btn" data-brush="removeFormat" title="إزالة التنسيق">${TEXT_ICONS.removeFormat}</button>
+    <button class="toolbar-icon-btn brush-btn" data-brush="tashkeel" title="${textToolText('format.removeTashkeel')}">${TEXT_ICONS.tashkeel}</button>
+    <button class="toolbar-icon-btn brush-btn" data-brush="format" title="${textToolText('format.copyFormatting')}">${TEXT_ICONS.formatPainter}</button>
+    <button class="toolbar-icon-btn brush-btn" data-brush="removeFormat" title="${textToolText('format.removeFormatting')}">${TEXT_ICONS.removeFormat}</button>
 
     <span class="toolbar-icon-sep block-only-tool"></span>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="right" title="محاذاة لليمين">${TEXT_ICONS.alignRight}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="center" title="محاذاة للوسط">${TEXT_ICONS.alignCenter}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="left" title="محاذاة لليسار">${TEXT_ICONS.alignLeft}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="justify" title="ضبط (محاذاة الطرفين)">${TEXT_ICONS.alignJustify}</button>
+    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="right" title="${textToolText('format.alignRight')}">${TEXT_ICONS.alignRight}</button>
+    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="center" title="${textToolText('format.alignCenter')}">${TEXT_ICONS.alignCenter}</button>
+    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="left" title="${textToolText('format.alignLeft')}">${TEXT_ICONS.alignLeft}</button>
+    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="justify" title="${textToolText('format.justify')}">${TEXT_ICONS.alignJustify}</button>
     <span class="toolbar-icon-sep block-only-tool"></span>
-    <button class="toolbar-icon-btn block-only-tool" data-dir="rtl" title="من اليمين لليسار (RTL)">${TEXT_ICONS.dirRtl}</button>
-    <button class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="من اليسار لليمين (LTR)">${TEXT_ICONS.dirLtr}</button>
+    <button class="toolbar-icon-btn block-only-tool" data-dir="rtl" title="${textToolText('format.rtl')}">${TEXT_ICONS.dirRtl}</button>
+    <button class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="${textToolText('format.ltr')}">${TEXT_ICONS.dirLtr}</button>
 `;
 
 function ensureWordSelectedIfCollapsed() {

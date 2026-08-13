@@ -13,18 +13,20 @@ const TAB_ICONS = {
     book: `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
 };
 
+const formatText = (key) => window.AppI18n?.t(key) || key;
+
 const TOOLBAR_HTML = `
     <div class="toolbar-tabs-container">
         <div class="toolbar-tabs">
-            <button class="toolbar-tab-btn active" data-tab="text-tools">${TAB_ICONS.text}<span>تنسيق النص</span></button>
-            <button class="toolbar-tab-btn" data-tab="table-tools">${TAB_ICONS.table}<span>الجداول</span></button>
-            <button class="toolbar-tab-btn" data-tab="processing-tools">${TAB_ICONS.tools}<span>معالجة النصوص</span></button>
+            <button class="toolbar-tab-btn active" data-tab="text-tools">${TAB_ICONS.text}<span>${formatText('format.text')}</span></button>
+            <button class="toolbar-tab-btn" data-tab="table-tools">${TAB_ICONS.table}<span>${formatText('format.tables')}</span></button>
+            <button class="toolbar-tab-btn" data-tab="processing-tools">${TAB_ICONS.tools}<span>${formatText('format.processing')}</span></button>
         </div>
 
         <div class="toolbar-tab-content active" id="text-tools">${window.TEXT_TOOLBAR_HTML}</div>
         <div class="toolbar-tab-content" id="table-tools">${window.TABLE_TOOLBAR_HTML}</div>
         <div class="toolbar-tab-content" id="processing-tools">
-            <button class="toolbar-icon-btn" id="insert-quran-btn" title="إدراج آية قرآنية (بحث أو اختيار)" style="width:auto !important; padding: 0 10px !important; gap: 6px; font-size: 13px; font-weight: bold;">${TAB_ICONS.book}<span>إدراج آية</span></button>
+            <button class="toolbar-icon-btn" id="insert-quran-btn" title="${formatText('format.quranTitle')}" style="width:auto !important; padding: 0 10px !important; gap: 6px; font-size: 13px; font-weight: bold;">${TAB_ICONS.book}<span>${formatText('format.quran')}</span></button>
         </div>
     </div>
 `;
