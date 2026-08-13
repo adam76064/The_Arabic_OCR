@@ -480,6 +480,8 @@ window.AppLocales.en = {
     'preview.memberLeft': '👤 {user} left the cloud group',
     'preview.pageEdited': '✏️ {user} edited page {page}',
     'review.loadFailed': 'Unable to load project',
-    'ocr.errorPrefix': 'Error'
+    'ocr.errorPrefix': 'Error',
+    'project.create.wait': 'Large files can take several minutes. Please do not close the application.',
+    'project.create.pageCount': '{current} / {total} pages'
   }
 };

@@ -44,7 +44,7 @@ const PROJECT_CREATOR_HTML = `
                 <span id="pdf-progress-count"></span>
                 <span id="pdf-progress-pct">0%</span>
             </div>
-            <p style="font-size:12px;color:#aaa;margin-top:16px; text-align: center;">قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.</p>
+            <p style="font-size:12px;color:#aaa;margin-top:16px; text-align: center;"> <span data-i18n="project.create.wait">قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.</span></p>
         </div>
     </div>
 `;
@@ -125,7 +125,7 @@ function setPdfProgress(stage, current, total) {
     } else if (stage === 'rendering') {
         const pct = total > 0 ? Math.round((current / total) * 100) : 0;
         msgEl.textContent = window.AppI18n.t('project.create.rendering'); fillEl.style.width = pct + '%';
-        countEl.textContent = `${current} / ${total} صفحة`; pctEl.textContent = pct + '%';
+        countEl.textContent = window.AppI18n.t('project.create.pageCount', { current, total }); pctEl.textContent = pct + '%';
     } else if (stage === 'done') {
         msgEl.textContent = window.AppI18n.t('project.create.done'); fillEl.style.width = '100%'; pctEl.textContent = '100%';
     }

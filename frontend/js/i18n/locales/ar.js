@@ -480,6 +480,8 @@ window.AppLocales.ar = {
     'preview.memberLeft': '👤 {user} غادر المجموعة السحابية',
     'preview.pageEdited': '✏️ {user} عدّل صفحة {page}',
     'review.loadFailed': 'تعذّر تحميل المشروع',
-    'ocr.errorPrefix': 'خطأ'
+    'ocr.errorPrefix': 'خطأ',
+    'project.create.wait': 'قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.',
+    'project.create.pageCount': '{current} / {total} صفحة'
   }
 };

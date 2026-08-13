@@ -480,6 +480,8 @@ window.AppLocales.de = {
     'preview.memberLeft': '👤 {user} hat die Cloud-Gruppe verlassen',
     'preview.pageEdited': '✏️ {user} hat Seite {page} bearbeitet',
     'review.loadFailed': 'Projekt konnte nicht geladen werden',
-    'ocr.errorPrefix': 'Fehler'
+    'ocr.errorPrefix': 'Fehler',
+    'project.create.wait': 'Große Dateien können mehrere Minuten dauern. Bitte schließen Sie die Anwendung nicht.',
+    'project.create.pageCount': '{current} / {total} Seiten'
   }
 };
