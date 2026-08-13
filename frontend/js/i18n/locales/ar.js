@@ -140,6 +140,8 @@ window.AppLocales.ar = {
     'lan.rescan': 'إعادة البحث',
     'lan.join': 'الانضمام للمشروع',
     'lan.password': 'كلمة المرور',
-    'lan.confirmJoin': 'انضمام'
+    'lan.confirmJoin': 'انضمام',
+    'home.modalSettings': 'الإعدادات',
+    'home.noProjects': 'لا توجد مشاريع بعد.'
   }
 };

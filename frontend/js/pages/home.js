@@ -13,7 +13,7 @@ async function initHome() {
     recent.innerHTML = '';
     const sorted = [...projects].sort((a,b)=> new Date(b.created_at) - new Date(a.created_at)).slice(0,4);
     if (sorted.length === 0) {
-      recent.innerHTML = '<p style="color:#aaa; font-size:14px;">لا توجد مشاريع بعد.</p>';
+      recent.innerHTML = `<p style="color:#aaa; font-size:14px;">${window.AppI18n.t('home.noProjects')}</p>`;
     } else {
       sorted.forEach(p => {
         const total = p.page_count || 0;
@@ -25,7 +25,7 @@ async function initHome() {
         card.innerHTML = `
           <div>
             <div class="recent-card-title">${window.AppUtils ? window.AppUtils.escapeHtml(p.title) : p.title}</div>
-            <div class="recent-card-meta">${p.author || ''} · ${new Date(p.created_at).toLocaleDateString('ar-EG')}</div>
+            <div class="recent-card-meta">${p.author || ''} · ${new Date(p.created_at).toLocaleDateString(document.documentElement.lang || 'ar-EG')}</div>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
             <div class="recent-progress"><div class="recent-progress-fill" style="width:${pct}%"></div></div>

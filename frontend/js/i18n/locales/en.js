@@ -140,6 +140,8 @@ window.AppLocales.en = {
     'lan.rescan': 'Scan again',
     'lan.join': 'Join project',
     'lan.password': 'Password',
-    'lan.confirmJoin': 'Join'
+    'lan.confirmJoin': 'Join',
+    'home.modalSettings': 'Settings',
+    'home.noProjects': 'No projects yet.'
   }
 };

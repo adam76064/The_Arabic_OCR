@@ -140,6 +140,8 @@ window.AppLocales.de = {
     'lan.rescan': 'Erneut suchen',
     'lan.join': 'Projekt beitreten',
     'lan.password': 'Passwort',
-    'lan.confirmJoin': 'Beitreten'
+    'lan.confirmJoin': 'Beitreten',
+    'home.modalSettings': 'Einstellungen',
+    'home.noProjects': 'Noch keine Projekte vorhanden.'
   }
 };
