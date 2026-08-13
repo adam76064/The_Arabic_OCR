@@ -258,7 +258,7 @@
                 if (cmd.category !== lastCategory) {
                     const title = document.createElement('div');
                     title.className = 'shortcut-category-title';
-                    title.textContent = cmd.category;
+                    title.textContent = window.AppI18n.t(`shortcut.category.${cmd.category}`);
                     container.appendChild(title);
                     lastCategory = cmd.category;
                 }

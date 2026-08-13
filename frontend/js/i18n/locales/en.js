@@ -363,6 +363,13 @@ window.AppLocales.en = {
     'settings.saveLocalOnly': 'Saved locally only — permanent save failed',
     'settings.moving': 'Moving…',
     'settings.moveFailed': 'Could not move the data folder: {error}',
-    'settings.moveError': 'An unexpected error occurred while moving data.'
+    'settings.moveError': 'An unexpected error occurred while moving data.',
+    'shortcut.category.page': 'Page',
+    'shortcut.category.history': 'Undo and redo',
+    'shortcut.category.tools': 'Tools',
+    'shortcut.category.block': 'Text block',
+    'shortcut.category.crop': 'Crop',
+    'shortcut.category.formatting': 'Text formatting',
+    'shortcut.category.alignment': 'Block alignment'
   }
 };

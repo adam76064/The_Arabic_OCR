@@ -363,6 +363,13 @@ window.AppLocales.de = {
     'settings.saveLocalOnly': 'Nur lokal gespeichert — dauerhaftes Speichern fehlgeschlagen',
     'settings.moving': 'Wird verschoben…',
     'settings.moveFailed': 'Datenordner konnte nicht verschoben werden: {error}',
-    'settings.moveError': 'Beim Verschieben der Daten ist ein unerwarteter Fehler aufgetreten.'
+    'settings.moveError': 'Beim Verschieben der Daten ist ein unerwarteter Fehler aufgetreten.',
+    'shortcut.category.page': 'Seite',
+    'shortcut.category.history': 'Rückgängig und Wiederholen',
+    'shortcut.category.tools': 'Werkzeuge',
+    'shortcut.category.block': 'Textblock',
+    'shortcut.category.crop': 'Ausschnitt',
+    'shortcut.category.formatting': 'Textformatierung',
+    'shortcut.category.alignment': 'Blockausrichtung'
   }
 };

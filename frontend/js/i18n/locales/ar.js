@@ -363,6 +363,13 @@ window.AppLocales.ar = {
     'settings.saveLocalOnly': 'تم الحفظ محلياً فقط - تعذّر الحفظ الدائم',
     'settings.moving': 'جاري النقل...',
     'settings.moveFailed': 'فشل نقل مجلد البيانات: {error}',
-    'settings.moveError': 'حدث خطأ غير متوقع أثناء نقل البيانات.'
+    'settings.moveError': 'حدث خطأ غير متوقع أثناء نقل البيانات.',
+    'shortcut.category.page': 'الصفحة',
+    'shortcut.category.history': 'التراجع والإعادة',
+    'shortcut.category.tools': 'أدوات',
+    'shortcut.category.block': 'الكتلة النصية',
+    'shortcut.category.crop': 'الاقتطاع',
+    'shortcut.category.formatting': 'تنسيق النص',
+    'shortcut.category.alignment': 'محاذاة الكتلة'
   }
 };
