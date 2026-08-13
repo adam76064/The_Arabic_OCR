@@ -1,3 +1,5 @@
+const previewText = (key, replacements) => window.AppI18n?.t(key, replacements) || key;
+
 /**
  * pages/review/preview.js - text preview overlay, notifications, lan updates, dashboard
  */
@@ -50,7 +52,7 @@ function escapeHtml(str) { const div = document.createElement('div'); div.textCo
                 return `<div class="preview-block-chunk" data-block-index="${bIndex}" style="margin-bottom: 6px;">${innerHTML}</div>`;
             }).join('');
             return `<div class="preview-page" data-page-index="${i}">` +
-                   `<div class="preview-page-sep" contenteditable="false" style="color:#999;font-size:13px;margin:18px 0 8px;user-select:none;">── صفحة ${i + logicalStart} ──</div>` +
+                   `<div class="preview-page-sep" contenteditable="false" style="color:#999;font-size:13px;margin:18px 0 8px;user-select:none;">── ${previewText('preview.page', { page: i + logicalStart })} ──</div>` +
                    blocksHtml + `</div>`;
         }).join('');
     }
@@ -94,9 +96,9 @@ function escapeHtml(str) { const div = document.createElement('div'); div.textCo
         const touchedArr = Array.from(touchedPages);
         if (touchedArr.length > 0) {
             Promise.all(touchedArr.map(i => window.pywebview.api.update_page_ocr(currentProject.id, i, currentProject.pages[i].ocr_data || [])))
-            .then(() => { showNotif('تم حفظ التعديلات في الكتل الخاصة بها ✓', 'success'); updateReviewPanel(); })
-            .catch(() => showNotif('حدث خطأ أثناء الحفظ', 'error'));
-        } else { showNotif('لم يتم إجراء أي تعديلات للحفظ', 'info'); }
+            .then(() => { showNotif(previewText('preview.saved'), 'success'); updateReviewPanel(); })
+            .catch(() => showNotif(previewText('preview.saveError'), 'error'));
+        } else { showNotif(previewText('preview.noChanges'), 'info'); }
         document.getElementById('text-preview-overlay').classList.add('hidden');
     });
 })();
@@ -159,7 +161,7 @@ window.persistBrushEdit = async function(contentEl) {
             if (window.__appSettings?.autoMarkReviewed !== false) {
                 el.reviewed = true; 
                 const reviewBtn = blockEl?.querySelector('.block-review-btn');
-                if (reviewBtn) { reviewBtn.textContent = '✔ تمت'; reviewBtn.classList.add('reviewed'); }
+                if (reviewBtn) { reviewBtn.textContent = previewText('preview.done'); reviewBtn.classList.add('reviewed'); }
             }
 
             await autoSaveBlock();

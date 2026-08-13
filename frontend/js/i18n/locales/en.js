@@ -452,6 +452,11 @@ window.AppLocales.en = {
     'ps.readingOrderHint': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages (right column first).',
     'review.autoTableMessage': 'Automatically detect the structure (rows and columns) for the selected <strong>"{category}"</strong> block using OCR?',
     'review.rememberChoice': 'Remember my choice and do not ask again',
-    'review.autoTableTitle': 'Automatic layout detection 📊'
+    'review.autoTableTitle': 'Automatic layout detection 📊',
+    'preview.page': 'Page {page}',
+    'preview.saved': 'Edits were saved to their blocks ✓',
+    'preview.saveError': 'An error occurred while saving',
+    'preview.noChanges': 'There are no changes to save',
+    'preview.done': '✔ Done'
   }
 };

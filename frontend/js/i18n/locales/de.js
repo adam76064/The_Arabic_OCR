@@ -452,6 +452,11 @@ window.AppLocales.de = {
     'ps.readingOrderHint': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten (rechte Spalte zuerst).',
     'review.autoTableMessage': 'Die Struktur (Zeilen und Spalten) für den ausgewählten Block <strong>"{category}"</strong> automatisch per OCR erkennen?',
     'review.rememberChoice': 'Meine Auswahl merken und nicht erneut fragen',
-    'review.autoTableTitle': 'Automatische Layouterkennung 📊'
+    'review.autoTableTitle': 'Automatische Layouterkennung 📊',
+    'preview.page': 'Seite {page}',
+    'preview.saved': 'Änderungen wurden in ihren Blöcken gespeichert ✓',
+    'preview.saveError': 'Beim Speichern ist ein Fehler aufgetreten',
+    'preview.noChanges': 'Es gibt keine Änderungen zum Speichern',
+    'preview.done': '✔ Erledigt'
   }
 };

@@ -452,6 +452,11 @@ window.AppLocales.ar = {
     'ps.readingOrderHint': 'يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).',
     'review.autoTableMessage': 'هل ترغب في الكشف التلقائي عن تخطيط الهيكل (الصفوف والأعمدة) للكتلة المحددة كـ <strong>"{category}"</strong> باستخدام التعرف الضوئي؟',
     'review.rememberChoice': 'تذكر اختياري وعدم السؤال مرة أخرى',
-    'review.autoTableTitle': 'الكشف التلقائي عن التخطيط 📊'
+    'review.autoTableTitle': 'الكشف التلقائي عن التخطيط 📊',
+    'preview.page': 'صفحة {page}',
+    'preview.saved': 'تم حفظ التعديلات في الكتل الخاصة بها ✓',
+    'preview.saveError': 'حدث خطأ أثناء الحفظ',
+    'preview.noChanges': 'لم يتم إجراء أي تعديلات للحفظ',
+    'preview.done': '✔ تمت'
   }
 };
