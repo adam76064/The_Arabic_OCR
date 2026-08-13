@@ -377,6 +377,11 @@ window.AppLocales.de = {
     'table.addColRight': 'Spalte rechts hinzufügen',
     'table.addColLeft': 'Spalte links hinzufügen',
     'table.deleteCurrentRow': 'Aktuelle Zeile löschen',
-    'table.deleteCurrentCol': 'Aktuelle Spalte löschen'
+    'table.deleteCurrentCol': 'Aktuelle Spalte löschen',
+    'ocr.limitReached': 'Das heutige Limit von drei Dateien wurde erreicht. Bitte versuchen Sie es morgen erneut.',
+    'ocr.allPages': 'Alle Buchseiten werden verarbeitet.',
+    'ocr.defaultRange': 'Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.',
+    'ocr.lensFull': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
+    'ocr.lensBlocks': 'Der ursprüngliche Seitentext wird abgerufen und räumlich mit aktuellen Textblöcken abgeglichen, um das Layout beizubehalten.'
   }
 };

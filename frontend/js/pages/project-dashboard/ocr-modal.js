@@ -1,3 +1,5 @@
+const ocrModalText = (key) => window.AppI18n?.t(key) || key;
+
 /**
  * pages/project-dashboard/ocr-modal.js - extracted from monolith
  */
@@ -16,7 +18,7 @@ function setupPaddleModal() {
     if (paddleTrialsLeft <= 0) {
         paddleContainer.classList.add('disabled');
         paddleRadio.disabled = true;
-        limitHint.textContent = 'استنفدت الحد الأقصى (3 ملفات) لليوم. يرجى المحاولة غداً.';
+        limitHint.textContent = ocrModalText('ocr.limitReached');
         startBtn.disabled = true;
     }
 
@@ -29,11 +31,11 @@ function setupPaddleModal() {
             if (e.target.value === 'all') {
                 rangeInputsContainer.style.opacity = '0.5';
                 rangeInputsContainer.style.pointerEvents = 'none';
-                rangeHint.textContent = 'سيتم معالجة جميع صفحات الكتاب بدون استثناء.';
+                rangeHint.textContent = ocrModalText('ocr.allPages');
             } else {
                 rangeInputsContainer.style.opacity = '1';
                 rangeInputsContainer.style.pointerEvents = 'auto';
-                rangeHint.textContent = 'تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.';
+                rangeHint.textContent = ocrModalText('ocr.defaultRange');
             }
         });
         
@@ -83,9 +85,9 @@ function setupPaddleModal() {
         radio.addEventListener('change', (e) => {
             const hint = document.getElementById('glens-mode-hint');
             if (e.target.value === 'full_page') {
-                hint.textContent = 'سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.';
+                hint.textContent = ocrModalText('ocr.lensFull');
             } else {
-                hint.textContent = 'سيتم جلب نصوص الصفحة الأصلية ومطابقتها هندسياً (Spatial Intersection) مع كتل النص الموجودة حالياً لضمان عدم تغير التنسيق.';
+                hint.textContent = ocrModalText('ocr.lensBlocks');
             }
         });
     });

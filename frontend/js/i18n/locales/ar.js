@@ -377,6 +377,11 @@ window.AppLocales.ar = {
     'table.addColRight': 'إضافة عمود لليمين',
     'table.addColLeft': 'إضافة عمود لليسار',
     'table.deleteCurrentRow': 'حذف الصف الحالي',
-    'table.deleteCurrentCol': 'حذف العمود الحالي'
+    'table.deleteCurrentCol': 'حذف العمود الحالي',
+    'ocr.limitReached': 'استنفدت الحد الأقصى (3 ملفات) لليوم. يرجى المحاولة غداً.',
+    'ocr.allPages': 'سيتم معالجة جميع صفحات الكتاب بدون استثناء.',
+    'ocr.defaultRange': 'تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.',
+    'ocr.lensFull': 'سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.',
+    'ocr.lensBlocks': 'سيتم جلب نصوص الصفحة الأصلية ومطابقتها هندسياً (Spatial Intersection) مع كتل النص الموجودة حالياً لضمان عدم تغير التنسيق.'
   }
 };

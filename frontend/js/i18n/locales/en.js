@@ -377,6 +377,11 @@ window.AppLocales.en = {
     'table.addColRight': 'Add column to the right',
     'table.addColLeft': 'Add column to the left',
     'table.deleteCurrentRow': 'Delete current row',
-    'table.deleteCurrentCol': 'Delete current column'
+    'table.deleteCurrentCol': 'Delete current column',
+    'ocr.limitReached': 'Today’s limit of three files has been used. Please try again tomorrow.',
+    'ocr.allPages': 'All book pages will be processed.',
+    'ocr.defaultRange': 'The default range starts at the first unprocessed page.',
+    'ocr.lensFull': 'The page will be sent to Google Lens and text with bounding boxes will be created automatically.',
+    'ocr.lensBlocks': 'Original page text will be fetched and spatially matched with current text blocks to preserve the layout.'
   }
 };
