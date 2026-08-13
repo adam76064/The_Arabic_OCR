@@ -3,7 +3,7 @@
 > **This file is for programmers and AI agents who want to understand, modify, or extend the codebase.**
 > For normal users who just want to install and use the tool, see **[README.md](README.md)** — it explains what the tool does, how to install, and how to use it in simple language.
 >
-> This guide is a **complete onboarding** for any new developer or AI with zero prior background. It explains every folder, every key file, every function, data models, coordinate systems, pipelines, and how to extend the tool.
+> This guide is a maintained onboarding reference for developers and AI agents. It documents the current repository structure, major modules, data models, coordinate systems, pipelines, and supported extension points. For implementation details, treat the source code as authoritative.
 
 # 📖 Arabic OCR — Rebuilt v2 (Organized, Efficient, Lightweight)
 
@@ -34,10 +34,11 @@
    - [Add new OCR engine](#add-ocr-engine)
    - [Add new export format](#add-export-format)
    - [Add new block category](#add-category)
-9. [Debugging & PyWebView Quirks](#debugging--pywebview-quirks)
-10. [Known Fixes in Rebuild](#known-fixes)
-11. [Requirements & Setup](#requirements)
-12. [License](#license)
+9. [Interface localization (i18n)](#interface-localization-i18n)
+10. [Debugging & PyWebView Quirks](#debugging--pywebview-quirks)
+11. [Known Fixes in Rebuild](#known-fixes)
+12. [Requirements & Setup](#requirements)
+13. [License](#license)
 
 ---
 
@@ -55,6 +56,12 @@
 - Backend: Python 3.10+, pywebview (native window), PyMuPDF (PDF rasterization), python-docx, OpenCV, Pillow, requests, cryptography, zeroconf, litellm, chrome-lens-py, locro
 - Frontend: Vanilla JS (no framework), HTML5, CSS3 with design tokens
 - Bridge: `window.pywebview.api.<method>()` promises (JS → Python) and `window.evaluate_js("window.onEvent(payload)")` (Python → JS)
+
+### Current repository notes
+
+- `main.py` starts `backend.app.api.Api` and loads `frontend/index.html` in pywebview. The compatibility modules at the top of `backend/` re-export or preserve older import paths; active implementations are organized under `backend/app`, `backend/core`, `backend/export`, `backend/collab`, `backend/table`, and `backend/post_processing`.
+- The frontend is deliberately framework-free. HTML pages load shared scripts in dependency order: core settings, locale catalogs, the i18n service, shared components, then page modules.
+- Global user preferences, including `interfaceLanguage`, are stored by `ProjectManager` in `<data path>/projects/app_settings.json`. Settings are loaded by `frontend/js/pages/settings.js` after pywebview is ready.
 
 ---
 
@@ -1001,6 +1008,41 @@ projects/
 3. Use setting in relevant backend: `text_features` for cleaner, or frontend via `window.__appSettings`
 
 ---
+
+
+## Interface localization (i18n)
+
+The interface language is a global user preference, not a project setting. The supported languages are Arabic (`ar`, RTL), English (`en`, LTR), and German (`de`, LTR). The Settings page updates `window.__appSettings.interfaceLanguage`; `saveAppSettings()` persists it through the existing pywebview API.
+
+### Files and responsibilities
+
+```text
+frontend/js/i18n/
+├── i18n.js              # language lookup, persistence integration, document lang/dir application
+└── locales/
+    ├── ar.js            # Arabic catalog and RTL metadata
+    ├── en.js            # English catalog and LTR metadata
+    └── de.js            # German catalog and LTR metadata
+```
+
+`i18n.js` exposes `window.AppI18n`:
+
+- `AppI18n.t(key, replacements)` resolves a message, with Arabic as the fallback.
+- `AppI18n.setLanguage(code)` validates, applies, and persists a supported language.
+- `AppI18n.applyDocumentLanguage()` sets `<html lang>` and `<html dir>`, mirrors the shell through direction-aware CSS, and resolves `data-i18n`, `data-i18n-placeholder`, and `data-i18n-title` attributes.
+- `AppI18n.supportedLanguages()` returns the selector-ready metadata list.
+
+Use declarative keys for static markup, for example `<span data-i18n="nav.projects">المشاريع</span>`. Use `AppI18n.t('key')` for messages created in JavaScript. Do not translate OCR output, project titles, user-entered content, category names, or persisted data values.
+
+### Add a language
+
+1. Add `frontend/js/i18n/locales/<code>.js`. Register `window.AppLocales.<code>` with `meta` (`name`, `nativeName`, `direction`) and a complete `messages` object. Use `direction: 'rtl'` only where appropriate.
+2. Add the locale script before `js/i18n/i18n.js` in every frontend HTML entry point. This explicit loading is intentional: the app uses regular scripts rather than a bundler.
+3. Add an option to the `#interface-language` selector in `frontend/settings.html` and translate its label in every catalog.
+4. Mark static UI with `data-i18n`; translate dynamically generated labels through `AppI18n.t()`. Keep keys semantic and grouped by feature (`nav.*`, `settings.*`), rather than using source text as keys.
+5. Verify both the new language and Arabic. Check `document.documentElement.lang`, `document.documentElement.dir`, sidebar placement/collapse behavior, form alignment, dialogs, and a reload after saving settings.
+
+Direction belongs to locale metadata, never scattered `language === ...` checks. CSS should prefer logical properties (`margin-inline`, `padding-inline`, `text-align: start/end`) for new UI. Existing direction-specific rules are isolated in the shared styles as compatibility overrides.
 
 ## Debugging & PyWebView Quirks
 

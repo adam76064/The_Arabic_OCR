@@ -109,3 +109,8 @@ body.night-mode .modal-box { background: var(--color-surface-night); color: var(
 body.night-mode .modal-header { background:#0f3460; border-color: var(--color-border-night); }
 body.night-mode .sticky-nav-wrapper { background:#0f172a !important; border-bottom-color:#334155; box-shadow:0 2px 10px rgba(0,0,0,0.3); }
 body.night-mode .compact-settings-nav h1 { color:#f8fafc !important; }
+
+/* Mirror the sidebar shell when the selected interface language is LTR. */
+html[dir="ltr"] #sidebar { box-shadow: 2px 0 10px rgba(0,0,0,0.1); transition: margin-left 0.3s ease, width 0.3s ease, transform 0.3s ease, visibility 0.3s ease; }
+html[dir="ltr"] #sidebar.collapsed { margin-right: 0; margin-left: calc(-1 * var(--sidebar-width)); transform: translateX(-20%); }
+html[dir="ltr"] #sidebar-collapsed-tab { right: auto; left: 0; border-right: 1px solid var(--color-sidebar-hover); border-left: none; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.15); }

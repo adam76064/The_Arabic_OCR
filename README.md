@@ -1,6 +1,6 @@
 # 📖 Arabic OCR Review Tool
 
-> **A simple desktop app to convert scanned Arabic PDFs into clean, editable Word, EPUB, and text files.**
+> **A desktop app to convert scanned Arabic PDFs into clean, editable Word, EPUB, and text files.**
 
 You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engines), lets you review and fix the text boxes, tables, and Quran verses visually, and exports a beautiful final document.
 
@@ -37,6 +37,8 @@ You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engine
   - **Arabic Reading Order Auto-Sorter** – Pure-spatial bounding box sorting algorithm that sorts OCR text blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left). Detects multi-column layouts (e.g., 2 columns), processes the Right Column first, and sorts within each row from Right to Left.
   - **Pagination Auto-Detector** – Cross-page and facing-page page number detector that scans header (top 15%) and footer (bottom 15%) regions, validates numeric sequences (ASCII, Arabic-Indic, Persian digits), and automatically annotates matching blocks with the `Page-number` category label (colored blue).
   
+- **Interface languages:** Arabic (RTL), English (LTR), and German / Deutsch (LTR). Select a language in **Settings → Interface language**; your choice is saved with the global app settings.
+
 - **Consistent interface:** every toolbar, the sidebar, the dashboard, and the layout editor share one SVG icon language (stroke-based, matching the review page's formatting/table toolbars) — see `frontend/js/icons.js` and [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) for details.
 
 
@@ -121,6 +123,14 @@ A window will open at 1280x800 showing the home screen.
 
 ---
 
+## 🌐 Interface languages
+
+The application interface is available in **Arabic**, **English**, and **German (Deutsch)**. Arabic uses a right-to-left layout; English and German use a left-to-right layout. Change the interface language from **Settings → Interface language**. The selection is stored in the global `app_settings.json` file and is applied whenever a page opens.
+
+For developers, the locale catalogs and the documented procedure for adding another language are in [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md#interface-localization-i18n).
+
+---
+
 ## 📦 Where Are My Files?
 
 App data is stored in:
@@ -156,7 +166,7 @@ See `requirements.txt` for exact versions.
 
 If you want to understand the code, add a new OCR engine, new export format, a new icon, or contribute:
 
-👉 **Read `DEVELOPER_GUIDE.md`** – 60k+ words, explains every folder, file, function, coordinate system, pipelines, data models, design tokens, the shared SVG icon system, and how to extend. This is now the single canonical developer reference.
+👉 **Read `DEVELOPER_GUIDE.md`** – the maintained technical reference for the current Python/pywebview application. It covers the repository structure, API bridge, data models, frontend modules, shared SVG icons, localization, and extension points.
 
 ---
 

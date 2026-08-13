@@ -66,3 +66,7 @@ body.night-mode .dashboard-table td { border-bottom:1px solid var(--color-border
 body.night-mode .dashboard-table tr:hover { background:#1a1a2e; }
 body.night-mode .status-badge.parsed { background: rgba(39,174,96,0.2); color:#2ecc71; }
 body.night-mode .status-badge.unparsed { background: rgba(231,76,60,0.2); color:#e74c3c; }
+
+.language-setting-row { justify-content: space-between; align-items: center; gap: 20px; }
+.language-setting-row > div { flex: 1; }
+.language-setting-row select { min-width: 170px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); }

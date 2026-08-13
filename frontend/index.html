@@ -11,33 +11,33 @@
 
     <main class="home-main">
         <section class="hero">
-            <h1>مرحبًا بكم</h1>
-            <p>اختر ما تريد القيام به</p>
+            <h1 data-i18n="home.welcome">مرحبًا بكم</h1>
+            <p data-i18n="home.chooseAction">اختر ما تريد القيام به</p>
         </section>
 
         <div class="home-cards">
             <a href="#" class="home-card card-primary trigger-new-project">
                 <div class="card-icon" data-icon="plus"></div>
-                <div class="card-title">مشروع جديد</div>
-                <div class="card-desc">إنشاء مشروع مراجعة OCR جديد</div>
+                <div class="card-title" data-i18n="nav.newProject">مشروع جديد</div>
+                <div class="card-desc" data-i18n="home.newProject.description">إنشاء مشروع مراجعة OCR جديد</div>
             </a>
 
             <a href="projects.html" class="home-card card-secondary">
                 <div class="card-icon" data-icon="projects"></div>
-                <div class="card-title">المشاريع</div>
-                <div class="card-desc">عرض وإدارة مشاريعك الحالية</div>
+                <div class="card-title" data-i18n="nav.projects">المشاريع</div>
+                <div class="card-desc" data-i18n="home.projects.description">عرض وإدارة مشاريعك الحالية</div>
                 <div class="card-badge" id="projects-count">...</div>
             </a>
 
             <a href="settings.html" class="home-card card-neutral">
                 <div class="card-icon" data-icon="settings"></div>
-                <div class="card-title">الإعدادات</div>
-                <div class="card-desc">تخصيص أداة المراجعة</div>
+                <div class="card-title" data-i18n="nav.settings">الإعدادات</div>
+                <div class="card-desc" data-i18n="home.settings.description">تخصيص أداة المراجعة</div>
             </a>
         </div>
 
         <section class="recent-section">
-            <h2>آخر المشاريع</h2>
+            <h2 data-i18n="home.recentProjects">آخر المشاريع</h2>
             <div id="recent-projects"></div>
         </section>
     </main>
@@ -68,6 +68,10 @@
 
     <!-- Pages (new organized) -->
     <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-creator.js"></script>
     <script src="js/pages/home.js"></script>

@@ -61,13 +61,13 @@
 
         <div class="sticky-nav-wrapper">
             <div class="compact-settings-nav">
-                <h1 style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
+                <h1 data-i18n="settings.title" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <button type="button" id="btn-cancel-settings" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
-                    <button type="button" id="save-settings" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
+                    <button type="button" id="btn-cancel-settings" data-i18n="settings.cancel" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
+                    <button type="button" id="save-settings" data-i18n="settings.save" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
                     <div style="border-right: 1px solid #cbd5e1; padding-right: 10px; margin-right: 4px;">
                         <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span>⟵</span> <span>عودة</span>
+                            <span>⟵</span> <span data-i18n="settings.back">عودة</span>
                         </button>
                     </div>
                 </div>
@@ -80,6 +80,21 @@
             <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
                 <input type="text" id="app-data-path-input" readonly style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-family: inherit; background: #f8fafc; color: #475569; font-size: 13px;" dir="ltr">
                 <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-right: 8px;">تغيير المجلد...</button>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
+            <div class="setting-row language-setting-row">
+                <div>
+                    <label for="interface-language" class="setting-label" data-i18n="settings.language">لغة الواجهة</label>
+                    <div class="section-hint" data-i18n="settings.languageHint">اختر لغة التطبيق. يتغير اتجاه الواجهة تلقائياً للغات من اليمين إلى اليسار أو من اليسار إلى اليمين.</div>
+                </div>
+                <select id="interface-language" aria-label="Interface language">
+                    <option value="ar" data-i18n="language.ar">العربية</option>
+                    <option value="en" data-i18n="language.en">English</option>
+                    <option value="de" data-i18n="language.de">Deutsch</option>
+                </select>
             </div>
         </div>
 
@@ -196,6 +211,10 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
 <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script>
         // Local working copy of shortcut overrides, edited in the UI and
         // only merged into window.__appSettings / persisted on Save.
@@ -375,6 +394,20 @@
         });
 
         window.addEventListener('appSettingsLoaded', populateForm);
+
+        const languageSelect = document.getElementById('interface-language');
+        const syncLanguageSelect = () => {
+            if (languageSelect && window.AppI18n) languageSelect.value = window.AppI18n.getLanguage();
+        };
+        languageSelect?.addEventListener('change', async (event) => {
+            if (!window.AppI18n) return;
+            await window.AppI18n.setLanguage(event.target.value);
+            syncLanguageSelect();
+            if (typeof showNotif === 'function') showNotif(window.AppI18n.t('settings.languageSaved'), 'success');
+        });
+        window.addEventListener('appSettingsLoaded', syncLanguageSelect);
+        window.addEventListener('languageChanged', syncLanguageSelect);
+        syncLanguageSelect();
 
         // Data Storage Path Logic
         async function initDataPath() {

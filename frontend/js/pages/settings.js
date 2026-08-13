@@ -43,6 +43,7 @@ window.__appSettings = window.__appSettings || {
     showIV: true,
     showCV: true,
     uiZoom: 1.0,
+    interfaceLanguage: 'ar',
     blockFontSize: 14,   
     historyLimit: 50,    
     keyboardShortcuts: {}, 
