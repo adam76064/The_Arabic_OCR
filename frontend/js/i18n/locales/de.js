@@ -482,6 +482,15 @@ window.AppLocales.de = {
     'review.loadFailed': 'Projekt konnte nicht geladen werden',
     'ocr.errorPrefix': 'Fehler',
     'project.create.wait': 'Große Dateien können mehrere Minuten dauern. Bitte schließen Sie die Anwendung nicht.',
-    'project.create.pageCount': '{current} / {total} Seiten'
+    'project.create.pageCount': '{current} / {total} Seiten',
+    'title.home': 'OCR-Prüfwerkzeug',
+    'title.projects': 'Projekte — OCR-Prüfwerkzeug',
+    'title.lan': 'Lokale Netzwerkprojekte — OCR-Prüfwerkzeug',
+    'title.settings': 'Einstellungen — OCR-Prüfwerkzeug',
+    'title.export': 'Projekt exportieren — OCR-Prüfwerkzeug',
+    'title.layout': 'Seitenlayout — OCR-Prüfwerkzeug',
+    'title.dashboard': 'Projektseiten verwalten — OCR-Prüfwerkzeug',
+    'title.projectSettings': 'Projekteinstellungen — OCR-Prüfwerkzeug',
+    'title.review': 'Projekt prüfen — OCR-Prüfwerkzeug'
   }
 };

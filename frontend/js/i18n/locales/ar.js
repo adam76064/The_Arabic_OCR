@@ -482,6 +482,15 @@ window.AppLocales.ar = {
     'review.loadFailed': 'تعذّر تحميل المشروع',
     'ocr.errorPrefix': 'خطأ',
     'project.create.wait': 'قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.',
-    'project.create.pageCount': '{current} / {total} صفحة'
+    'project.create.pageCount': '{current} / {total} صفحة',
+    'title.home': 'أداة مراجعة OCR',
+    'title.projects': 'المشاريع — أداة مراجعة OCR',
+    'title.lan': 'مشاريع الشبكة المحلية — أداة مراجعة OCR',
+    'title.settings': 'الإعدادات — أداة مراجعة OCR',
+    'title.export': 'تصدير المشروع — أداة مراجعة OCR',
+    'title.layout': 'تخطيط الصفحة (Layout Editor) — أداة مراجعة OCR',
+    'title.dashboard': 'إدارة صفحات المشروع — أداة مراجعة OCR',
+    'title.projectSettings': 'إعدادات المشروع — أداة مراجعة OCR',
+    'title.review': 'مراجعة المشروع — أداة مراجعة OCR'
   }
 };

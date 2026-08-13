@@ -482,6 +482,15 @@ window.AppLocales.en = {
     'review.loadFailed': 'Unable to load project',
     'ocr.errorPrefix': 'Error',
     'project.create.wait': 'Large files can take several minutes. Please do not close the application.',
-    'project.create.pageCount': '{current} / {total} pages'
+    'project.create.pageCount': '{current} / {total} pages',
+    'title.home': 'OCR Review Tool',
+    'title.projects': 'Projects — OCR Review Tool',
+    'title.lan': 'Local network projects — OCR Review Tool',
+    'title.settings': 'Settings — OCR Review Tool',
+    'title.export': 'Export project — OCR Review Tool',
+    'title.layout': 'Page layout — OCR Review Tool',
+    'title.dashboard': 'Project page management — OCR Review Tool',
+    'title.projectSettings': 'Project settings — OCR Review Tool',
+    'title.review': 'Review project — OCR Review Tool'
   }
 };
