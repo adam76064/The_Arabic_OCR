@@ -600,6 +600,12 @@ window.AppLocales.de = {
     'projectSettings.successTitle': 'Erfolg ✨',
     'projectSettings.applySuccess': 'Einstellungen wurden erfolgreich verarbeitet und angewendet.',
     'projectSettings.errorTitle': 'Fehler',
-    'projectSettings.saveError': 'Beim Speichern der Einstellungen ist ein Fehler aufgetreten.'
+    'projectSettings.saveError': 'Beim Speichern der Einstellungen ist ein Fehler aufgetreten.',
+    'projectSettings.savedSummary': 'Projekteinstellungen wurden erfolgreich gespeichert!',
+    'projectSettings.processedPages': 'Das Projekt enthält <strong>{count} bereits verarbeitete Seiten</strong>.',
+    'projectSettings.applyQuestion': 'Wie sollen die neuen Einstellungen für Text, Formatierung, Feldreihenfolge und Seitennummerierung angewendet werden?',
+    'projectSettings.applyAll': 'Auf alle verarbeiteten Seiten anwenden, geprüft und ungeprüft',
+    'projectSettings.applyUnreviewed': 'Nur auf ungeprüfte Seiten anwenden',
+    'projectSettings.applyLater': 'Jetzt nicht anwenden; nur für zukünftige Seiten verwenden'
   }
 };

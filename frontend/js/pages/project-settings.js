@@ -334,22 +334,22 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                 window.__selectedApplyScope = 'unreviewed';
                 const messageHtml = `
                     <p style="margin-bottom: 12px; font-size: 14px; color: #334155;">
-                        تم حفظ إعدادات المشروع بنجاح!<br>
-                        يحتوي المشروع على <strong>${ocredPagesCount} صفحة مُعالجة سابقاً</strong>.<br>
-                        كيف تود تطبيق الإعدادات الجديدة (كإعدادات النصوص والتنسيقات، وترتيب المربعات، وترقيم الصفحات)؟
+                        ${window.AppI18n.t('projectSettings.savedSummary')}<br>
+                        ${window.AppI18n.t('projectSettings.processedPages', { count: ocredPagesCount })}<br>
+                        ${window.AppI18n.t('projectSettings.applyQuestion')}
                     </p>
                     <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="all" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على كافة الصفحات المُعالجة (المراجَعة وغير المراجَعة)</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyAll')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="unreviewed" checked onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على الصفحات غير المراجَعة فقط</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyUnreviewed')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="none" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">عدم التطبيق الآن (تُطبق مستقبلاً فقط)</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyLater')}</span>
                         </label>
                     </div>
                 `;

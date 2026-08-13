@@ -600,6 +600,12 @@ window.AppLocales.ar = {
     'projectSettings.successTitle': 'تم بنجاح ✨',
     'projectSettings.applySuccess': 'تمت معالجة وتطبيق الإعدادات بنجاح.',
     'projectSettings.errorTitle': 'خطأ',
-    'projectSettings.saveError': 'حدث خطأ أثناء حفظ الإعدادات.'
+    'projectSettings.saveError': 'حدث خطأ أثناء حفظ الإعدادات.',
+    'projectSettings.savedSummary': 'تم حفظ إعدادات المشروع بنجاح!',
+    'projectSettings.processedPages': 'يحتوي المشروع على <strong>{count} صفحة مُعالجة سابقاً</strong>.',
+    'projectSettings.applyQuestion': 'كيف تود تطبيق الإعدادات الجديدة، مثل النص والتنسيق وترتيب المربعات وترقيم الصفحات؟',
+    'projectSettings.applyAll': 'تطبيق على كافة الصفحات المُعالجة، المراجَعة وغير المراجَعة',
+    'projectSettings.applyUnreviewed': 'تطبيق على الصفحات غير المراجَعة فقط',
+    'projectSettings.applyLater': 'عدم التطبيق الآن، وتطبيقها مستقبلاً فقط'
   }
 };

@@ -600,6 +600,12 @@ window.AppLocales.en = {
     'projectSettings.successTitle': 'Success ✨',
     'projectSettings.applySuccess': 'Settings were processed and applied successfully.',
     'projectSettings.errorTitle': 'Error',
-    'projectSettings.saveError': 'An error occurred while saving settings.'
+    'projectSettings.saveError': 'An error occurred while saving settings.',
+    'projectSettings.savedSummary': 'Project settings were saved successfully!',
+    'projectSettings.processedPages': 'The project contains <strong>{count} previously processed pages</strong>.',
+    'projectSettings.applyQuestion': 'How would you like to apply the new settings, such as text, formatting, box order, and page numbering?',
+    'projectSettings.applyAll': 'Apply to all processed pages, reviewed and unreviewed',
+    'projectSettings.applyUnreviewed': 'Apply only to unreviewed pages',
+    'projectSettings.applyLater': 'Do not apply now; use only for future pages'
   }
 };
