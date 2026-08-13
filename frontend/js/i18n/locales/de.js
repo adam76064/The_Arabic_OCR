@@ -544,6 +544,10 @@ window.AppLocales.de = {
     'table.clickOrSelectCell': 'Klicken Sie zuerst in eine Zelle oder wählen Sie sie aus.',
     'table.clickRowCell': 'Klicken Sie in eine Zelle der zu löschenden Zeile.',
     'table.clickColCell': 'Klicken Sie in eine Zelle der zu löschenden Spalte.',
-    'table.clickDeleteTable': 'Klicken Sie zuerst in die zu löschende Tabelle.'
+    'table.clickDeleteTable': 'Klicken Sie zuerst in die zu löschende Tabelle.',
+    'shortcut.default': 'Standard',
+    'shortcut.pressKey': 'Beliebige Taste drücken…',
+    'shortcut.invalid': 'Das Kürzel muss Ctrl oder Alt enthalten oder eine Sondertaste sein.',
+    'shortcut.conflict': 'Hinweis: Dieses Kürzel wird auch für „{command}“ verwendet.'
   }
 };

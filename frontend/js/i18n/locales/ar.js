@@ -544,6 +544,10 @@ window.AppLocales.ar = {
     'table.clickOrSelectCell': 'يرجى النقر داخل خلية أولاً أو تحديدها.',
     'table.clickRowCell': 'يرجى النقر داخل الخلية المراد حذف صفها.',
     'table.clickColCell': 'يرجى النقر داخل الخلية المراد حذف عمودها.',
-    'table.clickDeleteTable': 'يرجى النقر داخل الجدول المراد حذفه.'
+    'table.clickDeleteTable': 'يرجى النقر داخل الجدول المراد حذفه.',
+    'shortcut.default': 'افتراضي',
+    'shortcut.pressKey': 'اضغط أي مفتاح...',
+    'shortcut.invalid': 'يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون مفتاحاً خاصاً',
+    'shortcut.conflict': 'تنبيه: هذا الاختصار مستخدم أيضاً لأمر "{command}"'
   }
 };

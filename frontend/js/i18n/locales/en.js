@@ -544,6 +544,10 @@ window.AppLocales.en = {
     'table.clickOrSelectCell': 'Click inside a cell or select it first.',
     'table.clickRowCell': 'Click inside a cell in the row to delete.',
     'table.clickColCell': 'Click inside a cell in the column to delete.',
-    'table.clickDeleteTable': 'Click inside the table to delete first.'
+    'table.clickDeleteTable': 'Click inside the table to delete first.',
+    'shortcut.default': 'Default',
+    'shortcut.pressKey': 'Press any key…',
+    'shortcut.invalid': 'The shortcut must include Ctrl or Alt, or be a special key.',
+    'shortcut.conflict': 'Notice: this shortcut is also used by “{command}”'
   }
 };

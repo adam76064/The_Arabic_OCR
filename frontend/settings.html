@@ -268,7 +268,7 @@
 
                 const label = document.createElement('span');
                 label.className = 'shortcut-label';
-                label.textContent = cmd.label;
+                label.textContent = window.AppI18n.t(`shortcut.${cmd.id}`) || cmd.label;
 
                 const actions = document.createElement('div');
                 actions.className = 'shortcut-actions';
@@ -282,7 +282,7 @@
                 const resetBtn = document.createElement('button');
                 resetBtn.className = 'shortcut-reset-btn';
                 resetBtn.type = 'button';
-                resetBtn.textContent = 'افتراضي';
+                resetBtn.textContent = window.AppI18n.t('shortcut.default');
                 resetBtn.title = window.AppI18n.t('settings.resetShortcut');
                 resetBtn.addEventListener('click', () => {
                     delete pendingShortcuts[cmd.id];
@@ -300,7 +300,7 @@
         function startRecording(keyBtn, cmd) {
             keyBtn.classList.add('recording');
             const originalText = keyBtn.textContent;
-            keyBtn.textContent = 'اضغط أي مفتاح...';
+            keyBtn.textContent = window.AppI18n.t('shortcut.pressKey');
 
             const onKeydown = (e) => {
                 e.preventDefault();
@@ -325,7 +325,7 @@
                 keyBtn.classList.remove('recording');
 
                 if (!hasModifier && !isSpecial) {
-                    showShortcutNotice('يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون مفتاحاً خاصاً', true);
+                    showShortcutNotice(window.AppI18n.t('shortcut.invalid'), true);
                     keyBtn.textContent = originalText;
                     return;
                 }
@@ -336,7 +336,7 @@
                 const conflict = window.__KEYBOARD_COMMANDS.find(c =>
                     c.id !== cmd.id && (pendingShortcuts[c.id] || c.defaultKey) === combo);
                 if (conflict) {
-                    showShortcutNotice(`تنبيه: هذا الاختصار مستخدم أيضاً لأمر "${conflict.label}"`, false);
+                    showShortcutNotice(window.AppI18n.t('shortcut.conflict', { command: window.AppI18n.t(`shortcut.${conflict.id}`) || conflict.label }), false);
                 }
             };
             document.addEventListener('keydown', onKeydown, true);
