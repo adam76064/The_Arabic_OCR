@@ -531,6 +531,11 @@ window.AppLocales.en = {
     'table.none': 'No border',
     'table.borderColor': 'Border color:',
     'table.fillTitle': 'Fill color',
-    'table.chooseBackground': 'Choose background color:'
+    'table.chooseBackground': 'Choose background color:',
+    'table.clickText': 'Click inside a text block first',
+    'table.selectText': 'Select the text to convert first.',
+    'table.columnCount': 'Number of columns:',
+    'table.rowCount': 'Number of rows:',
+    'table.separatorHint': 'Column separator, for example - , or a space:'
   }
 };

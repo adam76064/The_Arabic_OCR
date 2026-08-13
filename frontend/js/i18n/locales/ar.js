@@ -531,6 +531,11 @@ window.AppLocales.ar = {
     'table.none': 'بدون حدود',
     'table.borderColor': 'لون الحد:',
     'table.fillTitle': 'لون التعبئة',
-    'table.chooseBackground': 'اختر لون الخلفية:'
+    'table.chooseBackground': 'اختر لون الخلفية:',
+    'table.clickText': 'انقر داخل مربع النص أولاً',
+    'table.selectText': 'يرجى تحديد النص المراد تحويله أولاً.',
+    'table.columnCount': 'عدد الأعمدة:',
+    'table.rowCount': 'عدد الصفوف:',
+    'table.separatorHint': 'الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):'
   }
 };

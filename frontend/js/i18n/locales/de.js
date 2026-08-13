@@ -531,6 +531,11 @@ window.AppLocales.de = {
     'table.none': 'Kein Rahmen',
     'table.borderColor': 'Rahmenfarbe:',
     'table.fillTitle': 'Füllfarbe',
-    'table.chooseBackground': 'Hintergrundfarbe auswählen:'
+    'table.chooseBackground': 'Hintergrundfarbe auswählen:',
+    'table.clickText': 'Klicken Sie zuerst in einen Textblock',
+    'table.selectText': 'Wählen Sie zuerst den umzuwandelnden Text aus.',
+    'table.columnCount': 'Anzahl der Spalten:',
+    'table.rowCount': 'Anzahl der Zeilen:',
+    'table.separatorHint': 'Spaltentrennzeichen, z. B. - , oder ein Leerzeichen:'
   }
 };

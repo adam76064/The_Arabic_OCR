@@ -26,7 +26,7 @@ const TABLE_ICONS = {
 const tableText = (key) => window.AppI18n?.t(key) || key;
 
 const TABLE_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" id="tb-insert-table" title="${tableText('table.insert')}">${TABLE_ICONS.insertTable}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-table" title=tableText('table.insert')>${TABLE_ICONS.insertTable}</button>
     <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
     <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
     <span class="toolbar-icon-sep"></span>
@@ -346,11 +346,11 @@ const TableToolbar = {
 
         container.querySelector('#tb-insert-table')?.addEventListener('click', () => {
             const target = window.lastFocusedEditable;
-            if (!target) { alert("انقر داخل مربع النص أولاً"); return; }
+            if (!target) { alert(tableText('table.clickText')); return; }
             window.AestheticDialog.show(
-                "${tableText('table.insert')}",
-                `<div class="aes-group"><label>عدد الأعمدة:</label><input type="number" id="tbl-cols" value="3" min="1"></div>
-                 <div class="aes-group"><label>عدد الصفوف:</label><input type="number" id="tbl-rows" value="3" min="1"></div>`,
+                tableText('table.insert'),
+                `<div class="aes-group"><label>${tableText('table.columnCount')}</label><input type="number" id="tbl-cols" value="3" min="1"></div>
+                 <div class="aes-group"><label>${tableText('table.rowCount')}</label><input type="number" id="tbl-rows" value="3" min="1"></div>`,
                 (modal) => {
                     target.focus();
                     const cols = parseInt(modal.querySelector('#tbl-cols').value) || 3;
@@ -381,12 +381,12 @@ const TableToolbar = {
             if (!target) return;
             const selection = window.getSelection();
             const text = selection.toString();
-            if (!text.trim()) { alert("يرجى تحديد النص المراد تحويله أولاً."); return; }
+            if (!text.trim()) { alert(tableText('table.selectText')); return; }
 
             window.AestheticDialog.show(
-                "تحويل النص لجدول",
+                tableText('table.textToTable'),
                 `<div class="aes-group">
-                    <label>الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):</label>
+                    <label>${tableText('table.separatorHint')}</label>
                     <input type="text" id="tbl-sep" value="-">
                 </div>`,
                 (modal) => {
@@ -425,7 +425,7 @@ const TableToolbar = {
                 window.AestheticDialog.show(
                     "${tableText('table.tableToText')}",
                     `<div class="aes-group">
-                        <label>الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):</label>
+                        <label>${tableText('table.separatorHint')}</label>
                         <input type="text" id="tbl-sep-to-text" value=" - ">
                     </div>`,
                     (modal) => {
