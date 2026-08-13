@@ -185,6 +185,17 @@ window.AppLocales.ar = {
     'layout.order': 'ترتيب',
     'layout.merge': 'دمج',
     'layout.delete': 'حذف',
-    'layout.save': 'حفظ التخطيط'
+    'layout.save': 'حفظ التخطيط',
+    'dialog.cancel': 'إلغاء',
+    'dialog.confirm': 'تأكيد',
+    'dialog.apply': 'نعم، طبق الآن',
+    'dialog.notNow': 'لا، ليس الآن',
+    'dialog.alert': 'تنبيه',
+    'dialog.ok': 'حسناً',
+    'dialog.deleteTitle': 'تأكيد الحذف',
+    'dialog.deleteMessage': 'هل أنت متأكد من الرغبة في الحذف؟',
+    'dialog.deleteFiles': 'حذف الملفات والمرئيات المرتبطة من القرص الصلب أيضاً',
+    'dialog.delete': 'حذف نهائي',
+    'dialog.remember': 'تذكر تفضيلي وعدم السؤال مجدداً'
   }
 };

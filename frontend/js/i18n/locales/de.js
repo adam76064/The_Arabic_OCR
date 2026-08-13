@@ -185,6 +185,17 @@ window.AppLocales.de = {
     'layout.order': 'Sortieren',
     'layout.merge': 'Zusammenführen',
     'layout.delete': 'Löschen',
-    'layout.save': 'Layout speichern'
+    'layout.save': 'Layout speichern',
+    'dialog.cancel': 'Abbrechen',
+    'dialog.confirm': 'Bestätigen',
+    'dialog.apply': 'Ja, jetzt anwenden',
+    'dialog.notNow': 'Nicht jetzt',
+    'dialog.alert': 'Hinweis',
+    'dialog.ok': 'OK',
+    'dialog.deleteTitle': 'Löschen bestätigen',
+    'dialog.deleteMessage': 'Möchten Sie dieses Element wirklich löschen?',
+    'dialog.deleteFiles': 'Verknüpfte Dateien und Bilder ebenfalls vom Datenträger löschen',
+    'dialog.delete': 'Endgültig löschen',
+    'dialog.remember': 'Meine Auswahl merken und nicht erneut fragen'
   }
 };

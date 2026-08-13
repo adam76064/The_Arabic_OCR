@@ -51,7 +51,7 @@ const DYNAMIC_STYLES = `
 
     /* Aesthetic Modals */
     .aes-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15,23,42,0.6); z-index: 10000; display:flex; align-items:center; justify-content:center; backdrop-filter: blur(2px); }
-    .aes-dialog { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 320px; font-family: inherit; direction: rtl; }
+    .aes-dialog { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 320px; font-family: inherit; direction: inherit; }
     .aes-dialog h3 { margin: 0 0 16px 0; color: #0f172a; font-size: 17px; }
     .aes-group { margin-bottom: 16px; }
     .aes-group label { display: block; font-size: 13px; color: #475569; margin-bottom: 6px; }
@@ -67,7 +67,7 @@ const DYNAMIC_STYLES = `
     .aes-btn-confirm:hover { background: #2563eb; }
 
     /* Right-Click Context Menu */
-    .table-ctx-menu { position: fixed; background: white; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 8px; padding: 6px 0; z-index: 9999; min-width: 230px; max-height: 70vh; overflow-y: auto; font-size: 13px; direction: rtl; }
+    .table-ctx-menu { position: fixed; background: white; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 8px; padding: 6px 0; z-index: 9999; min-width: 230px; max-height: 70vh; overflow-y: auto; font-size: 13px; direction: inherit; }
     .table-ctx-menu.hidden { display: none; }
     .table-ctx-menu::-webkit-scrollbar { width: 6px; }
     .table-ctx-menu::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -88,6 +88,8 @@ const DYNAMIC_STYLES = `
 `;
 document.head.insertAdjacentHTML('beforeend', DYNAMIC_STYLES);
 
+const dialogText = (key) => window.AppI18n?.t(key) || key;
+
 const AestheticDialog = {
     show: function (title, fieldsHtml, onConfirm) {
         const overlay = document.createElement('div');
@@ -97,8 +99,8 @@ const AestheticDialog = {
                 <h3>${title}</h3>
                 ${fieldsHtml}
                 <div class="aes-actions">
-                    <button class="aes-btn-cancel">إلغاء</button>
-                    <button class="aes-btn-confirm">تأكيد</button>
+                    <button class="aes-btn-cancel">${dialogText('dialog.cancel')}</button>
+                    <button class="aes-btn-confirm">${dialogText('dialog.confirm')}</button>
                 </div>
             </div>
         `;
@@ -111,7 +113,7 @@ const AestheticDialog = {
         };
     },
 
-    confirm: function ({ title = 'تأكيد', message, confirmText = 'نعم، طبق الآن', cancelText = 'لا، ليس الآن', onConfirm, onCancel }) {
+    confirm: function ({ title = dialogText('dialog.confirm'), message, confirmText = dialogText('dialog.apply'), cancelText = dialogText('dialog.notNow'), onConfirm, onCancel }) {
         const overlay = document.createElement('div');
         overlay.className = 'aes-overlay';
         overlay.innerHTML = `
@@ -136,7 +138,7 @@ const AestheticDialog = {
         };
     },
 
-    alert: function ({ title = 'تنبيه', message, buttonText = 'حسناً', onOk }) {
+    alert: function ({ title = dialogText('dialog.alert'), message, buttonText = dialogText('dialog.ok'), onOk }) {
         const overlay = document.createElement('div');
         overlay.className = 'aes-overlay';
         overlay.innerHTML = `
@@ -157,13 +159,13 @@ const AestheticDialog = {
     },
 
     deleteConfirm: function ({
-        title = 'تأكيد الحذف',
-        message = 'هل أنت متأكد من الرغبة في الحذف؟',
-        deleteFilesLabel = 'حذف الملفات والمرئيات المرتبطة من القرص الصلب أيضاً',
+        title = dialogText('dialog.deleteTitle'),
+        message = dialogText('dialog.deleteMessage'),
+        deleteFilesLabel = dialogText('dialog.deleteFiles'),
         defaultDeleteFiles = false,
         showRemember = true,
-        confirmText = 'حذف نهائي',
-        cancelText = 'إلغاء',
+        confirmText = dialogText('dialog.delete'),
+        cancelText = dialogText('dialog.cancel'),
         onConfirm
     }) {
         const overlay = document.createElement('div');
@@ -183,7 +185,7 @@ const AestheticDialog = {
                     ${showRemember ? `
                     <label style="display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #64748b; cursor: pointer; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 2px;">
                         <input type="checkbox" id="aes-chk-remember" style="width: 15px; height: 15px; cursor: pointer; accent-color: #2563eb;">
-                        <span>تذكر تفضيلي وعدم السؤال مجدداً</span>
+                        <span>${dialogText('dialog.remember')}</span>
                     </label>
                     ` : ''}
                 </div>

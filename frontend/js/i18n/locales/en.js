@@ -185,6 +185,17 @@ window.AppLocales.en = {
     'layout.order': 'Order',
     'layout.merge': 'Merge',
     'layout.delete': 'Delete',
-    'layout.save': 'Save layout'
+    'layout.save': 'Save layout',
+    'dialog.cancel': 'Cancel',
+    'dialog.confirm': 'Confirm',
+    'dialog.apply': 'Yes, apply now',
+    'dialog.notNow': 'Not now',
+    'dialog.alert': 'Notice',
+    'dialog.ok': 'OK',
+    'dialog.deleteTitle': 'Confirm deletion',
+    'dialog.deleteMessage': 'Are you sure you want to delete this item?',
+    'dialog.deleteFiles': 'Also delete associated files and images from disk',
+    'dialog.delete': 'Delete permanently',
+    'dialog.remember': 'Remember my preference and do not ask again'
   }
 };
