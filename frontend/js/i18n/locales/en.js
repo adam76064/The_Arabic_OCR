@@ -585,6 +585,7 @@ window.AppLocales.en = {
     'shortcut.align-center': 'Align center',
     'shortcut.align-justify': 'Justify',
     'shortcut.dir-rtl': 'Text direction: right to left',
-    'shortcut.dir-ltr': 'Text direction: left to right'
+    'shortcut.dir-ltr': 'Text direction: left to right',
+    'settings.delete': 'Delete'
   }
 };

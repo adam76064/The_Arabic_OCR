@@ -585,6 +585,7 @@ window.AppLocales.de = {
     'shortcut.align-center': 'Zentrieren',
     'shortcut.align-justify': 'Blocksatz',
     'shortcut.dir-rtl': 'Textrichtung: rechts nach links',
-    'shortcut.dir-ltr': 'Textrichtung: links nach rechts'
+    'shortcut.dir-ltr': 'Textrichtung: links nach rechts',
+    'settings.delete': 'Löschen'
   }
 };

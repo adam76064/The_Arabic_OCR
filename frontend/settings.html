@@ -471,7 +471,7 @@
                         <div style="width:18px; height:18px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
                         <span style="font-size:14px; font-weight:bold; color:#334155;">${name}</span>
                     </div>
-                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">حذف</button>
+                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">${window.AppI18n.t('settings.delete')}</button>
                 `;
                 container.appendChild(row);
             }

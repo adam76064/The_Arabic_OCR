@@ -585,6 +585,7 @@ window.AppLocales.ar = {
     'shortcut.align-center': 'محاذاة للوسط',
     'shortcut.align-justify': 'ضبط (محاذاة الطرفين)',
     'shortcut.dir-rtl': 'اتجاه النص: من اليمين لليسار',
-    'shortcut.dir-ltr': 'اتجاه النص: من اليسار لليمين'
+    'shortcut.dir-ltr': 'اتجاه النص: من اليسار لليمين',
+    'settings.delete': 'حذف'
   }
 };
