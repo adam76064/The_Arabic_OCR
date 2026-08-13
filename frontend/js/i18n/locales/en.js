@@ -479,6 +479,7 @@ window.AppLocales.en = {
     'preview.memberJoined': '👤 {user} joined the cloud group',
     'preview.memberLeft': '👤 {user} left the cloud group',
     'preview.pageEdited': '✏️ {user} edited page {page}',
-    'review.loadFailed': 'Unable to load project'
+    'review.loadFailed': 'Unable to load project',
+    'ocr.errorPrefix': 'Error'
   }
 };

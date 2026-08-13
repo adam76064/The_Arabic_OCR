@@ -479,6 +479,7 @@ window.AppLocales.ar = {
     'preview.memberJoined': '👤 {user} انضم إلى المجموعة السحابية',
     'preview.memberLeft': '👤 {user} غادر المجموعة السحابية',
     'preview.pageEdited': '✏️ {user} عدّل صفحة {page}',
-    'review.loadFailed': 'تعذّر تحميل المشروع'
+    'review.loadFailed': 'تعذّر تحميل المشروع',
+    'ocr.errorPrefix': 'خطأ'
   }
 };

@@ -12,7 +12,7 @@ function setupProgressReceiver() {
         modal.classList.remove('hidden');
         
         if (payload.stage === 'error') {
-            msgEl.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">خطأ: ${payload.message}</span>`;
+            msgEl.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">${window.AppI18n.t('ocr.errorPrefix')}: ${payload.message}</span>`;
             fillEl.style.background = '#e74c3c';
             fillEl.style.width = '100%';
             
