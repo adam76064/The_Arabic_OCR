@@ -76,11 +76,11 @@
         </div>
 
         <div class="settings-card">
-            <div class="settings-section-title">موقع حفظ البيانات (Data Storage)</div>
-            <div class="section-hint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
+            <div class="settings-section-title" data-i18n="settings.storage">موقع حفظ البيانات (Data Storage)</div>
+            <div class="section-hint" data-i18n="settings.storageHint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
             <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
                 <input type="text" id="app-data-path-input" readonly style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-family: inherit; background: #f8fafc; color: #475569; font-size: 13px;" dir="ltr">
-                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-right: 8px;">تغيير المجلد...</button>
+                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-right: 8px;" data-i18n="settings.changeFolder">تغيير المجلد...</button>
             </div>
         </div>
 
@@ -100,42 +100,42 @@
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">المراجعة</div>
+            <div class="settings-section-title" data-i18n="settings.review">المراجعة</div>
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
-                <span class="setting-label">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
+                <span class="setting-label" data-i18n="settings.autoMark">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
-                <span class="setting-label">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
+                <span class="setting-label" data-i18n="settings.autoSaveReview">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
-                <span class="setting-label">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
+                <span class="setting-label" data-i18n="settings.autoSaveLayout">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="show-iv" checked><span class="slider"></span></label>
-                <span class="setting-label">إظهار نافذة الصورة الكاملة</span>
+                <span class="setting-label" data-i18n="settings.showImage">إظهار نافذة الصورة الكاملة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
-                <span class="setting-label">إظهار نافذة الاقتطاع</span>
+                <span class="setting-label" data-i18n="settings.showCrop">إظهار نافذة الاقتطاع</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
             <div class="settings-section-title">الواجهة</div>
             <div class="setting-row">
-                <span class="setting-label">تكبير الواجهة</span>
+                <span class="setting-label" data-i18n="settings.zoom">تكبير الواجهة</span>
                 <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-right:12px;">
                 <span id="zoom-val">100%</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">التراجع والإعادة (Undo / Redo)</div>
+            <div class="settings-section-title" data-i18n="settings.history">التراجع والإعادة (Undo / Redo)</div>
             <div class="setting-row">
-                <span class="setting-label">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
+                <span class="setting-label" data-i18n="settings.historyLimit">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
                 <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width:90px;">
             </div>
             <div class="section-hint" style="margin-top:8px;">
@@ -144,45 +144,45 @@
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">التصنيفات المخصصة (Categories)</div>
-            <div class="section-hint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
+            <div class="settings-section-title" data-i18n="settings.categories">التصنيفات المخصصة (Categories)</div>
+            <div class="section-hint" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
             
             <div style="display:flex; gap:10px; margin-top:12px; align-items:center;">
-                <input type="text" id="new-cat-name" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
+                <input type="text" id="new-cat-name" data-i18n-placeholder="settings.categoryPlaceholder" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
                 <input type="color" id="new-cat-color" value="#9b59b6" style="width:44px; height:38px; border:none; cursor:pointer; border-radius:4px;">
-                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;">إضافة</button>
+                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;" data-i18n="settings.add">إضافة</button>
             </div>
             
             <div id="custom-categories-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">إعدادات الحذف والملفات (Deletion Preferences)</div>
+            <div class="settings-section-title" data-i18n="settings.deletion">إعدادات الحذف والملفات (Deletion Preferences)</div>
             <div class="section-hint">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
             
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
-                <span class="setting-label">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
+                <span class="setting-label" data-i18n="settings.promptPage">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
-                <span class="setting-label">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
+                <span class="setting-label" data-i18n="settings.deletePageFiles">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
             </div>
 
             <div style="height: 1px; background: #e2e8f0; margin: 16px 0;"></div>
 
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
-                <span class="setting-label">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
+                <span class="setting-label" data-i18n="settings.promptProject">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
-                <span class="setting-label">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
+                <span class="setting-label" data-i18n="settings.deleteProjectFiles">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">تعليمات النماذج الذكية (LLM System Prompt)</div>
+            <div class="settings-section-title" data-i18n="settings.llmPrompt">تعليمات النماذج الذكية (LLM System Prompt)</div>
             <div class="section-hint">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
             
             <div class="form-group" style="margin-top:12px;">
@@ -190,16 +190,16 @@
             </div>
             
             <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
-                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;">إعادة تعيين للتعليمة الافتراضية</button>
+                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;" data-i18n="settings.resetPrompt">إعادة تعيين للتعليمة الافتراضية</button>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">اختصارات لوحة المفاتيح</div>
+            <div class="settings-section-title" data-i18n="settings.shortcuts">اختصارات لوحة المفاتيح</div>
             <div class="section-hint">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
             <div id="shortcuts-list" style="margin-top:10px;"></div>
             <div style="margin-top:14px;">
-                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;" data-i18n="settings.resetShortcuts">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
             </div>
         </div>
     </main>
