@@ -462,6 +462,16 @@ window.AppLocales.en = {
     'editor.changeType': 'Click to change type',
     'editor.done': '✔ Done',
     'editor.reviewed': 'Reviewed',
-    'editor.deleteUndo': 'Delete (can be undone)'
+    'editor.deleteUndo': 'Delete (can be undone)',
+    'properties.title': 'Block properties',
+    'properties.type': 'Type:',
+    'properties.order': 'Order:',
+    'properties.method': 'Layout method:',
+    'properties.auto': 'Automatic (comprehensive)',
+    'properties.native': '1. From digital PDF (vectors)',
+    'properties.coordinates': '2. Word coordinates (precise)',
+    'properties.smear': '3. Image processing (scanned)',
+    'properties.tableLayout': '🛠️ Layout table',
+    'properties.tableHint': '(Right-click table cells to merge and edit them)'
   }
 };

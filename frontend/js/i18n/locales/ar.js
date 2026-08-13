@@ -462,6 +462,16 @@ window.AppLocales.ar = {
     'editor.changeType': 'انقر لتغيير النوع',
     'editor.done': '✔ تمت',
     'editor.reviewed': 'مراجَع',
-    'editor.deleteUndo': 'حذف (يمكن التراجع)'
+    'editor.deleteUndo': 'حذف (يمكن التراجع)',
+    'properties.title': 'خصائص الكتلة',
+    'properties.type': 'النوع (Label):',
+    'properties.order': 'الترتيب (Order):',
+    'properties.method': 'طريقة التخطيط:',
+    'properties.auto': 'تلقائي (شامل)',
+    'properties.native': '1. من الـ PDF الرقمي (متجهات)',
+    'properties.coordinates': '2. إحداثيات الكلمات (دقيق)',
+    'properties.smear': '3. معالجة الصور (ممسوح ضوئياً)',
+    'properties.tableLayout': '🛠️ تخطيط الجدول',
+    'properties.tableHint': '(انقر بالزر الأيمن داخل خلايا الجدول للدمج والتعديل)'
   }
 };

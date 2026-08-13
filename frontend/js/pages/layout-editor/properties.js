@@ -2,23 +2,25 @@
  * pages/layout-editor/properties.js - extracted from monolith
  */
 
+const propertiesText = (key) => window.AppI18n?.t(key) || key;
+
 function injectPropertiesPanel() {
     const oldPanel = document.getElementById('block-props-panel');
     if (oldPanel) oldPanel.remove();
 
     const panelHTML = `
-        <div id="block-props-panel" style="position: fixed; top: 90px; left: 30px; background: white; padding: 16px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; width: 220px; display: none; z-index: 1000; direction: rtl;">
+        <div id="block-props-panel" style="position: fixed; top: 90px; inset-inline-start: 30px; background: white; padding: 16px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; width: 220px; display: none; z-index: 1000; direction: inherit;">
             <!-- تم إضافة المعرف prop-panel-header وتنسيقات السحب هنا -->
             <div id="prop-panel-header" style="font-size: 14px; font-weight: bold; margin-bottom: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; color: #1e293b; cursor: grab; user-select: none; display: flex; align-items: center;">
-                <span style="color:#94a3b8; margin-left:8px; cursor: inherit; font-size: 16px;">⋮⋮</span> خصائص الكتلة
+                <span style="color:#94a3b8; margin-inline-end:8px; cursor: inherit; font-size: 16px;">⋮⋮</span> ${propertiesText('properties.title')}
             </div>
             
-            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">النوع (Label):</label>
+            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.type')}</label>
             <select id="prop-category" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 16px; font-size: 13px; outline: none; cursor: pointer;">
                 ${getAllCategories().map(c => `<option value="${c}">${getCategoryNameAR(c)}</option>`).join('')}
             </select>
             
-            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">الترتيب (Order):</label>
+            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.order')}</label>
             <div style="display: flex; gap: 6px; align-items: center;">
                 <button id="prop-move-up" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">⬆️</button>
                 <input type="number" id="prop-order" min="1" style="width: 60px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
@@ -26,15 +28,15 @@ function injectPropertiesPanel() {
             </div>
 
             <div id="prop-table-tools" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #cbd5e1;">
-                <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #d35400;">طريقة التخطيط:</label>
+                <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #d35400;">${propertiesText('properties.method')}</label>
                 <select id="table-extract-method" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 8px; font-size: 12px; outline: none;">
-                    <option value="auto">تلقائي (شامل)</option>
-                    <option value="native">1. من الـ PDF الرقمي (متجهات)</option>
-                    <option value="coordinates">2. إحداثيات الكلمات (دقيق)</option>
-                    <option value="smear">3. معالجة الصور (ممسوح ضوئياً)</option>
+                    <option value="auto">${propertiesText('properties.auto')}</option>
+                    <option value="native">${propertiesText('properties.native')}</option>
+                    <option value="coordinates">${propertiesText('properties.coordinates')}</option>
+                    <option value="smear">${propertiesText('properties.smear')}</option>
                 </select>
-                <button id="btn-auto-table" class="btn-secondary" style="width: 100%; padding: 8px; border-radius: 6px; border-color: #d35400; color: #d35400; font-weight: bold; margin-bottom: 6px;">🛠️ تخطيط الجدول</button>
-                <div style="font-size: 11px; color: #7f8c8d; text-align: center;">(انقر بالزر الأيمن داخل خلايا الجدول للدمج والتعديل)</div>
+                <button id="btn-auto-table" class="btn-secondary" style="width: 100%; padding: 8px; border-radius: 6px; border-color: #d35400; color: #d35400; font-weight: bold; margin-bottom: 6px;">${propertiesText('properties.tableLayout')}</button>
+                <div style="font-size: 11px; color: #7f8c8d; text-align: center;">${propertiesText('properties.tableHint')}</div>
             </div>
         </div>
     `;
@@ -111,7 +113,7 @@ function injectPropertiesPanel() {
                 drawCanvas(); 
             } else alert("Failed to analyze table."); 
         } catch (e) { alert('Error communicating with backend.'); } 
-        finally { btn.textContent = '🛠️ تخطيط الجدول'; btn.disabled = false; }
+        finally { btn.textContent = propertiesText('properties.tableLayout'); btn.disabled = false; }
     });
 }
 

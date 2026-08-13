@@ -462,6 +462,16 @@ window.AppLocales.de = {
     'editor.changeType': 'Klicken, um den Typ zu ändern',
     'editor.done': '✔ Erledigt',
     'editor.reviewed': 'Geprüft',
-    'editor.deleteUndo': 'Löschen (kann rückgängig gemacht werden)'
+    'editor.deleteUndo': 'Löschen (kann rückgängig gemacht werden)',
+    'properties.title': 'Blockeigenschaften',
+    'properties.type': 'Typ:',
+    'properties.order': 'Reihenfolge:',
+    'properties.method': 'Layoutmethode:',
+    'properties.auto': 'Automatisch (umfassend)',
+    'properties.native': '1. Aus digitalem PDF (Vektoren)',
+    'properties.coordinates': '2. Wortkoordinaten (präzise)',
+    'properties.smear': '3. Bildverarbeitung (gescannt)',
+    'properties.tableLayout': '🛠️ Tabelle layouten',
+    'properties.tableHint': '(Mit Rechtsklick Tabellenzellen zusammenführen und bearbeiten)'
   }
 };
