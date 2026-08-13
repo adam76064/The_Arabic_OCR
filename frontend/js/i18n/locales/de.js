@@ -254,6 +254,16 @@ window.AppLocales.de = {
     'quran.fetching': '⏳ Wird abgerufen…',
     'quran.noResults': 'Keine Ergebnisse gefunden.',
     'quran.insertCount': '{count} Vers(e) einfügen',
-    'quran.loadMore': 'Mehr laden ({count}) ▾'
+    'quran.loadMore': 'Mehr laden ({count}) ▾',
+    'dashboard.noPages': 'Dieses Projekt enthält keine Seiten.',
+    'dashboard.autoLayout': 'Automatisches Layout',
+    'dashboard.notLaidOut': 'Noch nicht angeordnet',
+    'dashboard.extracted': 'Text extrahiert',
+    'dashboard.waitingOcr': 'Warten auf OCR',
+    'dashboard.reviewed': 'Geprüft',
+    'dashboard.waitingReview': 'Warten auf Prüfung',
+    'dashboard.layout': 'Layout',
+    'dashboard.review': 'Prüfen',
+    'dashboard.delete': 'Löschen'
   }
 };

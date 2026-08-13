@@ -254,6 +254,16 @@ window.AppLocales.en = {
     'quran.fetching': '⏳ Fetching…',
     'quran.noResults': 'No results found.',
     'quran.insertCount': 'Insert ({count}) verse(s)',
-    'quran.loadMore': 'Load more ({count}) ▾'
+    'quran.loadMore': 'Load more ({count}) ▾',
+    'dashboard.noPages': 'There are no pages in this project.',
+    'dashboard.autoLayout': 'Automatic layout',
+    'dashboard.notLaidOut': 'Not laid out yet',
+    'dashboard.extracted': 'Text extracted',
+    'dashboard.waitingOcr': 'Waiting for OCR',
+    'dashboard.reviewed': 'Reviewed',
+    'dashboard.waitingReview': 'Waiting for review',
+    'dashboard.layout': 'Layout',
+    'dashboard.review': 'Review',
+    'dashboard.delete': 'Delete'
   }
 };

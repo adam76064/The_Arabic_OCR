@@ -254,6 +254,16 @@ window.AppLocales.ar = {
     'quran.fetching': '⏳ جاري الجلب...',
     'quran.noResults': 'لم يتم العثور على نتائج.',
     'quran.insertCount': 'إدراج ({count}) آية',
-    'quran.loadMore': 'تحميل المزيد ({count}) ▾'
+    'quran.loadMore': 'تحميل المزيد ({count}) ▾',
+    'dashboard.noPages': 'لا توجد صفحات في هذا المشروع.',
+    'dashboard.autoLayout': 'تخطيط تلقائي',
+    'dashboard.notLaidOut': 'لم يخطط بعد',
+    'dashboard.extracted': 'تم استخراج النص',
+    'dashboard.waitingOcr': 'بانتظار OCR',
+    'dashboard.reviewed': 'تمت المراجعة',
+    'dashboard.waitingReview': 'بانتظار المراجعة',
+    'dashboard.layout': 'تخطيط (Layout)',
+    'dashboard.review': 'مراجعة',
+    'dashboard.delete': 'حذف'
   }
 };
