@@ -105,7 +105,7 @@ function bindTableButtons() {
                     renderPagesTable();
                     if (typeof renderDashboardStats === 'function') renderDashboardStats();
                 } else {
-                    alert('تعذّر حذف الصفحة: ' + (res?.error || 'خطأ غير معروف'));
+                    alert(dashboardText('dashboard.deletePageFailed', { error: res?.error || dashboardText('dashboard.unknownError') }));
                 }
             };
 
@@ -114,9 +114,9 @@ function bindTableButtons() {
 
             if (prompt && window.AestheticDialog?.deleteConfirm) {
                 window.AestheticDialog.deleteConfirm({
-                    title: 'حذف الصفحة',
-                    message: `هل أنت متأكد من رغبتك في حذف الصفحة رقم <strong>${pageNum}</strong> من هذا المشروع؟`,
-                    deleteFilesLabel: 'حذف الصور والملفات المرتبطة بهذه الصفحة من القرص الصلب أيضاً',
+                    title: dashboardText('dashboard.deletePageTitle'),
+                    message: dashboardText('dashboard.deletePageMessage', { page: pageNum }),
+                    deleteFilesLabel: dashboardText('dashboard.deletePageFiles'),
                     defaultDeleteFiles: defaultDeleteFiles,
                     showRemember: true,
                     onConfirm: async ({ deleteFiles, remember }) => {

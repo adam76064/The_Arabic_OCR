@@ -493,6 +493,11 @@ window.AppLocales.ar = {
     'title.projectSettings': 'إعدادات المشروع — أداة مراجعة OCR',
     'title.review': 'مراجعة المشروع — أداة مراجعة OCR',
     'projects.deleteMessage': 'هل أنت متأكد من رغبتك في حذف المشروع <strong>{title}</strong>؟',
-    'projects.deleteFiles': 'حذف مجلد وملفات المشروع بالكامل من القرص الصلب أيضاً'
+    'projects.deleteFiles': 'حذف مجلد وملفات المشروع بالكامل من القرص الصلب أيضاً',
+    'dashboard.deletePageFailed': 'تعذّر حذف الصفحة: {error}',
+    'dashboard.unknownError': 'خطأ غير معروف',
+    'dashboard.deletePageTitle': 'حذف الصفحة',
+    'dashboard.deletePageMessage': 'هل أنت متأكد من رغبتك في حذف الصفحة رقم <strong>{page}</strong> من هذا المشروع؟',
+    'dashboard.deletePageFiles': 'حذف الصور والملفات المرتبطة بهذه الصفحة من القرص الصلب أيضاً'
   }
 };

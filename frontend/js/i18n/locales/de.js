@@ -493,6 +493,11 @@ window.AppLocales.de = {
     'title.projectSettings': 'Projekteinstellungen — OCR-Prüfwerkzeug',
     'title.review': 'Projekt prüfen — OCR-Prüfwerkzeug',
     'projects.deleteMessage': 'Möchten Sie <strong>{title}</strong> wirklich löschen?',
-    'projects.deleteFiles': 'Projektordner und alle Dateien ebenfalls vom Datenträger löschen'
+    'projects.deleteFiles': 'Projektordner und alle Dateien ebenfalls vom Datenträger löschen',
+    'dashboard.deletePageFailed': 'Seite konnte nicht gelöscht werden: {error}',
+    'dashboard.unknownError': 'Unbekannter Fehler',
+    'dashboard.deletePageTitle': 'Seite löschen',
+    'dashboard.deletePageMessage': 'Möchten Sie Seite <strong>{page}</strong> aus diesem Projekt wirklich löschen?',
+    'dashboard.deletePageFiles': 'Bilder und verknüpfte Dateien dieser Seite ebenfalls vom Datenträger löschen'
   }
 };

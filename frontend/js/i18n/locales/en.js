@@ -493,6 +493,11 @@ window.AppLocales.en = {
     'title.projectSettings': 'Project settings — OCR Review Tool',
     'title.review': 'Review project — OCR Review Tool',
     'projects.deleteMessage': 'Are you sure you want to delete <strong>{title}</strong>?',
-    'projects.deleteFiles': 'Also delete the project folder and all files from disk'
+    'projects.deleteFiles': 'Also delete the project folder and all files from disk',
+    'dashboard.deletePageFailed': 'Unable to delete page: {error}',
+    'dashboard.unknownError': 'Unknown error',
+    'dashboard.deletePageTitle': 'Delete page',
+    'dashboard.deletePageMessage': 'Are you sure you want to delete page <strong>{page}</strong> from this project?',
+    'dashboard.deletePageFiles': 'Also delete images and related files for this page from disk'
   }
 };
