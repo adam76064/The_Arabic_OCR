@@ -391,6 +391,13 @@ window.AppLocales.de = {
     'block.horizontal': 'Horizontal teilen (zwei Zeilen)',
     'block.vertical': 'Vertikal teilen (zwei Spalten)',
     'block.confirmSplit': 'Teilung bestätigen',
-    'review.pageSaved': 'Seite wurde erfolgreich gespeichert'
+    'review.pageSaved': 'Seite wurde erfolgreich gespeichert',
+    'dashboard.loadFailed': 'Projekt konnte nicht geladen werden',
+    'dashboard.untitled': 'Unbenanntes Projekt',
+    'dashboard.connecting': 'Verbindung zum Server wird hergestellt…',
+    'dashboard.pythonError': 'Python-Fehler: ',
+    'dashboard.apiRequired': 'Geben Sie einen API-Schlüssel für das ausgewählte Modell ein.',
+    'dashboard.customRequired': 'Geben Sie Basis-URL und Modellnamen für den benutzerdefinierten Server ein.',
+    'dashboard.fatal': 'Ein kritischer Fehler ist aufgetreten:\n'
   }
 };

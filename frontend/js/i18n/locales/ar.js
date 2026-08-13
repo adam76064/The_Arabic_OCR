@@ -391,6 +391,13 @@ window.AppLocales.ar = {
     'block.horizontal': 'قص أفقي (سطرين)',
     'block.vertical': 'قص عمودي (عمودين)',
     'block.confirmSplit': 'اعتماد التقسيم',
-    'review.pageSaved': 'تم حفظ الصفحة بنجاح'
+    'review.pageSaved': 'تم حفظ الصفحة بنجاح',
+    'dashboard.loadFailed': 'تعذّر تحميل المشروع',
+    'dashboard.untitled': 'مشروع بدون عنوان',
+    'dashboard.connecting': 'جاري الاتصال بالخادم...',
+    'dashboard.pythonError': 'حدث خطأ في بايثون: ',
+    'dashboard.apiRequired': 'يرجى إدخال مفتاح الـ API للنموذج المختار!',
+    'dashboard.customRequired': 'يرجى إدخال رابط الخادم (Base URL) واسم النموذج للخادم المخصص!',
+    'dashboard.fatal': 'حدث خطأ حرج:\n'
   }
 };

@@ -391,6 +391,13 @@ window.AppLocales.en = {
     'block.horizontal': 'Horizontal split (two rows)',
     'block.vertical': 'Vertical split (two columns)',
     'block.confirmSplit': 'Confirm split',
-    'review.pageSaved': 'Page saved successfully'
+    'review.pageSaved': 'Page saved successfully',
+    'dashboard.loadFailed': 'Unable to load project',
+    'dashboard.untitled': 'Untitled project',
+    'dashboard.connecting': 'Connecting to server…',
+    'dashboard.pythonError': 'Python error: ',
+    'dashboard.apiRequired': 'Enter an API key for the selected model.',
+    'dashboard.customRequired': 'Enter both the base URL and model name for the custom server.',
+    'dashboard.fatal': 'A critical error occurred:\n'
   }
 };
