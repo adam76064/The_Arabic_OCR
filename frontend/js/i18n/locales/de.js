@@ -593,6 +593,13 @@ window.AppLocales.de = {
     'dash.blockScan': 'Aktuelle Blöcke scannen (BBoxes)',
     'dash.lensHint': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
     'dash.startRangeHint': 'Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.',
-    'dash.smartChunking': 'Intelligente Aufteilung ist aktiviert: Dateien über 1.000 Seiten, 200 MB oder 200 Seiten pro Stapel werden für stabile Verarbeitung automatisch geteilt.'
+    'dash.smartChunking': 'Intelligente Aufteilung ist aktiviert: Dateien über 1.000 Seiten, 200 MB oder 200 Seiten pro Stapel werden für stabile Verarbeitung automatisch geteilt.',
+    'projectSettings.applyTitle': 'Neue Einstellungen anwenden ⚙️',
+    'projectSettings.apply': 'Anwenden',
+    'projectSettings.applying': 'Wird angewendet… ⏳',
+    'projectSettings.successTitle': 'Erfolg ✨',
+    'projectSettings.applySuccess': 'Einstellungen wurden erfolgreich verarbeitet und angewendet.',
+    'projectSettings.errorTitle': 'Fehler',
+    'projectSettings.saveError': 'Beim Speichern der Einstellungen ist ein Fehler aufgetreten.'
   }
 };

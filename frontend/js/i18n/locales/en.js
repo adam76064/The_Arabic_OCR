@@ -593,6 +593,13 @@ window.AppLocales.en = {
     'dash.blockScan': 'Scan current blocks (BBoxes)',
     'dash.lensHint': 'The page will be sent to Google Lens; text and bounding boxes will be built automatically.',
     'dash.startRangeHint': 'The default range starts at the first unprocessed page.',
-    'dash.smartChunking': 'Smart chunking is enabled: files exceeding 1,000 pages, 200 MB, or 200 pages per batch are automatically split for stable processing.'
+    'dash.smartChunking': 'Smart chunking is enabled: files exceeding 1,000 pages, 200 MB, or 200 pages per batch are automatically split for stable processing.',
+    'projectSettings.applyTitle': 'Apply new settings ⚙️',
+    'projectSettings.apply': 'Apply',
+    'projectSettings.applying': 'Applying… ⏳',
+    'projectSettings.successTitle': 'Success ✨',
+    'projectSettings.applySuccess': 'Settings were processed and applied successfully.',
+    'projectSettings.errorTitle': 'Error',
+    'projectSettings.saveError': 'An error occurred while saving settings.'
   }
 };

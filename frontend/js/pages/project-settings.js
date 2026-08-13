@@ -355,10 +355,10 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                 `;
 
                 window.AestheticDialog.confirm({
-                    title: 'تطبيق الإعدادات الجديدة ⚙️',
+                    title: window.AppI18n.t('projectSettings.applyTitle'),
                     message: messageHtml,
-                    confirmText: 'تنفيذ',
-                    cancelText: 'إلغاء',
+                    confirmText: window.AppI18n.t('projectSettings.apply'),
+                    cancelText: window.AppI18n.t('dialog.cancel'),
                     onConfirm: async () => {
                         const selectedScope = window.__selectedApplyScope || 'unreviewed';
                         if (selectedScope === 'none') {
@@ -366,18 +366,18 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                             return;
                         }
                         
-                        btn.textContent = 'جاري التطبيق... ⏳';
+                        btn.textContent = window.AppI18n.t('projectSettings.applying');
                         try {
                             const res = await window.pywebview.api.apply_project_settings_changes(currentProject.id, selectedScope);
                             if (res && res.ok) {
                                 window.AestheticDialog.alert({
-                                    title: 'تم بنجاح ✨',
-                                    message: 'تمت معالجة وتطبيق الإعدادات بنجاح.',
+                                    title: window.AppI18n.t('projectSettings.successTitle'),
+                                    message: window.AppI18n.t('projectSettings.applySuccess'),
                                     onOk: finishAndRedirect
                                 });
                             } else {
                                 window.AestheticDialog.alert({
-                                    title: 'تنبيه',
+                                    title: window.AppI18n.t('dialog.alert'),
                                     message: 'حدث خطأ أثناء التطبيق: ' + (res?.error || 'غير معروف'),
                                     onOk: finishAndRedirect
                                 });
@@ -398,9 +398,9 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
     } catch (err) {
         console.error(err);
         if (window.AestheticDialog?.alert) {
-            window.AestheticDialog.alert({ title: 'خطأ', message: 'حدث خطأ أثناء حفظ الإعدادات.' });
+            window.AestheticDialog.alert({ title: window.AppI18n.t('projectSettings.errorTitle'), message: window.AppI18n.t('projectSettings.saveError') });
         } else {
-            alert('حدث خطأ أثناء الحفظ.');
+            alert(window.AppI18n.t('projectSettings.saveError'));
         }
         btn.disabled = false; btn.textContent = window.AppI18n.t('projectSettings.save');
     }
@@ -444,7 +444,7 @@ function initPostProcessingSettings(ppOpts) {
                 if (res?.ok) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
-                            title: 'تم بنجاح ✨',
+                            title: window.AppI18n.t('projectSettings.successTitle'),
                             message: `تمت إعادة ترتيب المربعات النصية في ${res.count} صفحة حسب اتجاه القراءة العربي.`
                         });
                     } else {
@@ -475,7 +475,7 @@ function initPostProcessingSettings(ppOpts) {
                 if (res?.ok) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
-                            title: 'تم بنجاح ✨',
+                            title: window.AppI18n.t('projectSettings.successTitle'),
                             message: `تم كشف وتوسيم ${res.count} مربع كأرقام صفحات بنجاح.`
                         });
                     } else {

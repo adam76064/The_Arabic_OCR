@@ -593,6 +593,13 @@ window.AppLocales.ar = {
     'dash.blockScan': 'مسح بناءً على الكتل الحالية (BBoxes)',
     'dash.lensHint': 'سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.',
     'dash.startRangeHint': 'تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.',
-    'dash.smartChunking': 'التقطيع الذكي مفعّل: سيقوم النظام تلقائياً بتجزئة الملفات التي تتجاوز 1000 صفحة، أو 200 ميجابايت، أو 200 صفحة كحد أقصى للدفعة الواحدة لضمان استقرار المعالجة.'
+    'dash.smartChunking': 'التقطيع الذكي مفعّل: سيقوم النظام تلقائياً بتجزئة الملفات التي تتجاوز 1000 صفحة، أو 200 ميجابايت، أو 200 صفحة كحد أقصى للدفعة الواحدة لضمان استقرار المعالجة.',
+    'projectSettings.applyTitle': 'تطبيق الإعدادات الجديدة ⚙️',
+    'projectSettings.apply': 'تنفيذ',
+    'projectSettings.applying': 'جاري التطبيق... ⏳',
+    'projectSettings.successTitle': 'تم بنجاح ✨',
+    'projectSettings.applySuccess': 'تمت معالجة وتطبيق الإعدادات بنجاح.',
+    'projectSettings.errorTitle': 'خطأ',
+    'projectSettings.saveError': 'حدث خطأ أثناء حفظ الإعدادات.'
   }
 };
