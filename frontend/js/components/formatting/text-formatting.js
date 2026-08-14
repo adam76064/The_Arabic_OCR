@@ -64,7 +64,7 @@ const TEXT_TOOLBAR_HTML = `
         <option value="2.5">2.5</option>
         <option value="3.0">3.0</option>
     </select>
-    <select class="toolbar-select block-only-tool" data-style-cmd="marginTop" style="max-width: 90px;" title="تباعد الفقرات قبل (Space Before)">
+    <select class="toolbar-select block-only-tool" data-style-cmd="marginTop" style="max-width: 90px;" title="${textToolText('format.spaceBefore')}">
         <option value="">${textToolText('format.before')}</option>
         <option value="0pt">0 pt</option>
         <option value="6pt">6 pt</option>
@@ -72,7 +72,7 @@ const TEXT_TOOLBAR_HTML = `
         <option value="18pt">18 pt</option>
         <option value="24pt">24 pt</option>
     </select>
-    <select class="toolbar-select block-only-tool" data-style-cmd="marginBottom" style="max-width: 90px;" title="تباعد الفقرات بعد (Space After)">
+    <select class="toolbar-select block-only-tool" data-style-cmd="marginBottom" style="max-width: 90px;" title="${textToolText('format.spaceAfter')}">
         <option value="">${textToolText('format.after')}</option>
         <option value="0pt">0 pt</option>
         <option value="6pt">6 pt</option>

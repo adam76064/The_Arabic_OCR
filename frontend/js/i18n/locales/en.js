@@ -655,6 +655,9 @@ window.AppLocales.en = {
     'review.from': 'From',
     'review.to': 'To',
     'review.pdfNumbers': '(PDF page numbers)',
-    'quran.citationExample': 'Add citation, e.g. [Al-Fatiha: 5]'
+    'quran.citationExample': 'Add citation, e.g. [Al-Fatiha: 5]',
+    'settings.moveSuccess': 'Data folder changed and files moved successfully.',
+    'format.spaceBefore': 'Paragraph spacing before',
+    'format.spaceAfter': 'Paragraph spacing after'
   }
 };

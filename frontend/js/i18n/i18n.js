@@ -21,13 +21,14 @@
   }
 
   function getLanguage() {
-    const configured = global.__appSettings && global.__appSettings.interfaceLanguage;
-    if (isSupported(configured)) return configured;
+    // The local cache is available before pywebview settings load and must win
+    // during startup to avoid briefly rendering the Arabic default.
     try {
       const cached = localStorage.getItem('interfaceLanguage');
       if (isSupported(cached)) return cached;
     } catch (_) {}
-    return FALLBACK_LANGUAGE;
+    const configured = global.__appSettings && global.__appSettings.interfaceLanguage;
+    return isSupported(configured) ? configured : FALLBACK_LANGUAGE;
   }
 
   function t(key, replacements = {}) {
@@ -60,6 +61,7 @@
     document.querySelectorAll('[data-i18n-document-title]').forEach((element) => {
       document.title = t(element.dataset.i18nDocumentTitle);
     });
+    document.documentElement.classList.add('i18n-ready');
     global.dispatchEvent(new CustomEvent('languageChanged', { detail: { language, direction: locale.meta.direction } }));
   }
 
@@ -77,7 +79,11 @@
   global.AppI18n = { FALLBACK_LANGUAGE, supportedLanguages, getLanguage, setLanguage, t, categoryLabel, applyDocumentLanguage };
   document.addEventListener('DOMContentLoaded', applyDocumentLanguage);
   global.addEventListener('appSettingsLoaded', () => {
-    try { localStorage.setItem('interfaceLanguage', getLanguage()); } catch (_) {}
+    // Persisted settings are authoritative once the backend is available.
+    const persisted = global.__appSettings && global.__appSettings.interfaceLanguage;
+    if (isSupported(persisted)) {
+      try { localStorage.setItem('interfaceLanguage', persisted); } catch (_) {}
+    }
     applyDocumentLanguage();
   });
 })(window);

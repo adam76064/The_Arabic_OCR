@@ -655,6 +655,9 @@ window.AppLocales.ar = {
     'review.from': 'من',
     'review.to': 'إلى',
     'review.pdfNumbers': '(أرقام PDF)',
-    'quran.citationExample': 'إضافة التخريج (مثال: [الفاتحة :5])'
+    'quran.citationExample': 'إضافة التخريج (مثال: [الفاتحة :5])',
+    'settings.moveSuccess': 'تم تغيير مجلد البيانات ونقل الملفات بنجاح.',
+    'format.spaceBefore': 'تباعد الفقرات قبل',
+    'format.spaceAfter': 'تباعد الفقرات بعد'
   }
 };

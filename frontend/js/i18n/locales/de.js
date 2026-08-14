@@ -655,6 +655,9 @@ window.AppLocales.de = {
     'review.from': 'Von',
     'review.to': 'Bis',
     'review.pdfNumbers': '(PDF-Seitennummern)',
-    'quran.citationExample': 'Quellenangabe hinzufügen, z. B. [Al-Fatiha: 5]'
+    'quran.citationExample': 'Quellenangabe hinzufügen, z. B. [Al-Fatiha: 5]',
+    'settings.moveSuccess': 'Datenordner wurde geändert und Dateien wurden erfolgreich verschoben.',
+    'format.spaceBefore': 'Absatzabstand davor',
+    'format.spaceAfter': 'Absatzabstand danach'
   }
 };
