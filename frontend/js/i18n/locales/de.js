@@ -620,6 +620,11 @@ window.AppLocales.de = {
     'projectSettings.actionError': 'Fehler: {error}',
     'projectSettings.unknownError': 'Unbekannter Fehler',
     'dash.lanToggleTitle': 'Klicken, um den lokalen Arbeitsmodus ein- oder auszuschalten',
-    'dash.lanOff': 'Lokal: aus'
+    'dash.lanOff': 'Lokal: aus',
+    'export.epubHint': '(Einstellungen für vertikale Poesie und arabische Bücher werden hier hinzugefügt)',
+    'export.tab': 'Tabulator',
+    'export.pipe': '| (senkrechter Strich)',
+    'export.comma': 'Komma (,)',
+    'export.dash': 'Bindestrich (-)'
   }
 };

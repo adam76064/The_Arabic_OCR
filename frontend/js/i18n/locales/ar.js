@@ -620,6 +620,11 @@ window.AppLocales.ar = {
     'projectSettings.actionError': 'حدث خطأ: {error}',
     'projectSettings.unknownError': 'غير معروف',
     'dash.lanToggleTitle': 'انقر لتفعيل/إيقاف وضع العمل المحلي',
-    'dash.lanOff': 'محلي: متوقف'
+    'dash.lanOff': 'محلي: متوقف',
+    'export.epubHint': '(سيتم إضافة الإعدادات الخاصة بالشعر العمودي ومعايير الكتب العربية هنا)',
+    'export.tab': 'Tab (مسافة جدولة)',
+    'export.pipe': '| (خط عمودي)',
+    'export.comma': 'فاصلة (,)',
+    'export.dash': 'شرطة (-)'
   }
 };

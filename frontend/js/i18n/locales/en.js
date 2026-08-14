@@ -620,6 +620,11 @@ window.AppLocales.en = {
     'projectSettings.actionError': 'Error: {error}',
     'projectSettings.unknownError': 'Unknown error',
     'dash.lanToggleTitle': 'Click to enable or disable local-work mode',
-    'dash.lanOff': 'Local: off'
+    'dash.lanOff': 'Local: off',
+    'export.epubHint': '(Vertical-poetry and Arabic-book settings will be added here)',
+    'export.tab': 'Tab',
+    'export.pipe': '| (vertical bar)',
+    'export.comma': 'Comma (,)',
+    'export.dash': 'Dash (-)'
   }
 };
