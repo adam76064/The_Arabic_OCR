@@ -496,7 +496,7 @@
     cursor: pointer;
     color: #888;
     transition: all 0.18s;
-    margin-right: auto;
+    margin-inline-start: auto;
 }
 .block-review-btn:hover { border-color: #27ae60; color: #27ae60; }
 .block-review-btn.reviewed { background: #27ae60; border-color: #27ae60; color: white; }
