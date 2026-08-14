@@ -674,6 +674,9 @@ window.AppLocales.ar = {
     'ps.onAlif': 'على الألف (كتاباً)',
     'ps.keepNumbers': 'إبقاؤها كما هي',
     'ps.toArabic': 'تحويل إلى أرقام عربية (1, 2, 3)',
-    'ps.toHindi': 'تحويل إلى أرقام هندية (١, ٢, ٣)'
+    'ps.toHindi': 'تحويل إلى أرقام هندية (١, ٢, ٣)',
+    'review.cropOut': 'تصغير الاقتطاع',
+    'review.cropReset': 'إعادة ضبط التكبير',
+    'review.cropIn': 'تكبير الاقتطاع'
   }
 };

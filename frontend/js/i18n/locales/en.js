@@ -674,6 +674,9 @@ window.AppLocales.en = {
     'ps.onAlif': 'On alif',
     'ps.keepNumbers': 'Keep as is',
     'ps.toArabic': 'Convert to Western Arabic numerals (1, 2, 3)',
-    'ps.toHindi': 'Convert to Arabic-Indic numerals (١, ٢, ٣)'
+    'ps.toHindi': 'Convert to Arabic-Indic numerals (١, ٢, ٣)',
+    'review.cropOut': 'Zoom crop out',
+    'review.cropReset': 'Reset crop zoom',
+    'review.cropIn': 'Zoom crop in'
   }
 };

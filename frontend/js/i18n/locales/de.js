@@ -674,6 +674,9 @@ window.AppLocales.de = {
     'ps.onAlif': 'Auf Alif',
     'ps.keepNumbers': 'Unverändert lassen',
     'ps.toArabic': 'In westarabische Ziffern umwandeln (1, 2, 3)',
-    'ps.toHindi': 'In arabisch-indische Ziffern umwandeln (١, ٢, ٣)'
+    'ps.toHindi': 'In arabisch-indische Ziffern umwandeln (١, ٢, ٣)',
+    'review.cropOut': 'Ausschnitt verkleinern',
+    'review.cropReset': 'Ausschnittzoom zurücksetzen',
+    'review.cropIn': 'Ausschnitt vergrößern'
   }
 };
