@@ -48,10 +48,10 @@
             <div class="page-nav" style="position: relative; margin-inline-start: 15px;">
                 <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
                 <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> تتبع خلايا الجداول</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> تتبع الكلمات</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> تتبع الأسطر (عند فشل الكلمات)</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> تتبع الكتلة (الأساس)</label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells" data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords" data-i18n="review.trackWords">تتبع الكلمات</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines" data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock" data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
                 </div>
             </div>
 
@@ -225,7 +225,7 @@
                             </tr>
                         </thead>
                         <tbody id="quran-results-tbody">
-                            <tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;" data-i18n="quran.emptyInitial">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
                         </tbody>
                     </table>
                 </div>

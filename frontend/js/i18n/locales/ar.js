@@ -658,6 +658,22 @@ window.AppLocales.ar = {
     'quran.citationExample': 'إضافة التخريج (مثال: [الفاتحة :5])',
     'settings.moveSuccess': 'تم تغيير مجلد البيانات ونقل الملفات بنجاح.',
     'format.spaceBefore': 'تباعد الفقرات قبل',
-    'format.spaceAfter': 'تباعد الفقرات بعد'
+    'format.spaceAfter': 'تباعد الفقرات بعد',
+    'review.trackCells': 'تتبع خلايا الجداول',
+    'review.trackWords': 'تتبع الكلمات',
+    'review.trackLines': 'تتبع الأسطر (عند فشل الكلمات)',
+    'review.trackBlock': 'تتبع الكتلة (الأساس)',
+    'review.bookPage': 'صفحة الكتاب:',
+    'review.of': 'من',
+    'quran.emptyInitial': 'لا توجد نتائج حالياً. ابحث لإظهار الآيات.',
+    'ps.keep': 'إبقاؤه كما هو',
+    'ps.keepTanween': 'الاحتفاظ بالتنوين والشدة فقط',
+    'ps.removeAll': 'إزالة الكل',
+    'ps.noChange': 'بلا تغيير',
+    'ps.beforeAlif': 'قبل الألف (كتابًا)',
+    'ps.onAlif': 'على الألف (كتاباً)',
+    'ps.keepNumbers': 'إبقاؤها كما هي',
+    'ps.toArabic': 'تحويل إلى أرقام عربية (1, 2, 3)',
+    'ps.toHindi': 'تحويل إلى أرقام هندية (١, ٢, ٣)'
   }
 };

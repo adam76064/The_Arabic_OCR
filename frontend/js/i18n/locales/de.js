@@ -658,6 +658,22 @@ window.AppLocales.de = {
     'quran.citationExample': 'Quellenangabe hinzufügen, z. B. [Al-Fatiha: 5]',
     'settings.moveSuccess': 'Datenordner wurde geändert und Dateien wurden erfolgreich verschoben.',
     'format.spaceBefore': 'Absatzabstand davor',
-    'format.spaceAfter': 'Absatzabstand danach'
+    'format.spaceAfter': 'Absatzabstand danach',
+    'review.trackCells': 'Tabellenzellen verfolgen',
+    'review.trackWords': 'Wörter verfolgen',
+    'review.trackLines': 'Zeilen verfolgen, wenn Wortverfolgung fehlschlägt',
+    'review.trackBlock': 'Block als Grundlage verfolgen',
+    'review.bookPage': 'Buchseite:',
+    'review.of': 'von',
+    'quran.emptyInitial': 'Noch keine Ergebnisse. Suchen Sie, um Verse anzuzeigen.',
+    'ps.keep': 'Unverändert lassen',
+    'ps.keepTanween': 'Nur Tanween und Schadda behalten',
+    'ps.removeAll': 'Alle entfernen',
+    'ps.noChange': 'Keine Änderung',
+    'ps.beforeAlif': 'Vor Alif',
+    'ps.onAlif': 'Auf Alif',
+    'ps.keepNumbers': 'Unverändert lassen',
+    'ps.toArabic': 'In westarabische Ziffern umwandeln (1, 2, 3)',
+    'ps.toHindi': 'In arabisch-indische Ziffern umwandeln (١, ٢, ٣)'
   }
 };

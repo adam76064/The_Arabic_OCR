@@ -658,6 +658,22 @@ window.AppLocales.en = {
     'quran.citationExample': 'Add citation, e.g. [Al-Fatiha: 5]',
     'settings.moveSuccess': 'Data folder changed and files moved successfully.',
     'format.spaceBefore': 'Paragraph spacing before',
-    'format.spaceAfter': 'Paragraph spacing after'
+    'format.spaceAfter': 'Paragraph spacing after',
+    'review.trackCells': 'Track table cells',
+    'review.trackWords': 'Track words',
+    'review.trackLines': 'Track lines when word tracking fails',
+    'review.trackBlock': 'Track block as fallback',
+    'review.bookPage': 'Book page:',
+    'review.of': 'of',
+    'quran.emptyInitial': 'No results yet. Search to show verses.',
+    'ps.keep': 'Keep as is',
+    'ps.keepTanween': 'Keep tanween and shadda only',
+    'ps.removeAll': 'Remove all',
+    'ps.noChange': 'No change',
+    'ps.beforeAlif': 'Before alif',
+    'ps.onAlif': 'On alif',
+    'ps.keepNumbers': 'Keep as is',
+    'ps.toArabic': 'Convert to Western Arabic numerals (1, 2, 3)',
+    'ps.toHindi': 'Convert to Arabic-Indic numerals (١, ٢, ٣)'
   }
 };
