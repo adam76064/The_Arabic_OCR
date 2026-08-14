@@ -625,6 +625,11 @@ window.AppLocales.ar = {
     'export.tab': 'Tab (مسافة جدولة)',
     'export.pipe': '| (خط عمودي)',
     'export.comma': 'فاصلة (,)',
-    'export.dash': 'شرطة (-)'
+    'export.dash': 'شرطة (-)',
+    'review.trackingTitle': 'إعدادات التتبع',
+    'review.fontZoom': 'تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)',
+    'review.fontDown': 'تصغير حجم عرض النص',
+    'review.fontUp': 'تكبير حجم عرض النص',
+    'review.layoutToggle': 'تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)'
   }
 };

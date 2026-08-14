@@ -39,14 +39,14 @@
             <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview" data-i18n="review.text">عرض النص</button>
             <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard" data-i18n="review.dashboard">لوحة</button>
 
-            <div class="page-nav" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
-                <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" title="تصغير حجم عرض النص">A-</button>
+            <div class="page-nav" data-i18n-title="review.fontZoom" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
+                <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontDown" title="تصغير حجم عرض النص">A-</button>
                 <span class="page-indicator" id="block-font-value">100%</span>
-                <button id="block-font-increase" class="nav-btn" style="font-size:12px;" title="تكبير حجم عرض النص">A+</button>
+                <button id="block-font-increase" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontUp" title="تكبير حجم عرض النص">A+</button>
             </div>
 
             <div class="page-nav" style="position: relative; margin-right: 15px;">
-                <button id="track-settings-btn" class="btn-secondary" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
+                <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
                 <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
                     <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> تتبع خلايا الجداول</label>
                     <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> تتبع الكلمات</label>
@@ -89,7 +89,7 @@
                         <div id="blocks-list"></div>
                     </div>
 
-                    <button type="button" id="toggle-layout-view-btn" class="handle-switch-btn" title="تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)">
+                    <button type="button" id="toggle-layout-view-btn" class="handle-switch-btn" data-i18n-title="review.layoutToggle" title="تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)">
                         <svg id="toggle-layout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M8 7h11M15 3l4 4-4 4M16 17H5M9 13l-4 4 4 4"/>
                         </svg>

@@ -625,6 +625,11 @@ window.AppLocales.en = {
     'export.tab': 'Tab',
     'export.pipe': '| (vertical bar)',
     'export.comma': 'Comma (,)',
-    'export.dash': 'Dash (-)'
+    'export.dash': 'Dash (-)',
+    'review.trackingTitle': 'Tracking settings',
+    'review.fontZoom': 'Increase or decrease block display text size; does not change exported font size',
+    'review.fontDown': 'Decrease text display size',
+    'review.fontUp': 'Increase text display size',
+    'review.layoutToggle': 'Toggle block and crop layout: side by side / stacked'
   }
 };

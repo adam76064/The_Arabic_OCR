@@ -625,6 +625,11 @@ window.AppLocales.de = {
     'export.tab': 'Tabulator',
     'export.pipe': '| (senkrechter Strich)',
     'export.comma': 'Komma (,)',
-    'export.dash': 'Bindestrich (-)'
+    'export.dash': 'Bindestrich (-)',
+    'review.trackingTitle': 'Nachverfolgungseinstellungen',
+    'review.fontZoom': 'Textanzeigegröße von Blöcken ändern; die Exportschriftgröße bleibt unverändert',
+    'review.fontDown': 'Textanzeige verkleinern',
+    'review.fontUp': 'Textanzeige vergrößern',
+    'review.layoutToggle': 'Block- und Ausschnittlayout umschalten: nebeneinander / gestapelt'
   }
 };
