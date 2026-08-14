@@ -642,6 +642,10 @@ window.AppLocales.de = {
     'ocr.progressHint': 'Dies kann je nach Dateigröße und Internetgeschwindigkeit etwas dauern.',
     'help.readingOrder': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten mit der rechten Spalte zuerst.',
     'help.pagination': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten in Folge und kennzeichnet sie automatisch als Seitennummer.',
-    'help.locro': 'Ein lokales Werkzeug auf Basis von ScreenAI, integriert in Chrome. Es unterstützt hochpräzise Textverarbeitung und Wortkonfidenzen; die Engine wird bei Bedarf automatisch heruntergeladen.'
+    'help.locro': 'Ein lokales Werkzeug auf Basis von ScreenAI, integriert in Chrome. Es unterstützt hochpräzise Textverarbeitung und Wortkonfidenzen; die Engine wird bei Bedarf automatisch heruntergeladen.',
+    'help.history': 'Rückgängig und Wiederholen umfassen alle Projektänderungen: Blockreihenfolge, Löschen, OCR-Laden, Formatierung und Textinhalt. Gehört eine Änderung zu einer anderen Seite, navigiert die Anwendung automatisch dorthin.',
+    'help.deletion': 'Standardverhalten festlegen und Einstellungen zum Löschen von Seiten oder Projekten speichern.',
+    'help.llm': 'Kernanweisungen zur Steuerung von KI-Modellen wie Gemini, Claude und OpenAI. Hier für alle Projekte bearbeiten oder die Standardanweisung wiederherstellen.',
+    'help.shortcuts': 'Klicken Sie auf ein Kürzelfeld und drücken Sie dann eine neue Taste oder Tastenkombination. Ein Kürzel muss Ctrl oder Alt enthalten oder eine Sondertaste wie Delete, PageUp oder F1 verwenden.'
   }
 };

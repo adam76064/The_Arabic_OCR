@@ -642,6 +642,10 @@ window.AppLocales.en = {
     'ocr.progressHint': 'This may take some time depending on file size and internet speed.',
     'help.readingOrder': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages with the right column first.',
     'help.pagination': 'Detects standalone page numbers at page tops and bottoms in sequence and automatically labels them as Page-number.',
-    'help.locro': 'A local tool based on ScreenAI integrated with Chrome. It supports high-accuracy text processing and word-confidence extraction; the engine downloads automatically when unavailable.'
+    'help.locro': 'A local tool based on ScreenAI integrated with Chrome. It supports high-accuracy text processing and word-confidence extraction; the engine downloads automatically when unavailable.',
+    'help.history': 'Undo and redo include all project changes: block ordering, deletion, OCR loading, formatting, and text content. If a change belongs to another page, the application navigates there automatically.',
+    'help.deletion': 'Set default behavior and store preferences for deleting pages or projects.',
+    'help.llm': 'Core instructions used to guide AI models such as Gemini, Claude, and OpenAI. Edit them here for all projects or restore the default prompt.',
+    'help.shortcuts': 'Click a shortcut box, then press a new key or key combination. A shortcut must include Ctrl or Alt, or use a special key such as Delete, PageUp, or F1.'
   }
 };
