@@ -618,6 +618,8 @@ window.AppLocales.ar = {
     'projectSettings.paginationError': 'حدث خطأ أثناء كشف أرقام الصفحات.',
     'projectSettings.applyError': 'حدث خطأ أثناء التطبيق: {error}',
     'projectSettings.actionError': 'حدث خطأ: {error}',
-    'projectSettings.unknownError': 'غير معروف'
+    'projectSettings.unknownError': 'غير معروف',
+    'dash.lanToggleTitle': 'انقر لتفعيل/إيقاف وضع العمل المحلي',
+    'dash.lanOff': 'محلي: متوقف'
   }
 };

@@ -618,6 +618,8 @@ window.AppLocales.en = {
     'projectSettings.paginationError': 'An error occurred while detecting page numbers.',
     'projectSettings.applyError': 'An error occurred while applying: {error}',
     'projectSettings.actionError': 'Error: {error}',
-    'projectSettings.unknownError': 'Unknown error'
+    'projectSettings.unknownError': 'Unknown error',
+    'dash.lanToggleTitle': 'Click to enable or disable local-work mode',
+    'dash.lanOff': 'Local: off'
   }
 };

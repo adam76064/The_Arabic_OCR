@@ -618,6 +618,8 @@ window.AppLocales.de = {
     'projectSettings.paginationError': 'Beim Erkennen der Seitennummern ist ein Fehler aufgetreten.',
     'projectSettings.applyError': 'Beim Anwenden ist ein Fehler aufgetreten: {error}',
     'projectSettings.actionError': 'Fehler: {error}',
-    'projectSettings.unknownError': 'Unbekannter Fehler'
+    'projectSettings.unknownError': 'Unbekannter Fehler',
+    'dash.lanToggleTitle': 'Klicken, um den lokalen Arbeitsmodus ein- oder auszuschalten',
+    'dash.lanOff': 'Lokal: aus'
   }
 };
