@@ -646,6 +646,15 @@ window.AppLocales.en = {
     'help.history': 'Undo and redo include all project changes: block ordering, deletion, OCR loading, formatting, and text content. If a change belongs to another page, the application navigates there automatically.',
     'help.deletion': 'Set default behavior and store preferences for deleting pages or projects.',
     'help.llm': 'Core instructions used to guide AI models such as Gemini, Claude, and OpenAI. Edit them here for all projects or restore the default prompt.',
-    'help.shortcuts': 'Click a shortcut box, then press a new key or key combination. A shortcut must include Ctrl or Alt, or use a special key such as Delete, PageUp, or F1.'
+    'help.shortcuts': 'Click a shortcut box, then press a new key or key combination. A shortcut must include Ctrl or Alt, or use a special key such as Delete, PageUp, or F1.',
+    'review.rawText': 'Show raw text',
+    'review.saveChanges': 'Save changes',
+    'review.close': '✕ Close',
+    'review.currentPage': 'Current page only',
+    'review.pageRange': 'Page range',
+    'review.from': 'From',
+    'review.to': 'To',
+    'review.pdfNumbers': '(PDF page numbers)',
+    'quran.citationExample': 'Add citation, e.g. [Al-Fatiha: 5]'
   }
 };

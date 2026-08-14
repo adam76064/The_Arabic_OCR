@@ -646,6 +646,15 @@ window.AppLocales.de = {
     'help.history': 'Rückgängig und Wiederholen umfassen alle Projektänderungen: Blockreihenfolge, Löschen, OCR-Laden, Formatierung und Textinhalt. Gehört eine Änderung zu einer anderen Seite, navigiert die Anwendung automatisch dorthin.',
     'help.deletion': 'Standardverhalten festlegen und Einstellungen zum Löschen von Seiten oder Projekten speichern.',
     'help.llm': 'Kernanweisungen zur Steuerung von KI-Modellen wie Gemini, Claude und OpenAI. Hier für alle Projekte bearbeiten oder die Standardanweisung wiederherstellen.',
-    'help.shortcuts': 'Klicken Sie auf ein Kürzelfeld und drücken Sie dann eine neue Taste oder Tastenkombination. Ein Kürzel muss Ctrl oder Alt enthalten oder eine Sondertaste wie Delete, PageUp oder F1 verwenden.'
+    'help.shortcuts': 'Klicken Sie auf ein Kürzelfeld und drücken Sie dann eine neue Taste oder Tastenkombination. Ein Kürzel muss Ctrl oder Alt enthalten oder eine Sondertaste wie Delete, PageUp oder F1 verwenden.',
+    'review.rawText': 'Rohtext anzeigen',
+    'review.saveChanges': 'Änderungen speichern',
+    'review.close': '✕ Schließen',
+    'review.currentPage': 'Nur aktuelle Seite',
+    'review.pageRange': 'Seitenbereich',
+    'review.from': 'Von',
+    'review.to': 'Bis',
+    'review.pdfNumbers': '(PDF-Seitennummern)',
+    'quran.citationExample': 'Quellenangabe hinzufügen, z. B. [Al-Fatiha: 5]'
   }
 };
