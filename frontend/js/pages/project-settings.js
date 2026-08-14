@@ -378,7 +378,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                             } else {
                                 window.AestheticDialog.alert({
                                     title: window.AppI18n.t('dialog.alert'),
-                                    message: 'حدث خطأ أثناء التطبيق: ' + (res?.error || 'غير معروف'),
+                                    message: window.AppI18n.t('projectSettings.applyError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }),
                                     onOk: finishAndRedirect
                                 });
                             }
@@ -451,7 +451,7 @@ function initPostProcessingSettings(ppOpts) {
                         alert(window.AppI18n.t('projectSettings.sortSuccessShort', { count: res.count }));
                     }
                 } else {
-                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                    alert(window.AppI18n.t('projectSettings.actionError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }));
                 }
             } catch (err) {
                 console.error('Reading order sorting error:', err);
@@ -482,7 +482,7 @@ function initPostProcessingSettings(ppOpts) {
                         alert(window.AppI18n.t('projectSettings.paginationSuccess', { count: res.count }));
                     }
                 } else {
-                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                    alert(window.AppI18n.t('projectSettings.actionError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }));
                 }
             } catch (err) {
                 console.error('Pagination detection error:', err);

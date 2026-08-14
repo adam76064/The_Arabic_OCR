@@ -615,6 +615,9 @@ window.AppLocales.de = {
     'projectSettings.sortSuccessShort': 'Felder wurden auf {count} Seiten neu geordnet.',
     'projectSettings.paginationSuccess': '{count} Felder wurden als Seitennummern erkannt und markiert.',
     'projectSettings.sortError': 'Beim Neuordnen der Felder ist ein Fehler aufgetreten.',
-    'projectSettings.paginationError': 'Beim Erkennen der Seitennummern ist ein Fehler aufgetreten.'
+    'projectSettings.paginationError': 'Beim Erkennen der Seitennummern ist ein Fehler aufgetreten.',
+    'projectSettings.applyError': 'Beim Anwenden ist ein Fehler aufgetreten: {error}',
+    'projectSettings.actionError': 'Fehler: {error}',
+    'projectSettings.unknownError': 'Unbekannter Fehler'
   }
 };

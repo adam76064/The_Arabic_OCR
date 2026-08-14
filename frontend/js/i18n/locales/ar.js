@@ -615,6 +615,9 @@ window.AppLocales.ar = {
     'projectSettings.sortSuccessShort': 'تمت إعادة ترتيب المربعات في {count} صفحة.',
     'projectSettings.paginationSuccess': 'تم كشف وتوسيم {count} مربع كأرقام صفحات بنجاح.',
     'projectSettings.sortError': 'حدث خطأ أثناء إعادة ترتيب المربعات.',
-    'projectSettings.paginationError': 'حدث خطأ أثناء كشف أرقام الصفحات.'
+    'projectSettings.paginationError': 'حدث خطأ أثناء كشف أرقام الصفحات.',
+    'projectSettings.applyError': 'حدث خطأ أثناء التطبيق: {error}',
+    'projectSettings.actionError': 'حدث خطأ: {error}',
+    'projectSettings.unknownError': 'غير معروف'
   }
 };

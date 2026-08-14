@@ -615,6 +615,9 @@ window.AppLocales.en = {
     'projectSettings.sortSuccessShort': 'Boxes were reordered on {count} pages.',
     'projectSettings.paginationSuccess': '{count} boxes were detected and labeled as page numbers.',
     'projectSettings.sortError': 'An error occurred while reordering boxes.',
-    'projectSettings.paginationError': 'An error occurred while detecting page numbers.'
+    'projectSettings.paginationError': 'An error occurred while detecting page numbers.',
+    'projectSettings.applyError': 'An error occurred while applying: {error}',
+    'projectSettings.actionError': 'Error: {error}',
+    'projectSettings.unknownError': 'Unknown error'
   }
 };
