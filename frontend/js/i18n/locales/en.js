@@ -630,6 +630,15 @@ window.AppLocales.en = {
     'review.fontZoom': 'Increase or decrease block display text size; does not change exported font size',
     'review.fontDown': 'Decrease text display size',
     'review.fontUp': 'Increase text display size',
-    'review.layoutToggle': 'Toggle block and crop layout: side by side / stacked'
+    'review.layoutToggle': 'Toggle block and crop layout: side by side / stacked',
+    'ocr.locroHint': 'A local tool based on ScreenAI integrated with Chrome. It supports high-accuracy text processing and word confidence extraction; the engine downloads automatically when unavailable.',
+    'ocr.rememberApi': 'Remember API details on this device',
+    'ocr.allFile': 'Entire file',
+    'ocr.selectedRange': 'Selected range',
+    'ocr.fromPage': 'From page',
+    'ocr.to': 'To',
+    'ocr.progressTitle': 'Processing…',
+    'ocr.wait': 'Please wait',
+    'ocr.progressHint': 'This may take some time depending on file size and internet speed.'
   }
 };

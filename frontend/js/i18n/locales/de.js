@@ -630,6 +630,15 @@ window.AppLocales.de = {
     'review.fontZoom': 'Textanzeigegröße von Blöcken ändern; die Exportschriftgröße bleibt unverändert',
     'review.fontDown': 'Textanzeige verkleinern',
     'review.fontUp': 'Textanzeige vergrößern',
-    'review.layoutToggle': 'Block- und Ausschnittlayout umschalten: nebeneinander / gestapelt'
+    'review.layoutToggle': 'Block- und Ausschnittlayout umschalten: nebeneinander / gestapelt',
+    'ocr.locroHint': 'Ein lokales Werkzeug auf Basis von ScreenAI, integriert in Chrome. Es unterstützt hochpräzise Textverarbeitung und Wortkonfidenzen; die Engine wird bei Bedarf automatisch heruntergeladen.',
+    'ocr.rememberApi': 'API-Daten auf diesem Gerät speichern',
+    'ocr.allFile': 'Gesamte Datei',
+    'ocr.selectedRange': 'Ausgewählter Bereich',
+    'ocr.fromPage': 'Von Seite',
+    'ocr.to': 'Bis',
+    'ocr.progressTitle': 'Verarbeitung läuft…',
+    'ocr.wait': 'Bitte warten',
+    'ocr.progressHint': 'Dies kann je nach Dateigröße und Internetgeschwindigkeit etwas dauern.'
   }
 };
