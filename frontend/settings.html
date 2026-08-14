@@ -364,6 +364,10 @@
             renderShortcutsList();
         });
 
+        // Command labels are generated from locale keys, so refresh the list
+        // immediately after a language switch instead of waiting for reload.
+        window.addEventListener('languageChanged', renderShortcutsList);
+
         document.getElementById('ui-zoom').addEventListener('input', function() {
             document.getElementById('zoom-val').textContent = Math.round(this.value * 100) + '%';
         });
