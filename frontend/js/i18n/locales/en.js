@@ -639,6 +639,9 @@ window.AppLocales.en = {
     'ocr.to': 'To',
     'ocr.progressTitle': 'Processing…',
     'ocr.wait': 'Please wait',
-    'ocr.progressHint': 'This may take some time depending on file size and internet speed.'
+    'ocr.progressHint': 'This may take some time depending on file size and internet speed.',
+    'help.readingOrder': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages with the right column first.',
+    'help.pagination': 'Detects standalone page numbers at page tops and bottoms in sequence and automatically labels them as Page-number.',
+    'help.locro': 'A local tool based on ScreenAI integrated with Chrome. It supports high-accuracy text processing and word-confidence extraction; the engine downloads automatically when unavailable.'
   }
 };

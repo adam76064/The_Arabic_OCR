@@ -639,6 +639,9 @@ window.AppLocales.de = {
     'ocr.to': 'Bis',
     'ocr.progressTitle': 'Verarbeitung läuft…',
     'ocr.wait': 'Bitte warten',
-    'ocr.progressHint': 'Dies kann je nach Dateigröße und Internetgeschwindigkeit etwas dauern.'
+    'ocr.progressHint': 'Dies kann je nach Dateigröße und Internetgeschwindigkeit etwas dauern.',
+    'help.readingOrder': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten mit der rechten Spalte zuerst.',
+    'help.pagination': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten in Folge und kennzeichnet sie automatisch als Seitennummer.',
+    'help.locro': 'Ein lokales Werkzeug auf Basis von ScreenAI, integriert in Chrome. Es unterstützt hochpräzise Textverarbeitung und Wortkonfidenzen; die Engine wird bei Bedarf automatisch heruntergeladen.'
   }
 };
