@@ -613,6 +613,8 @@ window.AppLocales.de = {
     'projectSettings.passwordWeak': 'Das lokale Netzwerkpasswort erfüllt die Sicherheitsanforderungen nicht: {errors}',
     'projectSettings.sortSuccess': 'Textfelder wurden auf {count} Seiten nach arabischer Lesereihenfolge neu geordnet.',
     'projectSettings.sortSuccessShort': 'Felder wurden auf {count} Seiten neu geordnet.',
-    'projectSettings.paginationSuccess': '{count} Felder wurden als Seitennummern erkannt und markiert.'
+    'projectSettings.paginationSuccess': '{count} Felder wurden als Seitennummern erkannt und markiert.',
+    'projectSettings.sortError': 'Beim Neuordnen der Felder ist ein Fehler aufgetreten.',
+    'projectSettings.paginationError': 'Beim Erkennen der Seitennummern ist ein Fehler aufgetreten.'
   }
 };

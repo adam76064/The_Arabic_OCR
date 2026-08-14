@@ -613,6 +613,8 @@ window.AppLocales.ar = {
     'projectSettings.passwordWeak': 'كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: {errors}',
     'projectSettings.sortSuccess': 'تمت إعادة ترتيب المربعات النصية في {count} صفحة حسب اتجاه القراءة العربي.',
     'projectSettings.sortSuccessShort': 'تمت إعادة ترتيب المربعات في {count} صفحة.',
-    'projectSettings.paginationSuccess': 'تم كشف وتوسيم {count} مربع كأرقام صفحات بنجاح.'
+    'projectSettings.paginationSuccess': 'تم كشف وتوسيم {count} مربع كأرقام صفحات بنجاح.',
+    'projectSettings.sortError': 'حدث خطأ أثناء إعادة ترتيب المربعات.',
+    'projectSettings.paginationError': 'حدث خطأ أثناء كشف أرقام الصفحات.'
   }
 };

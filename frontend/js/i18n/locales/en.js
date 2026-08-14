@@ -613,6 +613,8 @@ window.AppLocales.en = {
     'projectSettings.passwordWeak': 'The local-network password does not meet security requirements: {errors}',
     'projectSettings.sortSuccess': 'Text boxes were reordered on {count} pages according to Arabic reading order.',
     'projectSettings.sortSuccessShort': 'Boxes were reordered on {count} pages.',
-    'projectSettings.paginationSuccess': '{count} boxes were detected and labeled as page numbers.'
+    'projectSettings.paginationSuccess': '{count} boxes were detected and labeled as page numbers.',
+    'projectSettings.sortError': 'An error occurred while reordering boxes.',
+    'projectSettings.paginationError': 'An error occurred while detecting page numbers.'
   }
 };

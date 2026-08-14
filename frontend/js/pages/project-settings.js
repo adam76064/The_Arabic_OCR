@@ -455,7 +455,7 @@ function initPostProcessingSettings(ppOpts) {
                 }
             } catch (err) {
                 console.error('Reading order sorting error:', err);
-                alert('حدث خطأ أثناء إعادة ترتيب المربعات.');
+                alert(window.AppI18n.t('projectSettings.sortError'));
             } finally {
                 runBtn.disabled = false;
                 runBtn.textContent = window.AppI18n.t('ps.runReadingOrder');
@@ -486,7 +486,7 @@ function initPostProcessingSettings(ppOpts) {
                 }
             } catch (err) {
                 console.error('Pagination detection error:', err);
-                alert('حدث خطأ أثناء كشف أرقام الصفحات.');
+                alert(window.AppI18n.t('projectSettings.paginationError'));
             } finally {
                 pagBtn.disabled = false;
                 pagBtn.textContent = window.AppI18n.t('ps.runPagination');
