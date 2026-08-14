@@ -677,6 +677,14 @@ window.AppLocales.en = {
     'ps.toHindi': 'Convert to Arabic-Indic numerals (١, ٢, ٣)',
     'review.cropOut': 'Zoom crop out',
     'review.cropReset': 'Reset crop zoom',
-    'review.cropIn': 'Zoom crop in'
+    'review.cropIn': 'Zoom crop in',
+    'settings.moveConfirm': 'Change the data folder to:\n\n{path}\n\nAll projects and settings will be moved to this new folder. This may take some time depending on data size.',
+    'settings.moveSuccess': 'Data folder changed and files moved successfully.',
+    'help.post': 'Automatic options applied after text extraction to organize text boxes and calculate the correct Arabic reading order.',
+    'help.reading': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages with the right column first.',
+    'help.pagination': 'Detects standalone page numbers at page tops and bottoms and automatically labels them as Page-number.',
+    'projectSettings.title': 'Settings: {title}',
+    'projectSettings.enabled': '🟢 Enabled',
+    'projectSettings.stopped': '🔴 Stopped'
   }
 };

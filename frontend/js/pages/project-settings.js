@@ -22,7 +22,7 @@ async function initSettings() {
     const textOpts = meta.text_features || {};
 
     // 1. Book Metadata
-    document.getElementById('page-title-display').textContent = `إعدادات: ${meta.title}`;
+    document.getElementById('page-title-display').textContent = window.AppI18n.t('projectSettings.title', { title: meta.title });
     document.getElementById('ps-title').value = meta.title || '';
     document.getElementById('ps-author').value = meta.author || '';
     document.getElementById('ps-publisher').value = meta.publisher || '';
@@ -59,7 +59,7 @@ async function initSettings() {
 
     const updateBadges = () => {
         if (lanBadge) {
-            lanBadge.textContent = lanBroadcast.checked ? '🟢 مفعل' : '🔴 متوقف';
+            lanBadge.textContent = lanBroadcast.checked ? window.AppI18n.t('projectSettings.enabled') : window.AppI18n.t('projectSettings.stopped');
             lanBadge.style.background = lanBroadcast.checked ? '#dcfce7' : '#fee2e2';
             lanBadge.style.color = lanBroadcast.checked ? '#15803d' : '#b91c1c';
         }
@@ -216,7 +216,7 @@ async function populateSystemFontsForCategoryFormatting() {
         if (window.pywebview?.api?.get_system_fonts) {
             const res = await window.pywebview.api.get_system_fonts();
             if (res && res.ok && res.fonts && res.fonts.length > 0) {
-                let optionsHtml = `<option value="">الافتراضي</option>`;
+                let optionsHtml = `<option value="">${window.AppI18n.t('ps.default')}</option>`;
                 res.fonts.forEach(font => {
                     const fontValue = font.includes(' ') ? "'" + font + "'" : font;
                     const displayName = font.length > 28 ? font.substring(0, 28) + '...' : font;

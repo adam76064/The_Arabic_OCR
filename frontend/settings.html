@@ -124,7 +124,7 @@
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">الواجهة</div>
+            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
             <div class="setting-row">
                 <span class="setting-label" data-i18n="settings.zoom">تكبير الواجهة</span>
                 <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-inline-start:12px;">
@@ -432,7 +432,7 @@
             const newPath = await window.pywebview.api.select_app_data_folder();
             
             if (newPath) {
-                const confirmMsg = `هل أنت متأكد من تغيير مجلد البيانات إلى:\n\n${newPath}\n\nسيتم نقل جميع مشاريعك وإعداداتك إلى هذا المجلد الجديد. قد تستغرق هذه العملية بعض الوقت حسب حجم بياناتك.`;
+                const confirmMsg = window.AppI18n.t('settings.moveConfirm', { path: newPath });
                 if (!confirm(confirmMsg)) return;
 
                 btn.disabled = true;

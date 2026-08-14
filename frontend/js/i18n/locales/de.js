@@ -677,6 +677,14 @@ window.AppLocales.de = {
     'ps.toHindi': 'In arabisch-indische Ziffern umwandeln (١, ٢, ٣)',
     'review.cropOut': 'Ausschnitt verkleinern',
     'review.cropReset': 'Ausschnittzoom zurücksetzen',
-    'review.cropIn': 'Ausschnitt vergrößern'
+    'review.cropIn': 'Ausschnitt vergrößern',
+    'settings.moveConfirm': 'Datenordner ändern zu:\n\n{path}\n\nAlle Projekte und Einstellungen werden in diesen neuen Ordner verschoben. Dies kann abhängig von der Datenmenge dauern.',
+    'settings.moveSuccess': 'Datenordner wurde geändert und Dateien wurden erfolgreich verschoben.',
+    'help.post': 'Automatische Optionen, die nach der Textextraktion Textfelder organisieren und die korrekte arabische Lesereihenfolge berechnen.',
+    'help.reading': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten mit der rechten Spalte zuerst.',
+    'help.pagination': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.',
+    'projectSettings.title': 'Einstellungen: {title}',
+    'projectSettings.enabled': '🟢 Aktiviert',
+    'projectSettings.stopped': '🔴 Angehalten'
   }
 };
