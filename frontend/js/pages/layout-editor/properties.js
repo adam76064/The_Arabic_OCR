@@ -162,7 +162,7 @@ async function handleTableCategoryChangeInLayout(idx, newCat, oldCat) {
     `;
 
     if (window.AestheticDialog?.show) {
-        window.AestheticDialog.show('الكشف التلقائي عن التخطيط 📊', modalContent, async (overlay) => {
+        window.AestheticDialog.show(window.AppI18n.t('review.autoTableTitle'), modalContent, async (overlay) => {
             const chk = overlay.querySelector('#chk-remember-table-parse-layout');
             if (chk && chk.checked) {
                 localStorage.setItem('autoTableParse_remember', 'true');

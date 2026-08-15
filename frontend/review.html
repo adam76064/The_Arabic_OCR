@@ -102,7 +102,7 @@
     <div id="fullpage-overlay" class="hidden">
         <div id="fullpage-header">
             <span data-i18n="review.fullPage">عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
-            <button id="close-fullpage-btn" data-i18n="review.close" data-i18n="review.close">✕ إغلاق</button>
+            <button id="close-fullpage-btn" data-i18n="review.close" data-i18n="review.close" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="fullpage-body">
             <div id="fullpage-wrapper">
@@ -123,10 +123,10 @@
             <div style="display:flex;gap:14px;align-items:center;">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
                     <input type="checkbox" id="text-preview-raw-toggle">
-                    عرض النص الخام
+                    <span data-i18n="review.rawText">عرض النص الخام</span>
                 </label>
                 <button id="text-preview-save" class="btn-success" style="font-size:13px;" data-i18n="review.saveChanges">حفظ التعديلات</button>
-                <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
+                <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
             </div>
         </div>
        <div id="text-preview-toolbar" style="display:flex;gap:5px;padding:7px 10px;border-bottom:1px solid #eee;background:#f8f9fa;flex-shrink:0;flex-wrap:wrap;"></div>
@@ -166,7 +166,7 @@
     <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#f0f2f5;overflow-y:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#2c3e50;color:white;position:sticky;top:0;z-index:10;">
             <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard" data-i18n="review.projectProgress">لوحة تقدم المشروع</span>
-            <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
+            <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="dashboard-body" style="padding:24px;max-width:900px;margin:0 auto;"></div>
     </div>
@@ -174,7 +174,7 @@
     <div id="notif-tray" style="position:fixed;bottom:18px;left:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;"></div>
     <div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 5px 0; min-width: 160px; overflow: hidden;">
         <div id="ctx-search-quran" style="padding: 10px 14px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.15s;" data-icon-label="quran">
-            بحث في القرآن الكريم
+            <span data-i18n="quran.contextSearch">بحث في القرآن الكريم</span>
         </div>
     </div>
 
