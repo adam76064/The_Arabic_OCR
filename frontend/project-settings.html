@@ -222,7 +222,7 @@
                  ═══════════════════════════════════════════════════════ -->
             <div class="settings-card" id="post-processing-card">
                 <h3 data-i18n="ps.postProcessing">📝 معالجة ما بعد OCR (Post-Processing)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;">
+                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="projectSettings.postOverview">
                     خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.
                 </p>
 
@@ -231,7 +231,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
                             <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;" data-i18n="ps.readingOrder">📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
-                            <p style="margin: 0; font-size: 12px; color: #0284c7;">
+                            <p style="margin: 0; font-size: 12px; color: #0284c7;" data-i18n="projectSettings.readingDetail">
                                 يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
                             </p>
                         </div>
@@ -241,9 +241,7 @@
                         </label>
                     </div>
                     <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
-                            ⚡ ترتيب المربعات على الصفحات الآن
-                        </button>
+                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;" data-i18n="ps.runReadingOrder">⚡ ترتيب المربعات على الصفحات الآن</button>
                     </div>
                 </div>
 
@@ -252,7 +250,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
                             <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;" data-i18n="ps.pagination">🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
-                            <p style="margin: 0; font-size: 12px; color: #16a34a;">
+                            <p style="margin: 0; font-size: 12px; color: #16a34a;" data-i18n="projectSettings.paginationDetail">
                                 يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
                             </p>
                         </div>
@@ -262,9 +260,7 @@
                         </label>
                     </div>
                     <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #dcfce7; color: #15803d; border-color: #86efac;">
-                            ⚡ كشف أرقام الصفحات الآن
-                        </button>
+                        <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #dcfce7; color: #15803d; border-color: #86efac;" data-i18n="ps.runPagination">⚡ كشف أرقام الصفحات الآن</button>
                     </div>
                 </div>
             </div>

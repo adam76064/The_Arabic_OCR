@@ -685,6 +685,9 @@ window.AppLocales.de = {
     'help.pagination': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.',
     'projectSettings.title': 'Einstellungen: {title}',
     'projectSettings.enabled': '🟢 Aktiviert',
-    'projectSettings.stopped': '🔴 Angehalten'
+    'projectSettings.stopped': '🔴 Angehalten',
+    'projectSettings.postOverview': 'Automatische Optionen, die nach der Textextraktion Textfelder organisieren und die korrekte arabische Lesereihenfolge berechnen.',
+    'projectSettings.readingDetail': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten mit der rechten Spalte zuerst.',
+    'projectSettings.paginationDetail': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.'
   }
 };

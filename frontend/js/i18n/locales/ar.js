@@ -685,6 +685,9 @@ window.AppLocales.ar = {
     'help.pagination': 'يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).',
     'projectSettings.title': 'إعدادات: {title}',
     'projectSettings.enabled': '🟢 مفعل',
-    'projectSettings.stopped': '🔴 متوقف'
+    'projectSettings.stopped': '🔴 متوقف',
+    'projectSettings.postOverview': 'خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.',
+    'projectSettings.readingDetail': 'يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).',
+    'projectSettings.paginationDetail': 'يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).'
   }
 };

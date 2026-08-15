@@ -685,6 +685,9 @@ window.AppLocales.en = {
     'help.pagination': 'Detects standalone page numbers at page tops and bottoms and automatically labels them as Page-number.',
     'projectSettings.title': 'Settings: {title}',
     'projectSettings.enabled': '🟢 Enabled',
-    'projectSettings.stopped': '🔴 Stopped'
+    'projectSettings.stopped': '🔴 Stopped',
+    'projectSettings.postOverview': 'Automatic options applied after text extraction to organize text boxes and calculate the correct Arabic reading order.',
+    'projectSettings.readingDetail': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages with the right column first.',
+    'projectSettings.paginationDetail': 'Detects standalone page numbers at page tops and bottoms and automatically labels them as Page-number.'
   }
 };
