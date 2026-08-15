@@ -688,6 +688,13 @@ window.AppLocales.en = {
     'projectSettings.stopped': '🔴 Stopped',
     'projectSettings.postOverview': 'Automatic options applied after text extraction to organize text boxes and calculate the correct Arabic reading order.',
     'projectSettings.readingDetail': 'Automatically sorts text boxes from top to bottom and right to left, including double-column pages with the right column first.',
-    'projectSettings.paginationDetail': 'Detects standalone page numbers at page tops and bottoms and automatically labels them as Page-number.'
+    'projectSettings.paginationDetail': 'Detects standalone page numbers at page tops and bottoms and automatically labels them as Page-number.',
+    'ocr.limitText': 'Three free files are available daily. Remaining:',
+    'ocr.scanMode': 'Scan mode:',
+    'ocr.fullScan': 'Scan full page',
+    'ocr.blockScan': 'Scan current blocks (BBoxes)',
+    'ocr.lensDescription': 'The page will be sent to Google Lens; text and bounding boxes will be built automatically.',
+    'ocr.rememberApi': 'Remember API details on this device',
+    'ocr.smartChunk': 'Smart chunking is enabled: large files are split automatically for stable processing.'
   }
 };

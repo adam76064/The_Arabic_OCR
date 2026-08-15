@@ -688,6 +688,13 @@ window.AppLocales.de = {
     'projectSettings.stopped': '🔴 Angehalten',
     'projectSettings.postOverview': 'Automatische Optionen, die nach der Textextraktion Textfelder organisieren und die korrekte arabische Lesereihenfolge berechnen.',
     'projectSettings.readingDetail': 'Sortiert Textfelder automatisch von oben nach unten und rechts nach links, einschließlich zweispaltiger Seiten mit der rechten Spalte zuerst.',
-    'projectSettings.paginationDetail': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.'
+    'projectSettings.paginationDetail': 'Erkennt eigenständige Seitennummern oben und unten auf Seiten und kennzeichnet sie automatisch als Seitennummer.',
+    'ocr.limitText': 'Drei kostenlose Dateien sind täglich verfügbar. Verbleibend:',
+    'ocr.scanMode': 'Scanmodus:',
+    'ocr.fullScan': 'Gesamte Seite scannen',
+    'ocr.blockScan': 'Aktuelle Blöcke scannen (BBoxes)',
+    'ocr.lensDescription': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
+    'ocr.rememberApi': 'API-Daten auf diesem Gerät speichern',
+    'ocr.smartChunk': 'Intelligente Aufteilung ist aktiviert: Große Dateien werden für stabile Verarbeitung automatisch geteilt.'
   }
 };
