@@ -1,3 +1,5 @@
+const editorText = (key) => window.AppI18n?.t(key) || key;
+
 /**
  * pages/review/editor.js - blocks list, selection, drag, sync, review panel
  * Extracted from review.js monolith
@@ -147,7 +149,7 @@ function renderBlocksList(ocrData) {
 
         const handle = document.createElement('span');
         handle.className = 'block-drag-handle';
-        handle.title = 'اسحب لإعادة الترتيب';
+        handle.title = editorText('editor.dragReorder');
         handle.innerHTML = '⋮⋮';
         handle.dataset.handle = '1';
 
@@ -158,16 +160,16 @@ function renderBlocksList(ocrData) {
         label.className = 'block-label';
         label.style.color = color;
         label.textContent = getCategoryNameAR(element.category || 'Text');
-        label.title = 'انقر لتغيير النوع';
+        label.title = editorText('editor.changeType');
 
         const reviewBtn = document.createElement('button');
         reviewBtn.className = 'block-review-btn' + (element.reviewed ? ' reviewed' : '');
-        reviewBtn.textContent = element.reviewed ? '✔ تمت' : 'مراجَع';
+        reviewBtn.textContent = element.reviewed ? editorText('editor.done') : editorText('editor.reviewed');
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'block-delete-btn';
         deleteBtn.textContent = '✕';
-        deleteBtn.title = 'حذف (يمكن التراجع)';
+        deleteBtn.title = editorText('editor.deleteUndo');
 
         header.appendChild(handle);
         header.appendChild(label);
@@ -275,7 +277,7 @@ function renderBlocksList(ocrData) {
             if (changed) {
                 pushHistory(currentPageIndex, preEditSnapshot);
                 await autoSaveBlock();
-                reviewBtn.textContent = element.reviewed ? '✔ تمت' : 'مراجَع';
+                reviewBtn.textContent = element.reviewed ? editorText('editor.done') : editorText('editor.reviewed');
                 reviewBtn.classList.toggle('reviewed', element.reviewed);
                 refreshIndicatorsFor(wrapper, element);
             }
@@ -306,7 +308,7 @@ function setupBlocksListDelegation() {
             e.stopPropagation();
             pushHistory(currentPageIndex);
             element.reviewed = !element.reviewed;
-            reviewBtn.textContent = element.reviewed ? '✔ تمت' : 'مراجَع';
+            reviewBtn.textContent = element.reviewed ? editorText('editor.done') : editorText('editor.reviewed');
             reviewBtn.classList.toggle('reviewed', element.reviewed);
             refreshIndicatorsFor(wrapper, element);
             await autoSaveBlock();

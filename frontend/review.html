@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مراجعة — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
@@ -13,17 +14,17 @@
     <main id="main-content">
         <div class="toolbar">
             <div class="page-nav">
-                <button id="prev-page" class="nav-btn" title="السابق">‹</button>
+                <button id="prev-page" class="nav-btn" data-i18n-title="review.previous" title="السابق">‹</button>
                 <span class="page-indicator">
-                    صفحة الكتاب: <strong id="logical-page-display">1</strong>
+                    <span data-i18n="review.bookPage">صفحة الكتاب:</span> <strong id="logical-page-display">1</strong>
                     &nbsp;|&nbsp; PDF:
                     <input type="number" id="current-page-num" value="1">
                     من <span id="total-pages">1</span>
                 </span>
-                <button id="next-page" class="nav-btn" title="التالي">›</button>
+                <button id="next-page" class="nav-btn" data-i18n-title="review.next" title="التالي">›</button>
             </div>
 
-            <div id="toolbar-thumb-wrapper" title="معاينة الصفحة — انقر للتكبير">
+            <div id="toolbar-thumb-wrapper" data-i18n-title="review.thumb" title="معاينة الصفحة — انقر للتكبير">
                 <img id="thumb-image" src="" alt="thumbnail">
                 <canvas id="thumb-canvas"></canvas>
                 <div id="toolbar-thumb-popup">
@@ -32,25 +33,25 @@
                 </div>
             </div>
 
-            <button id="undo-btn" class="btn-icon" title="تراجع" data-icon="undo"></button>
-            <button id="redo-btn" class="btn-icon" title="إعادة" data-icon="redo"></button>
-            <button id="save-page" class="btn-icon" title="حفظ التعديلات (Ctrl+S)" data-icon="save"></button>
-            <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview">عرض النص</button>
-            <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard">لوحة</button>
+            <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo"></button>
+            <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo"></button>
+            <button id="save-page" class="btn-icon" data-i18n-title="review.save" title="حفظ التعديلات (Ctrl+S)" data-icon="save"></button>
+            <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview" data-i18n="review.text">عرض النص</button>
+            <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard" data-i18n="review.dashboard">لوحة</button>
 
-            <div class="page-nav" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
-                <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" title="تصغير حجم عرض النص">A-</button>
+            <div class="page-nav" data-i18n-title="review.fontZoom" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
+                <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontDown" title="تصغير حجم عرض النص">A-</button>
                 <span class="page-indicator" id="block-font-value">100%</span>
-                <button id="block-font-increase" class="nav-btn" style="font-size:12px;" title="تكبير حجم عرض النص">A+</button>
+                <button id="block-font-increase" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontUp" title="تكبير حجم عرض النص">A+</button>
             </div>
 
-            <div class="page-nav" style="position: relative; margin-right: 15px;">
-                <button id="track-settings-btn" class="btn-secondary" title="إعدادات التتبع" data-icon="search">التتبع</button>
-                <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> تتبع خلايا الجداول</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> تتبع الكلمات</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> تتبع الأسطر (عند فشل الكلمات)</label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> تتبع الكتلة (الأساس)</label>
+            <div class="page-nav" style="position: relative; margin-inline-start: 15px;">
+                <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
+                <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells" data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords" data-i18n="review.trackWords">تتبع الكلمات</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines" data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock" data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
                 </div>
             </div>
 
@@ -71,15 +72,15 @@
                     <div id="crop-section" class="resizable-panel">
                         <div class="panel-resize-handle" id="crop-resize-handle"></div>
                         <div id="crop-viewport">
-                            <div id="crop-placeholder">اختر كتلة نصية لعرضها هنا</div>
+                            <div id="crop-placeholder" data-i18n="review.cropPlaceholder">اختر كتلة نصية لعرضها هنا</div>
                             <div id="crop-viewer" class="hidden">
                                 <div id="crop-image"></div>
                             </div>
                         </div>
                         <div id="crop-controls">
-                            <button id="crop-zoom-out" title="تصغير الاقتطاع">－</button>
-                            <button id="crop-zoom-reset" title="إعادة ضبط التكبير">⤾</button>
-                            <button id="crop-zoom-in" title="تكبير الاقتطاع">＋</button>
+                            <button id="crop-zoom-out" data-i18n-title="review.cropOut" title="تصغير الاقتطاع">－</button>
+                            <button id="crop-zoom-reset" data-i18n-title="review.cropReset" title="إعادة ضبط التكبير">⤾</button>
+                            <button id="crop-zoom-in" data-i18n-title="review.cropIn" title="تكبير الاقتطاع">＋</button>
                         </div>
                     </div>
 
@@ -88,7 +89,7 @@
                         <div id="blocks-list"></div>
                     </div>
 
-                    <button type="button" id="toggle-layout-view-btn" class="handle-switch-btn" title="تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)">
+                    <button type="button" id="toggle-layout-view-btn" class="handle-switch-btn" data-i18n-title="review.layoutToggle" title="تبديل وضع عرض الكتل والاقتطاع (جنبًا إلى جنب / فوق وتحت)">
                         <svg id="toggle-layout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M8 7h11M15 3l4 4-4 4M16 17H5M9 13l-4 4 4 4"/>
                         </svg>
@@ -100,8 +101,8 @@
 
     <div id="fullpage-overlay" class="hidden">
         <div id="fullpage-header">
-            <span>عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
-            <button id="close-fullpage-btn">✕ إغلاق</button>
+            <span data-i18n="review.fullPage">عرض الصفحة كاملة — انقر على أي مربع للانتقال إليه</span>
+            <button id="close-fullpage-btn" data-i18n="review.close" data-i18n="review.close" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="fullpage-body">
             <div id="fullpage-wrapper">
@@ -112,20 +113,20 @@
     </div>
 
     <div id="category-picker" class="hidden">
-        <div class="category-picker-title">نوع الكتلة</div>
+        <div class="category-picker-title" data-i18n="review.category">نوع الكتلة</div>
         <div id="category-picker-list"></div>
     </div>
 
     <div id="text-preview-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#fff;display:flex;flex-direction:column;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#2c3e50;color:white;flex-shrink:0;flex-wrap:wrap;gap:8px;">
-            <span style="font-weight:700;">معاينة النص الكامل — قابل للتحرير</span>
+            <span style="font-weight:700;" data-i18n="review.fullText">معاينة النص الكامل — قابل للتحرير</span>
             <div style="display:flex;gap:14px;align-items:center;">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
                     <input type="checkbox" id="text-preview-raw-toggle">
-                    عرض النص الخام
+                    <span data-i18n="review.rawText">عرض النص الخام</span>
                 </label>
-                <button id="text-preview-save" class="btn-success" style="font-size:13px;">حفظ التعديلات</button>
-                <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
+                <button id="text-preview-save" class="btn-success" style="font-size:13px;" data-i18n="review.saveChanges">حفظ التعديلات</button>
+                <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
             </div>
         </div>
        <div id="text-preview-toolbar" style="display:flex;gap:5px;padding:7px 10px;border-bottom:1px solid #eee;background:#f8f9fa;flex-shrink:0;flex-wrap:wrap;"></div>
@@ -136,15 +137,15 @@
     <div id="ocr-range-modal" class="modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-box">
-            <div class="modal-header"><h3>تحميل صفحة OCR</h3><button class="modal-close" id="ocr-range-close">✕</button></div>
+            <div class="modal-header"><h3 data-i18n="review.ocrLoad">تحميل صفحة OCR</h3><button class="modal-close" id="ocr-range-close">✕</button></div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>ملف JSON</label>
-                    <button id="ocr-range-pick-file" class="btn-secondary">اختر ملف JSON</button>
-                    <div id="ocr-range-path" class="path-display">لم يُختر ملف</div>
+                    <label data-i18n="review.jsonFile">ملف JSON</label>
+                    <button id="ocr-range-pick-file" class="btn-secondary" data-i18n="review.chooseJson">اختر ملف JSON</button>
+                    <div id="ocr-range-path" class="path-display" data-i18n="review.noFile">لم يُختر ملف</div>
                 </div>
                 <div class="form-group">
-                    <label>تطبيق على</label>
+                    <label data-i18n="review.applyTo">تطبيق على</label>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
                         <label class="radio-item"><input type="radio" name="ocr-range-mode" value="current" checked> الصفحة الحالية فقط</label>
                         <label class="radio-item"><input type="radio" name="ocr-range-mode" value="range"> نطاق صفحات</label>
@@ -153,10 +154,10 @@
                 <div id="ocr-range-inputs" class="hidden" style="display:flex;gap:8px;align-items:center;margin-top:8px;">
                     من <input type="number" id="ocr-range-from" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;">
                     إلى <input type="number" id="ocr-range-to" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;">
-                    <span style="font-size:12px;color:#888;">(أرقام PDF)</span>
+                    <span style="font-size:12px;color:#888;" data-i18n="review.pdfNumbers">(أرقام PDF)</span>
                 </div>
                 <div class="form-actions" style="margin-top:16px;">
-                    <button id="ocr-range-confirm" class="btn-success">تطبيق</button>
+                    <button id="ocr-range-confirm" class="btn-success" data-i18n="review.apply">تطبيق</button>
                 </div>
             </div>
         </div>
@@ -164,8 +165,8 @@
 
     <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#f0f2f5;overflow-y:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#2c3e50;color:white;position:sticky;top:0;z-index:10;">
-            <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard">لوحة تقدم المشروع</span>
-            <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
+            <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard" data-i18n="review.projectProgress">لوحة تقدم المشروع</span>
+            <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="dashboard-body" style="padding:24px;max-width:900px;margin:0 auto;"></div>
     </div>
@@ -173,7 +174,7 @@
     <div id="notif-tray" style="position:fixed;bottom:18px;left:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;"></div>
     <div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 5px 0; min-width: 160px; overflow: hidden;">
         <div id="ctx-search-quran" style="padding: 10px 14px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.15s;" data-icon-label="quran">
-            بحث في القرآن الكريم
+            <span data-i18n="quran.contextSearch">بحث في القرآن الكريم</span>
         </div>
     </div>
 
@@ -181,36 +182,36 @@
         <div class="modal-overlay" id="quran-overlay"></div>
         <div class="modal-box" style="width: 700px; max-width: 95vw; display: flex; flex-direction: column; max-height: 85vh;">
             <div class="modal-header">
-                <h3>إدراج آية قرآنية</h3>
+                <h3 data-i18n="quran.title">إدراج آية قرآنية</h3>
                 <button class="modal-close" id="quran-close">✕</button>
             </div>
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding: 20px;">
                 <div style="display: flex; gap: 10px; border-bottom: 2px solid #eee; margin-bottom: 16px;">
-                    <button class="quran-tab-btn active" data-tab="quran-tab-text">البحث بالنص</button>
-                    <button class="quran-tab-btn" data-tab="quran-tab-manual">تحديد السورة والآية</button>
+                    <button class="quran-tab-btn active" data-tab="quran-tab-text" data-i18n="quran.textSearch">البحث بالنص</button>
+                    <button class="quran-tab-btn" data-tab="quran-tab-manual" data-i18n="quran.manual">تحديد السورة والآية</button>
                 </div>
                 <div id="quran-tab-text" class="quran-tab-content">
                     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                        <input type="text" id="quran-search-input" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
-                        <button id="quran-search-btn" class="btn-primary">بحث</button>
+                        <input type="text" id="quran-search-input" data-i18n-placeholder="quran.searchPlaceholder" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <button id="quran-search-btn" class="btn-primary" data-i18n="quran.search">بحث</button>
                     </div>
                 </div>
                 <div id="quran-tab-manual" class="quran-tab-content hidden">
                     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; background: #f8f9fa; padding: 14px; border-radius: 8px; border: 1px solid #eee;">
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">السورة</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.surah">السورة</label>
                             <select id="quran-surah-select" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;"></select>
                         </div>
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">من آية</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.fromAyah">من آية</label>
                             <input type="number" id="quran-ayah-from" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
                         </div>
                         <div>
-                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">إلى آية</label>
+                            <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.toAyah">إلى آية</label>
                             <input type="number" id="quran-ayah-to" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
                         </div>
                         <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
-                            <button id="quran-fetch-manual-btn" class="btn-secondary">استعراض</button>
+                            <button id="quran-fetch-manual-btn" class="btn-secondary" data-i18n="quran.browse">استعراض</button>
                         </div>
                     </div>
                 </div>
@@ -219,12 +220,12 @@
                         <thead>
                             <tr>
                                 <th style="width: 50px; text-align: center;"><input type="checkbox" id="quran-select-all"></th>
-                                <th style="width: 110px;">السورة (الآية)</th>
-                                <th>النص القرآني</th>
+                                <th style="width: 110px;" data-i18n="quran.surahAyah">السورة (الآية)</th>
+                                <th data-i18n="quran.text">النص القرآني</th>
                             </tr>
                         </thead>
                         <tbody id="quran-results-tbody">
-                            <tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;" data-i18n="quran.emptyInitial">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -232,9 +233,9 @@
                     <label class="option-item" style="font-weight: bold; color: #2c3e50;">
                         <input type="checkbox" id="quran-add-citation" checked>
                         <span class="option-check"></span>
-                        <span>إضافة التخريج (مثال: [الفاتحة :5])</span>
+                        <span data-i18n="quran.citationExample">إضافة التخريج (مثال: [الفاتحة :5])</span>
                     </label>
-                    <button id="quran-insert-confirm" class="btn-success" disabled>إدراج التحديد</button>
+                    <button id="quran-insert-confirm" class="btn-success" disabled data-i18n="quran.insertSelection">إدراج التحديد</button>
                 </div>
             </div>
         </div>
@@ -251,6 +252,10 @@
     <script src="js/components/sidebar.js"></script>
     <script src="js/components/toolbar.js"></script>
     <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
 
     <!-- Tables -->

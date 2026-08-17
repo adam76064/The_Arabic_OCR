@@ -3,6 +3,8 @@
  * Extracted from monolith
  */
 
+const collaborationText = (key) => window.AppI18n?.t(key) || key;
+
 let coopPollInterval = null;
 
 async function setupCollaborationPanel() {
@@ -17,7 +19,7 @@ async function setupCollaborationPanel() {
     const renderBadges = () => {
         if (lanStatusEl) {
             const icon = window.AppIcons ? window.AppIcons.get('network') : '';
-            lanStatusEl.innerHTML = `${icon}<span>${lanState ? 'محلي: مفعل' : 'محلي: متوقف'}</span>`;
+            lanStatusEl.innerHTML = `${icon}<span>${lanState ? collaborationText('collab.lanOn') : collaborationText('collab.lanOff')}</span>`;
             lanStatusEl.classList.toggle('is-on', lanState);
             lanStatusEl.classList.toggle('is-off', !lanState);
         }
@@ -45,7 +47,7 @@ async function setupCollaborationPanel() {
             const allUsers = lanUsers.map(u => ({ name: u, type: 'lan' }));
 
             if (allUsers.length === 0) {
-                container.innerHTML = `<span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>`;
+                container.innerHTML = `<span style="color: #94a3b8; font-style: italic;">${collaborationText('collab.noMembers')}</span>`;
             } else {
                 container.innerHTML = allUsers.map(u => {
                     const icon = window.AppIcons ? window.AppIcons.get(u.type === 'lan' ? 'lan' : 'user') : '';

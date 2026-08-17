@@ -8,22 +8,24 @@
 // scaleRatioX, scaleRatioY, pushHistory, saveBlockSilently, selectBlock,
 // updateReviewPanel, updateBlockSelectionUI.
 
+const blockContextText = (key) => window.AppI18n?.t(key) || key;
+
 const BLOCK_CONTEXT_MODALS_HTML = `
 <div id="block-context-menu" class="hidden table-ctx-menu" style="position: absolute; z-index: 5000; min-width: 220px;">
-    <div id="ctx-search-quran-unified" class="ctx-item">📖 البحث عن آية (قرآن)</div>
-    <div id="ctx-merge-blocks" class="ctx-item">🔗 دمج الكتل المحددة</div>
-    <div id="ctx-split-block" class="ctx-item">✂️ تقسيم الكتلة من المؤشر</div>
+    <div id="ctx-search-quran-unified" class="ctx-item">${blockContextText('block.quran')}</div>
+    <div id="ctx-merge-blocks" class="ctx-item">${blockContextText('block.merge')}</div>
+    <div id="ctx-split-block" class="ctx-item">${blockContextText('block.split')}</div>
 </div>
 
 <div id="split-block-modal" class="modal hidden" style="z-index: 6000;">
    <div class="modal-overlay"></div>
    <div class="modal-box" style="width: 500px; max-width: 95vw; padding: 0;">
        <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid #eee;">
-           <h3 style="margin:0; font-size:16px;">✂️ تقسيم الكتلة</h3>
+           <h3 style="margin:0; font-size:16px;">${blockContextText('block.splitTitle')}</h3>
            <button class="modal-close" id="split-close">✕</button>
        </div>
        <div class="modal-body" style="padding: 20px; text-align:center;">
-           <p style="font-size:13px; color:#666; margin-top:0; margin-bottom:16px;">مرّر الماوس لتحديد مكان القص (الخط الأحمر) ثم اعتمد التقسيم.</p>
+           <p style="font-size:13px; color:#666; margin-top:0; margin-bottom:16px;">${blockContextText('block.splitHint')}</p>
            
            <div id="split-img-container" style="position:relative; display:inline-block; border:2px dashed #cbd5e1; border-radius:6px; cursor:crosshair; max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow:hidden;">
                <img id="split-target-img" src="" style="display:block; max-width:100%; pointer-events:none;">
@@ -31,12 +33,12 @@ const BLOCK_CONTEXT_MODALS_HTML = `
            </div>
            
            <div style="margin-top:20px; display:flex; justify-content:center; gap:24px; font-size:14px; background: #f8fafc; padding: 10px; border-radius: 6px;">
-                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="y" checked> قص أفقي (سطرين)</label>
-                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="x"> قص عمودي (عمودين)</label>
+                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="y" checked> ${blockContextText('block.horizontal')}</label>
+                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="x"> ${blockContextText('block.vertical')}</label>
            </div>
            
            <div class="form-actions" style="margin-top:24px;">
-               <button id="split-confirm" class="btn-success" style="width:100%; font-size:14px; padding:10px;">اعتماد التقسيم</button>
+               <button id="split-confirm" class="btn-success" style="width:100%; font-size:14px; padding:10px;">${blockContextText('block.confirmSplit')}</button>
            </div>
        </div>
    </div>

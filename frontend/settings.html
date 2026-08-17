@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإعدادات — أداة مراجعة OCR</title>
+    <title data-i18n-document-title="title.settings">الإعدادات — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <style>
@@ -61,13 +62,13 @@
 
         <div class="sticky-nav-wrapper">
             <div class="compact-settings-nav">
-                <h1 style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
+                <h1 data-i18n="settings.title" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <button type="button" id="btn-cancel-settings" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
-                    <button type="button" id="save-settings" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
-                    <div style="border-right: 1px solid #cbd5e1; padding-right: 10px; margin-right: 4px;">
+                    <button type="button" id="btn-cancel-settings" data-i18n="settings.cancel" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
+                    <button type="button" id="save-settings" data-i18n="settings.save" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
+                    <div style="border-inline-start: 1px solid #cbd5e1; padding-inline-start: 10px; margin-inline-start: 4px;">
                         <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span>⟵</span> <span>عودة</span>
+                            <span>⟵</span> <span data-i18n="settings.back">عودة</span>
                         </button>
                     </div>
                 </div>
@@ -75,115 +76,130 @@
         </div>
 
         <div class="settings-card">
-            <div class="settings-section-title">موقع حفظ البيانات (Data Storage)</div>
-            <div class="section-hint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
+            <div class="settings-section-title" data-i18n="settings.storage">موقع حفظ البيانات (Data Storage)</div>
+            <div class="section-hint" data-i18n="settings.storageHint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
             <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
                 <input type="text" id="app-data-path-input" readonly style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-family: inherit; background: #f8fafc; color: #475569; font-size: 13px;" dir="ltr">
-                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-right: 8px;">تغيير المجلد...</button>
+                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-inline-start: 8px;" data-i18n="settings.changeFolder">تغيير المجلد...</button>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">المراجعة</div>
+            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
+            <div class="setting-row language-setting-row">
+                <div>
+                    <label for="interface-language" class="setting-label" data-i18n="settings.language">لغة الواجهة</label>
+                    <div class="section-hint" data-i18n="settings.languageHint">اختر لغة التطبيق. يتغير اتجاه الواجهة تلقائياً للغات من اليمين إلى اليسار أو من اليسار إلى اليمين.</div>
+                </div>
+                <select id="interface-language" aria-label="Interface language">
+                    <option value="ar" data-i18n="language.ar">العربية</option>
+                    <option value="en" data-i18n="language.en">English</option>
+                    <option value="de" data-i18n="language.de">Deutsch</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-card" style="margin-top:16px;">
+            <div class="settings-section-title" data-i18n="settings.review">المراجعة</div>
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
-                <span class="setting-label">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
+                <span class="setting-label" data-i18n="settings.autoMark">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
-                <span class="setting-label">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
+                <span class="setting-label" data-i18n="settings.autoSaveReview">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
-                <span class="setting-label">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
+                <span class="setting-label" data-i18n="settings.autoSaveLayout">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="show-iv" checked><span class="slider"></span></label>
-                <span class="setting-label">إظهار نافذة الصورة الكاملة</span>
+                <span class="setting-label" data-i18n="settings.showImage">إظهار نافذة الصورة الكاملة</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
-                <span class="setting-label">إظهار نافذة الاقتطاع</span>
+                <span class="setting-label" data-i18n="settings.showCrop">إظهار نافذة الاقتطاع</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">الواجهة</div>
+            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
             <div class="setting-row">
-                <span class="setting-label">تكبير الواجهة</span>
-                <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-right:12px;">
+                <span class="setting-label" data-i18n="settings.zoom">تكبير الواجهة</span>
+                <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-inline-start:12px;">
                 <span id="zoom-val">100%</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">التراجع والإعادة (Undo / Redo)</div>
+            <div class="settings-section-title" data-i18n="settings.history">التراجع والإعادة (Undo / Redo)</div>
             <div class="setting-row">
-                <span class="setting-label">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
+                <span class="setting-label" data-i18n="settings.historyLimit">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
                 <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width:90px;">
             </div>
-            <div class="section-hint" style="margin-top:8px;">
+            <div class="section-hint" style="margin-top:8px;" data-i18n="help.history">
                 يشمل التراجع/الإعادة كل التغييرات في المشروع: ترتيب الكتل، حذفها، تحميل OCR، تغيير التنسيق أو المحتوى النصي، إلخ. إذا كان التغيير في صفحة أخرى، سينتقل التطبيق إليها تلقائياً.
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">التصنيفات المخصصة (Categories)</div>
-            <div class="section-hint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
+            <div class="settings-section-title" data-i18n="settings.categories">التصنيفات المخصصة (Categories)</div>
+            <div class="section-hint" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
             
             <div style="display:flex; gap:10px; margin-top:12px; align-items:center;">
-                <input type="text" id="new-cat-name" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
+                <input type="text" id="new-cat-name" data-i18n-placeholder="settings.categoryPlaceholder" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
                 <input type="color" id="new-cat-color" value="#9b59b6" style="width:44px; height:38px; border:none; cursor:pointer; border-radius:4px;">
-                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;">إضافة</button>
+                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;" data-i18n="settings.add">إضافة</button>
             </div>
             
             <div id="custom-categories-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">إعدادات الحذف والملفات (Deletion Preferences)</div>
-            <div class="section-hint">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
+            <div class="settings-section-title" data-i18n="settings.deletion">إعدادات الحذف والملفات (Deletion Preferences)</div>
+            <div class="section-hint" data-i18n="help.deletion">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
             
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
-                <span class="setting-label">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
+                <span class="setting-label" data-i18n="settings.promptPage">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
-                <span class="setting-label">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
+                <span class="setting-label" data-i18n="settings.deletePageFiles">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
             </div>
 
             <div style="height: 1px; background: #e2e8f0; margin: 16px 0;"></div>
 
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
-                <span class="setting-label">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
+                <span class="setting-label" data-i18n="settings.promptProject">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
             </div>
             <div class="setting-row" style="margin-top:16px;">
                 <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
-                <span class="setting-label">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
+                <span class="setting-label" data-i18n="settings.deleteProjectFiles">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">تعليمات النماذج الذكية (LLM System Prompt)</div>
-            <div class="section-hint">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
+            <div class="settings-section-title" data-i18n="settings.llmPrompt">تعليمات النماذج الذكية (LLM System Prompt)</div>
+            <div class="section-hint" data-i18n="help.llm">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
             
             <div class="form-group" style="margin-top:12px;">
                 <textarea id="llm-system-prompt" rows="10" style="width:100%; font-family: monospace, inherit; font-size: 12.5px; line-height: 1.5; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; direction: ltr; text-align: left;"></textarea>
             </div>
             
             <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
-                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;">إعادة تعيين للتعليمة الافتراضية</button>
+                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;" data-i18n="settings.resetPrompt">إعادة تعيين للتعليمة الافتراضية</button>
             </div>
         </div>
 
         <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title">اختصارات لوحة المفاتيح</div>
-            <div class="section-hint">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
+            <div class="settings-section-title" data-i18n="settings.shortcuts">اختصارات لوحة المفاتيح</div>
+            <div class="section-hint" data-i18n="help.shortcuts">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
             <div id="shortcuts-list" style="margin-top:10px;"></div>
             <div style="margin-top:14px;">
-                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;" data-i18n="settings.resetShortcuts">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
             </div>
         </div>
     </main>
@@ -196,6 +212,10 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
 <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script>
         // Local working copy of shortcut overrides, edited in the UI and
         // only merged into window.__appSettings / persisted on Save.
@@ -238,7 +258,7 @@
                 if (cmd.category !== lastCategory) {
                     const title = document.createElement('div');
                     title.className = 'shortcut-category-title';
-                    title.textContent = cmd.category;
+                    title.textContent = window.AppI18n.t(`shortcut.category.${cmd.category}`);
                     container.appendChild(title);
                     lastCategory = cmd.category;
                 }
@@ -248,7 +268,9 @@
 
                 const label = document.createElement('span');
                 label.className = 'shortcut-label';
-                label.textContent = cmd.label;
+                const shortcutKey = `shortcut.${cmd.id}`;
+                const shortcutLabel = window.AppI18n.t(shortcutKey);
+                label.textContent = shortcutLabel === shortcutKey ? cmd.label : shortcutLabel;
 
                 const actions = document.createElement('div');
                 actions.className = 'shortcut-actions';
@@ -262,8 +284,8 @@
                 const resetBtn = document.createElement('button');
                 resetBtn.className = 'shortcut-reset-btn';
                 resetBtn.type = 'button';
-                resetBtn.textContent = 'افتراضي';
-                resetBtn.title = 'إعادة تعيين لهذا الأمر فقط';
+                resetBtn.textContent = window.AppI18n.t('shortcut.default');
+                resetBtn.title = window.AppI18n.t('settings.resetShortcut');
                 resetBtn.addEventListener('click', () => {
                     delete pendingShortcuts[cmd.id];
                     keyBtn.textContent = cmd.defaultKey;
@@ -280,7 +302,7 @@
         function startRecording(keyBtn, cmd) {
             keyBtn.classList.add('recording');
             const originalText = keyBtn.textContent;
-            keyBtn.textContent = 'اضغط أي مفتاح...';
+            keyBtn.textContent = window.AppI18n.t('shortcut.pressKey');
 
             const onKeydown = (e) => {
                 e.preventDefault();
@@ -305,7 +327,7 @@
                 keyBtn.classList.remove('recording');
 
                 if (!hasModifier && !isSpecial) {
-                    showShortcutNotice('يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون مفتاحاً خاصاً', true);
+                    showShortcutNotice(window.AppI18n.t('shortcut.invalid'), true);
                     keyBtn.textContent = originalText;
                     return;
                 }
@@ -316,7 +338,9 @@
                 const conflict = window.__KEYBOARD_COMMANDS.find(c =>
                     c.id !== cmd.id && (pendingShortcuts[c.id] || c.defaultKey) === combo);
                 if (conflict) {
-                    showShortcutNotice(`تنبيه: هذا الاختصار مستخدم أيضاً لأمر "${conflict.label}"`, false);
+                    const conflictKey = `shortcut.${conflict.id}`;
+                    const conflictLabel = window.AppI18n.t(conflictKey);
+                    showShortcutNotice(window.AppI18n.t('shortcut.conflict', { command: conflictLabel === conflictKey ? conflict.label : conflictLabel }), false);
                 }
             };
             document.addEventListener('keydown', onKeydown, true);
@@ -340,13 +364,17 @@
             renderShortcutsList();
         });
 
+        // Command labels are generated from locale keys, so refresh the list
+        // immediately after a language switch instead of waiting for reload.
+        window.addEventListener('languageChanged', renderShortcutsList);
+
         document.getElementById('ui-zoom').addEventListener('input', function() {
             document.getElementById('zoom-val').textContent = Math.round(this.value * 100) + '%';
         });
         
 
         document.getElementById('reset-llm-prompt-btn')?.addEventListener('click', () => {
-            if (confirm('هل أنت متأكد من إعادة تعيين تعليمات الذكاء الاصطناعي إلى التعليمة الافتراضية؟')) {
+            if (confirm(window.AppI18n.t('settings.resetPromptConfirm'))) {
                 document.getElementById('llm-system-prompt').value = window.DEFAULT_LLM_PROMPT;
             }
         });
@@ -371,10 +399,24 @@
             window.__appSettings.llmSystemPrompt = document.getElementById('llm-system-prompt').value.trim() || window.DEFAULT_LLM_PROMPT;
 
             const ok = await saveAppSettings();
-            alert(ok ? 'تم حفظ الإعدادات' : 'تم الحفظ محلياً فقط - تعذّر الحفظ الدائم');
+            alert(ok ? window.AppI18n.t('settings.saved') : window.AppI18n.t('settings.saveLocalOnly'));
         });
 
         window.addEventListener('appSettingsLoaded', populateForm);
+
+        const languageSelect = document.getElementById('interface-language');
+        const syncLanguageSelect = () => {
+            if (languageSelect && window.AppI18n) languageSelect.value = window.AppI18n.getLanguage();
+        };
+        languageSelect?.addEventListener('change', async (event) => {
+            if (!window.AppI18n) return;
+            await window.AppI18n.setLanguage(event.target.value);
+            syncLanguageSelect();
+            if (typeof showNotif === 'function') showNotif(window.AppI18n.t('settings.languageSaved'), 'success');
+        });
+        window.addEventListener('appSettingsLoaded', syncLanguageSelect);
+        window.addEventListener('languageChanged', syncLanguageSelect);
+        syncLanguageSelect();
 
         // Data Storage Path Logic
         async function initDataPath() {
@@ -390,26 +432,26 @@
             const newPath = await window.pywebview.api.select_app_data_folder();
             
             if (newPath) {
-                const confirmMsg = `هل أنت متأكد من تغيير مجلد البيانات إلى:\n\n${newPath}\n\nسيتم نقل جميع مشاريعك وإعداداتك إلى هذا المجلد الجديد. قد تستغرق هذه العملية بعض الوقت حسب حجم بياناتك.`;
+                const confirmMsg = window.AppI18n.t('settings.moveConfirm', { path: newPath });
                 if (!confirm(confirmMsg)) return;
 
                 btn.disabled = true;
-                btn.textContent = 'جاري النقل...';
+                btn.textContent = window.AppI18n.t('settings.moving');
                 
                 try {
                     const result = await window.pywebview.api.change_app_data_path(newPath);
                     if (result.ok) {
                         document.getElementById('app-data-path-input').value = newPath;
-                        alert('تم تغيير مجلد البيانات ونقل الملفات بنجاح.');
+                        alert(window.AppI18n.t('settings.moveSuccess'));
                     } else {
-                        alert('فشل نقل مجلد البيانات: ' + result.error);
+                        alert(window.AppI18n.t('settings.moveFailed', { error: result.error }));
                     }
                 } catch (e) {
-                    alert('حدث خطأ غير متوقع أثناء نقل البيانات.');
+                    alert(window.AppI18n.t('settings.moveError'));
                     console.error(e);
                 } finally {
                     btn.disabled = false;
-                    btn.textContent = 'تغيير المجلد...';
+                    btn.textContent = window.AppI18n.t('settings.changeFolder');
                 }
             }
         });
@@ -433,7 +475,7 @@
                         <div style="width:18px; height:18px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
                         <span style="font-size:14px; font-weight:bold; color:#334155;">${name}</span>
                     </div>
-                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">حذف</button>
+                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">${window.AppI18n.t('settings.delete')}</button>
                 `;
                 container.appendChild(row);
             }

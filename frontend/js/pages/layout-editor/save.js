@@ -11,8 +11,8 @@ async function autoSaveLayoutData() {
         const btn = document.getElementById('btn-save');
         if (!btn) return;
         
-        const originalText = '💾 حفظ التخطيط';
-        btn.textContent = '⏳ جاري الحفظ...';
+        const originalText = window.AppI18n.t('layout.save');
+        btn.textContent = window.AppI18n.t('layout.saving');
         
         try { 
             if (window.pywebview?.api?.repopulate_page_text_from_raw) {
@@ -24,14 +24,14 @@ async function autoSaveLayoutData() {
             } else {
                 await window.pywebview.api.update_page_ocr(currentProject.id, currentPageIndex, ocrData);
             }
-            btn.textContent = '✔ تم الحفظ';
+            btn.textContent = window.AppI18n.t('layout.saved');
         } catch (e) { 
             console.error('Layout auto-save failed:', e); 
-            btn.textContent = '❌ خطأ';
+            btn.textContent = window.AppI18n.t('layout.error');
         }
         
         setTimeout(() => { 
-            if (btn.textContent === '✔ تم الحفظ' || btn.textContent === '❌ خطأ') {
+            if (btn.textContent === window.AppI18n.t('layout.saved') || btn.textContent === window.AppI18n.t('layout.error')) {
                 btn.textContent = originalText; 
             }
         }, 1000);

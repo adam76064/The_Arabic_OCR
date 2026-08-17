@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تخطيط الصفحة (Layout Editor) — أداة مراجعة OCR</title>
+    <title data-i18n-document-title="title.layout">تخطيط الصفحة (Layout Editor) — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* Layout editor has its own flex column inside has-sidebar body */
@@ -23,7 +24,7 @@
             flex-shrink: 0;
         }
         
-        .tool-group { display: flex; gap: 4px; border-left: 1px solid #eee; padding-left: 14px; margin-left: 4px; }
+        .tool-group { display: flex; gap: 4px; border-inline-start: 1px solid #eee; padding-inline-start: 14px; margin-inline-start: 4px; }
         
         .tool-btn {
             display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid #cbd5e1; 
@@ -44,30 +45,30 @@
 <body>
     <div id="layout-main">
     <header class="layout-toolbar">
-        <button id="btn-back" class="btn-secondary" data-icon="back">رجوع</button>
-        <button id="prev-page" class="btn-secondary" data-icon="prev">السابق</button>
-        <span style="font-weight: bold; font-size: 15px; margin: 0 10px; color: #2c3e50;">تخطيط صفحة <span id="page-num-display">...</span></span>
-        <button id="next-page" class="btn-secondary" data-icon="next">التالي</button>
+        <button id="btn-back" class="btn-secondary" data-icon="back" data-i18n="layout.back">رجوع</button>
+        <button id="prev-page" class="btn-secondary" data-icon="prev" data-i18n="layout.previous">السابق</button>
+        <span style="font-weight: bold; font-size: 15px; margin: 0 10px; color: #2c3e50;"><span data-i18n="layout.page">تخطيط صفحة</span> <span id="page-num-display">...</span></span>
+        <button id="next-page" class="btn-secondary" data-icon="next" data-i18n="layout.next">التالي</button>
         
         <div class="tool-group">
-            <button id="btn-undo" class="tool-btn" title="تراجع (Ctrl+Z)" data-icon="undo" disabled></button>
-            <button id="btn-redo" class="tool-btn" title="إعادة (Ctrl+Y)" data-icon="redo" disabled></button>
+            <button id="btn-undo" class="tool-btn" data-i18n-title="layout.undo" title="تراجع (Ctrl+Z)" data-icon="undo" disabled></button>
+            <button id="btn-redo" class="tool-btn" data-i18n-title="layout.redo" title="إعادة (Ctrl+Y)" data-icon="redo" disabled></button>
         </div>
 
         <div class="tool-group">
-            <button id="tool-select" class="tool-btn active-tool" title="تحديد الكتل والتعديل الداخلي للجداول" data-icon="select">تحديد</button>
-            <button id="tool-move" class="tool-btn" title="تحريك وتغيير حجم الكتل بالكامل" data-icon="move">تحريك</button>
-            <button id="tool-draw" class="tool-btn" title="رسم كتلة نصية جديدة" data-icon="draw">رسم</button>
-            <button id="tool-order" class="tool-btn" title="انقر على الكتل بالتسلسل لترتيبها" data-icon="order">ترتيب</button>
+            <button id="tool-select" class="tool-btn active-tool" data-i18n-title="layout.selectTitle" title="تحديد الكتل والتعديل الداخلي للجداول" data-icon="select" data-i18n="layout.select">تحديد</button>
+            <button id="tool-move" class="tool-btn" data-i18n-title="layout.moveTitle" title="تحريك وتغيير حجم الكتل بالكامل" data-icon="move" data-i18n="layout.move">تحريك</button>
+            <button id="tool-draw" class="tool-btn" data-i18n-title="layout.drawTitle" title="رسم كتلة نصية جديدة" data-icon="draw" data-i18n="layout.draw">رسم</button>
+            <button id="tool-order" class="tool-btn" data-i18n-title="layout.orderTitle" title="انقر على الكتل بالتسلسل لترتيبها" data-icon="order" data-i18n="layout.order">ترتيب</button>
         </div>
 
         <div class="tool-group">
-            <button id="btn-merge" class="tool-btn" title="دمج الكتل المحددة" data-icon="merge" disabled>دمج</button>
-            <button id="btn-delete" class="tool-btn danger" title="حذف الكتل المحددة" data-icon="trash" disabled>حذف</button>
+            <button id="btn-merge" class="tool-btn" data-i18n-title="layout.mergeTitle" title="دمج الكتل المحددة" data-icon="merge" disabled data-i18n="layout.merge">دمج</button>
+            <button id="btn-delete" class="tool-btn danger" data-i18n-title="layout.deleteTitle" title="حذف الكتل المحددة" data-icon="trash" disabled data-i18n="layout.delete">حذف</button>
         </div>
 
         <div style="flex: 1;"></div>
-        <button id="btn-save" class="btn-success" data-icon="save">حفظ التخطيط</button>
+        <button id="btn-save" class="btn-success" data-icon="save" data-i18n="layout.save">حفظ التخطيط</button>
     </header>
 
     <main id="canvas-container">
@@ -87,6 +88,10 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <!-- Layout Editor modular -->
     <script src="js/pages/layout-editor/state.js"></script>

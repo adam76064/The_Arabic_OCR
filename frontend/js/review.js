@@ -45,7 +45,7 @@ async function initApp() {
     }
 
     if (!currentProject) { 
-        alert('تعذّر تحميل المشروع'); 
+        alert(window.AppI18n.t('review.loadFailed')); 
         window.location.href = 'projects.html'; 
         return; 
     }

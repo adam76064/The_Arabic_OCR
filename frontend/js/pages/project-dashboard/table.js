@@ -1,3 +1,5 @@
+const dashboardText = (key) => window.AppI18n?.t(key) || key;
+
 /**
  * pages/project-dashboard/table.js - extracted from monolith
  */
@@ -16,7 +18,7 @@ function renderPagesTable() {
     tbody.innerHTML = '';
 
     if (!currentProject.pages || currentProject.pages.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #888;">لا توجد صفحات في هذا المشروع.</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #888;">${dashboardText('dashboard.noPages')}</td></tr>`;
         return;
     }
 
@@ -28,7 +30,7 @@ function renderPagesTable() {
         const isReviewed = (page.status === 'reviewed' || allBlocksReviewed) && page.status !== 'pending' && page.status !== 'unreviewed';
         
         // Dynamic Layout Status
-        const layoutStatusText = isOcred ? 'تخطيط تلقائي' : 'لم يخطط بعد';
+        const layoutStatusText = isOcred ? dashboardText('dashboard.autoLayout') : dashboardText('dashboard.notLaidOut');
         const layoutStatusStyle = isOcred ? 'background: #e0f2fe; color: #0369a1;' : 'background: #f1f5f9; color: #64748b;';
         
         const pageNum = index + 1;
@@ -38,7 +40,7 @@ function renderPagesTable() {
             <td><strong>${pageNum}</strong></td>
             <td>
                 <span class="status-badge ${isOcred ? 'parsed' : 'unparsed'}">
-                    ${isOcred ? iconBadge('check', 'تم استخراج النص') : iconBadge('clock', 'بانتظار OCR')}
+                    ${isOcred ? iconBadge('check', dashboardText('dashboard.extracted')) : iconBadge('clock', dashboardText('dashboard.waitingOcr'))}
                 </span>
             </td>
             <td>
@@ -48,14 +50,14 @@ function renderPagesTable() {
             </td>
             <td>
                 <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isReviewed ? 'background: #d1fae5; color: #059669;' : 'background: #fef3c7; color: #d97706;'}">
-                    ${isReviewed ? iconBadge('check', 'تمت المراجعة') : iconBadge('clock', 'بانتظار المراجعة')}
+                    ${isReviewed ? iconBadge('check', dashboardText('dashboard.reviewed')) : iconBadge('clock', dashboardText('dashboard.waitingReview'))}
                 </span>
             </td>
-            <td style="text-align: left; display: flex; gap: 8px; justify-content: flex-end;">
-                <button class="btn-primary layout-editor-btn" data-index="${index}">تخطيط (Layout)</button>
-                <button class="btn-secondary open-page-btn" data-index="${index}">مراجعة</button>
+            <td style="text-align: end; display: flex; gap: 8px; justify-content: flex-end;">
+                <button class="btn-primary layout-editor-btn" data-index="${index}">${dashboardText('dashboard.layout')}</button>
+                <button class="btn-secondary open-page-btn" data-index="${index}">${dashboardText('dashboard.review')}</button>
                 <button class="btn-secondary single-ocr-btn" data-index="${index}">OCR</button>
-                <button class="btn-danger remove-page-btn" data-index="${index}">حذف</button>
+                <button class="btn-danger remove-page-btn" data-index="${index}">${dashboardText('dashboard.delete')}</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -103,7 +105,7 @@ function bindTableButtons() {
                     renderPagesTable();
                     if (typeof renderDashboardStats === 'function') renderDashboardStats();
                 } else {
-                    alert('تعذّر حذف الصفحة: ' + (res?.error || 'خطأ غير معروف'));
+                    alert(dashboardText('dashboard.deletePageFailed', { error: res?.error || dashboardText('dashboard.unknownError') }));
                 }
             };
 
@@ -112,9 +114,9 @@ function bindTableButtons() {
 
             if (prompt && window.AestheticDialog?.deleteConfirm) {
                 window.AestheticDialog.deleteConfirm({
-                    title: 'حذف الصفحة',
-                    message: `هل أنت متأكد من رغبتك في حذف الصفحة رقم <strong>${pageNum}</strong> من هذا المشروع؟`,
-                    deleteFilesLabel: 'حذف الصور والملفات المرتبطة بهذه الصفحة من القرص الصلب أيضاً',
+                    title: dashboardText('dashboard.deletePageTitle'),
+                    message: dashboardText('dashboard.deletePageMessage', { page: pageNum }),
+                    deleteFilesLabel: dashboardText('dashboard.deletePageFiles'),
                     defaultDeleteFiles: defaultDeleteFiles,
                     showRemember: true,
                     onConfirm: async ({ deleteFiles, remember }) => {

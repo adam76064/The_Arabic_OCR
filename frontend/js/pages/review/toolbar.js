@@ -136,7 +136,7 @@ function setupToolbar() {
         const btn = e.currentTarget;
         btn.disabled = true;
         await saveBlockSilently();
-        if (typeof showNotif === 'function') showNotif('تم حفظ الصفحة بنجاح', 'success');
+        if (typeof showNotif === 'function') showNotif(window.AppI18n.t('review.pageSaved'), 'success');
         setTimeout(() => btn.disabled = false, 500);
     });
 }

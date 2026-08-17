@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة مراجعة OCR</title>
+    <title data-i18n-document-title="title.home">أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -11,33 +12,33 @@
 
     <main class="home-main">
         <section class="hero">
-            <h1>مرحبًا بكم</h1>
-            <p>اختر ما تريد القيام به</p>
+            <h1 data-i18n="home.welcome">مرحبًا بكم</h1>
+            <p data-i18n="home.chooseAction">اختر ما تريد القيام به</p>
         </section>
 
         <div class="home-cards">
             <a href="#" class="home-card card-primary trigger-new-project">
                 <div class="card-icon" data-icon="plus"></div>
-                <div class="card-title">مشروع جديد</div>
-                <div class="card-desc">إنشاء مشروع مراجعة OCR جديد</div>
+                <div class="card-title" data-i18n="nav.newProject">مشروع جديد</div>
+                <div class="card-desc" data-i18n="home.newProject.description">إنشاء مشروع مراجعة OCR جديد</div>
             </a>
 
             <a href="projects.html" class="home-card card-secondary">
                 <div class="card-icon" data-icon="projects"></div>
-                <div class="card-title">المشاريع</div>
-                <div class="card-desc">عرض وإدارة مشاريعك الحالية</div>
+                <div class="card-title" data-i18n="nav.projects">المشاريع</div>
+                <div class="card-desc" data-i18n="home.projects.description">عرض وإدارة مشاريعك الحالية</div>
                 <div class="card-badge" id="projects-count">...</div>
             </a>
 
             <a href="settings.html" class="home-card card-neutral">
                 <div class="card-icon" data-icon="settings"></div>
-                <div class="card-title">الإعدادات</div>
-                <div class="card-desc">تخصيص أداة المراجعة</div>
+                <div class="card-title" data-i18n="nav.settings">الإعدادات</div>
+                <div class="card-desc" data-i18n="home.settings.description">تخصيص أداة المراجعة</div>
             </a>
         </div>
 
         <section class="recent-section">
-            <h2>آخر المشاريع</h2>
+            <h2 data-i18n="home.recentProjects">آخر المشاريع</h2>
             <div id="recent-projects"></div>
         </section>
     </main>
@@ -47,7 +48,7 @@
         <div class="modal-overlay" id="settings-overlay"></div>
         <div class="modal-box">
             <div class="modal-header">
-                <h3>الإعدادات</h3>
+                <h3 data-i18n="home.modalSettings">الإعدادات</h3>
                 <button class="modal-close" id="settings-close">✕</button>
             </div>
             <div class="modal-body" id="settings-body">
@@ -68,6 +69,10 @@
 
     <!-- Pages (new organized) -->
     <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-creator.js"></script>
     <script src="js/pages/home.js"></script>

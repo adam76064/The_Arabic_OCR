@@ -22,7 +22,7 @@ async function renderProjectsTable() {
   tbody.innerHTML='';
 
   if (!projects || projects.length===0) {
-    tbody.innerHTML='<tr><td colspan="6" style="text-align:center; color:#aaa; padding:40px;">لا توجد مشاريع بعد.</td></tr>';
+    tbody.innerHTML=`<tr><td colspan="6" style="text-align:center; color:#aaa; padding:40px;">${window.AppI18n.t('projects.none')}</td></tr>`;
     return;
   }
 
@@ -30,7 +30,7 @@ async function renderProjectsTable() {
     const total=p.page_count||0;
     const reviewed=p.reviewed_count||0;
     const pct= total>0? Math.round(reviewed/total*100):0;
-    const date=new Date(p.created_at).toLocaleDateString('ar-EG');
+    const date=new Date(p.created_at).toLocaleDateString(document.documentElement.lang || 'ar-EG');
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td><strong>${p.title}</strong></td>
@@ -38,7 +38,7 @@ async function renderProjectsTable() {
       <td style="direction:ltr; text-align:right;">${date}</td>
       <td>${total||'—'}</td>
       <td><div class="progress-cell"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-label">${pct}%</span></div></td>
-      <td><div class="table-actions"><button class="table-btn table-btn-open" data-id="${p.id}">فتح</button><button class="table-btn table-btn-delete" data-id="${p.id}">حذف</button></div></td>
+      <td><div class="table-actions"><button class="table-btn table-btn-open" data-id="${p.id}">${window.AppI18n.t('projects.open')}</button><button class="table-btn table-btn-delete" data-id="${p.id}">${window.AppI18n.t('projects.delete')}</button></div></td>
     `;
     tbody.appendChild(tr);
   });
@@ -50,7 +50,7 @@ async function renderProjectsTable() {
     btn.addEventListener('click', async ()=>{
       const projId=btn.dataset.id;
       const projectObj=projects.find(p=>p.id===projId);
-      const projTitle=projectObj?.title||'المشروع';
+      const projTitle=projectObj?.title||window.AppI18n.t('projects.untitled');
       const executeDeletion=async (deleteFiles)=>{
         await window.pywebview.api.delete_project(projId, deleteFiles);
         await renderProjectsTable();
@@ -59,9 +59,9 @@ async function renderProjectsTable() {
       const defaultDeleteFiles=window.__appSettings?.deleteProjectFiles!==false;
       if (prompt && window.AestheticDialog?.deleteConfirm) {
         window.AestheticDialog.deleteConfirm({
-          title:'حذف المشروع',
-          message:`هل أنت متأكد من رغبتك في حذف المشروع <strong>${projTitle}</strong>؟`,
-          deleteFilesLabel:'حذف مجلد وملفات المشروع بالكامل من القرص الصلب أيضاً',
+          title:window.AppI18n.t('projects.deleteTitle'),
+          message:window.AppI18n.t('projects.deleteMessage', { title: projTitle }),
+          deleteFilesLabel:window.AppI18n.t('projects.deleteFiles'),
           defaultDeleteFiles,
           showRemember:true,
           onConfirm: async ({deleteFiles, remember})=>{

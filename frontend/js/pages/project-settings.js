@@ -9,7 +9,7 @@ async function initSettings() {
 
     // Load project data
     currentProject = await window.pywebview.api.load_project(projectId);
-    if (!currentProject) { alert('تعذّر تحميل المشروع'); return; }
+    if (!currentProject) { alert(window.AppI18n.t('projectSettings.loadFailed')); return; }
 
     const meta = currentProject.metadata || {};
 
@@ -22,7 +22,7 @@ async function initSettings() {
     const textOpts = meta.text_features || {};
 
     // 1. Book Metadata
-    document.getElementById('page-title-display').textContent = `إعدادات: ${meta.title}`;
+    document.getElementById('page-title-display').textContent = window.AppI18n.t('projectSettings.title', { title: meta.title });
     document.getElementById('ps-title').value = meta.title || '';
     document.getElementById('ps-author').value = meta.author || '';
     document.getElementById('ps-publisher').value = meta.publisher || '';
@@ -59,7 +59,7 @@ async function initSettings() {
 
     const updateBadges = () => {
         if (lanBadge) {
-            lanBadge.textContent = lanBroadcast.checked ? '🟢 مفعل' : '🔴 متوقف';
+            lanBadge.textContent = lanBroadcast.checked ? window.AppI18n.t('projectSettings.enabled') : window.AppI18n.t('projectSettings.stopped');
             lanBadge.style.background = lanBroadcast.checked ? '#dcfce7' : '#fee2e2';
             lanBadge.style.color = lanBroadcast.checked ? '#15803d' : '#b91c1c';
         }
@@ -104,7 +104,7 @@ async function initSettings() {
     if (btnLinkLan) {
         btnLinkLan.addEventListener('click', async () => {
             const pw = memberLanPwdInput.value;
-            if (!pw) { alert('يرجى إدخال كلمة مرور الشبكة المحلية للمالك'); return; }
+            if (!pw) { alert(window.AppI18n.t('projectSettings.ownerPasswordRequired')); return; }
             
             currentProject.metadata.lan_password = pw;
             currentProject.metadata.lan_broadcasting = true;
@@ -113,7 +113,7 @@ async function initSettings() {
 
             await window.pywebview.api.update_project_metadata(currentProject.id, currentProject.metadata);
             await window.pywebview.api.toggle_broadcasting(currentProject.id, 'lan', true);
-            alert('تم حفظ كلمة المرور وربط وضع الشبكة المحلية بنجاح 📡');
+            alert(window.AppI18n.t('projectSettings.lanSaved'));
         });
     }
 
@@ -132,7 +132,7 @@ async function initSettings() {
             if (feedbackEl) feedbackEl.innerHTML = '⚠️ ' + res.errors.join(' | ');
             return false;
         }
-        if (feedbackEl) feedbackEl.innerHTML = '<span style="color:#15803d;">✓ كلمة مرور قوية جداً</span>';
+        if (feedbackEl) feedbackEl.innerHTML = `<span style="color:#15803d;">${window.AppI18n.t('projectSettings.strongPassword')}</span>`;
         return true;
     };
 
@@ -159,30 +159,13 @@ const BASE_CATEGORIES = {
     'Vertical-poetry':'#e84393', 'Staggered-poetry':'#00cec9'
 };
 
-const CATEGORY_ARABIC_MAP = {
-    'Text': 'نص عادي',
-    'Table': 'جدول',
-    'Title': 'عنوان رئيسي',
-    'Section-header': 'عنوان فرعي',
-    'Picture': 'صورة / رسم',
-    'Caption': 'تسمية توضيحية',
-    'List-item': 'عنصر قائمة',
-    'Footnote': 'حاشية سفلية',
-    'Page-header': 'رأس الصفحة',
-    'Page-footer': 'تذييل الصفحة',
-    'Page-number': 'رقم الصفحة',
-    'Formula': 'معادلة رياضية',
-    'Vertical-poetry': 'شعر عمودي',
-    'Staggered-poetry': 'شعر متدرج'
-};
-
 function getDynamicCategories() {
     const custom = window.__appSettings?.customCategories || {};
     return Object.keys({ ...BASE_CATEGORIES, ...custom });
 }
 
 function getCategoryLabelAR(catName) {
-    return CATEGORY_ARABIC_MAP[catName] || catName;
+    return window.AppI18n?.categoryLabel(catName) || catName;
 }
 
 let categoryFormatting = {};
@@ -233,7 +216,7 @@ async function populateSystemFontsForCategoryFormatting() {
         if (window.pywebview?.api?.get_system_fonts) {
             const res = await window.pywebview.api.get_system_fonts();
             if (res && res.ok && res.fonts && res.fonts.length > 0) {
-                let optionsHtml = `<option value="">الافتراضي</option>`;
+                let optionsHtml = `<option value="">${window.AppI18n.t('ps.default')}</option>`;
                 res.fonts.forEach(font => {
                     const fontValue = font.includes(' ') ? "'" + font + "'" : font;
                     const displayName = font.length > 28 ? font.substring(0, 28) + '...' : font;
@@ -291,14 +274,14 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
     if (lanPwd) {
         const vLan = await window.pywebview.api.validate_password_strength(lanPwd);
         if (!vLan.valid) {
-            alert('كلمة مرور الشبكة المحلية غير مستوفية لشروط الأمان: ' + vLan.errors.join(', '));
+            alert(window.AppI18n.t('projectSettings.passwordWeak', { errors: vLan.errors.join(', ') }));
             return;
         }
     }
 
     saveCurrentCategoryFormattingUI(activeCategory);
     const btn = document.getElementById('btn-save');
-    btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+    btn.disabled = true; btn.textContent = window.AppI18n.t('projectSettings.saving');
 
     const tashkeelVal = document.querySelector('input[name="ps_tashkeel"]:checked').value;
 
@@ -351,31 +334,31 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                 window.__selectedApplyScope = 'unreviewed';
                 const messageHtml = `
                     <p style="margin-bottom: 12px; font-size: 14px; color: #334155;">
-                        تم حفظ إعدادات المشروع بنجاح!<br>
-                        يحتوي المشروع على <strong>${ocredPagesCount} صفحة مُعالجة سابقاً</strong>.<br>
-                        كيف تود تطبيق الإعدادات الجديدة (كإعدادات النصوص والتنسيقات، وترتيب المربعات، وترقيم الصفحات)؟
+                        ${window.AppI18n.t('projectSettings.savedSummary')}<br>
+                        ${window.AppI18n.t('projectSettings.processedPages', { count: ocredPagesCount })}<br>
+                        ${window.AppI18n.t('projectSettings.applyQuestion')}
                     </p>
                     <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="all" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على كافة الصفحات المُعالجة (المراجَعة وغير المراجَعة)</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyAll')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="unreviewed" checked onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">تطبيق على الصفحات غير المراجَعة فقط</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyUnreviewed')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="none" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">عدم التطبيق الآن (تُطبق مستقبلاً فقط)</span>
+                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyLater')}</span>
                         </label>
                     </div>
                 `;
 
                 window.AestheticDialog.confirm({
-                    title: 'تطبيق الإعدادات الجديدة ⚙️',
+                    title: window.AppI18n.t('projectSettings.applyTitle'),
                     message: messageHtml,
-                    confirmText: 'تنفيذ',
-                    cancelText: 'إلغاء',
+                    confirmText: window.AppI18n.t('projectSettings.apply'),
+                    cancelText: window.AppI18n.t('dialog.cancel'),
                     onConfirm: async () => {
                         const selectedScope = window.__selectedApplyScope || 'unreviewed';
                         if (selectedScope === 'none') {
@@ -383,19 +366,19 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                             return;
                         }
                         
-                        btn.textContent = 'جاري التطبيق... ⏳';
+                        btn.textContent = window.AppI18n.t('projectSettings.applying');
                         try {
                             const res = await window.pywebview.api.apply_project_settings_changes(currentProject.id, selectedScope);
                             if (res && res.ok) {
                                 window.AestheticDialog.alert({
-                                    title: 'تم بنجاح ✨',
-                                    message: 'تمت معالجة وتطبيق الإعدادات بنجاح.',
+                                    title: window.AppI18n.t('projectSettings.successTitle'),
+                                    message: window.AppI18n.t('projectSettings.applySuccess'),
                                     onOk: finishAndRedirect
                                 });
                             } else {
                                 window.AestheticDialog.alert({
-                                    title: 'تنبيه',
-                                    message: 'حدث خطأ أثناء التطبيق: ' + (res?.error || 'غير معروف'),
+                                    title: window.AppI18n.t('dialog.alert'),
+                                    message: window.AppI18n.t('projectSettings.applyError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }),
                                     onOk: finishAndRedirect
                                 });
                             }
@@ -415,11 +398,11 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
     } catch (err) {
         console.error(err);
         if (window.AestheticDialog?.alert) {
-            window.AestheticDialog.alert({ title: 'خطأ', message: 'حدث خطأ أثناء حفظ الإعدادات.' });
+            window.AestheticDialog.alert({ title: window.AppI18n.t('projectSettings.errorTitle'), message: window.AppI18n.t('projectSettings.saveError') });
         } else {
-            alert('حدث خطأ أثناء الحفظ.');
+            alert(window.AppI18n.t('projectSettings.saveError'));
         }
-        btn.disabled = false; btn.textContent = 'حفظ الإعدادات';
+        btn.disabled = false; btn.textContent = window.AppI18n.t('projectSettings.save');
     }
 });
 
@@ -453,7 +436,7 @@ function initPostProcessingSettings(ppOpts) {
         runBtn.addEventListener('click', async () => {
             if (!currentProject) return;
             runBtn.disabled = true;
-            runBtn.textContent = '⏳ جاري الترتيب...';
+            runBtn.textContent = window.AppI18n.t('projectSettings.sorting');
             try {
                 const res = await window.pywebview.api.apply_reading_order_sorting(
                     currentProject.id, null, true
@@ -461,21 +444,21 @@ function initPostProcessingSettings(ppOpts) {
                 if (res?.ok) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
-                            title: 'تم بنجاح ✨',
-                            message: `تمت إعادة ترتيب المربعات النصية في ${res.count} صفحة حسب اتجاه القراءة العربي.`
+                            title: window.AppI18n.t('projectSettings.successTitle'),
+                            message: window.AppI18n.t('projectSettings.sortSuccess', { count: res.count })
                         });
                     } else {
-                        alert(`تمت إعادة ترتيب المربعات في ${res.count} صفحة.`);
+                        alert(window.AppI18n.t('projectSettings.sortSuccessShort', { count: res.count }));
                     }
                 } else {
-                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                    alert(window.AppI18n.t('projectSettings.actionError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }));
                 }
             } catch (err) {
                 console.error('Reading order sorting error:', err);
-                alert('حدث خطأ أثناء إعادة ترتيب المربعات.');
+                alert(window.AppI18n.t('projectSettings.sortError'));
             } finally {
                 runBtn.disabled = false;
-                runBtn.textContent = '⚡ ترتيب المربعات على الصفحات الآن';
+                runBtn.textContent = window.AppI18n.t('ps.runReadingOrder');
             }
         });
     }
@@ -484,7 +467,7 @@ function initPostProcessingSettings(ppOpts) {
         pagBtn.addEventListener('click', async () => {
             if (!currentProject) return;
             pagBtn.disabled = true;
-            pagBtn.textContent = '⏳ جاري كشف الأرقام...';
+            pagBtn.textContent = window.AppI18n.t('projectSettings.detecting');
             try {
                 const res = await window.pywebview.api.apply_pagination_detection(
                     currentProject.id, null, true
@@ -492,21 +475,21 @@ function initPostProcessingSettings(ppOpts) {
                 if (res?.ok) {
                     if (window.AestheticDialog?.alert) {
                         window.AestheticDialog.alert({
-                            title: 'تم بنجاح ✨',
-                            message: `تم كشف وتوسيم ${res.count} مربع كأرقام صفحات بنجاح.`
+                            title: window.AppI18n.t('projectSettings.successTitle'),
+                            message: window.AppI18n.t('projectSettings.paginationSuccess', { count: res.count })
                         });
                     } else {
-                        alert(`تم كشف وتوسيم ${res.count} مربع كأرقام صفحات.`);
+                        alert(window.AppI18n.t('projectSettings.paginationSuccess', { count: res.count }));
                     }
                 } else {
-                    alert('حدث خطأ: ' + (res?.error || 'غير معروف'));
+                    alert(window.AppI18n.t('projectSettings.actionError', { error: res?.error || window.AppI18n.t('projectSettings.unknownError') }));
                 }
             } catch (err) {
                 console.error('Pagination detection error:', err);
-                alert('حدث خطأ أثناء كشف أرقام الصفحات.');
+                alert(window.AppI18n.t('projectSettings.paginationError'));
             } finally {
                 pagBtn.disabled = false;
-                pagBtn.textContent = '⚡ كشف أرقام الصفحات الآن';
+                pagBtn.textContent = window.AppI18n.t('ps.runPagination');
             }
         });
     }

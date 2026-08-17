@@ -1,3 +1,5 @@
+const dashboardMessage = (key, replacements) => window.AppI18n?.t(key, replacements) || key;
+
 /**
  * pages/project-dashboard/index.js - extracted from monolith
  */
@@ -14,7 +16,7 @@ async function initDashboard() {
     // Load Project Data
     currentProject = await window.pywebview.api.load_project(currentProjectId);
     if (!currentProject) {
-        alert('تعذّر تحميل المشروع');
+        alert(dashboardMessage('dashboard.loadFailed'));
         window.location.href = 'projects.html';
         return;
     }
@@ -22,7 +24,7 @@ async function initDashboard() {
     // Fetch real daily limits from Python Backend
     paddleTrialsLeft = await window.pywebview.api.get_paddle_limits();
 
-    document.getElementById('dashboard-proj-title').textContent = currentProject.metadata?.title || 'مشروع بدون عنوان';
+    document.getElementById('dashboard-proj-title').textContent = currentProject.metadata?.title || dashboardMessage('dashboard.untitled');
     
     renderPagesTable();
     renderDashboardStats();
@@ -78,7 +80,7 @@ function setupEventBindings() {
             }
 
             document.getElementById('paddle-ocr-modal').classList.add('hidden');
-            document.getElementById('ocr-progress-message').textContent = 'جاري الاتصال بالخادم...';
+            document.getElementById('ocr-progress-message').textContent = dashboardMessage('dashboard.connecting');
             document.getElementById('ocr-progress-fill').style.width = '5%';
             document.getElementById('ocr-progress-fill').style.background = '#3498db';
             progressModal.classList.remove('hidden');
@@ -92,7 +94,7 @@ function setupEventBindings() {
                 
                 if (!response.ok) {
                     if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
-                    else { alert("حدث خطأ في بايثون: " + response.error); progressModal.classList.add('hidden'); }
+                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
                 } else {
                     currentProject = response.project;
                     renderPagesTable();        // 1. إعادة رسم الجدول بالبيانات الجديدة
@@ -107,7 +109,7 @@ function setupEventBindings() {
                 
                 if (!response.ok) {
                     if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
-                    else { alert("حدث خطأ في بايثون: " + response.error); progressModal.classList.add('hidden'); }
+                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
                 } else {
                     currentProject = response.project;
                     renderPagesTable();
@@ -122,12 +124,12 @@ function setupEventBindings() {
                 const rememberForProj = document.getElementById('remember-prompt-for-project')?.checked || false;
 
                 if (!apiKey) {
-                    alert("يرجى إدخال مفتاح الـ API للنموذج المختار!");
+                    alert(dashboardMessage('dashboard.apiRequired'));
                     progressModal.classList.add('hidden');
                     return;
                 }
                 if (provider === 'custom' && (!baseUrl || !customModel)) {
-                    alert("يرجى إدخال رابط الخادم (Base URL) واسم النموذج للخادم المخصص!");
+                    alert(dashboardMessage('dashboard.customRequired'));
                     progressModal.classList.add('hidden');
                     return;
                 }
@@ -152,7 +154,7 @@ function setupEventBindings() {
                 
                 if (!response.ok) {
                     if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
-                    else { alert("حدث خطأ في بايثون: " + response.error); progressModal.classList.add('hidden'); }
+                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
                 } else {
                     currentProject = response.project;
                     renderPagesTable();        // 1. إعادة رسم الجدول بالبيانات الجديدة

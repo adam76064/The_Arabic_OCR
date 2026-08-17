@@ -9,24 +9,24 @@ const PROJECT_CREATOR_HTML = `
         <div class="modal-overlay" id="new-proj-overlay"></div>
         <div class="modal-box" style="width: 400px; padding: 0;">
             <div class="modal-header" style="padding: 20px 24px; border-bottom: 1px solid #eee;">
-                <h3 style="margin: 0; font-size: 18px; color: #2c3e50;">إنشاء مشروع جديد</h3>
+                <h3 style="margin: 0; font-size: 18px; color: #2c3e50;"> <span data-i18n="project.create.title">إنشاء مشروع جديد</span></h3>
                 <button class="modal-close" id="new-proj-close" style="background: #f1f5f9; border-radius: 6px; padding: 4px 8px;">✕</button>
             </div>
             <div class="modal-body" style="padding: 24px;">
                 <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #475569;">اسم المشروع <span style="color:#e74c3c;">*</span></label>
-                    <input type="text" id="np-title" placeholder="أدخل اسم الكتاب أو المشروع..." style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; box-sizing: border-box;" required>
+                    <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #475569;"> <span data-i18n="project.create.name">اسم المشروع</span> <span style="color:#e74c3c;">*</span></label>
+                    <input type="text" id="np-title" data-i18n-placeholder="project.create.namePlaceholder" placeholder="أدخل اسم الكتاب أو المشروع..." style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; box-sizing: border-box;" required>
                 </div>
                 <div class="form-group">
-                    <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #475569;">ملف الكتاب (PDF) <span style="color:#e74c3c;">*</span></label>
+                    <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #475569;"> <span data-i18n="project.create.file">ملف الكتاب (PDF)</span> <span style="color:#e74c3c;">*</span></label>
                     <button type="button" id="np-pick-pdf" class="btn-secondary" style="width: 100%; padding: 10px; border: 1px dashed #3b82f6; background: #eff6ff; color: #2563eb; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        اختر ملف PDF...
+                        <span data-i18n="project.create.chooseFile">اختر ملف PDF...</span>
                     </button>
-                    <div id="np-pdf-path" style="font-size: 12px; color: #94a3b8; margin-top: 8px; text-align: left; direction: ltr; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">لم يُختر ملف</div>
+                    <div id="np-pdf-path" style="font-size: 12px; color: #94a3b8; margin-top: 8px; text-align: left; direction: ltr; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> <span data-i18n="project.create.noFile">لم يُختر ملف</span></div>
                 </div>
                 <div class="form-actions" style="margin-top: 28px;">
-                    <button id="np-submit" class="btn-success" style="width: 100%; padding: 12px; font-size: 15px; font-weight: bold;">إنشاء وبدء المعالجة</button>
+                    <button id="np-submit" class="btn-success" style="width: 100%; padding: 12px; font-size: 15px; font-weight: bold;"> <span data-i18n="project.create.submit">إنشاء وبدء المعالجة</span></button>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@ const PROJECT_CREATOR_HTML = `
     <div id="pdf-progress-modal" class="modal hidden" style="z-index: 10000;">
         <div class="modal-overlay"></div>
         <div class="modal-box" style="width:420px; padding: 24px;">
-            <h3 style="margin-top: 0; color: #2c3e50; margin-bottom: 16px;">جارٍ إنشاء المشروع</h3>
-            <p id="pdf-progress-message" style="font-size:14px;color:#555;margin-bottom:14px;">جارٍ التحقق من ملف PDF...</p>
+            <h3 style="margin-top: 0; color: #2c3e50; margin-bottom: 16px;"> <span data-i18n="project.create.progressTitle">جارٍ إنشاء المشروع</span></h3>
+            <p id="pdf-progress-message" style="font-size:14px;color:#555;margin-bottom:14px;"> <span data-i18n="project.create.checking">جارٍ التحقق من ملف PDF...</span></p>
             <div class="progress-bar" style="height:10px; background: #e2e8f0; border-radius: 5px; overflow: hidden;">
                 <div id="pdf-progress-fill" style="height: 100%; background: #3b82f6; width:0%; transition:width 0.2s;"></div>
             </div>
@@ -44,7 +44,7 @@ const PROJECT_CREATOR_HTML = `
                 <span id="pdf-progress-count"></span>
                 <span id="pdf-progress-pct">0%</span>
             </div>
-            <p style="font-size:12px;color:#aaa;margin-top:16px; text-align: center;">قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.</p>
+            <p style="font-size:12px;color:#aaa;margin-top:16px; text-align: center;"> <span data-i18n="project.create.wait">قد تستغرق الملفات الكبيرة عدة دقائق. الرجاء عدم إغلاق التطبيق.</span></p>
         </div>
     </div>
 `;
@@ -64,7 +64,7 @@ function initProjectCreator() {
             e.preventDefault();
             document.getElementById('np-title').value = '';
             selectedPdfPath = null;
-            document.getElementById('np-pdf-path').textContent = 'لم يُختر ملف';
+            document.getElementById('np-pdf-path').textContent = window.AppI18n.t('project.create.noFile');
             projModal.classList.remove('hidden');
         });
     });
@@ -83,8 +83,8 @@ function initProjectCreator() {
 
     document.getElementById('np-submit').addEventListener('click', async () => {
         const title = document.getElementById('np-title').value.trim();
-        if (!title) { alert('الرجاء إدخال اسم المشروع'); return; }
-        if (!selectedPdfPath) { alert('الرجاء اختيار ملف PDF'); return; }
+        if (!title) { alert(window.AppI18n.t('project.create.requiredName')); return; }
+        if (!selectedPdfPath) { alert(window.AppI18n.t('project.create.requiredFile')); return; }
 
         projModal.classList.add('hidden');
         progModal.classList.remove('hidden');
@@ -108,7 +108,7 @@ function initProjectCreator() {
         } catch (err) {
             console.error(err);
             progModal.classList.add('hidden');
-            alert('حدث خطأ أثناء إنشاء المشروع. الرجاء المحاولة مرة أخرى.');
+            alert(window.AppI18n.t('project.create.error'));
         }
     });
 }
@@ -121,13 +121,13 @@ function setPdfProgress(stage, current, total) {
     if (!msgEl) return;
 
     if (stage === 'hashing') {
-        msgEl.textContent = 'جارٍ التحقق من ملف PDF...'; fillEl.style.width = '0%'; countEl.textContent = ''; pctEl.textContent = '';
+        msgEl.textContent = window.AppI18n.t('project.create.checking'); fillEl.style.width = '0%'; countEl.textContent = ''; pctEl.textContent = '';
     } else if (stage === 'rendering') {
         const pct = total > 0 ? Math.round((current / total) * 100) : 0;
-        msgEl.textContent = 'جارٍ معالجة صفحات PDF...'; fillEl.style.width = pct + '%';
-        countEl.textContent = `${current} / ${total} صفحة`; pctEl.textContent = pct + '%';
+        msgEl.textContent = window.AppI18n.t('project.create.rendering'); fillEl.style.width = pct + '%';
+        countEl.textContent = window.AppI18n.t('project.create.pageCount', { current, total }); pctEl.textContent = pct + '%';
     } else if (stage === 'done') {
-        msgEl.textContent = 'اكتملت المعالجة، جارٍ فتح المشروع...'; fillEl.style.width = '100%'; pctEl.textContent = '100%';
+        msgEl.textContent = window.AppI18n.t('project.create.done'); fillEl.style.width = '100%'; pctEl.textContent = '100%';
     }
 }
 window.onPdfProgress = (payload) => setPdfProgress(payload.stage, payload.current, payload.total);

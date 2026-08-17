@@ -3,15 +3,15 @@ let pendingJoinTarget = null;
 async function scan() {
     const status = document.getElementById('lan-status');
     const results = document.getElementById('lan-results');
-    status.textContent = 'جارٍ البحث عن مشاريع على الشبكة...';
+    status.textContent = window.AppI18n.t('lan.searching');
     results.innerHTML = '';
 
     const projects = await window.pywebview.api.scan_lan_projects();
     if (!projects.length) {
-        status.textContent = 'لم يتم العثور على أي مشاريع مشتركة على الشبكة.';
+        status.textContent = window.AppI18n.t('lan.none');
         return;
     }
-    status.textContent = `تم العثور على ${projects.length} مشروع(ات).`;
+    status.textContent = window.AppI18n.t('lan.found', { count: projects.length });
 
     projects.forEach(proj => {
         const card = document.createElement('div');
@@ -20,7 +20,7 @@ async function scan() {
         card.innerHTML = `
             <div class="card-icon" data-icon-applied="1">${icon}</div>
             <div class="card-title">${proj.name}</div>
-            <div class="card-desc">المالك: ${proj.owner} — ${proj.page_count} صفحة</div>
+            <div class="card-desc">${window.AppI18n.t('lan.owner', { owner: proj.owner, count: proj.page_count })}</div>
         `;
         card.addEventListener('click', () => joinProject(proj));
         results.appendChild(card);
@@ -41,7 +41,7 @@ async function doJoin(proj, password) {
     if (result.ok) {
         window.location.href = `review.html?id=${proj.project_id}`;
     } else {
-        alert('تعذّر الانضمام: ' + (result.error || 'خطأ غير معروف'));
+        alert(window.AppI18n.t('lan.joinError', { error: result.error || window.AppI18n.t('lan.unknownError') }));
     }
 }
 

@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة صفحات المشروع — أداة مراجعة OCR</title>
+    <title data-i18n-document-title="title.dashboard">إدارة صفحات المشروع — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -11,14 +12,14 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             
             <div>
-                <h1 style="font-size: 24px; color: #2c3e50;">إدارة صفحات المشروع</h1>
-                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;">جاري التحميل...</p>
+                <h1 style="font-size: 24px; color: #2c3e50;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
+                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;" data-i18n="dash.loading">جاري التحميل...</p>
             </div>
             
             <div style="display: flex; gap: 10px;">
-                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings">إعدادات</button>
-                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back">العودة</button>
-                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export">تصدير</button>
+                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
+                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back" data-i18n="dash.back">العودة</button>
+                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export" data-i18n="dash.export">تصدير</button>
             </div>
 
         </div>
@@ -27,15 +28,15 @@
         <div id="dashboard-coop-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan">وسائل العمل والتعاون:</span>
-                    <button type="button" id="dash-lan-status" class="lan-status-badge is-off" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network">محلي: متوقف</button>
+                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan" data-i18n="dash.collab">وسائل العمل والتعاون:</span>
+                    <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">محلي: متوقف</button>
                 </div>
             </div>
             
             <div style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; font-size: 13px;">
-                <span style="color: #64748b; font-weight: bold;" data-icon-label="user">الأعضاء المتصلون حالياً:</span>
+                <span style="color: #64748b; font-weight: bold;" data-icon-label="user" data-i18n="dash.members">الأعضاء المتصلون حالياً:</span>
                 <div id="dash-active-collaborators" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <span style="color: #94a3b8; font-style: italic;">لا يوجد أعضاء متصلون حالياً</span>
+                    <span style="color: #94a3b8; font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>
                 </div>
             </div>
         </div>
@@ -45,11 +46,11 @@
         <table class="dashboard-table">
                 <thead>
                     <tr>
-                        <th style="width: 80px;">الصفحة</th>
-                        <th>حالة النصوص (OCR)</th>
-                        <th>حالة التخطيط (Layout)</th>
-                        <th>حالة التدقيق (Review)</th>
-                        <th style="text-align: left; padding-left: 20px;">الإجراءات</th>
+                        <th style="width: 80px;" data-i18n="dash.page">الصفحة</th>
+                        <th data-i18n="dash.ocr">حالة النصوص (OCR)</th>
+                        <th data-i18n="dash.layout">حالة التخطيط (Layout)</th>
+                        <th data-i18n="dash.review">حالة التدقيق (Review)</th>
+                        <th style="text-align: end; padding-inline-start: 20px;" data-i18n="dash.actions">الإجراءات</th>
                     </tr>
                 </thead>
             <tbody id="pages-table-body">
@@ -61,20 +62,20 @@
         <div class="modal-overlay" id="paddle-ocr-overlay"></div>
         <div class="modal-box" style="width: 500px;">
             <div class="modal-header">
-                <h3>إعدادات Parse Layout / OCR</h3>
+                <h3 data-i18n="dash.ocrSettings">إعدادات Parse Layout / OCR</h3>
                 <button class="modal-close" id="paddle-ocr-close">✕</button>
             </div>
             <div class="modal-body">
                 
                 <div class="form-group">
-                    <label>أداة المعالجة (OCR Tool)</label>
+                    <label data-i18n="dash.tool">أداة المعالجة (OCR Tool)</label>
                     <div class="form-section">
                         <div class="radio-group tool-option" id="tool-paddle-container">
                             <label class="radio-item" style="font-size: 15px;">
                                 <input type="radio" name="ocr-tool" value="paddle" checked> 
                                 PaddleOCR (Online Demo)
                             </label>
-                            <div class="section-hint" id="paddle-limit-hint" style="margin-right: 24px; margin-top: 4px;">
+                            <div class="section-hint" id="paddle-limit-hint" style="margin-inline-start: 24px; margin-top: 4px;">
                                 متاح 3 ملفات مجانية يومياً. (المتبقي: <span id="paddle-files-left">3</span>)
                             </div>
                         </div>
@@ -85,8 +86,8 @@
                                 Locro Offline (ScreenAI)
                             </label>
                             
-                            <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">طريقة المسح (Scan Mode):</div>
+                            <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;" data-i18n="dash.scanMode" data-i18n="dash.scanMode"> <span data-i18n="dash.scanMode" data-i18n="ocr.scanMode">طريقة المسح (Scan Mode):</span></div>
                                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                                     <label class="radio-item">
                                         <input type="radio" name="locro-mode" value="full_page" checked> 
@@ -109,8 +110,8 @@
                                 Google Lens OCR
                             </label>
                             
-                            <div id="glens-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">طريقة المسح (Scan Mode):</div>
+                            <div id="glens-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;"> <span data-i18n="dash.scanMode">طريقة المسح (Scan Mode):</span></div>
                                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                                     <label class="radio-item">
                                         <input type="radio" name="glens-mode" value="full_page" checked> 
@@ -133,10 +134,10 @@
                                 LLM Vision API (Gemini, GPT, Custom)
                             </label>
                             
-                            <div id="llm-sub-options" class="hidden" style="margin-top: 12px; margin-right: 24px; padding: 16px; background: #fdfaf6; border-radius: 6px; border: 1px solid #e2d9c8;">
+                            <div id="llm-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 16px; background: #fdfaf6; border-radius: 6px; border: 1px solid #e2d9c8;">
                                 
                                 <div class="form-group" style="margin-bottom: 12px;">
-                                    <label style="font-size: 13px; font-weight: 600;">مزود الخدمة (Provider / Model):</label>
+                                    <label style="font-size: 13px; font-weight: 600;" data-i18n="ocr.provider">مزود الخدمة (Provider / Model):</label>
                                   
                                   <select id="llm-provider" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
                                         <optgroup label="Google Gemini">
@@ -179,7 +180,7 @@
                                             <option value="glm-4.5v">GLM-4.5V</option>
                                         </optgroup>
                                         <optgroup label="أخرى">
-                                            <option value="custom">سيرفر مخصص (Custom OpenAI Compatible)</option>
+                                            <option value="custom" data-i18n="ocr.custom">سيرفر مخصص (Custom OpenAI Compatible)</option>
                                         </optgroup>
                                     </select>
 
@@ -187,18 +188,18 @@
 
                                 <div id="llm-custom-fields" class="hidden" style="margin-bottom: 12px; padding: 10px; background: #fff; border: 1px dashed #ccc; border-radius: 4px;">
                                     <div class="form-group" style="margin-bottom: 8px;">
-                                        <label style="font-size: 12px;">رابط الخادم (Base URL):</label>
+                                        <label style="font-size: 12px;" data-i18n="ocr.baseUrl">رابط الخادم (Base URL):</label>
                                         <input type="text" id="llm-base-url" placeholder="مثال: https://inference.dahl.global/v1" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
                                     </div>
                                     <div class="form-group">
-                                        <label style="font-size: 12px;">اسم النموذج (Model Name):</label>
+                                        <label style="font-size: 12px;" data-i18n="ocr.modelName">اسم النموذج (Model Name):</label>
                                         <input type="text" id="llm-model-name" placeholder="مثال: MiniMaxAI/MiniMax-M2.7" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
                                     </div>
                                 </div>
 
                                 <div class="form-group" style="margin-bottom: 12px;">
-                                    <label style="font-size: 13px; font-weight: 600;">مفتاح الـ API (API Key):</label>
-                                    <input type="password" id="llm-api-key" placeholder="ادخل مفتاح API هنا..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
+                                    <label style="font-size: 13px; font-weight: 600;" data-i18n="ocr.apiKey">مفتاح الـ API (API Key):</label>
+                                    <input type="password" id="llm-api-key" data-i18n-placeholder="ocr.apiPlaceholder" placeholder="ادخل مفتاح API هنا..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
                                 </div>
 
                                 <label class="radio-item" style="font-size: 13px;">
@@ -208,14 +209,14 @@
 
                                 <div id="llm-prompt-container" style="margin-top:14px; border-top:1px solid #cbd5e1; padding-top:12px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                        <label style="font-size:13px; font-weight:bold; color:#334155;">تعليمة التوجيه للنموذج (LLM Prompt):</label>
-                                        <button type="button" id="reset-ocr-modal-prompt" style="background:none; border:none; color:#2563eb; font-size:12px; cursor:pointer; text-decoration:underline;">استعادة التعليمة العامة</button>
+                                        <label style="font-size:13px; font-weight:bold; color:#334155;" data-i18n="ocr.prompt">تعليمة التوجيه للنموذج (LLM Prompt):</label>
+                                        <button type="button" id="reset-ocr-modal-prompt" style="background:none; border:none; color:#2563eb; font-size:12px; cursor:pointer; text-decoration:underline;" data-i18n="ocr.restorePrompt">استعادة التعليمة العامة</button>
                                     </div>
-                                    <textarea id="ocr-modal-llm-prompt" rows="5" style="width:100%; font-family:monospace, inherit; font-size:12px; line-height:1.4; padding:8px; border-radius:6px; border:1px solid #cbd5e1; direction:ltr; text-align:left;" placeholder="ادخل تعليمات الـ System Prompt هنا..."></textarea>
+                                    <textarea id="ocr-modal-llm-prompt" rows="5" style="width:100%; font-family:monospace, inherit; font-size:12px; line-height:1.4; padding:8px; border-radius:6px; border:1px solid #cbd5e1; direction:ltr; text-align:left;" data-i18n-placeholder="ocr.promptPlaceholder" placeholder="ادخل تعليمات الـ System Prompt هنا..."></textarea>
                                     
                                     <label class="radio-item" style="font-size:12.5px; margin-top:8px; display:flex; align-items:center; gap:8px; cursor:pointer;">
                                         <input type="checkbox" id="remember-prompt-for-project" style="width:15px; height:15px; cursor:pointer; accent-color:#2563eb;">
-                                        <span>تذكر هذه التعليمة لهذا المشروع فقط (حفظ في إعدادات المشروع)</span>
+                                        <span data-i18n="ocr.rememberPrompt">تذكر هذه التعليمة لهذا المشروع فقط (حفظ في إعدادات المشروع)</span>
                                     </label>
                                 </div>
 
@@ -226,7 +227,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>نطاق الصفحات</label>
+                    <label data-i18n="dash.pageRange" data-i18n="ocr.range">نطاق الصفحات</label>
                     <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
                         <label class="radio-item">
                             <input type="radio" name="ocr-range" value="all"> كامل الملف
@@ -255,7 +256,7 @@
                 </div>
 
                 <div class="form-actions" style="margin-top: 20px;">
-                    <button id="start-ocr-btn" class="btn-success">بدء المعالجة</button>
+                    <button id="start-ocr-btn" class="btn-success" data-i18n="dash.start">بدء المعالجة</button>
                 </div>
             </div>
         </div>
@@ -270,6 +271,10 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <!-- Dashboard modular -->
     <script src="js/pages/project-dashboard/state.js"></script>
@@ -287,12 +292,12 @@
         <div class="modal-overlay"></div>
         <div class="modal-box" style="width: 400px; text-align: center;">
             <div class="modal-body" style="padding: 30px 20px;">
-                <h3 style="margin-bottom: 12px; color: #2c3e50;">جاري المعالجة...</h3>
-                <p id="ocr-progress-message" style="font-size: 14px; color: #555; margin-bottom: 16px;">يرجى الانتظار</p>
+                <h3 style="margin-bottom: 12px; color: #2c3e50;" data-i18n="ocr.progressTitle"> <span data-i18n="ocr.progressTitle">جاري المعالجة...</span></h3>
+                <p id="ocr-progress-message" style="font-size: 14px; color: #555; margin-bottom: 16px;" data-i18n="ocr.wait"> <span data-i18n="ocr.wait">يرجى الانتظار</span></p>
                 <div class="progress-bar" style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden; width: 100%;">
                     <div id="ocr-progress-fill" style="width: 0%; height: 100%; background: #3498db; transition: width 0.4s ease, background 0.4s;"></div>
                 </div>
-                <div class="section-hint" style="margin-top: 14px;">قد تستغرق هذه العملية بعض الوقت اعتماداً على حجم الملف وسرعة الإنترنت.</div>
+                <div class="section-hint" style="margin-top: 14px;" data-i18n="ocr.progressHint"> <span data-i18n="ocr.progressHint">قد تستغرق هذه العملية بعض الوقت اعتماداً على حجم الملف وسرعة الإنترنت.</span></div>
             </div>
         </div>
     </div>

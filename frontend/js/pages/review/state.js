@@ -34,25 +34,8 @@ function getCategoryColors() {
     return { ...BASE_CATEGORIES, ...(window.__appSettings?.customCategories || {}) };
 }
 
-const CATEGORY_ARABIC_MAP = {
-    'Text': 'نص عادي',
-    'Table': 'جدول',
-    'Title': 'عنوان رئيسي',
-    'Section-header': 'عنوان فرعي',
-    'Picture': 'صورة / رسم',
-    'Caption': 'تسمية توضيحية',
-    'List-item': 'عنصر قائمة',
-    'Footnote': 'حاشية سفلية',
-    'Page-header': 'رأس الصفحة',
-    'Page-footer': 'تذييل الصفحة',
-    'Formula': 'معادلة رياضية',
-    'Page-number': 'رقم الصفحة',
-    'Vertical-poetry': 'شعر عمودي',
-    'Staggered-poetry': 'شعر متدرج'
-};
-
 function getCategoryNameAR(catName) {
-    return CATEGORY_ARABIC_MAP[catName] || catName;
+    return window.AppI18n?.categoryLabel(catName) || catName;
 }
 
 function getAllCategories() {
@@ -105,4 +88,3 @@ window.getCategoryNameAR = getCategoryNameAR;
 window.getAllCategories = getAllCategories;
 window.isTableLike = isTableLike;
 window.BASE_CATEGORIES = BASE_CATEGORIES;
-window.CATEGORY_ARABIC_MAP = CATEGORY_ARABIC_MAP;

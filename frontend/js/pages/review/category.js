@@ -37,19 +37,20 @@ async function handleTableCategoryChange(blockIndex, newCat, oldCat) {
         return;
     }
 
-    const catNameAR = getCategoryNameAR(newCat);
+    const categoryLabel = getCategoryNameAR(newCat);
+    const categoryText = (key, replacements) => window.AppI18n?.t(key, replacements) || key;
     const modalContent = `
         <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 16px;">
-            هل ترغب في الكشف التلقائي عن تخطيط الهيكل (الصفوف والأعمدة) للكتلة المحددة كـ <strong>"${catNameAR}"</strong> باستخدام التعرف الضوئي؟
+            ${categoryText('review.autoTableMessage', { category: categoryLabel })}
         </div>
         <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; cursor: pointer; user-select: none;">
             <input type="checkbox" id="chk-remember-table-parse-review" style="accent-color: #2563eb;">
-            <span>تذكر اختياري وعدم السؤال مرة أخرى</span>
+            <span>${categoryText('review.rememberChoice')}</span>
         </label>
     `;
 
     if (window.AestheticDialog?.show) {
-        window.AestheticDialog.show('الكشف التلقائي عن التخطيط 📊', modalContent, async (overlay) => {
+        window.AestheticDialog.show(categoryText('review.autoTableTitle'), modalContent, async (overlay) => {
             const chk = overlay.querySelector('#chk-remember-table-parse-review');
             if (chk && chk.checked) {
                 localStorage.setItem('autoTableParse_remember', 'true');
@@ -135,7 +136,9 @@ function openCategoryPicker(e, blockIndex) {
         picker.style.top = (rect.bottom + 4) + 'px';
     }
     
-    picker.style.right = (window.innerWidth - rect.right) + 'px';
+    const isRtl = document.documentElement.dir === 'rtl';
+    picker.style.right = isRtl ? (window.innerWidth - rect.right) + 'px' : 'auto';
+    picker.style.left = isRtl ? 'auto' : rect.left + 'px';
 }
 
 window.handleTableCategoryChange = handleTableCategoryChange;

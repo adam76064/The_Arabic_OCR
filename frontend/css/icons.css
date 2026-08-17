@@ -61,7 +61,7 @@
 /* Layout-editor toolbar buttons already define their own tool-btn rules
    in layout-editor.html; this just ensures icon + label spacing matches
    everywhere else even if that inline stylesheet is later extracted. */
-.tool-btn[data-icon-applied] svg { margin-left: 0; }
+.tool-btn[data-icon-applied] svg { margin-inline-start: 0; }
 
 /* Night mode: keep icon colour readable */
 body.night-mode .card-icon[data-icon-applied] { background: #1f2f52; color: #7db8e8; }

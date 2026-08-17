@@ -33,27 +33,29 @@
     const sidebarHTML = `
             <aside id="sidebar" class="${isCollapsed ? 'collapsed' : ''}">
                 <div id="sidebar-toggle-row">
-                    <span class="sidebar-app-name">${icon('logo')} أداة مراجعة OCR</span>
-                    <button id="toggle-sidebar" title="إخفاء الشريط الجانبي">${icon('collapseRTL')}</button>
+                    <span class="sidebar-app-name">${icon('logo')} <span data-i18n="app.name">أداة مراجعة OCR</span></span>
+                    <button id="toggle-sidebar" data-i18n-title="sidebar.hide" title="إخفاء الشريط الجانبي">${icon('collapseRTL')}</button>
                 </div>
                 <nav class="sidebar-nav">
-                    <a href="index.html" class="sidebar-link ${currentPath === 'index.html' ? 'active' : ''}">${icon('home')}<span>الرئيسية</span></a>
-                    <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">${icon('projects')}<span>المشاريع</span></a>
-                    <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">${icon('plus')}<span>مشروع جديد</span></a>
-                    <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">${icon('settings')}<span>الإعدادات</span></a>
-                    <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">${icon('exit')}<span>خروج</span></a>
+                    <a href="index.html" class="sidebar-link ${currentPath === 'index.html' ? 'active' : ''}">${icon('home')}<span data-i18n="nav.home">الرئيسية</span></a>
+                    <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">${icon('projects')}<span data-i18n="nav.projects">المشاريع</span></a>
+                    <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">${icon('plus')}<span data-i18n="nav.newProject">مشروع جديد</span></a>
+                    <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">${icon('settings')}<span data-i18n="nav.settings">الإعدادات</span></a>
+                    <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">${icon('exit')}<span data-i18n="nav.exit">خروج</span></a>
                 </nav>
                 <div class="sidebar-project-info" id="sidebar-project-info" style="${currentPath.includes('review') ? '' : 'display:none;'}">
                     <div class="sidebar-project-title" id="sidebar-proj-title"></div>
                     <div class="sidebar-project-meta" id="sidebar-proj-meta"></div>
                 </div>
             </aside>
-            <button id="sidebar-collapsed-tab" class="${isCollapsed ? '' : 'hidden'}" title="فتح الشريط الجانبي">${icon('expandRTL')}</button>
+            <button id="sidebar-collapsed-tab" class="${isCollapsed ? '' : 'hidden'}" data-i18n-title="sidebar.show" title="فتح الشريط الجانبي">${icon('expandRTL')}</button>
         `;
 
     document.body.classList.add('has-sidebar');
     document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
-    return document.getElementById('sidebar');
+    const injected = document.getElementById('sidebar');
+    if (globalThis.AppI18n) globalThis.AppI18n.applyDocumentLanguage();
+    return injected;
   }
 
   function bindSidebarEvents() {
@@ -102,7 +104,7 @@
     if (exitBtn && !exitBtn._sidebarBound) {
       exitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (confirm('هل أنت متأكد من الخروج من التطبيق؟')) {
+        if (confirm(window.AppI18n.t('sidebar.exitConfirm'))) {
           if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.close_app === 'function') {
             window.pywebview.api.close_app();
           } else {

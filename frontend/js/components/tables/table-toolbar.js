@@ -23,38 +23,40 @@ const TABLE_ICONS = {
     fill: `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;pointer-events:none;"><path d="M19 11l-8-8-8.5 8.5a2 2 0 0 0 0 2.8l5.7 5.7a2 2 0 0 0 2.8 0L19 11z"/><path d="M5 14h10"/><path d="M17 17c0 1.1.9 3 2 3s2-1.9 2-3c0-1.5-2-3.5-2-3.5S17 15.5 17 17z"/></svg>`,
 };
 
+const tableText = (key) => window.AppI18n?.t(key) || key;
+
 const TABLE_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" id="tb-insert-table" title="إدراج جدول">${TABLE_ICONS.insertTable}</button>
-    <button class="toolbar-icon-btn" id="tb-text-to-table" title="تحويل النص إلى جدول">${TABLE_ICONS.textToTable}</button>
-    <button class="toolbar-icon-btn" id="tb-table-to-text" title="تحويل الجدول إلى نص">${TABLE_ICONS.tableToText}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-table" title=tableText('table.insert')>${TABLE_ICONS.insertTable}</button>
+    <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
+    <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-insert-row-above" title="إدراج صف لأعلى">${TABLE_ICONS.insertRowAbove}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-row-below" title="إدراج صف لأسفل">${TABLE_ICONS.insertRowBelow}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-col-right" title="إدراج عمود لليمين">${TABLE_ICONS.insertColRight}</button>
-    <button class="toolbar-icon-btn" id="tb-insert-col-left" title="إدراج عمود لليسار">${TABLE_ICONS.insertColLeft}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-row-above" title="${tableText('table.rowAbove')}">${TABLE_ICONS.insertRowAbove}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-row-below" title="${tableText('table.rowBelow')}">${TABLE_ICONS.insertRowBelow}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-col-right" title="${tableText('table.colRight')}">${TABLE_ICONS.insertColRight}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-col-left" title="${tableText('table.colLeft')}">${TABLE_ICONS.insertColLeft}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-merge-cells" title="دمج الخلايا المحددة">${TABLE_ICONS.merge}</button>
-    <button class="toolbar-icon-btn" id="tb-split-cell" title="تقسيم الخلية">${TABLE_ICONS.split}</button>
+    <button class="toolbar-icon-btn" id="tb-merge-cells" title="${tableText('table.merge')}">${TABLE_ICONS.merge}</button>
+    <button class="toolbar-icon-btn" id="tb-split-cell" title="${tableText('table.split')}">${TABLE_ICONS.split}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-borders" title="حدود الجدول">${TABLE_ICONS.borders}</button>
-    <label class="toolbar-icon-color-label" title="لون تعبئة الخلية">
+    <button class="toolbar-icon-btn" id="tb-borders" title="${tableText('table.borders')}">${TABLE_ICONS.borders}</button>
+    <label class="toolbar-icon-color-label" title="${tableText('table.fill')}">
         ${TABLE_ICONS.fill}
         <span class="toolbar-icon-color-bar" id="tb-fill-color-bar" style="background:#fde68a;"></span>
         <input type="color" id="tb-fill-color" value="#fde68a">
     </label>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-valign-top" title="محاذاة عمودية لأعلى">${TABLE_ICONS.valignTop}</button>
-    <button class="toolbar-icon-btn" id="tb-valign-middle" title="محاذاة عمودية للوسط">${TABLE_ICONS.valignMiddle}</button>
-    <button class="toolbar-icon-btn" id="tb-valign-bottom" title="محاذاة عمودية لأسفل">${TABLE_ICONS.valignBottom}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-top" title="${tableText('table.top')}">${TABLE_ICONS.valignTop}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-middle" title="${tableText('table.middle')}">${TABLE_ICONS.valignMiddle}</button>
+    <button class="toolbar-icon-btn" id="tb-valign-bottom" title="${tableText('table.bottom')}">${TABLE_ICONS.valignBottom}</button>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn" id="tb-delete-row" title="حذف الصف" style="color: #ef4444;">${TABLE_ICONS.deleteRow}</button>
-    <button class="toolbar-icon-btn" id="tb-delete-col" title="حذف العمود" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
-    <button class="toolbar-icon-btn" id="tb-delete-table" title="حذف الجدول بالكامل" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-row" title="${tableText('table.deleteRow')}" style="color: #ef4444;">${TABLE_ICONS.deleteRow}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-col" title="${tableText('table.deleteCol')}" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
+    <button class="toolbar-icon-btn" id="tb-delete-table" title="${tableText('table.delete')}" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
 `;
 
 // ── Helpers shared between the toolbar buttons and the context menu ─────
@@ -118,9 +120,9 @@ function doSplit(cell) {
     if (!cell) return;
     const table = cell.closest('table');
     window.AestheticDialog.show(
-        "تقسيم الخلية",
-        `<div class="aes-group"><label>عدد الأعمدة داخل هذه الخلية:</label><input type="number" id="split-c" value="2" min="1"></div>
-         <div class="aes-group"><label>عدد الصفوف داخل هذه الخلية:</label><input type="number" id="split-r" value="1" min="1"></div>`,
+        "${tableText('table.split')}",
+        `<div class="aes-group"><label>${tableText('table.splitCols')}</label><input type="number" id="split-c" value="2" min="1"></div>
+         <div class="aes-group"><label>${tableText('table.splitRows')}</label><input type="number" id="split-r" value="1" min="1"></div>`,
         (modal) => {
             const sc = parseInt(modal.querySelector('#split-c').value) || 1;
             const sr = parseInt(modal.querySelector('#split-r').value) || 1;
@@ -203,18 +205,18 @@ function doDeleteTable(cell) {
 
 function bordersDialog(cells) {
     window.AestheticDialog.show(
-        "حدود الجدول",
-        `<div class="aes-group"><label>سُمك الحد (px):</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
-         <div class="aes-group"><label>نمط الحد:</label>
+        "${tableText('table.borders')}",
+        `<div class="aes-group"><label>${tableText('table.borderWidth')}</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
+         <div class="aes-group"><label>${tableText('table.borderStyle')}</label>
             <select id="border-style">
-                <option value="solid">متصل</option>
-                <option value="dashed">متقطع</option>
-                <option value="dotted">منقط</option>
-                <option value="double">مزدوج</option>
-                <option value="none">بدون حدود</option>
+                <option value="solid">${tableText('table.solid')}</option>
+                <option value="dashed">${tableText('table.dashed')}</option>
+                <option value="dotted">${tableText('table.dotted')}</option>
+                <option value="double">${tableText('table.double')}</option>
+                <option value="none">${tableText('table.none')}</option>
             </select>
          </div>
-         <div class="aes-group"><label>لون الحد:</label><input type="color" id="border-color" value="#cbd5e1"></div>`,
+         <div class="aes-group"><label>${tableText('table.borderColor')}</label><input type="color" id="border-color" value="#cbd5e1"></div>`,
         (modal) => {
             const width = parseInt(modal.querySelector('#border-width').value) || 0;
             const style = modal.querySelector('#border-style').value;
@@ -267,23 +269,23 @@ const TableContextMenu = {
             `<div class="ctx-item ${opts.danger ? 'danger' : ''} ${opts.disabled ? 'disabled' : ''}" data-action="${action}">${icon} <span>${label}</span></div>`;
 
         this.menuEl.innerHTML = [
-            item('insertRowAbove', TABLE_ICONS.insertRowAbove, 'إدراج صف لأعلى'),
-            item('insertRowBelow', TABLE_ICONS.insertRowBelow, 'إدراج صف لأسفل'),
-            item('insertColRight', TABLE_ICONS.insertColRight, 'إدراج عمود لليمين'),
-            item('insertColLeft', TABLE_ICONS.insertColLeft, 'إدراج عمود لليسار'),
+            item('insertRowAbove', TABLE_ICONS.insertRowAbove, tableText('table.rowAbove')),
+            item('insertRowBelow', TABLE_ICONS.insertRowBelow, tableText('table.rowBelow')),
+            item('insertColRight', TABLE_ICONS.insertColRight, tableText('table.colRight')),
+            item('insertColLeft', TABLE_ICONS.insertColLeft, tableText('table.colLeft')),
             '<hr>',
-            item('mergeCells', TABLE_ICONS.merge, 'دمج الخلايا المحددة', { disabled: !multi }),
-            item('splitCell', TABLE_ICONS.split, 'تقسيم الخلية', { disabled: multi }),
+            item('mergeCells', TABLE_ICONS.merge, tableText('table.merge'), { disabled: !multi }),
+            item('splitCell', TABLE_ICONS.split, tableText('table.split'), { disabled: multi }),
             '<hr>',
-            item('borders', TABLE_ICONS.borders, 'حدود...'),
-            item('fill', iconSm(TABLE_ICONS.fill), 'لون التعبئة...'),
-            item('valignTop', iconSm(TABLE_ICONS.valignTop), 'محاذاة لأعلى'),
-            item('valignMiddle', iconSm(TABLE_ICONS.valignMiddle), 'محاذاة للوسط'),
-            item('valignBottom', iconSm(TABLE_ICONS.valignBottom), 'محاذاة لأسفل'),
+            item('borders', TABLE_ICONS.borders, tableText('table.borders') + '...'),
+            item('fill', iconSm(TABLE_ICONS.fill), tableText('table.fillTitle') + '...'),
+            item('valignTop', iconSm(TABLE_ICONS.valignTop), tableText('table.top')),
+            item('valignMiddle', iconSm(TABLE_ICONS.valignMiddle), tableText('table.middle')),
+            item('valignBottom', iconSm(TABLE_ICONS.valignBottom), tableText('table.bottom')),
             '<hr>',
-            item('deleteRow', TABLE_ICONS.deleteRow, 'حذف الصف', { danger: true }),
-            item('deleteCol', TABLE_ICONS.deleteCol, 'حذف العمود', { danger: true }),
-            item('deleteTable', TABLE_ICONS.deleteTable, 'حذف الجدول بالكامل', { danger: true }),
+            item('deleteRow', TABLE_ICONS.deleteRow, tableText('table.deleteRow'), { danger: true }),
+            item('deleteCol', TABLE_ICONS.deleteCol, tableText('table.deleteCol'), { danger: true }),
+            item('deleteTable', TABLE_ICONS.deleteTable, tableText('table.delete'), { danger: true }),
         ].join('');
 
         this.menuEl.querySelectorAll('.ctx-item').forEach(el => {
@@ -306,8 +308,8 @@ const TableContextMenu = {
             case 'splitCell': doSplit(cell); break;
             case 'borders': bordersDialog(cells); break;
             case 'fill':
-                window.AestheticDialog.show("لون التعبئة",
-                    `<div class="aes-group"><label>اختر لون الخلفية:</label><input type="color" id="fill-color" value="#fde68a"></div>`,
+                window.AestheticDialog.show(tableText('table.fillTitle'),
+                    `<div class="aes-group"><label>${tableText('table.chooseBackground')}</label><input type="color" id="fill-color" value="#fde68a"></div>`,
                     (modal) => applyFill(cells, modal.querySelector('#fill-color').value));
                 break;
             case 'valignTop': applyValign(cells, 'top'); break;
@@ -344,11 +346,11 @@ const TableToolbar = {
 
         container.querySelector('#tb-insert-table')?.addEventListener('click', () => {
             const target = window.lastFocusedEditable;
-            if (!target) { alert("انقر داخل مربع النص أولاً"); return; }
+            if (!target) { alert(tableText('table.clickText')); return; }
             window.AestheticDialog.show(
-                "إدراج جدول",
-                `<div class="aes-group"><label>عدد الأعمدة:</label><input type="number" id="tbl-cols" value="3" min="1"></div>
-                 <div class="aes-group"><label>عدد الصفوف:</label><input type="number" id="tbl-rows" value="3" min="1"></div>`,
+                tableText('table.insert'),
+                `<div class="aes-group"><label>${tableText('table.columnCount')}</label><input type="number" id="tbl-cols" value="3" min="1"></div>
+                 <div class="aes-group"><label>${tableText('table.rowCount')}</label><input type="number" id="tbl-rows" value="3" min="1"></div>`,
                 (modal) => {
                     target.focus();
                     const cols = parseInt(modal.querySelector('#tbl-cols').value) || 3;
@@ -379,12 +381,12 @@ const TableToolbar = {
             if (!target) return;
             const selection = window.getSelection();
             const text = selection.toString();
-            if (!text.trim()) { alert("يرجى تحديد النص المراد تحويله أولاً."); return; }
+            if (!text.trim()) { alert(tableText('table.selectText')); return; }
 
             window.AestheticDialog.show(
-                "تحويل النص لجدول",
+                tableText('table.textToTable'),
                 `<div class="aes-group">
-                    <label>الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):</label>
+                    <label>${tableText('table.separatorHint')}</label>
                     <input type="text" id="tbl-sep" value="-">
                 </div>`,
                 (modal) => {
@@ -421,9 +423,9 @@ const TableToolbar = {
 
             if (table) {
                 window.AestheticDialog.show(
-                    "تحويل الجدول إلى نص",
+                    "${tableText('table.tableToText')}",
                     `<div class="aes-group">
-                        <label>الرمز الفاصل بين الأعمدة (مثال: - أو , أو مسافة):</label>
+                        <label>${tableText('table.separatorHint')}</label>
                         <input type="text" id="tbl-sep-to-text" value=" - ">
                     </div>`,
                     (modal) => {
@@ -437,26 +439,26 @@ const TableToolbar = {
                     }
                 );
             } else {
-                alert("يرجى وضع المؤشر داخل جدول أولاً.");
+                alert(tableText('table.clickTable'));
             }
         });
 
         container.querySelector('#tb-merge-cells')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (cells.length < 2) { alert("يرجى تحديد أكثر من خلية أولاً (اسحب الماوس عبر الخلايا)."); return; }
+            if (cells.length < 2) { alert(tableText('table.selectMultiple')); return; }
             doMerge(cells);
         });
 
         container.querySelector('#tb-split-cell')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
             const cell = cells[0] || window.getSelection().anchorNode?.parentNode?.closest('td, th');
-            if (!cell) { alert("يرجى النقر داخل خلية أولاً."); return; }
+            if (!cell) { alert(tableText('table.clickCell')); return; }
             doSplit(cell);
         });
 
         container.querySelector('#tb-borders')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى تحديد خلية أو أكثر أولاً."); return; }
+            if (!cells.length) { alert(tableText('table.selectCells')); return; }
             bordersDialog(cells);
         });
 
@@ -471,7 +473,7 @@ const TableToolbar = {
         ['top', 'middle', 'bottom'].forEach(pos => {
             container.querySelector(`#tb-valign-${pos}`)?.addEventListener('click', () => {
                 const { cells } = currentTableTarget();
-                if (!cells.length) { alert("يرجى تحديد خلية أو أكثر أولاً."); return; }
+                if (!cells.length) { alert(tableText('table.selectCells')); return; }
                 applyValign(cells, pos);
             });
         });
@@ -480,39 +482,39 @@ const TableToolbar = {
         // ── Rows & Cols Insertion Buttons ──
         container.querySelector('#tb-insert-row-above')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertRowMatching(cells[0], 'above');
         });
         container.querySelector('#tb-insert-row-below')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertRowMatching(cells[0], 'below');
         });
         container.querySelector('#tb-insert-col-right')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertColMatching(cells[0], 'right');
         });
         container.querySelector('#tb-insert-col-left')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل خلية أولاً أو تحديدها."); return; }
+            if (!cells.length) { alert(tableText('table.clickOrSelectCell')); return; }
             insertColMatching(cells[0], 'left');
         });
 
         // ── Deletion Buttons ──
         container.querySelector('#tb-delete-row')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الخلية المراد حذف صفها."); return; }
+            if (!cells.length) { alert(tableText('table.clickRowCell')); return; }
             doDeleteRow(cells[0]);
         });
         container.querySelector('#tb-delete-col')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الخلية المراد حذف عمودها."); return; }
+            if (!cells.length) { alert(tableText('table.clickColCell')); return; }
             doDeleteCol(cells[0]);
         });
         container.querySelector('#tb-delete-table')?.addEventListener('click', () => {
             const { cells } = currentTableTarget();
-            if (!cells.length) { alert("يرجى النقر داخل الجدول المراد حذفه."); return; }
+            if (!cells.length) { alert(tableText('table.clickDeleteTable')); return; }
             doDeleteTable(cells[0]);
         });
 
