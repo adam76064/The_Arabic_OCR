@@ -151,13 +151,14 @@ async function handleTableCategoryChangeInLayout(idx, newCat, oldCat) {
     }
 
     const catNameAR = getCategoryNameAR(newCat);
+    const i18n = (key, values) => window.AppI18n.t(key, values);
     const modalContent = `
         <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 16px;">
-            هل ترغب في الكشف التلقائي عن تخطيط الهيكل (الصفوف والأعمدة) للكتلة المحددة كـ <strong>"${catNameAR}"</strong> باستخدام التعرف الضوئي؟
+            ${i18n('review.autoTableMessage', { category: catNameAR })}
         </div>
         <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; cursor: pointer; user-select: none;">
             <input type="checkbox" id="chk-remember-table-parse-layout" style="accent-color: #2563eb;">
-            <span>تذكر اختياري وعدم السؤال مرة أخرى</span>
+            <span>${i18n('review.rememberChoice')}</span>
         </label>
     `;
 

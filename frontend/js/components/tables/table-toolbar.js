@@ -277,7 +277,7 @@ const TableContextMenu = {
             item('mergeCells', TABLE_ICONS.merge, tableText('table.merge'), { disabled: !multi }),
             item('splitCell', TABLE_ICONS.split, tableText('table.split'), { disabled: multi }),
             '<hr>',
-            item('borders', TABLE_ICONS.borders, 'حدود...'),
+            item('borders', TABLE_ICONS.borders, tableText('table.borders') + '...'),
             item('fill', iconSm(TABLE_ICONS.fill), tableText('table.fillTitle') + '...'),
             item('valignTop', iconSm(TABLE_ICONS.valignTop), tableText('table.top')),
             item('valignMiddle', iconSm(TABLE_ICONS.valignMiddle), tableText('table.middle')),

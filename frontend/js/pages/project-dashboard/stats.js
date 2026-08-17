@@ -111,10 +111,10 @@ function renderDashboardStats() {
             <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:12px;">${dashboardStatsText('dashStats.map')}</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;">${gridCells}</div>
             <div style="display:flex;gap:14px;margin-top:14px;font-size:12px;color:#888;">
-                <span><span style="display:inline-block;width:12px;height:12px;background:#eee;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #ddd;"></span>${dashboardStatsText('dashStats.waitingOcr')}</span>
-                <span><span style="display:inline-block;width:12px;height:12px;background:#aed6f1;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #99c9e8;"></span>${dashboardStatsText('dashStats.ocrPresent')}</span>
-                <span><span style="display:inline-block;width:12px;height:12px;background:#bae6fd;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #7dd3fc;"></span>${dashboardStatsText('dashStats.laidOut')}</span>
-                <span><span style="display:inline-block;width:12px;height:12px;background:#a9dfbf;border-radius:2px;vertical-align:middle;margin-left:4px;border:1px solid #8cc9a5;"></span>تمت المراجَعة</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#eee;border-radius:2px;vertical-align:middle;margin-inline-end:4px;border:1px solid #ddd;"></span>${dashboardStatsText('dashStats.waitingOcr')}</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#aed6f1;border-radius:2px;vertical-align:middle;margin-inline-end:4px;border:1px solid #99c9e8;"></span>${dashboardStatsText('dashStats.ocrPresent')}</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#bae6fd;border-radius:2px;vertical-align:middle;margin-inline-end:4px;border:1px solid #7dd3fc;"></span>${dashboardStatsText('dashStats.laidOut')}</span>
+                <span><span style="display:inline-block;width:12px;height:12px;background:#a9dfbf;border-radius:2px;vertical-align:middle;margin-inline-end:4px;border:1px solid #8cc9a5;"></span>${window.AppI18n.t('dashStats.reviewed')}</span>
             </div>
         </div>
         ${userRows ? `
