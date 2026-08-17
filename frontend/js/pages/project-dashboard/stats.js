@@ -98,7 +98,7 @@ function renderDashboardStats() {
                 <div style="height:8px;background:#eee;border-radius:4px;margin-top:10px;overflow:hidden;">
                     <div style="width:${pct}%;height:100%;background:#27ae60;border-radius:4px;transition:width .5s;"></div>
                 </div>
-                <div style="font-size:12px;color:#888;margin-top:6px;">${reviewed} من ${total} صفحة مراجَعة</div>
+                <div style="font-size:12px;color:#888;margin-top:6px;">${window.AppI18n.t('dashStats.reviewedCount', { reviewed, total })}</div>
             </div>
             <div style="background:white;border-radius:10px;padding:20px;border:1px solid #e0e0e0;box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
                 <div style="font-size:13px;color:#888;margin-bottom:10px;">${dashboardStatsText('dashStats.processing')}</div>
