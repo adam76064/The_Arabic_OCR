@@ -695,6 +695,12 @@ window.AppLocales.de = {
     'ocr.blockScan': 'Aktuelle Blöcke scannen (BBoxes)',
     'ocr.lensDescription': 'Die Seite wird an Google Lens gesendet; Text und Begrenzungsrahmen werden automatisch erstellt.',
     'ocr.rememberApi': 'API-Daten auf diesem Gerät speichern',
-    'ocr.smartChunk': 'Intelligente Aufteilung ist aktiviert: Große Dateien werden für stabile Verarbeitung automatisch geteilt.'
+    'ocr.smartChunk': 'Intelligente Aufteilung ist aktiviert: Große Dateien werden für stabile Verarbeitung automatisch geteilt.',
+    'layout.selectTitle': 'Blöcke auswählen und Tabellen intern bearbeiten',
+    'layout.moveTitle': 'Gesamte Blöcke verschieben und skalieren',
+    'layout.drawTitle': 'Neuen Textblock zeichnen',
+    'layout.orderTitle': 'Blöcke der Reihe nach anklicken, um sie zu ordnen',
+    'layout.mergeTitle': 'Ausgewählte Blöcke zusammenführen',
+    'layout.deleteTitle': 'Ausgewählte Blöcke löschen'
   }
 };

@@ -695,6 +695,12 @@ window.AppLocales.en = {
     'ocr.blockScan': 'Scan current blocks (BBoxes)',
     'ocr.lensDescription': 'The page will be sent to Google Lens; text and bounding boxes will be built automatically.',
     'ocr.rememberApi': 'Remember API details on this device',
-    'ocr.smartChunk': 'Smart chunking is enabled: large files are split automatically for stable processing.'
+    'ocr.smartChunk': 'Smart chunking is enabled: large files are split automatically for stable processing.',
+    'layout.selectTitle': 'Select blocks and edit tables internally',
+    'layout.moveTitle': 'Move and resize entire blocks',
+    'layout.drawTitle': 'Draw a new text block',
+    'layout.orderTitle': 'Click blocks in sequence to order them',
+    'layout.mergeTitle': 'Merge selected blocks',
+    'layout.deleteTitle': 'Delete selected blocks'
   }
 };
