@@ -182,6 +182,6 @@ Open source. Feel free to use, modify, and contribute.
 - Rebuilt & organized by Arena AI Agent (Claude, GPT, etc.)
 - Quran dataset `data/Quran.json` – Uthmani text
 - Table detection algorithms based on classic computer vision (blob, column finding, row grouping)
-- Thanks for Roan for guiding me into refactoring the original Scan-tailor advanced to work with python. (http://github.com/roangeorge)
+- Thanks to Roan for guiding me into refactoring the original Scan-tailor advanced to work with python. (http://github.com/roangeorge)
 
 If this tool helped you digitize an Arabic book, please star ⭐ the repo!
