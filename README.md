@@ -39,6 +39,8 @@ You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engine
   
 - **Interface languages:** Arabic (RTL), English (LTR), and German / Deutsch (LTR). Select a language in **Settings → Interface language**; your choice is saved with the global app settings.
 
+- **Light & dark appearance:** Choose **Settings → Application theme** to use light or dark mode across every application page. The choice is saved globally and restored when the app opens.
+
 - **Consistent interface:** every toolbar, the sidebar, the dashboard, and the layout editor share one SVG icon language (stroke-based, matching the review page's formatting/table toolbars) — see `frontend/js/icons.js` and [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) for details.
 
 

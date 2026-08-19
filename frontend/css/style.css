@@ -51,9 +51,12 @@ body.night-mode .section-hint { color:#999; }
 body.night-mode .form-group label { color: var(--color-text-night); }
 body.night-mode .form-group input[type=text],
 body.night-mode .form-group input[type=number],
+body.night-mode .form-group input[type=password],
+body.night-mode .form-group textarea,
 body.night-mode input[type=text],
 body.night-mode input[type=number],
 body.night-mode input[type=password],
+body.night-mode textarea,
 body.night-mode select {
   background:#0f3460; border-color: var(--color-border-night); color: var(--color-text-night);
 }

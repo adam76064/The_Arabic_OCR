@@ -54,6 +54,15 @@
             text-transform: uppercase;
         }
         .shortcut-category-title:first-child { margin-top: 0; }
+        body.night-mode .shortcut-row { border-color: var(--color-border); }
+        body.night-mode .shortcut-label { color: var(--color-text); }
+        body.night-mode .shortcut-key-btn,
+        body.night-mode .shortcut-reset-btn {
+            background: var(--color-bg-muted);
+            border-color: var(--color-border);
+            color: var(--color-text);
+        }
+        body.night-mode .shortcut-category-title { color: var(--color-text-muted); }
     </style>
 </head>
 <body class="home-page">
@@ -95,6 +104,16 @@
                     <option value="ar" data-i18n="language.ar">العربية</option>
                     <option value="en" data-i18n="language.en">English</option>
                     <option value="de" data-i18n="language.de">Deutsch</option>
+                </select>
+            </div>
+            <div class="setting-row language-setting-row" style="margin-top:16px;">
+                <div>
+                    <label for="theme-mode" class="setting-label" data-i18n="settings.theme">مظهر التطبيق</label>
+                    <div class="section-hint" data-i18n="settings.themeHint">اختر الوضع الفاتح أو الليلي. يُطبّق اختيارك على جميع صفحات التطبيق.</div>
+                </div>
+                <select id="theme-mode" aria-label="Application theme">
+                    <option value="light" data-i18n="settings.themeLight">فاتح</option>
+                    <option value="dark" data-i18n="settings.themeDark">ليلي</option>
                 </select>
             </div>
         </div>
@@ -212,6 +231,7 @@
     <script src="js/components/notifications.js"></script>
     <script src="js/components/sidebar.js"></script>
 <script src="js/pages/settings.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/i18n/locales/ar.js"></script>
     <script src="js/i18n/locales/en.js"></script>
     <script src="js/i18n/locales/de.js"></script>
@@ -228,6 +248,7 @@
             document.getElementById('auto-save-layout').checked = window.__appSettings.autoSaveLayout === true;
             document.getElementById('show-iv').checked = !!window.__appSettings.showIV;
             document.getElementById('show-cv').checked = !!window.__appSettings.showCV;
+            document.getElementById('theme-mode').value = window.AppTheme?.getTheme() || 'light';
             document.getElementById('ui-zoom').value = window.__appSettings.uiZoom;
             document.getElementById('zoom-val').textContent = Math.round(window.__appSettings.uiZoom * 100) + '%';
             document.getElementById('history-limit').value = window.__appSettings.historyLimit || 50;
@@ -385,6 +406,8 @@
             window.__appSettings.autoSaveLayout = document.getElementById('auto-save-layout').checked;
             window.__appSettings.showIV = document.getElementById('show-iv').checked;
             window.__appSettings.showCV = document.getElementById('show-cv').checked;
+            window.__appSettings.theme = document.getElementById('theme-mode').value;
+            window.AppTheme?.applyTheme(window.__appSettings.theme);
             window.__appSettings.uiZoom = parseFloat(document.getElementById('ui-zoom').value);
             window.__appSettings.historyLimit = Math.max(5, parseInt(document.getElementById('history-limit').value) || 50);
             window.__appSettings.keyboardShortcuts = Object.assign({}, pendingShortcuts);

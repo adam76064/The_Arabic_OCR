@@ -13,6 +13,8 @@ window.AppLocales.de = {
     'settings.back': 'Zurück', 'settings.interface': 'Oberfläche', 'settings.language': 'Sprache der Oberfläche',
     'settings.languageHint': 'Wählen Sie die Anwendungssprache. Die Schreibrichtung der Oberfläche wird für Rechts-nach-Links- und Links-nach-Rechts-Sprachen automatisch angepasst.',
     'settings.languageSaved': 'Sprache der Oberfläche geändert und gespeichert.',
+    'settings.theme': 'Erscheinungsbild', 'settings.themeHint': 'Wählen Sie den hellen oder dunklen Modus. Ihre Auswahl gilt für alle Seiten der Anwendung.',
+    'settings.themeLight': 'Hell', 'settings.themeDark': 'Dunkel',
     'language.ar': 'Arabisch', 'language.en': 'Englisch', 'language.de': 'Deutsch',
     'category.Text': 'Text',
     'category.Table': 'Tabelle',

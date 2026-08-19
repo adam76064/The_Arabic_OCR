@@ -13,6 +13,8 @@ window.AppLocales.en = {
     'settings.back': 'Back', 'settings.interface': 'Interface', 'settings.language': 'Interface language',
     'settings.languageHint': 'Choose the application language. The interface direction changes automatically for right-to-left and left-to-right languages.',
     'settings.languageSaved': 'Interface language changed and saved.',
+    'settings.theme': 'Application theme', 'settings.themeHint': 'Choose light or dark mode. Your selection is applied across every application page.',
+    'settings.themeLight': 'Light', 'settings.themeDark': 'Dark',
     'language.ar': 'Arabic', 'language.en': 'English', 'language.de': 'German',
     'category.Text': 'Text',
     'category.Table': 'Table',

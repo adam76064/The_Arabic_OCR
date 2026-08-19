@@ -182,6 +182,7 @@ The_Arabic_OCR/
 │       ├── core/
 │       │   ├── api.js               # AppApi.ready() promise, AppApi.call(method,...), wrappers getProjects etc.
 │       │   ├── store.js             # AppStore.get/set/subscribe, project/pageIndex/settings
+│       │   ├── theme.js             # AppTheme: global light/dark theme, local cache, persisted settings sync
 │       │   ├── utils.js             # escapeHtml, debounce, formatBytes, sleep
 │       │   └── events.js            # Default onPdfProgress/onPaddleProgress/onLanUpdate loggers if page didn't set
 │       ├── components/
@@ -578,7 +579,7 @@ Replaces old 1068-line monolith. Composition:
 
 #### `frontend/css/tokens.css`
 Single source of truth:
-- Colors: `--color-primary #3498db`, `--color-primary-dark #2980b9`, `--color-success #27ae60`, `--color-danger #e74c3c`, `--color-warning #f39c12`, `--color-bg #f8fafc`, `--color-surface #fff`, `--color-border #e0e0e0`, `--color-sidebar #1e293b`, etc. Night variants
+- Colors: `--color-primary #3498db`, `--color-primary-dark #2980b9`, `--color-success #27ae60`, `--color-danger #e74c3c`, `--color-warning #f39c12`, `--color-bg #f8fafc`, `--color-surface #fff`, `--color-border #e0e0e0`, `--color-sidebar #1e293b`, etc. `:root[data-theme="dark"]` overrides semantic color and shadow tokens for global dark mode; use tokens rather than hard-coded light surfaces in new UI.
 - Typography: `--font-ar` Arabic stack, `--text-xs 11px` … `--text-2xl 28px`
 - Spacing: `--space-xs 4px` … `--space-2xl 32px`
 - Radius: `--radius-sm 4px` … `--radius-full 999px`
@@ -926,6 +927,7 @@ projects/
 {
   "user_name": "Custom display name",
   "blockFontSize": 14,
+  "theme": "light",
   "autoSaveReview": true,
   "autoMarkReviewed": true,
   "reviewSideBySideMode": false,
@@ -935,6 +937,8 @@ projects/
   "deleteProjectFiles": true
 }
 ```
+
+`theme` is either `"light"` (the default) or `"dark"`. `frontend/js/core/theme.js` applies the value as `html[data-theme]` and the legacy-compatible `body.night-mode` class. It also caches the theme in `localStorage.appTheme` to prevent a light-theme flash before pywebview settings load. Load `theme.js` after `pages/settings.js` in every HTML entry point. New UI should use CSS tokens so it inherits dark mode automatically; add a focused dark override only for unavoidable hard-coded or canvas-specific surfaces.
 
 ---
 

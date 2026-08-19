@@ -13,6 +13,8 @@ window.AppLocales.ar = {
     'settings.back': 'عودة', 'settings.interface': 'الواجهة', 'settings.language': 'لغة الواجهة',
     'settings.languageHint': 'اختر لغة التطبيق. يتغير اتجاه الواجهة تلقائياً للغات من اليمين إلى اليسار أو من اليسار إلى اليمين.',
     'settings.languageSaved': 'تم تغيير لغة الواجهة وحفظ اختيارك.',
+    'settings.theme': 'مظهر التطبيق', 'settings.themeHint': 'اختر الوضع الفاتح أو الليلي. يُطبّق اختيارك على جميع صفحات التطبيق.',
+    'settings.themeLight': 'فاتح', 'settings.themeDark': 'ليلي',
     'language.ar': 'العربية', 'language.en': 'English', 'language.de': 'Deutsch',
     'category.Text': 'نص عادي',
     'category.Table': 'جدول',

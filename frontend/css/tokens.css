@@ -62,3 +62,22 @@
   --toolbar-height: 52px;
   --block-font-default: 14px;
 }
+
+/* Apply dark mode through semantic tokens. The body.night-mode class remains
+   available for legacy page-specific rules while new UI should use tokens. */
+:root[data-theme="dark"] {
+  --color-bg: #111827;
+  --color-bg-muted: #1f2937;
+  --color-surface: #182235;
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --color-text: #e5e7eb;
+  --color-text-muted: #b6c2d2;
+  --color-text-faint: #94a3b8;
+  --color-sidebar: #0f172a;
+  --color-sidebar-hover: #24324a;
+  --color-sidebar-active: #24324a;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.28);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.38);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,0.5);
+}
