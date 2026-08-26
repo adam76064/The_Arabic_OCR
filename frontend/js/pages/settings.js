@@ -37,6 +37,7 @@ This is the required structure:
 }`;
 
 window.__appSettings = window.__appSettings || {
+    theme: 'auto',
     autoMarkReviewed: true,
     autoSaveReview: false, 
     autoSaveLayout: false, 

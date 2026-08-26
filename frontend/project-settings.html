@@ -9,20 +9,20 @@
     <link rel="stylesheet" href="css/home.css">
     <style>
         .settings-container { max-width: 980px; margin: 30px auto; padding: 0 20px; }
-        .settings-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .settings-card h3 { margin-top: 0; margin-bottom: 18px; color: #0f172a; font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        .settings-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-xs); }
+        .settings-card h3 { margin-top: 0; margin-bottom: 18px; color: var(--color-text); font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; }
         .settings-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
         .settings-row > div { flex: 1; min-width: 200px; }
         .grid-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-        .cloud-box { background: #fff8f1; padding: 16px; border-radius: 8px; border: 1px solid #fed7aa; }
+        .cloud-box { background: var(--color-bg); padding: 16px; border-radius: 8px; border: 1px solid var(--color-border); }
     </style>
 </head>
-<body class="home-page" style="background: #f8fafc;">
+<body class="home-page">
 
     <main class="settings-container" style="max-width: 980px; margin: 10px auto; padding: 0 20px;">
         <div class="sticky-nav-wrapper">
             <div class="compact-settings-nav">
-                <h1 id="page-title-display" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;" data-i18n="ps.loading">جاري التحميل...</h1>
+                <h1 id="page-title-display" style="font-size: 19px; margin: 0; color: var(--color-text); font-weight: 700;" data-i18n="ps.loading">جاري التحميل...</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <button type="button" id="btn-cancel" class="btn-plain" style="font-size: 13.5px;" data-i18n="ps.cancel">إلغاء</button>
                     <button type="submit" form="project-settings-form" id="btn-save" class="btn-success" style="font-size: 13px; padding: 6px 16px;" data-i18n="ps.save">حفظ الإعدادات</button>
@@ -103,10 +103,10 @@
                 <h3 data-i18n="ps.categoryFormatting">تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
                 <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.categoryHint">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</p>
                 
-                <div class="settings-row" style="align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 18px;">
+                <div class="settings-row" style="align-items: center; background: var(--color-bg); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: 18px;">
                     <div style="flex: 2;">
-                        <label style="font-weight: bold; font-size: 14px; color: #1e293b; display: block; margin-bottom: 4px;" data-i18n="ps.chooseCategory">اختر التصنيف للتعديل:</label>
-                        <select id="cat-fmt-select" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
+                        <label style="font-weight: bold; font-size: 14px; color: var(--color-text); display: block; margin-bottom: 4px;" data-i18n="ps.chooseCategory">اختر التصنيف للتعديل:</label>
+                        <select id="cat-fmt-select" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-strong); border-radius: 6px; font-size: 14px; background: var(--color-surface); color: var(--color-text);">
                             <option value="Text" data-i18n="category.Text">نص عادي (Text)</option>
                             <option value="Title" data-i18n="category.Title">عنوان رئيسي (Title)</option>
                             <option value="Section-header" data-i18n="category.Section-header">عنوان فرعي (Section-header)</option>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
 
-                <div id="cat-fmt-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                <div id="cat-fmt-panel" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
                     <div class="grid-options" style="margin-bottom: 16px;">
                         <label class="option-item"><input type="checkbox" id="cf-bold"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="ps.bold">غمق (Bold)</span></label>
                         <label class="option-item"><input type="checkbox" id="cf-italic"><span class="option-check"></span><span style="font-style: italic;" data-i18n="ps.italic">مائل (Italic)</span></label>

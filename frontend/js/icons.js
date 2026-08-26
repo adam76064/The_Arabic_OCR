@@ -1,12 +1,12 @@
 /**
  * js/icons.js — Centralised 100% SVG Vector Icon Registry (Zero Emojis).
  *
- * All icons are 18×18 stroke-based SVG vectors with stroke-width="1.75".
- * Uses `currentColor` to inherit dynamic colors and states automatically.
+ * All icons are stroke-based SVG vectors with stroke-width="1.75" or 2.
+ * Uses `currentColor` to inherit dynamic colors and theme states automatically.
  */
 (function (global) {
   const S = (d, extra) =>
-    `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;" ${extra || ''}>${d}</svg>`;
+    `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;" ${extra || ''}>${d}</svg>`;
 
   const icons = {
     // Navigation & App Shell
@@ -17,6 +17,7 @@
     settings:     S('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'),
     exit:         S('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>'),
     plus:         S('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
+    add:          S('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
     lan:          S('<path d="M5 12H3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2"/><path d="M19 12h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M12 2v4"/><circle cx="12" cy="9" r="3"/><path d="M6.5 15.5a7 7 0 0 0 11 0"/>'),
     network:      S('<path d="M5 12H3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2"/><path d="M19 12h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M12 2v4"/><circle cx="12" cy="9" r="3"/><path d="M6.5 15.5a7 7 0 0 0 11 0"/>'),
     logo:         S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>'),
@@ -25,8 +26,9 @@
     // Theme & Display
     sun:          S('<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'),
     moon:         S('<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'),
+    theme:        S('<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18v-18z"/>'),
 
-    // Core Domain Actions
+    // Core Actions
     ocr:          S('<path d="M4 7V4h3M17 4h3v3M4 17v3h3M17 20h3v-3"/><path d="M7 12h10M7 8h10M7 16h6"/>'),
     layout:       S('<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>'),
     preprocess:   S('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
@@ -56,11 +58,13 @@
     refresh:      S('<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>'),
     notif:        S('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'),
     pages:        S('<rect x="8" y="2" width="13" height="16" rx="2"/><path d="M4 6h2v14a2 2 0 0 0 2 2h10v2H6a2 2 0 0 1-2-2V6z"/>'),
+    link:         S('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'),
 
     // Typography & Formatting
     bold:         S('<path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>'),
     italic:       S('<line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/>'),
     underline:    S('<path d="M6 3v7a6 6 0 0 0 12 0V3"/><line x1="4" y1="21" x2="20" y2="21"/>'),
+    strike:       S('<line x1="4" y1="12" x2="20" y2="12"/><path d="M16 6C16 6 14.5 4 12 4C8.5 4 7 6 7 8C7 13 17 11 17 16C17 18.5 15 20 12 20C9 20 8 18 8 18"/>'),
     alignRight:   S('<line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="12" x2="9" y2="12"/><line x1="21" y1="18" x2="7" y2="18"/>'),
     alignCenter:  S('<line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/>'),
     alignLeft:    S('<line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/>'),
@@ -106,7 +110,7 @@
     filter:       S('<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'),
     command:      S('<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>'),
 
-    // Direction arrows
+    // Direction arrows & chevrons
     prev:         S('<polyline points="15 18 9 12 15 6"/>'),
     next:         S('<polyline points="9 18 15 12 9 6"/>'),
     chevronLeft:  S('<polyline points="15 18 9 12 15 6"/>'),
@@ -132,7 +136,7 @@
   const AppIcons = {
     /**
      * Returns the raw SVG string for `name`.
-     * Falls back to a clean document icon if not found.
+     * Falls back to a clean stroke icon if not found.
      */
     get(name, extraStyle = '') {
       if (!name) return '';
@@ -166,7 +170,7 @@
         const iconName = el.getAttribute('data-icon');
         if (iconName) {
           const svg = AppIcons.get(iconName);
-          if (el.classList.contains('btn-icon') || el.classList.contains('format-icon')) {
+          if (el.classList.contains('btn-icon') || el.classList.contains('format-icon') || el.classList.contains('settings-card-icon') || el.classList.contains('dropzone-icon') || el.classList.contains('card-icon')) {
             el.innerHTML = svg;
           } else if (!el.querySelector('svg')) {
             el.insertAdjacentHTML('afterbegin', svg + ' ');

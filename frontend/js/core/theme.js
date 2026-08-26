@@ -6,15 +6,27 @@
   function getStoredTheme() {
     try {
       const stored = localStorage.getItem('app_theme');
-      if (stored === 'dark' || stored === 'light') return stored;
+      if (stored === 'dark' || stored === 'light' || stored === 'auto') return stored;
       if (window.__appSettings?.darkMode || window.__appSettings?.nightMode) return 'dark';
     } catch (e) {}
+    return 'auto';
+  }
+
+  function resolveEffectiveTheme(themeSetting) {
+    if (themeSetting === 'dark') return 'dark';
+    if (themeSetting === 'light') return 'light';
+    // Auto / System preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
     return 'light';
   }
 
-  function applyTheme(theme) {
-    const isDark = theme === 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
+  function applyTheme(themeSetting) {
+    const effective = resolveEffectiveTheme(themeSetting);
+    const isDark = effective === 'dark';
+
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     document.documentElement.classList.toggle('night-mode', isDark);
     document.documentElement.classList.toggle('dark-mode', isDark);
     
@@ -24,21 +36,21 @@
     }
 
     try {
-      localStorage.setItem('app_theme', theme);
+      localStorage.setItem('app_theme', themeSetting);
       if (window.__appSettings) {
+        window.__appSettings.theme = themeSetting;
         window.__appSettings.darkMode = isDark;
         window.__appSettings.nightMode = isDark;
       }
     } catch (e) {}
 
-    updateToggleButtons(theme);
+    updateToggleButtons(isDark);
 
     // Dispatch global event for components needing redraws (e.g., canvas overlays)
-    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme, isDark } }));
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: effective, isDark, setting: themeSetting } }));
   }
 
-  function updateToggleButtons(theme) {
-    const isDark = theme === 'dark';
+  function updateToggleButtons(isDark) {
     const iconName = isDark ? 'sun' : 'moon';
     const labelKey = isDark ? 'theme.lightMode' : 'theme.darkMode';
     const labelText = window.AppI18n ? window.AppI18n.t(labelKey) : (isDark ? 'الوضع النهاري' : 'الوضع الليلي');
@@ -51,7 +63,6 @@
       if (labelSpan) {
         labelSpan.textContent = labelText;
       }
-      const iconContainer = btn.querySelector('.theme-icon-slot') || btn;
       if (btn.classList.contains('btn-icon')) {
         btn.innerHTML = svgIcon;
       } else {
@@ -63,18 +74,21 @@
   }
 
   const ThemeManager = {
-    get() {
-      return document.documentElement.getAttribute('data-theme') || getStoredTheme();
+    getTheme() {
+      return getStoredTheme();
+    },
+    getEffectiveTheme() {
+      return resolveEffectiveTheme(getStoredTheme());
     },
     isDark() {
-      return this.get() === 'dark';
+      return this.getEffectiveTheme() === 'dark';
     },
-    set(theme) {
-      applyTheme(theme === 'dark' ? 'dark' : 'light');
+    setTheme(theme) {
+      applyTheme(theme);
     },
     toggle() {
-      const current = this.get();
-      const next = current === 'dark' ? 'light' : 'dark';
+      const currentEffective = this.getEffectiveTheme();
+      const next = currentEffective === 'dark' ? 'light' : 'dark';
       applyTheme(next);
       return next;
     },
@@ -92,23 +106,34 @@
           btn._themeBound = true;
         }
       });
+
+      // System media query listener
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+          if (getStoredTheme() === 'auto') {
+            applyTheme('auto');
+          }
+        });
+      }
     }
   };
 
   // Immediate early execution to prevent UI flicker
-  const earlyTheme = getStoredTheme();
-  document.documentElement.setAttribute('data-theme', earlyTheme);
-  document.documentElement.classList.toggle('night-mode', earlyTheme === 'dark');
+  const earlySetting = getStoredTheme();
+  const earlyEffective = resolveEffectiveTheme(earlySetting);
+  document.documentElement.setAttribute('data-theme', earlyEffective);
+  document.documentElement.classList.toggle('night-mode', earlyEffective === 'dark');
 
   document.addEventListener('DOMContentLoaded', () => ThemeManager.init());
   window.addEventListener('appSettingsLoaded', () => {
-    if (window.__appSettings?.darkMode !== undefined) {
-      const target = window.__appSettings.darkMode ? 'dark' : 'light';
-      if (target !== ThemeManager.get()) applyTheme(target);
+    if (window.__appSettings?.theme) {
+      applyTheme(window.__appSettings.theme);
+    } else if (window.__appSettings?.darkMode !== undefined) {
+      applyTheme(window.__appSettings.darkMode ? 'dark' : 'light');
     }
   });
 
-  // Shortcut Ctrl+Shift+D to toggle theme
+  // Global Keyboard Shortcut: Ctrl+Shift+D or Ctrl+Alt+T
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
       e.preventDefault();

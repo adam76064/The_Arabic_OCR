@@ -54,13 +54,16 @@ async function initHome() {
         const total = p.page_count || 0;
         const reviewed = p.reviewed_count || 0;
         const pct = total > 0 ? Math.round((reviewed / total) * 100) : 0;
-        const card = document.createElement('div');
+        const card = document.createElement('a');
         card.className = 'recent-card';
+        card.href = `project-dashboard.html?id=${encodeURIComponent(p.id)}`;
         card.style.display = 'flex';
         card.style.alignItems = 'center';
         card.style.justifyContent = 'space-between';
         card.style.flexWrap = 'wrap';
         card.style.gap = '12px';
+        card.style.textDecoration = 'none';
+        card.style.color = 'inherit';
 
         const safeTitle = window.AppUtils ? window.AppUtils.escapeHtml(p.title || '') : (p.title || '');
         const safeAuthor = p.author ? (window.AppUtils ? window.AppUtils.escapeHtml(p.author) : p.author) : '';
@@ -68,28 +71,27 @@ async function initHome() {
 
         card.innerHTML = `
           <div style="display: flex; align-items: center; gap: 14px; flex: 1; min-width: 220px;">
-            <div style="width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
               ${window.AppIcons ? window.AppIcons.get('book', 'width:20px;height:20px;') : ''}
             </div>
             <div>
-              <a href="project-dashboard.html?id=${p.id}" class="recent-card-title" style="color: var(--color-text); font-weight: 700; text-decoration: none;">${safeTitle}</a>
+              <span class="recent-card-title" style="color: var(--color-text); font-weight: 700; display: block;">${safeTitle}</span>
               <div class="recent-card-meta" style="color: var(--color-text-muted); font-size: 12px; margin-top: 3px;">
                 ${safeAuthor ? `${safeAuthor} · ` : ''}
                 ${total} ${window.AppI18n ? window.AppI18n.t('projects.pages') : 'صفحة'} · ${dateStr}
               </div>
             </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="text-align: end; min-width: 90px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="text-align: end; min-width: 80px;">
               <span class="status-badge ${pct === 100 ? 'completed' : (pct > 0 ? 'reviewed' : 'pending')}">
                 ${pct === 100 ? 'مكتمل' : (pct > 0 ? `${pct}% منجز` : 'جديد')}
               </span>
             </div>
-            <div class="recent-progress" style="width: 110px;"><div class="recent-progress-fill" style="width:${pct}%"></div></div>
-            <a href="review.html?id=${p.id}" class="btn-secondary" style="padding: 5px 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;" title="متابعة التدقيق مباشرة">
-              ${window.AppIcons ? window.AppIcons.get('edit', 'width:14px;height:14px;') : ''}
-              <span>متابعة</span>
-            </a>
+            <div class="recent-progress" style="width: 120px;"><div class="recent-progress-fill" style="width:${pct}%"></div></div>
+            <div style="color: var(--color-text-muted); display: flex; align-items: center;">
+              ${window.AppIcons ? window.AppIcons.get('chevronLeft', 'width:16px;height:16px;') : ''}
+            </div>
           </div>
         `;
         recent.appendChild(card);

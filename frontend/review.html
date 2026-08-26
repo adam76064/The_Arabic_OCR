@@ -49,24 +49,17 @@
 
             <div class="page-nav" style="position: relative; margin-inline-start: 8px;">
                 <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
-                <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: max-content; display: flex; flex-direction: column; gap: 8px;">
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells" data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords" data-i18n="review.trackWords">تتبع الكلمات</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines" data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock" data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
+                <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong); padding: 12px; border-radius: var(--radius-md); z-index: 9999; box-shadow: var(--shadow-xl); width: max-content; display: flex; flex-direction: column; gap: 8px; color: var(--color-text);">
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords">تتبع الكلمات</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
+                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
                 </div>
             </div>
 
         </div>
 
         <div class="editor-container">
-            <div id="image-viewer">
-                <div id="image-wrapper">
-                    <img id="page-image" src="" alt="Page">
-                    <canvas id="bbox-canvas"></canvas>
-                </div>
-            </div>
-
             <div id="text-editor">
                 <div id="sticky-toolbar" class="disabled"> </div>
                 
@@ -119,8 +112,8 @@
         <div id="category-picker-list"></div>
     </div>
 
-    <div id="text-preview-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#fff;display:flex;flex-direction:column;">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#2c3e50;color:white;flex-shrink:0;flex-wrap:wrap;gap:8px;">
+    <div id="text-preview-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:var(--color-bg);display:flex;flex-direction:column;color:var(--color-text);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--color-sidebar);color:white;flex-shrink:0;flex-wrap:wrap;gap:8px;">
             <span style="font-weight:700;" data-i18n="review.fullText">معاينة النص الكامل — قابل للتحرير</span>
             <div style="display:flex;gap:14px;align-items:center;">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
@@ -128,12 +121,12 @@
                     <span data-i18n="review.rawText">عرض النص الخام</span>
                 </label>
                 <button id="text-preview-save" class="btn-success" style="font-size:13px;" data-i18n="review.saveChanges">حفظ التعديلات</button>
-                <button id="text-preview-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
+                <button id="text-preview-close" style="background:var(--color-danger);color:white;border:none;padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
             </div>
         </div>
-       <div id="text-preview-toolbar" style="display:flex;gap:5px;padding:7px 10px;border-bottom:1px solid #eee;background:#f8f9fa;flex-shrink:0;flex-wrap:wrap;"></div>
+       <div id="text-preview-toolbar" style="display:flex;gap:5px;padding:7px 10px;border-bottom:1px solid var(--color-border);background:var(--color-surface);flex-shrink:0;flex-wrap:wrap;"></div>
         <div id="text-preview-body" contenteditable="true" dir="rtl"
-             style="flex:1;overflow-y:auto;padding:40px;font-family:'Simplified Arabic',serif;font-size:18px;line-height:2;outline:none;"></div>
+             style="flex:1;overflow-y:auto;padding:40px;font-family:var(--font-doc);font-size:18px;line-height:2;outline:none;background:var(--color-surface);color:var(--color-text);"></div>
     </div>
 
     <div id="ocr-range-modal" class="modal hidden">
@@ -153,10 +146,10 @@
                         <label class="radio-item"><input type="radio" name="ocr-range-mode" value="range"> نطاق صفحات</label>
                     </div>
                 </div>
-                <div id="ocr-range-inputs" class="hidden" style="display:flex;gap:8px;align-items:center;margin-top:8px;">
-                    من <input type="number" id="ocr-range-from" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;">
-                    إلى <input type="number" id="ocr-range-to" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;">
-                    <span style="font-size:12px;color:#888;" data-i18n="review.pdfNumbers">(أرقام PDF)</span>
+                <div id="ocr-range-inputs" class="hidden" style="display:flex;gap:8px;align-items:center;margin-top:8px;background:var(--color-bg);padding:10px;border-radius:var(--radius-md);">
+                    من <input type="number" id="ocr-range-from" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
+                    إلى <input type="number" id="ocr-range-to" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
+                    <span style="font-size:12px;color:var(--color-text-muted);" data-i18n="review.pdfNumbers">(أرقام PDF)</span>
                 </div>
                 <div class="form-actions" style="margin-top:16px;">
                     <button id="ocr-range-confirm" class="btn-success" data-i18n="review.apply">تطبيق</button>
@@ -165,16 +158,16 @@
         </div>
     </div>
 
-    <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:#f0f2f5;overflow-y:auto;">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#2c3e50;color:white;position:sticky;top:0;z-index:10;">
+    <div id="dashboard-overlay" class="hidden" style="position:fixed;inset:0;z-index:2000;background:var(--color-bg);overflow-y:auto;color:var(--color-text);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:var(--color-sidebar);color:white;position:sticky;top:0;z-index:10;">
             <span style="font-weight:700;font-size:16px;" data-icon-label="dashboard" data-i18n="review.projectProgress">لوحة تقدم المشروع</span>
-            <button id="dashboard-close" style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
+            <button id="dashboard-close" style="background:var(--color-danger);color:white;border:none;padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;" data-i18n="review.close">✕ إغلاق</button>
         </div>
         <div id="dashboard-body" style="padding:24px;max-width:900px;margin:0 auto;"></div>
     </div>
 
     <div id="notif-tray" style="position:fixed;bottom:18px;left:18px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;"></div>
-    <div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 5px 0; min-width: 160px; overflow: hidden;">
+    <div id="custom-context-menu" class="hidden" style="position: absolute; z-index: 5000; background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong); box-shadow: var(--shadow-xl); border-radius: var(--radius-md); padding: 5px 0; min-width: 160px; overflow: hidden; color: var(--color-text);">
         <div id="ctx-search-quran" style="padding: 10px 14px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.15s;" data-icon-label="quran">
             <span data-i18n="quran.contextSearch">بحث في القرآن الكريم</span>
         </div>
@@ -188,29 +181,29 @@
                 <button class="modal-close" id="quran-close">✕</button>
             </div>
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding: 20px;">
-                <div style="display: flex; gap: 10px; border-bottom: 2px solid #eee; margin-bottom: 16px;">
+                <div style="display: flex; gap: 10px; border-bottom: 2px solid var(--color-border); margin-bottom: 16px;">
                     <button class="quran-tab-btn active" data-tab="quran-tab-text" data-i18n="quran.textSearch">البحث بالنص</button>
                     <button class="quran-tab-btn" data-tab="quran-tab-manual" data-i18n="quran.manual">تحديد السورة والآية</button>
                 </div>
                 <div id="quran-tab-text" class="quran-tab-content">
                     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                        <input type="text" id="quran-search-input" data-i18n-placeholder="quran.searchPlaceholder" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <input type="text" id="quran-search-input" data-i18n-placeholder="quran.searchPlaceholder" placeholder="اكتب كلمة أو جملة للبحث..." style="flex: 1; padding: 10px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); font-size: 15px; background: var(--color-surface); color: var(--color-text);">
                         <button id="quran-search-btn" class="btn-primary" data-i18n="quran.search">بحث</button>
                     </div>
                 </div>
                 <div id="quran-tab-manual" class="quran-tab-content hidden">
-                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; background: #f8f9fa; padding: 14px; border-radius: 8px; border: 1px solid #eee;">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; background: var(--color-bg); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
                         <div>
                             <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.surah">السورة</label>
-                            <select id="quran-surah-select" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;"></select>
+                            <select id="quran-surah-select" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);"></select>
                         </div>
                         <div>
                             <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.fromAyah">من آية</label>
-                            <input type="number" id="quran-ayah-from" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <input type="number" id="quran-ayah-from" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                         </div>
                         <div>
                             <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="quran.toAyah">إلى آية</label>
-                            <input type="number" id="quran-ayah-to" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <input type="number" id="quran-ayah-to" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                         </div>
                         <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
                             <button id="quran-fetch-manual-btn" class="btn-secondary" data-i18n="quran.browse">استعراض</button>
@@ -227,12 +220,12 @@
                             </tr>
                         </thead>
                         <tbody id="quran-results-tbody">
-                            <tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;" data-i18n="quran.emptyInitial">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: var(--color-text-muted); padding: 20px;" data-i18n="quran.emptyInitial">لا توجد نتائج حالياً. ابحث لإظهار الآيات.</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #eaf4fd; padding: 12px 16px; border-radius: 8px; border: 1px solid #bce0fd;">
-                    <label class="option-item" style="font-weight: bold; color: #2c3e50;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-primary-light); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-primary-border);">
+                    <label class="option-item" style="font-weight: bold; color: var(--color-text);">
                         <input type="checkbox" id="quran-add-citation" checked>
                         <span class="option-check"></span>
                         <span data-i18n="quran.citationExample">إضافة التخريج (مثال: [الفاتحة :5])</span>
