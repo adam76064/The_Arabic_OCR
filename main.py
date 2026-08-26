@@ -30,21 +30,40 @@ except Exception:
 
 import webview
 import webview.window
+import webview.util
+
+# Global reference to the main window
+_active_window = None
 
 # --- Fix pywebview WinForms / Chromium early IPC race condition ---
-# On Windows, EdgeChromium loads HTML and fires JS API calls before WinForms sets window.shown.
-# By making evaluate_js wait for self.shown rather than immediately raising WebViewException,
-# early API return value callbacks from Python threads complete safely without crashing.
+# EdgeChromium starts and fires JS API calls before WinForms dispatches Form.Shown.
+# We unwrap evaluate_js and ensure window.shown is set so early calls return immediately without freezing.
 try:
     if hasattr(webview, 'window') and hasattr(webview.window, 'Window'):
         _orig_evaluate_js = webview.window.Window.evaluate_js
+        _unwrapped_evaluate_js = getattr(_orig_evaluate_js, '__wrapped__', _orig_evaluate_js)
 
         def _safe_evaluate_js(self, script, callback=None):
-            if hasattr(self, 'shown') and hasattr(self.shown, 'wait') and not self.shown.is_set():
-                self.shown.wait(timeout=15.0)
-            return _orig_evaluate_js(self, script, callback)
+            if hasattr(self, 'shown') and hasattr(self.shown, 'set'):
+                self.shown.set()
+            try:
+                return _unwrapped_evaluate_js(self, script, callback)
+            except Exception:
+                return _orig_evaluate_js(self, script, callback)
 
         webview.window.Window.evaluate_js = _safe_evaluate_js
+
+    # Also wrap webview.util._call to guarantee window.shown is set whenever JS calls Python
+    if hasattr(webview, 'util') and hasattr(webview.util, '_call'):
+        _orig_util_call = webview.util._call
+
+        def _safe_util_call(func_name, param, value_id):
+            global _active_window
+            if _active_window and hasattr(_active_window, 'shown') and hasattr(_active_window.shown, 'set'):
+                _active_window.shown.set()
+            return _orig_util_call(func_name, param, value_id)
+
+        webview.util._call = _safe_util_call
 except Exception:
     pass
 
@@ -57,6 +76,7 @@ def get_resource_path(relative_path):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 def main():
+    global _active_window
     try:
         _cleanup()
     except Exception:
@@ -83,14 +103,25 @@ def main():
         height=800,
         min_size=(1000, 700),
     )
+    _active_window = window
+
+    # Ensure window.shown is set immediately so early calls from Chromium never block or fail
+    if hasattr(window, 'shown') and hasattr(window.shown, 'set'):
+        window.shown.set()
 
     # Double layer safety: also patch instance evaluate_js
     try:
         _inst_evaluate_js = window.evaluate_js
+        _unwrapped_inst = getattr(_inst_evaluate_js, '__wrapped__', _inst_evaluate_js)
+
         def _safe_inst_evaluate_js(script, callback=None):
-            if hasattr(window, 'shown') and hasattr(window.shown, 'wait') and not window.shown.is_set():
-                window.shown.wait(timeout=15.0)
-            return _inst_evaluate_js(script, callback)
+            if hasattr(window, 'shown') and hasattr(window.shown, 'set'):
+                window.shown.set()
+            try:
+                return _unwrapped_inst(script, callback)
+            except Exception:
+                return _inst_evaluate_js(script, callback)
+
         window.evaluate_js = _safe_inst_evaluate_js
     except Exception:
         pass

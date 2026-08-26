@@ -76,6 +76,8 @@ class Api:
     # --- window binding ---
     def set_window(self, window):
         self._window = window
+        if hasattr(window, 'shown') and hasattr(window.shown, 'set'):
+            window.shown.set()
 
     # --- dialogs ---
     def select_pdf(self):
