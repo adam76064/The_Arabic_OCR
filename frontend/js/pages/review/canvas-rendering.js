@@ -133,18 +133,38 @@ function drawBoxes(canvas, ocrData, selectedIndex) {
     }
 }
 
+let _rafBboxesId = null;
+let _pendingBboxesData = null;
+let _pendingBboxesSel = null;
+
 function renderBboxes(ocrData, sel) {
-    const c = document.getElementById('bbox-canvas');
-    if (c) drawBoxes(c, ocrData, sel);
+    _pendingBboxesData = ocrData;
+    _pendingBboxesSel = sel;
+    if (_rafBboxesId) return;
+    _rafBboxesId = requestAnimationFrame(() => {
+        _rafBboxesId = null;
+        const c = document.getElementById('bbox-canvas');
+        if (c && _pendingBboxesData) drawBoxes(c, _pendingBboxesData, _pendingBboxesSel);
+    });
 }
 
+let _rafThumbId = null;
+let _pendingThumbArgs = null;
+
 function renderThumbCanvas(canvasId, imgId, ocrData, sel) {
-    const canvas = document.getElementById(canvasId);
-    const img = document.getElementById(imgId);
-    if (!canvas || !img?.naturalWidth) return;
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    drawBoxes(canvas, ocrData, sel);
+    _pendingThumbArgs = { canvasId, imgId, ocrData, sel };
+    if (_rafThumbId) return;
+    _rafThumbId = requestAnimationFrame(() => {
+        _rafThumbId = null;
+        if (!_pendingThumbArgs) return;
+        const { canvasId, imgId, ocrData, sel } = _pendingThumbArgs;
+        const canvas = document.getElementById(canvasId);
+        const img = document.getElementById(imgId);
+        if (!canvas || !img?.naturalWidth) return;
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        drawBoxes(canvas, ocrData, sel);
+    });
 }
 
 function handleCanvasClick(e, canvas) {

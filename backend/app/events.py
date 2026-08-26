@@ -49,3 +49,7 @@ class EventEmitter:
 
     def lan_update(self, payload: dict):
         self._emit("onLanUpdate", payload)
+
+    def preprocessing_progress(self, payload: dict):
+        self._emit("onPreprocessingProgress", payload)
+

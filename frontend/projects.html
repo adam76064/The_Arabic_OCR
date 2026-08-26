@@ -16,7 +16,18 @@
                 <button id="back-btn" class="btn-secondary" data-i18n-title="projects.backTitle" title="العودة للصفحة الرئيسية" data-icon="back" data-i18n="projects.back">العودة</button>
                 <h1 style="margin: 0;" data-i18n="projects.title">المشاريع</h1>
             </div>
-            <input type="text" id="search-input" data-i18n-placeholder="projects.search" placeholder="بحث..." class="search-box">
+            
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <input type="text" id="search-input" data-i18n-placeholder="projects.search" placeholder="بحث في المشاريع..." class="search-box">
+                <button id="btn-new-project-top" class="btn-primary trigger-new-project" data-icon="plus" data-i18n="nav.newProject">مشروع جديد</button>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;" id="projects-filter-bar">
+            <button class="btn-secondary active" data-filter="all" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">الكل (<span id="count-all">0</span>)</button>
+            <button class="btn-secondary" data-filter="completed" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">مكتمل (<span id="count-completed">0</span>)</button>
+            <button class="btn-secondary" data-filter="in_progress" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">قيد المراجعة (<span id="count-progress">0</span>)</button>
+            <button class="btn-secondary" data-filter="new" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">جديد (<span id="count-new">0</span>)</button>
         </div>
 
         <div class="table-wrapper">
@@ -55,7 +66,6 @@
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-creator.js"></script>
     <script src="js/pages/projects.js"></script>
-    <!-- Legacy archived in js/legacy/ (projects.js.legacy) -- no longer loaded -->
     <script src="js/apply-icons.js"></script>
 </body>
 </html>

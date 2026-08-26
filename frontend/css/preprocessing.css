@@ -1,0 +1,574 @@
+/*
+ * preprocessing.css — Styles for ScanTailor Advanced Pre-Processing Studio.
+ */
+
+#preprocessing-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--color-bg, #f1f5f9);
+    overflow: hidden;
+    min-width: 0;
+}
+
+/* ── Top Header Toolbar ─────────────────────────────────────────────────── */
+.preprocessing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--color-surface, #ffffff);
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+    z-index: 20;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text, #1e293b);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-stepper {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-full, 999px);
+    padding: 2px 8px;
+    gap: 6px;
+}
+
+.page-num-indicator {
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 80px;
+    text-align: center;
+    color: #334155;
+}
+
+/* ── 6 Stages Nav Bar ───────────────────────────────────────────────────── */
+.stages-nav {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 4px 16px;
+    gap: 4px;
+    overflow-x: auto;
+    flex-shrink: 0;
+}
+
+.stage-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-md, 6px);
+    border: 1px solid transparent;
+    background: transparent;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.stage-tab:hover {
+    background: #ffffff;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+.stage-tab.active {
+    background: var(--color-surface, #ffffff);
+    color: var(--color-primary, #2563eb);
+    border-color: #bfdbfe;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
+    font-weight: 700;
+}
+
+.stage-num-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stage-tab.active .stage-num-badge {
+    background: var(--color-primary, #2563eb);
+    color: #ffffff;
+}
+
+/* ── Main Studio Body (Canvas + Sidebar) ────────────────────────────────── */
+.studio-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ── Interactive Canvas Container ───────────────────────────────────────── */
+.canvas-viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background-color: #0f172a;
+    background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    cursor: grab;
+    user-select: none;
+}
+
+.canvas-viewport.panning {
+    cursor: grabbing;
+}
+
+.canvas-stage-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.25);
+    background: #ffffff;
+    border-radius: 2px;
+    will-change: transform;
+}
+
+#preview-image {
+    display: block;
+    max-width: none;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+}
+
+.canvas-viewport.is-loading #preview-image {
+    opacity: 0.65;
+    filter: brightness(0.92);
+}
+
+#interactive-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    pointer-events: auto;
+}
+
+/* ── Canvas Loading Badge ────────────────────────────────────────────────── */
+.canvas-loading-badge {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #f8fafc;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 50;
+}
+
+.canvas-viewport.is-loading .canvas-loading-badge {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.canvas-spinner-icon {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #60a5fa;
+    border-radius: 50%;
+    animation: canvas-spin 0.6s linear infinite;
+}
+
+@keyframes canvas-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Floating Zoom / Canvas Controls ────────────────────────────────────── */
+.canvas-floating-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 4px 8px;
+    border-radius: var(--radius-full, 999px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.3));
+    z-index: 10;
+}
+
+.canvas-floating-controls button {
+    background: transparent;
+    border: none;
+    color: #e2e8f0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s;
+}
+
+.canvas-floating-controls button:hover {
+    background: rgba(255,255,255,0.2);
+    color: #ffffff;
+}
+
+.zoom-level-text {
+    font-size: 12px;
+    color: #94a3b8;
+    padding: 0 6px;
+    min-width: 48px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* ── Sidebar Parameters Panel ───────────────────────────────────────────── */
+.preprocessing-sidebar {
+    width: 340px;
+    background: var(--color-surface, #ffffff);
+    border-inline-start: 1px solid var(--color-border, #e2e8f0);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.03);
+    z-index: 15;
+}
+
+.sidebar-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2px;
+}
+
+.sidebar-subtitle {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stage-panel {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.stage-panel.active {
+    display: flex;
+}
+
+.param-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.param-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.param-val-readout {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--color-primary, #2563eb);
+    font-weight: 700;
+}
+
+.rotation-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.rotation-btn {
+    padding: 8px 4px;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-md, 6px);
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+}
+
+.rotation-btn:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+}
+
+.rotation-btn.active {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    font-weight: 700;
+}
+
+/* ── Sliders & Inputs ───────────────────────────────────────────────────── */
+.range-slider {
+    width: 100%;
+    accent-color: var(--color-primary, #2563eb);
+    cursor: pointer;
+}
+
+.sidebar-footer {
+    padding: 14px 16px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.action-row {
+    display: flex;
+    gap: 8px;
+}
+
+.action-row button {
+    flex: 1;
+}
+
+/* ── Split-view Curtain Slider for Stage 6 ──────────────────────────────── */
+.output-split-curtain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #3b82f6;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    cursor: ew-resize;
+    z-index: 25;
+    pointer-events: auto;
+}
+
+.output-split-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+/* ── Progress & Batch Modal ─────────────────────────────────────────────── */
+.batch-progress-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.batch-progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.batch-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #22c55e);
+    transition: width 0.2s ease;
+}
+
+/* ── Dark Theme Support ─────────────────────────────────────────────────── */
+[data-theme="dark"] #preprocessing-main {
+    background: #0f172a;
+}
+[data-theme="dark"] .preprocessing-header,
+[data-theme="dark"] .preprocessing-sidebar,
+[data-theme="dark"] .sidebar-header,
+[data-theme="dark"] .sidebar-footer {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+[data-theme="dark"] .stages-nav {
+    background: #0f172a;
+    border-color: #334155;
+}
+[data-theme="dark"] .stage-tab {
+    color: #94a3b8;
+}
+[data-theme="dark"] .stage-tab.active {
+    background: #1e293b;
+    color: #60a5fa;
+    border-color: #3b82f6;
+}
+[data-theme="dark"] .page-stepper {
+    background: #1e293b;
+    border-color: #334155;
+}
+[data-theme="dark"] .page-num-indicator {
+    color: #f8fafc;
+}
+[data-theme="dark"] .sidebar-title,
+[data-theme="dark"] .param-label {
+    color: #f1f5f9;
+}
+[data-theme="dark"] .rotation-btn {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+[data-theme="dark"] .rotation-btn.active {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+    color: #93c5fd;
+}
+
+/* ── Bottom Filmstrip Bar ─────────────────────────────────────────────────── */
+.preprocessing-filmstrip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: var(--color-surface, #ffffff);
+    border-top: 1px solid var(--color-border, #e2e8f0);
+    overflow-x: auto;
+    flex-shrink: 0;
+    z-index: 15;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.03);
+}
+.filmstrip-thumb {
+    width: 48px;
+    height: 64px;
+    border-radius: var(--radius-sm, 4px);
+    border: 2px solid var(--color-border, #cbd5e1);
+    background: #f1f5f9;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+}
+.filmstrip-thumb:hover {
+    border-color: var(--color-primary, #2563eb);
+    transform: translateY(-2px);
+}
+.filmstrip-thumb.active {
+    border-color: var(--color-primary, #2563eb);
+    box-shadow: 0 0 0 2px var(--color-primary-light, #dbeafe);
+}
+.filmstrip-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.filmstrip-num {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(15, 23, 42, 0.8);
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* ── Floating Next Stage CTA ──────────────────────────────────────────────── */
+.btn-next-stage-floating {
+    position: absolute;
+    bottom: 24px;
+    inset-inline-end: 24px;
+    z-index: 100;
+    box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.15));
+    font-size: 13px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--radius-full, 999px);
+    background: var(--color-primary, #2563eb);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+.btn-next-stage-floating:hover {
+    background: var(--color-primary-hover, #1d4ed8);
+    transform: scale(1.05);
+}
+

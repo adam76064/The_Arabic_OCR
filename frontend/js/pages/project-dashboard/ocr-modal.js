@@ -94,31 +94,67 @@ function setupPaddleModal() {
 
 }
 
-function openPaddleModalForFullFile() {
+function openPaddleModalForBatch(indices) {
     const modal = document.getElementById('paddle-ocr-modal');
-    
-    // Find first un-OCRed page
-    let firstUnparsed = 1;
-    for (let i = 0; i < currentProject.pages.length; i++) {
-        if (!currentProject.pages[i].ocr_data || currentProject.pages[i].ocr_data.length === 0) {
-            firstUnparsed = i + 1;
-            break;
+    if (!modal) return;
+    if (!indices || indices.length === 0) {
+        openPaddleModalForFullFile();
+        return;
+    }
+    window.selectedBatchIndices = indices.slice().sort((a, b) => a - b);
+    const minPage = window.selectedBatchIndices[0] + 1;
+    const maxPage = window.selectedBatchIndices[window.selectedBatchIndices.length - 1] + 1;
+    document.getElementById('ocr-start-page').value = minPage;
+    document.getElementById('ocr-end-page').value = maxPage;
+
+    const rangeHint = document.getElementById('range-hint-text');
+    if (rangeHint) {
+        if (indices.length > 1) {
+            rangeHint.textContent = `الصفحات المحددة (${indices.length} صفحة): ${window.selectedBatchIndices.map(i => i + 1).join('، ')}`;
+        } else {
+            rangeHint.textContent = `الصفحة المحددة: ${minPage}`;
         }
     }
-
-    document.getElementById('ocr-start-page').value = firstUnparsed;
-    document.getElementById('ocr-end-page').value = currentProject.pages.length;
     
-    document.querySelector('input[value="selected"]').click();
+    const selectedRadio = document.querySelector('input[name="ocr-range"][value="selected"]');
+    if (selectedRadio) selectedRadio.click();
+    syncOcrModalLlmPrompt();
+    modal.classList.remove('hidden');
+}
+
+function openPaddleModalForFullFile() {
+    const modal = document.getElementById('paddle-ocr-modal');
+    if (!modal) return;
+    window.selectedBatchIndices = null;
+    
+    document.getElementById('ocr-start-page').value = 1;
+    document.getElementById('ocr-end-page').value = currentProject?.pages ? currentProject.pages.length : 1;
+    
+    const rangeHint = document.getElementById('range-hint-text');
+    if (rangeHint) rangeHint.textContent = ocrModalText('ocr.allPages');
+
+    const allRadio = document.querySelector('input[name="ocr-range"][value="all"]');
+    if (allRadio) allRadio.click();
+    else {
+        const selectedRadio = document.querySelector('input[name="ocr-range"][value="selected"]');
+        if (selectedRadio) selectedRadio.click();
+    }
     syncOcrModalLlmPrompt();
     modal.classList.remove('hidden');
 }
 
 function openPaddleModalForSinglePage(pageIndex) {
     const modal = document.getElementById('paddle-ocr-modal');
+    if (!modal) return;
+    window.selectedBatchIndices = [pageIndex];
     document.getElementById('ocr-start-page').value = pageIndex + 1;
     document.getElementById('ocr-end-page').value = pageIndex + 1;
-    document.querySelector('input[value="selected"]').click();
+
+    const rangeHint = document.getElementById('range-hint-text');
+    if (rangeHint) rangeHint.textContent = `الصفحة المحددة: ${pageIndex + 1}`;
+
+    const selectedRadio = document.querySelector('input[name="ocr-range"][value="selected"]');
+    if (selectedRadio) selectedRadio.click();
     syncOcrModalLlmPrompt();
     modal.classList.remove('hidden');
 }

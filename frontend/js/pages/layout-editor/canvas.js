@@ -520,6 +520,37 @@ function drawCanvas() {
         ctx.stroke(); ctx.fill();
         ctx.setLineDash([]);
     }
-    
+
+    // Visual Reading Flowlines
+    if (window.showReadingFlowlines && ocrData && ocrData.length > 1) {
+        ctx.save();
+        ctx.lineWidth = 2.5 / scale;
+        ctx.strokeStyle = 'rgba(234, 88, 12, 0.85)';
+        ctx.setLineDash([6 / scale, 4 / scale]);
+
+        for (let i = 0; i < ocrData.length - 1; i++) {
+            const b1 = ocrData[i].bbox;
+            const b2 = ocrData[i+1].bbox;
+            const c1x = (b1[0] + (b1[2]-b1[0])/2) * scaleRatioX;
+            const c1y = (b1[1] + (b1[3]-b1[1])/2) * scaleRatioY;
+            const c2x = (b2[0] + (b2[2]-b2[0])/2) * scaleRatioX;
+            const c2y = (b2[1] + (b2[3]-b2[1])/2) * scaleRatioY;
+
+            ctx.beginPath();
+            ctx.moveTo(c1x, c1y);
+            // Smooth curve
+            const cpX = (c1x + c2x) / 2;
+            const cpY = Math.min(c1y, c2y) - 20;
+            ctx.quadraticCurveTo(cpX, cpY, c2x, c2y);
+            ctx.stroke();
+
+            // Draw center dot
+            ctx.fillStyle = '#ea580c';
+            ctx.beginPath();
+            ctx.arc(c1x, c1y, 4 / scale, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+    }
 }
 

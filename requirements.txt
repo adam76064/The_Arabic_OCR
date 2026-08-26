@@ -27,3 +27,11 @@ google-auth-oauthlib>=0.8.0
 
 # Local offline OCR (Locro)
 typer>=0.9.0
+
+# Pre-processing (ScanTailor Advanced)
+scantailor-advanced>=1.0.1
+
+# Performance Acceleration
+orjson>=3.9.0
+
+

@@ -1,187 +1,140 @@
 # 📖 Arabic OCR Review Tool
 
-> **A desktop app to convert scanned Arabic PDFs into clean, editable Word, EPUB, and text files.**
+> **A desktop-grade application to convert scanned Arabic PDFs into clean, beautifully structured Word (DOCX), EPUB, HTML, and text documents.**
 
-You give it a scanned PDF, it reads the Arabic text with AI (multiple OCR engines), lets you review and fix the text boxes, tables, and Quran verses visually, and exports a beautiful final document.
+Arabic OCR Review Tool takes scanned Arabic books and documents, performs AI-powered OCR with multi-engine support, provides an interactive ScanTailor-powered Pre-Processing Studio, lets you review and format text boxes, tables, and Quran verses visually, and exports clean, publication-ready documents.
 
-**Same languages:** Python + HTML/CSS/JS, runs offline as a native window via `pywebview`.
+Runs offline as a native desktop window via Python and `pywebview`.
 
 ---
 
-## ✨ What Can It Do?
+## ✨ Features
 
-- **Read Arabic PDFs** with 4 OCR options:
-  - **PaddleOCR** (free online, good for large books)
-  - **Google Lens** (very accurate)
-  - **Locro Offline** (works without internet, needs Chrome)
-  - **AI Vision** (Gemini, Claude, GPT-4o, or any OpenAI-compatible model)
+### 1. Pre-Processing Studio (ScanTailor Advanced)
+An interactive 6-stage studio to enhance scan quality and prepare pages before OCR:
+- **1. Orientation:** Auto-orientation detection and 90°/180°/270° rotation.
+- **2. Page Split:** Automatic detection of book spreads vs. single pages with sloped cutter line and sub-page generation.
+- **3. Deskew:** Sub-pixel skew estimation (Radon / Hough baselines) and fine-angle interactive slider (-45° to +45°) with alignment grid.
+- **4. Select Content:** Smart bounding box detection to extract text areas and eliminate dark scanner borders.
+- **5. Margins & Layout:** Configurable margins (mm / px) and multi-axis alignment (center, top, bottom) with project-wide dimension standardization (`match_size`).
+- **6. Output & Binarization:** Otsu, Sauvola, and Wolf binarization engines, illumination normalization, despeckling, and an interactive split-curtain slider to compare original scans with binarized results.
+- **Batch Processing Wizard:** Apply single stages or the full pipeline across all pages or custom page ranges.
 
-- **Review visually:** See the scanned page and text boxes side-by-side. Click a box to zoom, edit text, change type (Title, Text, Table, Picture, Poetry, etc.), drag to reorder, merge/split blocks.
+### 2. Multi-Engine Arabic OCR
+- **PaddleOCR:** Free cloud recognition with automatic daily limit tracking.
+- **Google Lens:** High-accuracy vision extraction for complex Arabic typography.
+- **Locro Offline:** Fully offline OCR powered by Chrome's ScreenAI engine (no internet required).
+- **LLM Vision:** Support for Gemini, Claude, GPT-4o, and OpenAI-compatible vision models with custom system prompts.
 
-- **Tables & Poetry:** 
-  - Detects rows/columns automatically (even without lines)
-  - Arabic poetry `شعر عمودي` (two hemistichs) and `شعر متدرج` (staggered) exported correctly with justification
+### 3. Visual Review & Layout Editing
+- **Side-by-Side Review:** High-resolution page scan and interactive text bounding boxes side-by-side with pan and zoom.
+- **Block Formatting:** Classify text into Title, Section Header, Paragraph, Caption, Footnote, Quran, Picture, Table, Poetry, or Page Number.
+- **Arabic Poetry Formatting:** First-class support for two-hemistich classical poetry (`شعر عمودي`) and staggered modern poetry (`شعر متدرج`) with automatic justification.
+- **Table Engine:** Auto-detects table grids, rows, and columns using visual line heuristics, word coordinates, and smear algorithms.
+- **Quran Verification & Citation:** Right-click any text block to search the built-in Uthmani Quran database, verify against authentic text, and insert with citation references (e.g. `[الفاتحة: 5]`).
+- **Arabic Typography Cleaning:** One-click normalization of hamza (`أإآ → ا`), tatweel (`ـ`), tanween (`اً ↔ ًا`), tashkeel removal, and punctuation/waw spacing fixes.
 
-- **Quran Check:** Select any text → right-click → Search Quran → verifies and inserts correct Uthmani text with citation `[الفاتحة :5]`
+### 4. Post-Processing Pipeline
+- **Arabic Reading Order Auto-Sorter:** Multi-column spatial layout detection that sorts blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left).
+- **Pagination Auto-Detector:** Automatically identifies page numbers in headers and footers across Arabic-Indic (`٠-٩`), Persian (`۰-۹`), and ASCII digits, validating numerical sequence continuity.
 
-- **Arabic Text Cleaning:** One click to remove tatweel `ـ`, normalize hamza `أإآ→ا`, fix tanween `اً↔ًا`, remove tashkeel, fix punctuation and و spacing
+### 5. Multi-Format Document Export
+- **DOCX (Word):** True RTL layout, embedded font styling, Arabic poetry tables, and merged table cells.
+- **EPUB3 & HTML:** Responsive RTL styling with kashida justification.
+- **TXT & JSON:** Clean plaintext with page separators and structured bounding box JSON data.
 
-- **Export:** 
-  - **DOCX** – RTL, proper fonts, poetry tables, tables with merged cells
-  - **EPUB3 / HTML** – RTL, kashida justification
-  - **TXT / JSON** – with page separators
+### 6. Team Collaboration & LAN Sharing
+- Share projects over your local network (LAN) with password-protected sync to collaborate with team members in real time.
 
-- **Team Work:** Share a project over local network (LAN) with password, see who is editing live
+### 7. Multilingual Interface
+- Available in **Arabic** (RTL), **English** (LTR), and **German** (LTR).
 
-- **Post-Processing (NEW):**
-  - **Arabic Reading Order Auto-Sorter** – Pure-spatial bounding box sorting algorithm that sorts OCR text blocks in true Arabic reading order (Top-to-Bottom, Right-to-Left). Detects multi-column layouts (e.g., 2 columns), processes the Right Column first, and sorts within each row from Right to Left.
-  - **Pagination Auto-Detector** – Cross-page and facing-page page number detector that scans header (top 15%) and footer (bottom 15%) regions, validates numeric sequences (ASCII, Arabic-Indic, Persian digits), and automatically annotates matching blocks with the `Page-number` category label (colored blue).
-  
-- **Interface languages:** Arabic (RTL), English (LTR), and German / Deutsch (LTR). Select a language in **Settings → Interface language**; your choice is saved with the global app settings.
+---
 
-- **Consistent interface:** every toolbar, the sidebar, the dashboard, and the layout editor share one SVG icon language (stroke-based, matching the review page's formatting/table toolbars) — see `frontend/js/icons.js` and [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) for details.
+## 🚀 Installation & Setup
 
+### Prerequisites
+- **Operating System:** Windows 10/11 (also compatible with Linux and macOS)
+- **Python:** 3.10 or higher
+- **Google Chrome:** (Optional) Required only if using the offline Locro ScreenAI engine
 
-## 🚀 Installation
-
-### 1. Requirements
-- **Windows 10/11** (or Linux/macOS, but optimized for Windows)
-- **Python 3.10+** – download from https://www.python.org
-- **Google Chrome** – needed only for Locro offline OCR
-
-### 2. Download
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/adam76064/The_Arabic_OCR.git
 cd The_Arabic_OCR
 ```
 
-Or download ZIP from GitHub → Extract.
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-This installs:
-- `pywebview` – native window
-- `PyMuPDF` – PDF reading
-- `python-docx` – Word export
-- `Pillow`, `opencv-python`, `numpy` – image processing
-- `requests`, `zeroconf`, `cryptography` – network & sync
-- `chrome-lens-py`, `litellm` – OCR engines
-- `typer` – for Locro
-
-### 4. Run
+### 3. Launch the Application
 ```bash
 python main.py
 ```
 
-A window will open at 1280x800 showing the home screen.
+---
+
+## 📖 Quick Start Guide
+
+1. **Create a Project:**
+   - From the Home screen, click **+ New Project** (**+ مشروع جديد**).
+   - Select a scanned PDF file, set the title and author, and specify logical page numbering.
+
+2. **Pre-Process Scans (Optional but Recommended):**
+   - Open the **Preprocessing Studio** to split spreads, deskew pages, trim borders, and standardize margins.
+   - Run the Batch Wizard to apply enhancements across the entire book.
+
+3. **Extract Text with OCR:**
+   - On the Project Dashboard, choose your preferred OCR engine and target page range.
+   - Click **Start OCR** to extract text and layout geometry.
+
+4. **Review & Refine:**
+   - Open the **Review** screen to inspect recognized text, adjust bounding boxes, format tables and poetry, and verify Quranic verses.
+
+5. **Export:**
+   - Go to **Export**, choose your target format (DOCX, EPUB, HTML, TXT, or JSON), and save your finalized document.
 
 ---
 
-## 📖 How To Use (4 Steps)
+## 📁 Project Data Structure
 
-**Step 1 – New Project:**
-- Home → **+ مشروع جديد**
-- Choose PDF file
-- Enter Title, Author, Logical start page (e.g., if PDF starts at page 5 of book)
-- Optional: Enable LAN sharing + password
-
-**Step 2 – Run OCR:**
-- You will be redirected to **Dashboard**
-- Select page range (e.g., `1-50` or `1-200`)
-- Choose engine:
-  - **PaddleOCR** – free, needs internet, 3 chunks/day limit tracked automatically
-  - **Google Lens** – needs internet, very accurate, no limit
-  - **Locro** – offline, needs Chrome installed
-  - **LLM** – needs API key (Gemini/Claude/GPT), set system prompt if you want
-- Click **Start** – progress bar shows `extracting → uploading → completed`
-
-**Step 3 – Review:**
-- Click **فتح** on project → **مراجعة**
-- **Top toolbar:** Previous/Next page, Undo/Redo, Save, View Full Text, Dashboard, Text size A-/A+, Tracking settings
-- **Middle:** Crop viewer (zoom in/out) shows selected block zoomed
-- **Right:** List of text blocks:
-  - Click to select (yellow border)
-  - Click label to change type (نص عادي, عنوان, جدول, etc.)
-  - **مراجَع** button toggles reviewed (green border)
-  - **✕** deletes
-  - Drag `⋮⋮` to reorder
-  - Right-click → **بحث في القرآن** or **دمج / تقسيم**
-  - Edit directly (bold, italic, alignment, direction)
-- **Thumbnail:** Small in toolbar, hover to expand, click for full-page view with all boxes clickable
-- **Quran Modal:** Search by text or manual surah/ayah, select verses, check "إضافة التخريج", Insert
-- **Table:** If block is Table, click **Auto Layout** to detect rows/columns (3 methods: vectors, coordinates, smear)
-
-**Step 4 – Export:**
-- In Review → **Dashboard** → **Export** section
-- Or from `export.html`
-- Choose pages, format (DOCX/EPUB/HTML/TXT/JSON), destination folder
-- Options: Page numbering `none/pdf/logical`, Text mode `formatted (clean)` vs `raw (keep tags)`
-- Click Export – file saved as `YourTitle.docx` etc.
-
----
-
-## 🌐 Interface languages
-
-The application interface is available in **Arabic**, **English**, and **German (Deutsch)**. Arabic uses a right-to-left layout; English and German use a left-to-right layout. Change the interface language from **Settings → Interface language**. The selection is stored in the global `app_settings.json` file and is applied whenever a page opens.
-
-For developers, the locale catalogs and the documented procedure for adding another language are in [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md#interface-localization-i18n).
-
----
-
-## 📦 Where Are My Files?
-
-App data is stored in:
-- **Windows:** `%APPDATA%\The_Arabic_OCR\projects\`
-- Each project folder:
+Application data and projects are stored in:
+- **Windows:** `%APPDATA%\The_Arabic_OCR\projects\<project_id>\`
   ```
   <project_id>/
-    project.json         # all text & layout
-    raw_ocr/             # original OCR backup
-    images/              # page_0.jpg, page_1.jpg at ~200 DPI
+  ├── project.json       # Page metadata, geometry, and project settings
+  ├── pages/             # Per-page modular OCR text storage (page_0.json, ...)
+  ├── images/            # Working page images (page_0.jpg, ...)
+  ├── thumbs/            # Pre-generated ~160px dashboard thumbnails
+  ├── raw_images/        # Pristine original backup for lossless reversions
+  └── raw_ocr/           # Original raw OCR engine output backups
   ```
-You can change location in **Settings → Data Folder**.
 
 ---
 
-## 🔧 Requirements Explained Simply
+## 🛠️ Automated Testing
 
-- `pywebview` ≥4.0 – creates native window around HTML
-- `PyMuPDF` – reads PDFs
-- `python-docx` – creates Word files
-- `Pillow` + `opencv-python` + `numpy` – image cropping & table detection
-- `requests` – talks to Paddle/Google/LM APIs
-- `zeroconf` + `cryptography` – finds teammates on same WiFi and encrypts sync
-- `chrome-lens-py` – Google Lens
-- `litellm` – one library to talk to Gemini/Claude/GPT
-- `typer` + `locro` – offline AI using Chrome's model
-
-See `requirements.txt` for exact versions.
+Run the automated test suite using `pytest`:
+```bash
+pytest tests/ -v
+```
 
 ---
 
-## 📚 For Developers & AI Agents
+## 📚 Developer Documentation
 
-If you want to understand the code, add a new OCR engine, new export format, a new icon, or contribute:
-
-👉 **Read `DEVELOPER_GUIDE.md`** – the maintained technical reference for the current Python/pywebview application. It covers the repository structure, API bridge, data models, frontend modules, shared SVG icons, localization, and extension points.
+For technical architecture details, module structures, coordinate systems, and extension guidelines, see **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**.
 
 ---
 
-## 📄 License
+## 📄 License & Acknowledgments
 
-Open source. Feel free to use, modify, and contribute.
-
----
-
-## 🙏 Credits
-
-- Original OCR Review Tool by Adam Mustafa
-- Rebuilt & organized by Arena AI Agent (Claude, GPT, etc.)
-- Quran dataset `data/Quran.json` – Uthmani text
-- Table detection algorithms based on classic computer vision (blob, column finding, row grouping)
-- Thanks to Roan for guiding me into refactoring the original Scan-tailor advanced to work with python. (http://github.com/roangeorge). Also, thanks are due to David Bowman who told me about the github actions for pre-compiling the library for different operating systems. (https://github.com/dbowm91)
+- **Core Application & Architecture:** Developed by Adam Mustafa.
+- **ScanTailor Advanced (`stalib`):** Image preprocessing, page splitting, deskewing, and binarization algorithms adapted from ScanTailor Advanced. Special thanks to [Roan George](https://github.com/roangeorge) for guiding the refactoring of ScanTailor Advanced to work natively with Python, and to [David Bowman](https://github.com/dbowm91) for guidance on GitHub Actions pre-compilation across platforms.
+- **Locro Engine:** Python bridge for Chrome ScreenAI offline recognition (`backend/vendor/locro/`).
+- **Quran Dataset:** Authentic Uthmani script text database (`data/Quran.json`).
+- **Table Detection:** Visual column and row segmentation algorithms based on computer vision heuristics.
 
 If this tool helped you digitize an Arabic book, please star ⭐ the repo!

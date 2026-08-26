@@ -760,3 +760,36 @@ body.night-mode .quran-result-row:hover { background: #1a1a2e; }
     transition: background 0.2s;
 }
 .quran-load-more-btn:hover { background: #e2e8f0; }
+
+
+
+/* ── Floating Text Selection Action Bar ────────────────────────────────── */
+.floating-text-tools {
+    position: absolute;
+    display: none;
+    background: var(--color-sidebar);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    z-index: 2000;
+    gap: 4px;
+    align-items: center;
+    animation: fadeIn 0.15s ease;
+}
+.floating-text-tools button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background var(--trans-fast);
+}
+.floating-text-tools button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

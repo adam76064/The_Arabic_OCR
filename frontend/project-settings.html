@@ -27,8 +27,8 @@
                     <button type="button" id="btn-cancel" class="btn-plain" style="font-size: 13.5px;" data-i18n="ps.cancel">إلغاء</button>
                     <button type="submit" form="project-settings-form" id="btn-save" class="btn-success" style="font-size: 13px; padding: 6px 16px;" data-i18n="ps.save">حفظ الإعدادات</button>
                     <div style="border-inline-start: 1px solid #cbd5e1; padding-inline-start: 10px; margin-inline-start: 4px;">
-                        <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span>⟵</span> <span data-i18n="ps.back">عودة</span>
+                        <button type="button" id="btn-back" class="btn-secondary" data-icon="back" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
+                            <span data-i18n="ps.back">عودة</span>
                         </button>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 
         <form id="project-settings-form">
             <div class="settings-card">
-                <h3 data-i18n="ps.metadata">📚 البيانات الأساسية</h3>
+                <h3 data-i18n="ps.metadata">البيانات الأساسية</h3>
                 <div class="settings-row">
                     <div class="form-group"><label data-i18n="ps.title">عنوان الكتاب</label><input type="text" id="ps-title" required></div>
                     <div class="form-group"><label data-i18n="ps.author">المؤلف</label><input type="text" id="ps-author"></div>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="settings-card">
-                <h3 data-i18n="ps.processing">⚙️ قواعد معالجة النصوص (OCR)</h3>
+                <h3 data-i18n="ps.processing">قواعد معالجة النصوص (OCR)</h3>
                 <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.processingHint">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</p>
                 
                 <div class="grid-options" style="margin-bottom: 20px;">
@@ -82,10 +82,25 @@
                         <label class="radio-item"><input type="radio" name="ps_numbers" value="to_hindu"> <span data-i18n="ps.toHindi">تحويل إلى أرقام هندية (١, ٢, ٣)</span></label>
                     </div>
                 </div>
+
+                <!-- Live Rule Sandbox -->
+                <div style="margin-top: 20px; background: var(--color-bg); padding: 16px; border-radius: var(--radius-md); border: 1px dashed var(--color-border-strong);">
+                    <div style="font-weight: bold; font-size: 13px; margin-bottom: 8px; color: var(--color-text);">مختبر القواعد الحي (Live Rule Sandbox):</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label style="font-size: 11.5px; color: var(--color-text-muted);">نص تجريبي للمعاينة:</label>
+                            <textarea id="sandbox-input" style="width: 100%; height: 70px; padding: 8px; border-radius: 6px; border: 1px solid var(--color-border-strong); font-size: 13px; resize: vertical; background: var(--color-surface); color: var(--color-text);">كِتـَاباً   قـَيِّماً  ،  و كَانَ  الـعَـمَلُ  مُـتـْقَـناً (١).</textarea>
+                        </div>
+                        <div>
+                            <label style="font-size: 11.5px; color: var(--color-text-muted);">النتيجة الحية بعد تطبيق القواعد:</label>
+                            <div id="sandbox-output" style="width: 100%; min-height: 70px; padding: 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); font-size: 13px; color: var(--color-primary); font-weight: bold; white-space: pre-wrap;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="settings-card">
-                <h3 data-i18n="ps.categoryFormatting">🎨 تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
+                <h3 data-i18n="ps.categoryFormatting">تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
                 <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.categoryHint">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</p>
                 
                 <div class="settings-row" style="align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 18px;">
@@ -220,8 +235,11 @@
             <!-- ═══════════════════════════════════════════════════════
                  POST-PROCESSING SECTION
                  ═══════════════════════════════════════════════════════ -->
+            <!-- ═══════════════════════════════════════════════════════
+                 POST-PROCESSING SECTION
+                 ═══════════════════════════════════════════════════════ -->
             <div class="settings-card" id="post-processing-card">
-                <h3 data-i18n="ps.postProcessing">📝 معالجة ما بعد OCR (Post-Processing)</h3>
+                <h3 data-i18n="ps.postProcessing">معالجة ما بعد OCR (Post-Processing)</h3>
                 <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="projectSettings.postOverview">
                     خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.
                 </p>
@@ -230,7 +248,7 @@
                 <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
-                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;" data-i18n="ps.readingOrder">📐 إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
+                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;" data-i18n="ps.readingOrder">إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
                             <p style="margin: 0; font-size: 12px; color: #0284c7;" data-i18n="projectSettings.readingDetail">
                                 يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
                             </p>
@@ -241,7 +259,7 @@
                         </label>
                     </div>
                     <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;" data-i18n="ps.runReadingOrder">⚡ ترتيب المربعات على الصفحات الآن</button>
+                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;" data-i18n="ps.runReadingOrder">ترتيب المربعات على الصفحات الآن</button>
                     </div>
                 </div>
 
@@ -249,7 +267,7 @@
                 <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div>
-                            <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;" data-i18n="ps.pagination">🔢 الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
+                            <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;" data-i18n="ps.pagination">الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
                             <p style="margin: 0; font-size: 12px; color: #16a34a;" data-i18n="projectSettings.paginationDetail">
                                 يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
                             </p>
@@ -260,13 +278,13 @@
                         </label>
                     </div>
                     <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #dcfce7; color: #15803d; border-color: #86efac;" data-i18n="ps.runPagination">⚡ كشف أرقام الصفحات الآن</button>
+                        <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #dcfce7; color: #15803d; border-color: #86efac;" data-i18n="ps.runPagination">كشف أرقام الصفحات الآن</button>
                     </div>
                 </div>
             </div>
 
             <div class="settings-card">
-                <h3 data-i18n="ps.collaboration">🌐 المشاركة والعمل التعاوني (Cooperative Work)</h3>
+                <h3 data-i18n="ps.collaboration">المشاركة والعمل التعاوني (Cooperative Work)</h3>
 
                 <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="ps.collabHint">تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).</p>
                 
@@ -275,8 +293,8 @@
                     <!-- LAN Cooperative Box -->
                     <div style="background: #f0f9ff; padding: 18px; border-radius: 10px; border: 1px solid #bae6fd;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="margin: 0; color: #0369a1; font-size: 16px;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode) 📡</h4>
-                            <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;" data-i18n="ps.stopped">🔴 متوقف</span>
+                            <h4 style="margin: 0; color: #0369a1; font-size: 16px;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode)</h4>
+                            <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;" data-i18n="ps.stopped">متوقف</span>
                         </div>
                         <p style="font-size: 13px; color: #0369a1; margin-bottom: 14px;" data-i18n="ps.lanHint">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
                         

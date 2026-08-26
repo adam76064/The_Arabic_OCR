@@ -135,6 +135,7 @@ function refreshIndicatorsFor(wrapperEl, element) {
 function renderBlocksList(ocrData) {
     const container = document.getElementById('blocks-list');
     container.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     ocrData.forEach((element, index) => {
         if (element.category === 'Picture') return;
@@ -243,7 +244,6 @@ function renderBlocksList(ocrData) {
             selectBlock(index); 
             document.getElementById('sticky-toolbar').classList.remove('disabled');
             
-            // Re-added the toolbar toggle logic that was in your old code
             document.querySelectorAll('#sticky-toolbar button[data-align]').forEach(b =>
                 b.classList.toggle('active', b.dataset.align === (element.align || '')));
             document.querySelectorAll('#sticky-toolbar button[data-dir]').forEach(b =>
@@ -253,9 +253,6 @@ function renderBlocksList(ocrData) {
             if (typeof window.updateTrackingHighlight === 'function') window.updateTrackingHighlight(content, element); else if (typeof updateTrackingHighlight === 'function') updateTrackingHighlight(content, element);
         });
 
-        // Word/line tracking: caret can move via typing (input), arrow keys
-        // (keyup), or a mouse click inside the already-focused block (click).
-        // Debounced since these can fire rapidly while typing.
         content.addEventListener('input', () => { const fn = window.debouncedTrackingUpdate || (typeof debouncedTrackingUpdate !== 'undefined' ? debouncedTrackingUpdate : null); if (fn) fn(content, element); });
         content.addEventListener('keyup', (e) => {
             if (e.key.startsWith('Arrow') || e.key === 'Home' || e.key === 'End') {
@@ -287,8 +284,10 @@ function renderBlocksList(ocrData) {
         wrapper.appendChild(content);
 
         setupBlockDrag(wrapper, index);
-        container.appendChild(wrapper);
+        fragment.appendChild(wrapper);
     });
+
+    container.appendChild(fragment);
 }
 
 function setupBlocksListDelegation() {

@@ -30,6 +30,7 @@ from ..collab.discovery import LANDiscovery
 from ..collab.sync import LANSyncServer, LANSyncClient
 from ..utils.retriever import populate_layout_blocks_text
 from ..post_processing import PostProcessingManager
+from ..preprocessing import PreprocessingEngine, BatchPreprocessingWorker
 from .events import EventEmitter
 
 
@@ -67,6 +68,8 @@ class Api:
         if not os.path.exists(quran_path):
             quran_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'data', 'Quran.json')
         self.quran_handler = QuranHandler(json_path=quran_path)
+        self.preprocessing_engine = PreprocessingEngine(self.project_manager)
+        self.preprocessing_worker = None
 
         self.events = EventEmitter(lambda: self._window)
 
@@ -132,7 +135,13 @@ class Api:
         return project
 
     def load_project(self, project_id):
-        return self.project_manager.load_project(project_id)
+        # Ensure any missing thumbnails exist on disk (e.g. for split sub-pages)
+        try:
+            self.project_manager.ensure_project_thumbnails(project_id)
+        except Exception:
+            pass
+        # Review page needs all OCR data hydrated from per-page files
+        return self.project_manager.load_project_with_ocr(project_id)
 
     def get_projects(self):
         return self.project_manager.list_projects()
@@ -144,6 +153,7 @@ class Api:
         return self.project_manager.delete_page(project_id, page_index, delete_files=delete_files)
 
     def update_page_ocr(self, project_id, page_index, ocr_data, status=None):
+        # Fast load — we only need page status, not all OCR text across the project
         project = self.project_manager.load_project(project_id)
         if project and 0 <= page_index < len(project.get('pages', [])):
             project['pages'][page_index]['ocr_data'] = ocr_data
@@ -172,7 +182,8 @@ class Api:
 
     def reapply_text_processing_to_project(self, project_id):
         try:
-            project = self.project_manager.load_project(project_id)
+            # Full load required — we iterate and mutate every page's OCR text
+            project = self.project_manager.load_project_with_ocr(project_id)
             if not project:
                 return {'ok': False, 'error': 'المشروع غير موجود.'}
             meta = project.get('metadata', {})
@@ -210,13 +221,16 @@ class Api:
             traceback.print_exc()
             return {'ok': False, 'error': str(e)}
 
+
+
     def apply_project_settings_changes(self, project_id, apply_scope="unreviewed"):
         if apply_scope == "none":
             return {'ok': True, 'count': 0}
             
         try:
-            # 1. Reapply Text Processing
-            project = self.project_manager.load_project(project_id)
+            # 1. Reapply Text Processing — full OCR load needed to iterate all page text
+            project = self.project_manager.load_project_with_ocr(project_id)
+
             if not project:
                 return {'ok': False, 'error': 'المشروع غير موجود.'}
                 
@@ -280,7 +294,40 @@ class Api:
         client = PaddleOCRClient(data_dir=self.project_manager.projects_dir)
         return client.get_limits()
 
-    def trigger_paddle_ocr(self, project_id, start_idx, end_idx):
+    def _create_pdf_from_project_pages(self, project_id: str, pages_subset: list, out_pdf_path: str, fallback_doc=None):
+        """
+        Build a temporary PDF chunk for PaddleOCR using the exact working/preprocessed page images.
+        """
+        project_dir = os.path.join(self.project_manager.projects_dir, project_id)
+        doc = fitz.open()
+
+        for page_data in pages_subset:
+            img_rel = page_data.get('image_path')
+            img_full = os.path.join(project_dir, 'images', img_rel) if img_rel else ''
+
+            if img_full and os.path.exists(img_full):
+                try:
+                    img_doc = fitz.open(img_full)
+                    rect = img_doc[0].rect
+                    pdf_bytes = img_doc.convert_to_pdf()
+                    img_pdf = fitz.open("pdf", pdf_bytes)
+                    page = doc.new_page(width=rect.width, height=rect.height)
+                    page.show_pdf_page(rect, img_pdf, 0)
+                    img_doc.close()
+                    img_pdf.close()
+                    continue
+                except Exception as e:
+                    print(f"[_create_pdf_from_project_pages] Error converting {img_full}: {e}")
+
+            # Fallback to pristine PDF page if image raster failed
+            if fallback_doc is not None:
+                pdf_idx = page_data.get('pdf_index', 0)
+                if 0 <= pdf_idx < len(fallback_doc):
+                    doc.insert_pdf(fallback_doc, from_page=pdf_idx, to_page=pdf_idx)
+        doc.save(out_pdf_path)
+        doc.close()
+
+    def trigger_paddle_ocr(self, project_id, start_idx, end_idx, page_indices=None):
         project = self.project_manager.load_project(project_id)
         meta = project.get('metadata', {}) if project else {}
         text_config = meta.get('text_features', {})
@@ -289,31 +336,44 @@ class Api:
 
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
-        pdf_path = project.get('pdf_path')
-        if not pdf_path or not os.path.exists(pdf_path):
-            return {'ok': False, 'error': 'تعذّر العثور على ملف PDF الأصلي.'}
 
         paddle_client = PaddleOCRClient(data_dir=self.project_manager.projects_dir)
         if paddle_client.get_limits() <= 0:
             return {'ok': False, 'error': 'لقد استنفدت الحد اليومي المجاني.'}
 
+        pdf_path = project.get('pdf_path')
+        fallback_doc = fitz.open(pdf_path) if (pdf_path and os.path.exists(pdf_path)) else None
+
+        if page_indices is not None and isinstance(page_indices, list) and len(page_indices) > 0:
+            indices_to_process = [int(i) for i in page_indices if 0 <= int(i) < len(project['pages'])]
+        else:
+            indices_to_process = list(range(start_idx, end_idx + 1))
+
+        if not indices_to_process:
+            return {'ok': False, 'error': 'لم يتم تحديد صفحات صالحة للمعالجة.'}
+
         try:
             tmp_dir = tempfile.mkdtemp(prefix='paddleocr_')
-            current_start = start_idx
-            while current_start <= end_idx:
-                current_end = min(current_start + paddle_client.max_pages_per_chunk - 1, end_idx)
-                self._emit_paddle_progress('extracting', f"تجهيز الصفحات من {current_start+1} إلى {current_end+1}...")
-                tmp_pdf_path = os.path.join(tmp_dir, f"chunk_{current_start}_{current_end}.pdf")
-                extract_pdf_range(pdf_path, current_start, current_end, tmp_pdf_path)
-                self._emit_paddle_progress('uploading', f"جاري رفع الدفعة ({current_start+1}-{current_end+1})...")
+            chunk_size = paddle_client.max_pages_per_chunk
+            for chunk_offset in range(0, len(indices_to_process), chunk_size):
+                chunk_indices = indices_to_process[chunk_offset : chunk_offset + chunk_size]
+                first_num = chunk_indices[0] + 1
+                last_num = chunk_indices[-1] + 1
+                self._emit_paddle_progress('extracting', f"تجهيز الصفحات ({', '.join(str(i+1) for i in chunk_indices)})...")
+                tmp_pdf_path = os.path.join(tmp_dir, f"chunk_{chunk_offset}.pdf")
+
+                pages_subset = [project['pages'][i] for i in chunk_indices]
+                self._create_pdf_from_project_pages(project_id, pages_subset, tmp_pdf_path, fallback_doc=fallback_doc)
+
+                self._emit_paddle_progress('uploading', f"جاري رفع الدفعة ({first_num}-{last_num})...")
                 paddle_client.decrement_limit()
                 paddle_pages = paddle_client.process_pdf_chunk(tmp_pdf_path, window=self._window)
                 app_formatted_pages = paddle_client.parse_paddle_to_app_format(
-                    paddle_pages, project['pages'], current_start
+                    paddle_pages, project['pages'], chunk_indices[0]
                 )
                 for i, ocr_data in enumerate(app_formatted_pages):
-                    actual_page_index = current_start + i
-                    if actual_page_index < len(project['pages']):
+                    if i < len(chunk_indices):
+                        actual_page_index = chunk_indices[i]
                         pg_data = project['pages'][actual_page_index]
                         cleaned_elements = self._apply_cleaning_to_elements(ocr_data, text_config, pg_data, engine_dpi=200.0, category_formatting=cat_fmt, post_processing=post_proc)
                         project['pages'][actual_page_index]['ocr_data'] = cleaned_elements
@@ -321,7 +381,6 @@ class Api:
                         self.project_manager.save_raw_ocr(project_id, actual_page_index, cleaned_elements)
 
                 self.project_manager.update_project(project_id, project)
-                current_start = current_end + 1
 
             self._emit_paddle_progress('completed', 'تمت المعالجة بنجاح!', 100)
             return {'ok': True, 'project': project, 'trials_left': paddle_client.get_limits()}
@@ -330,9 +389,15 @@ class Api:
             self._emit_paddle_progress('error', str(e), 0)
             return {'ok': False, 'error': str(e)}
         finally:
+            if fallback_doc is not None:
+                try:
+                    if not fallback_doc.is_closed:
+                        fallback_doc.close()
+                except Exception:
+                    pass
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
-    def trigger_locro_ocr(self, project_id, start_idx, end_idx, mode):
+    def trigger_locro_ocr(self, project_id, start_idx, end_idx, mode, page_indices=None):
         project = self.project_manager.load_project(project_id)
         meta = project.get('metadata', {}) if project else {}
         text_config = meta.get('text_features', {})
@@ -340,26 +405,42 @@ class Api:
         post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
+
         pdf_path = project.get('pdf_path')
-        if not pdf_path or not os.path.exists(pdf_path):
-            return {'ok': False, 'error': 'تعذّر العثور على ملف PDF.'}
+        doc = fitz.open(pdf_path) if (pdf_path and os.path.exists(pdf_path)) else None
+        project_dir = os.path.join(self.project_manager.projects_dir, project_id)
+
+        if page_indices is not None and isinstance(page_indices, list) and len(page_indices) > 0:
+            indices_to_process = [int(i) for i in page_indices if 0 <= int(i) < len(project['pages'])]
+        else:
+            indices_to_process = list(range(start_idx, end_idx + 1))
+
+        if not indices_to_process:
+            return {'ok': False, 'error': 'لم يتم تحديد صفحات صالحة للمعالجة.'}
 
         try:
             tmp_dir = tempfile.mkdtemp(prefix='locro_ocr_')
-            doc = fitz.open(pdf_path)
-            total_pages = (end_idx - start_idx) + 1
+            total_pages = len(indices_to_process)
 
-            for current_idx in range(start_idx, end_idx + 1):
+            for seq_idx, current_idx in enumerate(indices_to_process):
                 page_ui_num = current_idx + 1
-                progress_pct = ((current_idx - start_idx) / total_pages) * 100
+                progress_pct = (seq_idx / total_pages) * 100
                 self._emit_paddle_progress('extracting', f"جاري المسح عبر Locro Offline لصفحة {page_ui_num}...", progress_pct)
 
-                pix = doc.load_page(current_idx).get_pixmap(dpi=300)
-                img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
-                pix.save(img_path)
-
                 page_data = project['pages'][current_idx]
-                blocks = run_locro_ocr(img_path)
+                img_rel = page_data.get('image_path')
+                img_full = os.path.join(project_dir, 'images', img_rel) if img_rel else ''
+
+                if img_full and os.path.exists(img_full):
+                    active_img_path = img_full
+                elif doc is not None:
+                    pix = doc.load_page(page_data.get('pdf_index', current_idx)).get_pixmap(dpi=300)
+                    active_img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
+                    pix.save(active_img_path)
+                else:
+                    continue
+
+                blocks = run_locro_ocr(active_img_path)
 
                 if mode == 'full_page':
                     cleaned_elements = self._apply_cleaning_to_elements(blocks, text_config, page_data, engine_dpi=300.0, category_formatting=cat_fmt, post_processing=post_proc)
@@ -446,8 +527,10 @@ class Api:
                     project['pages'][current_idx]['ocr_data'] = cleaned_elements
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)
 
-                self.project_manager.update_project(project_id, project)
+                if (seq_idx + 1) % 10 == 0:
+                    self.project_manager.update_project(project_id, project)
 
+            self.project_manager.update_project(project_id, project)
             self._emit_paddle_progress('completed', 'تمت المعالجة عبر Locro بنجاح!', 100)
             return {'ok': True, 'project': project}
 
@@ -455,10 +538,16 @@ class Api:
             self._emit_paddle_progress('error', str(e), 0)
             return {'ok': False, 'error': str(e)}
         finally:
+            if doc is not None:
+                try:
+                    if not doc.is_closed:
+                        doc.close()
+                except Exception:
+                    pass
             if 'tmp_dir' in locals() and os.path.exists(tmp_dir):
                 shutil.rmtree(tmp_dir, ignore_errors=True)
 
-    def trigger_google_lens_ocr(self, project_id, start_idx, end_idx, mode):
+    def trigger_google_lens_ocr(self, project_id, start_idx, end_idx, mode, page_indices=None):
         project = self.project_manager.load_project(project_id)
         meta = project.get('metadata', {}) if project else {}
         text_config = meta.get('text_features', {})
@@ -466,28 +555,46 @@ class Api:
         post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
+
         pdf_path = project.get('pdf_path')
-        if not pdf_path or not os.path.exists(pdf_path):
-            return {'ok': False, 'error': 'تعذّر العثور على ملف PDF.'}
+        doc = fitz.open(pdf_path) if (pdf_path and os.path.exists(pdf_path)) else None
+        project_dir = os.path.join(self.project_manager.projects_dir, project_id)
+
+        if page_indices is not None and isinstance(page_indices, list) and len(page_indices) > 0:
+            indices_to_process = [int(i) for i in page_indices if 0 <= int(i) < len(project['pages'])]
+        else:
+            indices_to_process = list(range(start_idx, end_idx + 1))
+
+        if not indices_to_process:
+            return {'ok': False, 'error': 'لم يتم تحديد صفحات صالحة للمعالجة.'}
 
         try:
             glens = GoogleLensOCR(max_workers=3)
             tmp_dir = tempfile.mkdtemp(prefix='glens_ocr_')
-            doc = fitz.open(pdf_path)
-            total_pages = (end_idx - start_idx) + 1
+            total_pages = len(indices_to_process)
 
-            for current_idx in range(start_idx, end_idx + 1):
+            for seq_idx, current_idx in enumerate(indices_to_process):
                 page_ui_num = current_idx + 1
-                progress_pct = ((current_idx - start_idx) / total_pages) * 100
+                progress_pct = (seq_idx / total_pages) * 100
                 self._emit_paddle_progress('extracting', f"تجهيز صفحة {page_ui_num}...", progress_pct)
-                pix = doc.load_page(current_idx).get_pixmap(dpi=300)
-                img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
-                pix.save(img_path)
+
+                page_data = project['pages'][current_idx]
+                img_rel = page_data.get('image_path')
+                img_full = os.path.join(project_dir, 'images', img_rel) if img_rel else ''
+
+                if img_full and os.path.exists(img_full):
+                    active_img_path = img_full
+                elif doc is not None:
+                    pix = doc.load_page(page_data.get('pdf_index', current_idx)).get_pixmap(dpi=300)
+                    active_img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
+                    pix.save(active_img_path)
+                else:
+                    continue
 
                 page_data = project['pages'][current_idx]
                 self._emit_paddle_progress('uploading', f"جاري المسح عبر Google Lens لصفحة {page_ui_num}...", progress_pct + 10)
 
-                results = glens.extract_batch([Path(img_path)])
+                results = glens.extract_batch([Path(active_img_path)])
 
                 if not results or not results[0].get('success'):
                     continue
@@ -594,9 +701,10 @@ class Api:
                     project['pages'][current_idx]['ocr_data'] = cleaned_elements
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)
 
-                self.project_manager.update_project(project_id, project)
+                if (seq_idx + 1) % 10 == 0:
+                    self.project_manager.update_project(project_id, project)
 
-            doc.close()
+            self.project_manager.update_project(project_id, project)
             self._emit_paddle_progress('completed', 'تمت المعالجة عبر Google Lens بنجاح!', 100)
             return {'ok': True, 'project': project}
 
@@ -606,9 +714,15 @@ class Api:
             self._emit_paddle_progress('error', str(e), 100)
             return {'ok': False, 'error': str(e)}
         finally:
+            if doc is not None:
+                try:
+                    if not doc.is_closed:
+                        doc.close()
+                except Exception:
+                    pass
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
-    def trigger_llm_ocr(self, project_id, start_idx, end_idx, llm_config):
+    def trigger_llm_ocr(self, project_id, start_idx, end_idx, llm_config, page_indices=None):
         project = self.project_manager.load_project(project_id)
         meta = project.get('metadata', {}) if project else {}
         text_config = meta.get('text_features', {})
@@ -616,30 +730,45 @@ class Api:
         post_proc = meta.get('post_processing', {})
         if not project:
             return {'ok': False, 'error': 'المشروع غير موجود.'}
+
         pdf_path = project.get('pdf_path')
-        if not pdf_path or not os.path.exists(pdf_path):
-            return {'ok': False, 'error': 'تعذّر العثور على ملف PDF.'}
+        doc = fitz.open(pdf_path) if (pdf_path and os.path.exists(pdf_path)) else None
+        project_dir = os.path.join(self.project_manager.projects_dir, project_id)
+
+        if page_indices is not None and isinstance(page_indices, list) and len(page_indices) > 0:
+            indices_to_process = [int(i) for i in page_indices if 0 <= int(i) < len(project['pages'])]
+        else:
+            indices_to_process = list(range(start_idx, end_idx + 1))
+
+        if not indices_to_process:
+            return {'ok': False, 'error': 'لم يتم تحديد صفحات صالحة للمعالجة.'}
 
         try:
             llm_handler = LLMOCRHandler()
             tmp_dir = tempfile.mkdtemp(prefix='llm_ocr_')
-            doc = fitz.open(pdf_path)
-            total_pages = (end_idx - start_idx) + 1
+            total_pages = len(indices_to_process)
 
-            for current_idx in range(start_idx, end_idx + 1):
+            for seq_idx, current_idx in enumerate(indices_to_process):
                 page_ui_num = current_idx + 1
-                progress_pct = ((current_idx - start_idx) / total_pages) * 100
+                progress_pct = (seq_idx / total_pages) * 100
                 self._emit_paddle_progress('extracting', f"تجهيز صفحة {page_ui_num}...", progress_pct)
 
-                pix = doc.load_page(current_idx).get_pixmap(dpi=200)
-                img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
-                pix.save(img_path)
-
                 page_data = project['pages'][current_idx]
+                img_rel = page_data.get('image_path')
+                img_full = os.path.join(project_dir, 'images', img_rel) if img_rel else ''
+
+                if img_full and os.path.exists(img_full):
+                    active_img_path = img_full
+                elif doc is not None:
+                    pix = doc.load_page(page_data.get('pdf_index', current_idx)).get_pixmap(dpi=200)
+                    active_img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
+                    pix.save(active_img_path)
+                else:
+                    continue
 
                 self._emit_paddle_progress('uploading', f"جاري المسح عبر الذكاء الاصطناعي لصفحة {page_ui_num}...", progress_pct + 10)
 
-                result = llm_handler.extract_page(img_path, llm_config)
+                result = llm_handler.extract_page(active_img_path, llm_config)
                 if not result.get('success'):
                     raise Exception(result.get('error'))
 
@@ -671,9 +800,11 @@ class Api:
                 project['pages'][current_idx]['ocr_data'] = cleaned_llm_data
                 project['pages'][current_idx]['status'] = 'pending'
                 self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_llm_data)
-                self.project_manager.update_project(project_id, project)
 
-            doc.close()
+                if (seq_idx + 1) % 10 == 0:
+                    self.project_manager.update_project(project_id, project)
+
+            self.project_manager.update_project(project_id, project)
             self._emit_paddle_progress('completed', 'تمت المعالجة عبر الذكاء الاصطناعي بنجاح!', 100)
             return {'ok': True, 'project': project}
 
@@ -683,6 +814,12 @@ class Api:
             self._emit_paddle_progress('error', str(e), 100)
             return {'ok': False, 'error': str(e)}
         finally:
+            if doc is not None:
+                try:
+                    if not doc.is_closed:
+                        doc.close()
+                except Exception:
+                    pass
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
     # --- Quran ---
@@ -713,41 +850,95 @@ class Api:
 
     # --- Export ---
     def export_project(self, project_id, fmt, page_indices, opts=None, output_dir=None):
-        project = self.project_manager.load_project(project_id)
-        safe_title = (project['metadata'].get('title') or 'export').replace(' ', '_')[:40]
+        try:
+            # Export needs every page's OCR text content
+            project = self.project_manager.load_project_with_ocr(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
 
-        if output_dir:
-            output_path = os.path.join(output_dir, f"{safe_title}.{fmt}")
-        else:
-            out_dir = os.path.join(self.project_manager.projects_dir, project_id)
+
+            safe_title = (project.get('metadata', {}).get('title') or 'export').replace(' ', '_')[:40]
             filters = {
                 'json': ('JSON files (*.json)', 'All files (*.*)'),
                 'txt': ('Text files (*.txt)', 'All files (*.*)'),
                 'docx': ('Word files (*.docx)', 'All files (*.*)'),
                 'html': ('HTML files (*.html)', 'All files (*.*)'),
                 'epub3': ('EPUB files (*.epub)', 'All files (*.*)'),
+                'epub': ('EPUB files (*.epub)', 'All files (*.*)'),
             }
-            result = self._window.create_file_dialog(
-                webview.FileDialog.SAVE,
-                directory=out_dir,
-                save_filename=f"{safe_title}.{fmt}",
-                file_types=filters.get(fmt, ('All files (*.*)',))
-            )
-            if not result:
-                return None
-            output_path = result if isinstance(result, str) else result[0]
 
+            # Normalize formats into a list
+            if isinstance(fmt, (list, tuple)):
+                formats = [str(f).lower().strip() for f in fmt if str(f).strip()]
+            elif isinstance(fmt, str):
+                formats = [fmt.lower().strip()]
+            else:
+                formats = ['docx']
+
+            if not formats:
+                return {'ok': False, 'error': 'لم يتم تحديد صيغ للتصدير.'}
+
+            # If multiple formats requested, ask for destination directory
+            if len(formats) > 1:
+                if output_dir:
+                    target_dir = output_dir
+                else:
+                    out_dir = os.path.join(self.project_manager.projects_dir, project_id)
+                    selected_folder = self._window.create_file_dialog(
+                        webview.FileDialog.FOLDER,
+                        directory=out_dir,
+                    )
+                    if not selected_folder:
+                        return None
+                    target_dir = selected_folder if isinstance(selected_folder, str) else selected_folder[0]
+
+                exported_files = []
+                for f in formats:
+                    ext = 'epub' if f == 'epub3' else f
+                    out_path = os.path.join(target_dir, f"{safe_title}.{ext}")
+                    self._run_single_export(project, f, page_indices, out_path, opts)
+                    exported_files.append(out_path)
+
+                return {'ok': True, 'paths': exported_files, 'directory': target_dir}
+
+            # Single format export
+            single_fmt = formats[0]
+            ext = 'epub' if single_fmt == 'epub3' else single_fmt
+            if output_dir:
+                output_path = os.path.join(output_dir, f"{safe_title}.{ext}")
+            else:
+                out_dir = os.path.join(self.project_manager.projects_dir, project_id)
+                fmt_filter = filters.get(single_fmt, ('All files (*.*)',))
+                result = self._window.create_file_dialog(
+                    webview.FileDialog.SAVE,
+                    directory=out_dir,
+                    save_filename=f"{safe_title}.{ext}",
+                    file_types=fmt_filter
+                )
+                if not result:
+                    return None
+                output_path = result if isinstance(result, str) else result[0]
+
+            out_res = self._run_single_export(project, single_fmt, page_indices, output_path, opts)
+            return {'ok': True, 'path': out_res}
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
+    def _run_single_export(self, project, fmt, page_indices, output_path, opts=None):
         if fmt == 'json':
             return export_json(project, page_indices, output_path)
         elif fmt == 'txt':
-            return export_txt(project, page_indices, output_path, project['metadata'].get('logical_start', 1), opts=opts)
+            return export_txt(project, page_indices, output_path, project.get('metadata', {}).get('logical_start', 1), opts=opts)
         elif fmt == 'docx':
             return export_docx(project, page_indices, output_path, opts)
         elif fmt == 'html':
             return export_html(project, page_indices, output_path, opts)
-        elif fmt == 'epub3':
+        elif fmt == 'epub3' or fmt == 'epub':
             return export_epub3(project, page_indices, output_path, opts)
-        return None
+        return output_path
 
     # --- LAN / Collaboration ---
     def start_lan_sharing(self, project_id, lan_password=None):
@@ -954,7 +1145,7 @@ class Api:
         Sort OCR bounding boxes into Arabic reading order (Top-to-Bottom, Right-to-Left).
         """
         try:
-            project = self.project_manager.load_project(project_id)
+            project = self.project_manager.load_project_with_ocr(project_id)
             if not project:
                 return {'ok': False, 'error': 'المشروع غير موجود.'}
 
@@ -999,7 +1190,7 @@ class Api:
         Detect page numbers across project pages and annotate blocks with category="Page-number".
         """
         try:
-            project = self.project_manager.load_project(project_id)
+            project = self.project_manager.load_project_with_ocr(project_id)
             if not project:
                 return {'ok': False, 'error': 'المشروع غير موجود.'}
 
@@ -1022,9 +1213,10 @@ class Api:
         Apply all enabled post-processing steps to eligible pages of a project.
         """
         try:
-            project = self.project_manager.load_project(project_id)
+            project = self.project_manager.load_project_with_ocr(project_id)
             if not project:
                 return {'ok': False, 'error': 'المشروع غير موجود.'}
+
 
             pp_config = project.get('metadata', {}).get('post_processing', {})
 
@@ -1041,5 +1233,163 @@ class Api:
             import traceback
             traceback.print_exc()
             return {'ok': False, 'error': str(e)}
+
+    # --- Pre-processing Pipeline (ScanTailor Advanced) ---
+
+    def get_preprocessing_defaults(self):
+        """Return default configuration parameters for all 6 stages."""
+        try:
+            return {'ok': True, 'defaults': self.preprocessing_engine.get_stage_defaults()}
+        except Exception as e:
+            return {'ok': False, 'error': str(e)}
+
+    def preview_preprocessing_stage(self, project_id, page_index, stage_name, params=None, from_original=True, dpi=300):
+        """
+        Execute pipeline up to stage_name and return base64 preview + computed metadata.
+        """
+        try:
+            res = self.preprocessing_engine.preview_stage(
+                project_id=project_id,
+                page_index=int(page_index),
+                target_stage=stage_name,
+                stages_params=params or {},
+                from_original=from_original,
+                dpi=int(dpi),
+            )
+            return res
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'success': False, 'error': str(e)}
+
+    def apply_preprocessing_stage_to_page(self, project_id, page_index, stage_name, stage_params=None, dpi=300):
+        """
+        Apply a SINGLE preprocessing stage directly to the active working page image.
+        """
+        try:
+            res = self.preprocessing_engine.apply_stage_to_page(
+                project_id=project_id,
+                page_index=int(page_index),
+                stage_name=stage_name,
+                stage_params=stage_params or {},
+                dpi=int(dpi),
+            )
+            return res
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'success': False, 'error': str(e)}
+
+    def apply_preprocessing_stage_to_all(self, project_id, stage_name, stage_params=None, page_indices=None, dpi=300):
+        """
+        Apply a SINGLE preprocessing stage across multiple pages asynchronously.
+        """
+        try:
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+            pages = project.get('pages', [])
+            if page_indices is None:
+                indices = list(range(len(pages)))
+            else:
+                indices = [int(i) for i in page_indices if 0 <= int(i) < len(pages)]
+
+            options = {
+                "stages_to_run": [stage_name],
+                "from_original": False,  # Operate on active page state
+                "split_spread": (stage_name == "split"),
+                "dpi": int(dpi),
+            }
+            stages_params = {stage_name: stage_params or {}}
+            return self.batch_run_preprocessing(project_id, indices, stages_params=stages_params, options=options)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
+    def apply_preprocessing_to_page(self, project_id, page_index, stages_params=None, stages_to_run=None, split_spread=False, from_original=True, dpi=300):
+        """
+        Apply and commit pre-processing pipeline for a single page.
+        """
+        try:
+            res = self.preprocessing_engine.process_and_save_page(
+                project_id=project_id,
+                page_index=int(page_index),
+                stages_params=stages_params or {},
+                stages_to_run=stages_to_run,
+                from_original=from_original,
+                split_spread=split_spread,
+                dpi=int(dpi),
+            )
+            return res
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'success': False, 'error': str(e)}
+
+    def batch_run_preprocessing(self, project_id, page_indices=None, stages_params=None, options=None):
+        """
+        Run multi-page batch pre-processing asynchronously on a background worker thread.
+        """
+        try:
+            project = self.project_manager.load_project(project_id)
+            if not project:
+                return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+            pages = project.get('pages', [])
+            if page_indices is None:
+                indices = list(range(len(pages)))
+            else:
+                indices = [int(i) for i in page_indices if 0 <= int(i) < len(pages)]
+
+            if not indices:
+                return {'ok': False, 'error': 'لم يتم تحديد صفحات للمعالجة.'}
+
+            if self.preprocessing_worker and self.preprocessing_worker.is_running:
+                return {'ok': False, 'error': 'هناك عملية معالجة أخرى جارية بالفعل.'}
+
+            def on_progress(payload):
+                self.events.preprocessing_progress(payload)
+
+            def on_completed(payload):
+                self.events.preprocessing_progress(payload)
+
+            self.preprocessing_worker = BatchPreprocessingWorker(
+                engine=self.preprocessing_engine,
+                project_id=project_id,
+                page_indices=indices,
+                stages_params=stages_params or {},
+                options=options or {},
+                progress_callback=on_progress,
+                completed_callback=on_completed,
+            )
+            self.preprocessing_worker.start()
+            return {'ok': True, 'total': len(indices)}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
+    def cancel_preprocessing(self):
+        """Cancel ongoing batch pre-processing."""
+        try:
+            if self.preprocessing_worker and self.preprocessing_worker.is_running:
+                self.preprocessing_worker.stop()
+                return {'ok': True, 'message': 'تم إيقاف المعالجة.'}
+            return {'ok': True, 'message': 'لا توجد معالجة جارية.'}
+        except Exception as e:
+            return {'ok': False, 'error': str(e)}
+
+    def reset_page_preprocessing(self, project_id, page_index):
+        """Reset page to original unedited scan."""
+        try:
+            page = self.preprocessing_engine.storage.reset_page_to_original(project_id, int(page_index))
+            return {'ok': True, 'page': page}
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {'ok': False, 'error': str(e)}
+
 
 

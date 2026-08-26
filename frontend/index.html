@@ -12,9 +12,16 @@
 
     <main class="home-main">
         <section class="hero">
-            <h1 data-i18n="home.welcome">مرحبًا بكم</h1>
-            <p data-i18n="home.chooseAction">اختر ما تريد القيام به</p>
+            <h1 data-i18n="home.welcome">مرحبًا بكم في أداة معالجة ومراجعة النصوص</h1>
+            <p data-i18n="home.chooseAction">اختر مشروعاً سابقاً أو ابدأ مشروعاً جديداً فوراً</p>
         </section>
+
+        <!-- Interactive 1-Click Dropzone for Fast PDF Project Creation -->
+        <div class="hero-dropzone trigger-new-project" id="hero-dropzone" title="اسحب ملف PDF هنا أو انقر للاختيار">
+            <div class="dropzone-icon" data-icon="plus"></div>
+            <div class="dropzone-title" data-i18n="home.dropzone.title">اسحب وأفلت ملف PDF هنا لإنشاء مشروع جديد أو انقر للاختيار</div>
+            <div class="dropzone-subtitle" data-i18n="home.dropzone.subtitle">سيتم استخراج وتجهيز الصفحات تلقائياً لبدء المعالجة والتدقيق</div>
+        </div>
 
         <div class="home-cards">
             <a href="#" class="home-card card-primary trigger-new-project">

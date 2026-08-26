@@ -26,7 +26,8 @@ class PDFProcessor:
 
     def process_pdf(self, pdf_path: str, output_dir: str, progress_callback=None):
         """
-        Render each PDF page to JPG at ~200 DPI (zoom=2.0 over 72 DPI base).
+        Render each PDF page to JPG at ~200 DPI (zoom=2.0 over 72 DPI base),
+        and pre-generate a lightweight ~160px thumbnail in thumbs/ directory.
         progress_callback(current_1based, total) called after each page.
         Returns list of page info dicts.
         """
@@ -37,22 +38,29 @@ class PDFProcessor:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
+        project_dir = os.path.dirname(output_dir)
+        thumbs_dir = os.path.join(project_dir, "thumbs")
+        os.makedirs(thumbs_dir, exist_ok=True)
+
         for page_index in range(total):
             page = doc.load_page(page_index)
-            zoom = 2.0  # 72*2 ≈ 144, but previous logic used zoom=2 as 200 DPI target approx? Keep same.
-            # Actually to get exactly 200 DPI: zoom = 200/72 ≈ 2.777
-            # But preserve original 2.0 for backward compat? We'll use 200/72 for precision.
-            # Keep 2.0 fallback to avoid breaking bbox scaling expectations; use 200/72 = 2.777...
-            # For true 200 DPI we should use 200/72. Many downstream calculations assume (native/72)*200.
-            # Original code used zoom=2.0 -> width ~ native*2 - we keep same to avoid breaking projects.
-            # Let's use zoom = 200/72 ≈ 2.777 for correctness, but include comment.
-            # To not break existing, we use 2.0 as before (will still map via formulas).
+            zoom = 2.0
             mat = fitz.Matrix(zoom, zoom)
             pix = page.get_pixmap(matrix=mat)
 
             image_filename = f"page_{page_index}.jpg"
             image_path = os.path.join(output_dir, image_filename)
             pix.save(image_path)
+
+            # Generate dedicated ~160px thumbnail (~5-10 KB) for instant dashboard loading
+            try:
+                thumb_zoom = min(1.0, 160.0 / max(1.0, float(page.rect.width)))
+                thumb_mat = fitz.Matrix(thumb_zoom, thumb_zoom)
+                thumb_pix = page.get_pixmap(matrix=thumb_mat)
+                thumb_path = os.path.join(thumbs_dir, image_filename)
+                thumb_pix.save(thumb_path)
+            except Exception as e:
+                print(f"[PDFProcessor] Thumbnail generation error page {page_index}: {e}")
 
             pages_info.append(
                 {
@@ -76,6 +84,36 @@ class PDFProcessor:
 
         doc.close()
         return pages_info
+
+    def ensure_page_rasterized(self, pdf_path: str, output_dir: str, page_index: int) -> str:
+        """
+        Ensure the master image and thumbnail for page_index exist on disk.
+        Returns the absolute path to the master image.
+        """
+        image_filename = f"page_{page_index}.jpg"
+        image_path = os.path.join(output_dir, image_filename)
+        if os.path.exists(image_path):
+            return image_path
+
+        os.makedirs(output_dir, exist_ok=True)
+        thumbs_dir = os.path.join(os.path.dirname(output_dir), "thumbs")
+        os.makedirs(thumbs_dir, exist_ok=True)
+
+        doc = fitz.open(pdf_path)
+        if 0 <= page_index < len(doc):
+            page = doc.load_page(page_index)
+            mat = fitz.Matrix(2.0, 2.0)
+            pix = page.get_pixmap(matrix=mat)
+            pix.save(image_path)
+
+            try:
+                thumb_zoom = min(1.0, 160.0 / max(1.0, float(page.rect.width)))
+                thumb_pix = page.get_pixmap(matrix=fitz.Matrix(thumb_zoom, thumb_zoom))
+                thumb_pix.save(os.path.join(thumbs_dir, image_filename))
+            except Exception:
+                pass
+        doc.close()
+        return image_path
 
 
 def extract_pdf_range(src_path: str, start_idx: int, end_idx: int, out_path: str):

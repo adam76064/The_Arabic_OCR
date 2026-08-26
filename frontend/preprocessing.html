@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/i18n/bootstrap.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n-document-title="title.preprocessing">معالجة أولية للصور (ScanTailor) — أداة مراجعة OCR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/preprocessing.css">
+</head>
+<body class="has-sidebar">
+    <div id="preprocessing-main">
+        <!-- ── Top Toolbar ──────────────────────────────────────────────── -->
+        <header class="preprocessing-header" id="preprocessing-header">
+            <div class="header-left">
+                <button id="btn-back" class="btn-secondary" data-icon="back" data-i18n="preprocessing.back">رجوع</button>
+                <div class="page-stepper">
+                    <button id="btn-prev-page" class="btn-icon" data-icon="prev" data-i18n-title="preprocessing.prevPage"></button>
+                    <div class="page-num-indicator">
+                        <span data-i18n="preprocessing.page">صفحة</span>
+                        <input id="page-num-input" type="number" min="1" value="1" style="width: 44px; text-align: center; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 4px; font-weight: bold;">
+                        <span>/ <span id="page-total-count">...</span></span>
+                    </div>
+                    <button id="btn-next-page" class="btn-icon" data-icon="next" data-i18n-title="preprocessing.nextPage"></button>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <div class="header-title">
+                    <span data-icon="settings"></span>
+                    <span data-i18n="preprocessing.studioTitle">استوديو المعالجة الأولية (ScanTailor Advanced)</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button id="btn-open-batch" class="btn-primary" data-icon="batch" data-i18n="preprocessing.batchProcess">معالجة مجمعة (Batch Wizard)</button>
+            </div>
+        </header>
+
+        <!-- ── 6 Stages Nav Bar ─────────────────────────────────────────── -->
+        <nav class="stages-nav" id="stages-nav">
+            <button class="stage-tab active" data-stage="orientation">
+                <span class="stage-num-badge">1</span>
+                <span data-i18n="stage.orientation">تعديل الاتجاه</span>
+            </button>
+            <button class="stage-tab" data-stage="split">
+                <span class="stage-num-badge">2</span>
+                <span data-i18n="stage.split">تقسيم الصفحات</span>
+            </button>
+            <button class="stage-tab" data-stage="deskew">
+                <span class="stage-num-badge">3</span>
+                <span data-i18n="stage.deskew">ضبط الميلان</span>
+            </button>
+            <button class="stage-tab" data-stage="content">
+                <span class="stage-num-badge">4</span>
+                <span data-i18n="stage.content">تحديد المحتوى</span>
+            </button>
+            <button class="stage-tab" data-stage="layout">
+                <span class="stage-num-badge">5</span>
+                <span data-i18n="stage.layout">الهوامش والتخطيط</span>
+            </button>
+            <button class="stage-tab" data-stage="output">
+                <span class="stage-num-badge">6</span>
+                <span data-i18n="stage.output">الترميز والمعالجة النهائية</span>
+            </button>
+        </nav>
+
+        <!-- ── Studio Body (Canvas + Parameters Sidebar) ────────────────── -->
+        <div class="studio-body">
+            <!-- Canvas Viewport -->
+            <main class="canvas-viewport" id="canvas-container">
+                <div class="canvas-stage-wrapper" id="canvas-wrapper">
+                    <img id="preview-image" src="" alt="Preprocessed Page">
+                    <canvas id="interactive-canvas"></canvas>
+                </div>
+
+                <!-- Floating Canvas Controls -->
+                <div class="canvas-floating-controls" id="canvas-floating-controls">
+                    <button id="btn-zoom-out" data-i18n-title="preprocessing.zoomOut" title="تصغير">−</button>
+                    <span class="zoom-level-text" id="zoom-level-text">100%</span>
+                    <button id="btn-zoom-in" data-i18n-title="preprocessing.zoomIn" title="تكبير">+</button>
+                    <button id="btn-zoom-fit" data-i18n-title="preprocessing.zoomFit" title="ملاءمة الشاشة">⊡</button>
+                    <button id="btn-zoom-reset" data-i18n-title="preprocessing.zoomReset" title="إعادة تعيين (100%)">1:1</button>
+                </div>
+
+                <!-- Canvas Loading Badge -->
+                <div class="canvas-loading-badge" id="canvas-loading-badge">
+                    <div class="canvas-spinner-icon"></div>
+                    <span data-i18n="preprocessing.applying">جاري المعالجة...</span>
+                </div>
+
+                <!-- Floating Next Stage Button -->
+                <button id="btn-next-stage-floating" class="btn-next-stage-floating" title="الانتقال للمرحلة التالية">
+                    <span data-i18n="preprocessing.nextStage">المرحلة التالية</span>
+                    <span>➔</span>
+                </button>
+            </main>
+
+            <!-- Parameters Sidebar -->
+            <aside class="preprocessing-sidebar" id="preprocessing-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title" id="current-stage-title" data-i18n="preprocessing.paramsTitle">إعدادات المرحلة الحالية</div>
+                    <div class="sidebar-subtitle" data-i18n="preprocessing.paramsSubtitle">اضبط الخيارات أو اسحب المقابض على الصورة مباشرة</div>
+                </div>
+
+                <div class="sidebar-content">
+                    <!-- Stage 1: Orientation Panel -->
+                    <div class="stage-panel active" id="panel-orientation">
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="orientation.rotationAngle">زاوية الدوران:</label>
+                            <div class="rotation-grid">
+                                <button type="button" class="rotation-btn active" data-rot="0">0°</button>
+                                <button type="button" class="rotation-btn" data-rot="90">90°</button>
+                                <button type="button" class="rotation-btn" data-rot="180">180°</button>
+                                <button type="button" class="rotation-btn" data-rot="270">270°</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2: Page Split Panel -->
+                    <div class="stage-panel" id="panel-split">
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="split.layoutMode">نوع التخطيط:</label>
+                            <select id="split-layout-type" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                                <option value="auto" data-i18n="split.modeAuto">تلقائي (كشف صفحات مفردة / مزدوجة)</option>
+                                <option value="two_pages" data-i18n="split.modeTwoPages">صفحتين مزدوجتين (كتاب مفتوح)</option>
+                                <option value="single_page" data-i18n="split.modeSinglePage">صفحة واحدة مفردة</option>
+                            </select>
+                        </div>
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="split.direction">ترتيب القراءة والتقسيم:</label>
+                            <select id="split-direction" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                                <option value="rtl" data-i18n="split.dirRTL">من اليمين لليسار (عربي - اليمين أولاً)</option>
+                                <option value="ltr" data-i18n="split.dirLTR">من اليسار لليمين (لاتيني - اليسار أولاً)</option>
+                            </select>
+                        </div>
+                        <div class="param-group">
+                            <button id="btn-auto-split" class="btn-secondary" style="width: 100%;" data-i18n="split.autoDetectCutter">إعادة الكشف التلقائي لخط التقسيم</button>
+                        </div>
+                        <p style="font-size: 11px; color: #64748b;" data-i18n="split.tipDragHandles">💡 يمكنك سحب المقابض العلوية والسفلية لخط التقسيم على الصورة لضبط ميله وموضعه بدقة.</p>
+                    </div>
+
+                    <!-- Stage 3: Deskew Panel -->
+                    <div class="stage-panel" id="panel-deskew">
+                        <div class="param-group">
+                            <div class="param-label">
+                                <span data-i18n="deskew.manualAngle">زاوية التعديل اليدوي:</span>
+                                <span class="param-val-readout" id="deskew-angle-val">0.00°</span>
+                            </div>
+                            <input type="range" id="deskew-angle-slider" class="range-slider" min="-25" max="25" step="0.05" value="0">
+                        </div>
+                        <div class="action-row" style="display: flex; gap: 8px;">
+                            <button id="btn-auto-deskew" class="btn-secondary" style="flex: 1;" data-i18n="deskew.autoDetect">كشف الميل تلقائياً</button>
+                            <button id="btn-reset-deskew" class="btn-secondary" style="flex: 1;" data-i18n="deskew.reset">تصفير (0°)</button>
+                        </div>
+                        <p style="font-size: 11px; color: #64748b;" data-i18n="deskew.tipGrid">💡 خطوط الشبكة الإرشادية الزرقاء تساعدك على محاذاة أسطر النص بدقة تامة.</p>
+                    </div>
+
+                    <!-- Stage 4: Content Selection Panel -->
+                    <div class="stage-panel" id="panel-content">
+                        <div class="param-group">
+                            <button id="btn-auto-content" class="btn-secondary" style="width: 100%;" data-i18n="content.autoDetect">كشف صندوق المحتوى تلقائياً</button>
+                        </div>
+                        <div class="param-group">
+                            <button id="btn-reset-content" class="btn-secondary" style="width: 100%;" data-i18n="content.reset">تحديد كامل الصفحة</button>
+                        </div>
+                        <p style="font-size: 11px; color: #64748b;" data-i18n="content.tipHandles">💡 اسحب المقابض الـ 8 لتكبير أو تصغير منطقة المحتوى، أو اسحب من الداخل لتحريك الصندوق بالكامل.</p>
+                    </div>
+
+                    <!-- Stage 5: Page Layout & Margins Panel -->
+                    <div class="stage-panel" id="panel-layout">
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="layout.margins">الهوامش الخارجية المحيطة بالنص (ملم):</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div>
+                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.top">أعلى:</span>
+                                    <input type="number" id="margin-top" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.bottom">أسفل:</span>
+                                    <input type="number" id="margin-bottom" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.left">يسار:</span>
+                                    <input type="number" id="margin-left" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.right">يمين:</span>
+                                    <input type="number" id="margin-right" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="layout.alignment">المحاذاة داخل الصفحة:</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <select id="align-horizontal" style="padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                    <option value="CENTER" data-i18n="layout.alignCenter">أفقي: وسط</option>
+                                    <option value="LEFT" data-i18n="layout.alignLeft">أفقي: يسار</option>
+                                    <option value="RIGHT" data-i18n="layout.alignRight">أفقي: يمين</option>
+                                </select>
+                                <select id="align-vertical" style="padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                    <option value="CENTER" data-i18n="layout.valignCenter">عمودي: وسط</option>
+                                    <option value="TOP" data-i18n="layout.valignTop">عمودي: أعلى</option>
+                                    <option value="BOTTOM" data-i18n="layout.valignBottom">عمودي: أسفل</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="param-group" style="margin-top: 6px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;">
+                                <input type="checkbox" id="match-other-pages" checked>
+                                <span data-i18n="layout.matchOtherPages">توحيد أبعاد كل الصفحات حسب أوسع صفحة (Match other pages)</span>
+                            </label>
+                        </div>
+                        <p style="font-size: 11px; color: #64748b;" data-i18n="layout.tipOutside">💡 تُضاف الهوامش بدقة حول صندوق المحتوى المختار دون اقتطاع أي حرف أو سطر من النص، وتوحّد أبعاد المستند بالكامل.</p>
+                    </div>
+
+                    <!-- Stage 6: Output / Binarization Panel -->
+                    <div class="stage-panel" id="panel-output">
+                        <div class="param-group">
+                            <label class="param-label" data-i18n="output.engine">خوارزمية المعالجة والترميز:</label>
+                            <select id="binarization-engine" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                                <option value="none" selected data-i18n="output.engineNone">بدون ترميز (الحفاظ على الصورة الأصلية - الافتراضي)</option>
+                                <option value="zigzag" data-i18n="output.engineZigzag">ZigZag (خوارزمية Bloechle الأصلية - فائق الدقة لإزالة الظلال)</option>
+                                <option value="otsu" data-i18n="output.engineOtsu">Otsu (عالمي متكيف - قياسي)</option>
+                                <option value="sauvola" data-i18n="output.engineSauvola">Sauvola (محلي متقدم - ممتاز للورق التالف)</option>
+                                <option value="wolf" data-i18n="output.engineWolf">Wolf (ديناميكي فائق - للمخطوطات والتباين المنخفض)</option>
+                            </select>
+                        </div>
+
+                        <!-- ZigZag Dedicated Parameters -->
+                        <div id="zigzag-parameters" style="display: none; flex-direction: column; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px;">
+                            <div class="param-group">
+                                <div class="param-label">
+                                    <span data-i18n="output.zigzagDetail">التفاصيل (Detail / حجم النافذة):</span>
+                                    <span class="param-val-readout" id="zigzag-detail-val">30</span>
+                                </div>
+                                <input type="range" id="zigzag-detail-slider" class="range-slider" min="5" max="120" step="1" value="30">
+                            </div>
+                            <div class="param-group">
+                                <div class="param-label">
+                                    <span data-i18n="output.zigzagIntensity">الكثافة (Intensity / إزاحة العتبة):</span>
+                                    <span class="param-val-readout" id="zigzag-intensity-val">0</span>
+                                </div>
+                                <input type="range" id="zigzag-intensity-slider" class="range-slider" min="-50" max="50" step="1" value="0">
+                            </div>
+                            <div class="param-group">
+                                <div class="param-label">
+                                    <span data-i18n="output.zigzagWeight">نسبة الخلفية (Weight %):</span>
+                                    <span class="param-val-readout" id="zigzag-weight-val">90%</span>
+                                </div>
+                                <input type="range" id="zigzag-weight-slider" class="range-slider" min="40" max="100" step="1" value="90">
+                            </div>
+                            <p style="font-size: 11px; color: #15803d; margin: 0;" data-i18n="output.zigzagTip">💡 خوارزمية ZigZag تزيل الظلال والإضاءة غير المتساوية عبر مرشح ثنائي المراحل.</p>
+                        </div>
+
+                        <div class="param-group" id="general-threshold-group">
+                            <div class="param-label">
+                                <span data-i18n="output.strokeAdjustment">سماكة الخط (تنحيف / تثخين):</span>
+                                <span class="param-val-readout" id="threshold-adj-val">0</span>
+                            </div>
+                            <input type="range" id="threshold-adj-slider" class="range-slider" min="-50" max="50" step="1" value="0">
+                        </div>
+                        <div class="param-group">
+                            <div class="param-label">
+                                <span data-i18n="output.despeckle">إزالة الشوائب والغبار:</span>
+                                <span class="param-val-readout" id="despeckle-val">1.0</span>
+                            </div>
+                            <input type="range" id="despeckle-slider" class="range-slider" min="0" max="4" step="0.5" value="1.0">
+                        </div>
+                        <div class="param-group" style="gap: 10px; margin-top: 4px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;">
+                                <input type="checkbox" id="normalize-illumination" checked>
+                                <span data-i18n="output.equalizeIllum">تسوية الإضاءة وإزالة الظلال</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;">
+                                <input type="checkbox" id="fill-margins" checked>
+                                <span data-i18n="output.fillMargins">تعبئة الهوامش الخارجية بالأبيض</span>
+                            </label>
+                        </div>
+                        <p style="font-size: 11px; color: #64748b;" data-i18n="output.tipCurtain">💡 اسحب المقسم العمودي في وسط الصورة لمقارنة الأصل بالنتيجة المعالجة مباشرة.</p>
+                    </div>
+                </div>
+
+                <!-- Sidebar Footer Actions (Phase-by-Phase Execution) -->
+                <div class="sidebar-footer">
+                    <button id="btn-apply-stage-page" class="btn-primary" style="padding: 9px 12px; font-size: 13px; font-weight: bold;" data-icon="check" data-i18n="preprocessing.applyStagePage">تطبيق هذه المرحلة على الصفحة الحالية</button>
+                    <button id="btn-apply-stage-all" class="btn-secondary" style="padding: 8px 12px; font-size: 12.5px;" data-icon="batch" data-i18n="preprocessing.applyStageAll">تطبيق هذه المرحلة على كل الصفحات</button>
+                    
+                    <button id="btn-apply-page" class="btn-plain" style="width: 100%; border: 1px solid #cbd5e1; padding: 7px; font-size: 12px; border-radius: 4px; color: #2563eb; margin-top: 4px;" data-i18n="preprocessing.applyFullPipeline">تطبيق كل المراحل</button>
+
+                    <button id="btn-reset-original" class="btn-plain" style="color: #ef4444; font-size: 11.5px; margin-top: 4px;" data-icon="undo" data-i18n="preprocessing.resetOriginal">استعادة المسح الأصلي</button>
+                </div>
+            </aside>
+        </div>
+
+        <!-- ── Bottom Filmstrip Bar ─────────────────────────────────────────── -->
+        <div class="preprocessing-filmstrip" id="preprocessing-filmstrip"></div>
+    </div>
+
+    <!-- ── Batch Processing Modal (Flexible Stage Selection) ─────────────── -->
+    <div class="modal hidden" id="batch-processing-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-box" style="max-width: 560px;">
+            <div class="modal-header">
+                <h3 data-i18n="batch.modalTitle">معالجة مجمعة للصفحات (Batch Wizard)</h3>
+                <button class="modal-close" id="btn-close-batch-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="batch-form-section">
+                    <!-- Scope selection -->
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" style="font-weight: bold; margin-bottom: 6px; display: block;" data-i18n="batch.scopeLabel">نطاق الصفحات المراد معالجتها:</label>
+                        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px;">
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                                <input type="radio" name="batch-scope" value="all" checked>
+                                <span data-i18n="batch.scopeAll">جميع صفحات المشروع</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                                <input type="radio" name="batch-scope" value="range">
+                                <span data-i18n="batch.scopeRange">نطاق مخصص:</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                                <input type="radio" name="batch-scope" value="current">
+                                <span data-i18n="batch.scopeCurrent">الصفحة الحالية فقط</span>
+                            </label>
+                        </div>
+                        <input type="text" id="batch-range-input" class="form-control" placeholder="1-50, 60, 70-80" style="margin-top: 8px; padding: 6px 10px; font-size: 13px; width: 100%;">
+                    </div>
+
+                    <!-- Stages checklist -->
+                    <div class="form-group" style="margin-bottom: 16px; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label class="form-label" style="font-weight: bold; margin: 0;" data-i18n="batch.stagesLabel">المراحل المطلوب تنفيذها:</label>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" id="btn-batch-preset-all" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetAll">الكل</button>
+                                <button type="button" id="btn-batch-preset-from-curr" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetFromCurrent">من الحالية</button>
+                                <button type="button" id="btn-batch-preset-only-curr" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetOnlyCurrent">الحالية فقط</button>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="orientation" checked>
+                                <span data-i18n="stage.orientation">1. تعديل الاتجاه</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="split" checked>
+                                <span data-i18n="stage.split">2. تقسيم الصفحات</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="deskew" checked>
+                                <span data-i18n="stage.deskew">3. ضبط الميلان</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="content" checked>
+                                <span data-i18n="stage.content">4. تحديد المحتوى</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="layout" checked>
+                                <span data-i18n="stage.layout">5. الهوامش والتخطيط</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                                <input type="checkbox" class="batch-stage-check" value="output" checked>
+                                <span data-i18n="stage.output">6. الترميز والمعالجة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer; color: #475569;">
+                            <input type="checkbox" id="batch-from-original" checked>
+                            <span data-i18n="batch.fromOriginal">البدء من المسح الأصلي غير المعدل (موصى به عند معالجة كافة المراحل)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Progress Section (Hidden during config) -->
+                <div id="batch-progress-section" class="batch-progress-box" style="display: none;">
+                    <div id="batch-status-text" style="font-size: 13px; font-weight: bold; color: #1e293b; text-align: center;">جاري المعالجة...</div>
+                    <div class="batch-progress-bar">
+                        <div class="batch-progress-fill" id="batch-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid #e2e8f0;">
+                <button class="btn-secondary" id="btn-cancel-batch" style="display: none;" data-i18n="batch.cancel">إيقاف</button>
+                <button class="btn-primary" id="btn-start-batch" data-i18n="batch.start">بدء المعالجة المجمعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/icons.js"></script>
+    <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/events.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/sidebar.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/pages/ui-shared.js"></script>
+
+    <!-- Pre-processing modular scripts -->
+    <script src="js/pages/preprocessing/state.js"></script>
+    <script src="js/pages/preprocessing/api-client.js"></script>
+    <script src="js/pages/preprocessing/canvas.js"></script>
+    <script src="js/pages/preprocessing/overlays/orientation-overlay.js"></script>
+    <script src="js/pages/preprocessing/overlays/split-overlay.js"></script>
+    <script src="js/pages/preprocessing/overlays/deskew-overlay.js"></script>
+    <script src="js/pages/preprocessing/overlays/content-overlay.js"></script>
+    <script src="js/pages/preprocessing/overlays/layout-overlay.js"></script>
+    <script src="js/pages/preprocessing/overlays/output-overlay.js"></script>
+    <script src="js/pages/preprocessing/sidebar.js"></script>
+    <script src="js/pages/preprocessing/toolbar.js"></script>
+    <script src="js/pages/preprocessing/batch-modal.js"></script>
+    <script src="js/pages/preprocessing/index.js"></script>
+    <script src="js/apply-icons.js"></script>
+</body>
+</html>

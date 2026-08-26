@@ -14,6 +14,14 @@ async function initDashboard() {
     }
 
     // Load Project Data
+    try {
+        window.__appDataPath = await window.pywebview.api.get_app_data_path();
+        window.__appDataPath = window.__appDataPath.replace(/\\/g, '/');
+    } catch (e) {
+        console.warn('get_app_data_path failed', e);
+        window.__appDataPath = '';
+    }
+
     currentProject = await window.pywebview.api.load_project(currentProjectId);
     if (!currentProject) {
         alert(dashboardMessage('dashboard.loadFailed'));
@@ -36,17 +44,25 @@ async function initDashboard() {
 }
 
 function setupEventBindings() {
+    document.getElementById('dashboard-global-ocr-btn')?.addEventListener('click', () => {
+        if (typeof openPaddleModalForFullFile === 'function') {
+            openPaddleModalForFullFile();
+        } else if (typeof openPaddleModalForBatch === 'function') {
+            const allIdx = currentProject?.pages ? currentProject.pages.map((_, i) => i) : [];
+            openPaddleModalForBatch(allIdx);
+        }
+    });
+
+    document.getElementById('dashboard-preprocess-btn')?.addEventListener('click', () => {
+        window.location.href = `preprocessing.html?id=${currentProjectId}`;
+    });
 
     document.getElementById('dashboard-settings-btn')?.addEventListener('click', () => {
         window.location.href = `project-settings.html?id=${currentProjectId}`;
     });
 
-    document.getElementById('back-to-review-btn').addEventListener('click', () => {
-        window.history.back();
-    });
-
-    document.getElementById('back-to-review-btn').addEventListener('click', () => {
-        window.history.back(); // العودة من حيث أتى المستخدم
+    document.getElementById('back-to-review-btn')?.addEventListener('click', () => {
+        window.location.href = `review.html?id=${currentProjectId}&page=0`;
     });
 
     document.getElementById('reset-ocr-modal-prompt')?.addEventListener('click', () => {
@@ -73,10 +89,14 @@ function setupEventBindings() {
             
             let start = 1;
             let end = currentProject.pages.length;
+            let pageIndices = null;
 
             if (rangeMode === 'selected') {
                 start = parseInt(document.getElementById('ocr-start-page').value);
                 end = parseInt(document.getElementById('ocr-end-page').value);
+                if (window.selectedBatchIndices && window.selectedBatchIndices.length > 0) {
+                    pageIndices = window.selectedBatchIndices;
+                }
             }
 
             document.getElementById('paddle-ocr-modal').classList.add('hidden');
@@ -89,22 +109,7 @@ function setupEventBindings() {
                 const glensMode = document.querySelector('input[name="glens-mode"]:checked').value;
                 
                 const response = await window.pywebview.api.trigger_google_lens_ocr(
-                    currentProjectId, start - 1, end - 1, glensMode
-                );
-                
-                if (!response.ok) {
-                    if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
-                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
-                } else {
-                    currentProject = response.project;
-                    renderPagesTable();        // 1. إعادة رسم الجدول بالبيانات الجديدة
-                    renderDashboardStats();    // 2. تحديث الإحصائيات
-                }
-
-            } else if (tool === 'locro') {
-                const locroMode = document.querySelector('input[name="locro-mode"]:checked').value;
-                const response = await window.pywebview.api.trigger_locro_ocr(
-                    currentProjectId, start - 1, end - 1, locroMode
+                    currentProjectId, start - 1, end - 1, glensMode, pageIndices
                 );
                 
                 if (!response.ok) {
@@ -116,9 +121,21 @@ function setupEventBindings() {
                     renderDashboardStats();
                 }
 
-            // ==========================================
-            // 🤖 إضافة كتلة الـ LLM هنا (Phase 1 اكتملت)
-            // ==========================================
+            } else if (tool === 'locro') {
+                const locroMode = document.querySelector('input[name="locro-mode"]:checked').value;
+                const response = await window.pywebview.api.trigger_locro_ocr(
+                    currentProjectId, start - 1, end - 1, locroMode, pageIndices
+                );
+                
+                if (!response.ok) {
+                    if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
+                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
+                } else {
+                    currentProject = response.project;
+                    renderPagesTable();
+                    renderDashboardStats();
+                }
+
             } else if (tool === 'llm') {
                 const customPrompt = document.getElementById('ocr-modal-llm-prompt')?.value.trim() || window.__appSettings?.llmSystemPrompt || window.DEFAULT_LLM_PROMPT;
                 const rememberForProj = document.getElementById('remember-prompt-for-project')?.checked || false;
@@ -134,7 +151,6 @@ function setupEventBindings() {
                     return;
                 }
 
-                // Save or clear project custom prompt in project metadata if checkbox toggled
                 if (rememberForProj) {
                     if (!currentProject.metadata) currentProject.metadata = {};
                     currentProject.metadata.custom_llm_prompt = customPrompt;
@@ -144,12 +160,11 @@ function setupEventBindings() {
                     await window.pywebview.api.update_project_metadata(currentProjectId, { custom_llm_prompt: "" });
                 }
 
-                // Save LLM API config
                 const llmConfig = { provider, apiKey, baseUrl, modelName: customModel, systemPrompt: customPrompt };
                 await saveLLMSettings(llmConfig);
 
                 const response = await window.pywebview.api.trigger_llm_ocr(
-                    currentProjectId, start - 1, end - 1, llmConfig
+                    currentProjectId, start - 1, end - 1, llmConfig, pageIndices
                 );
                 
                 if (!response.ok) {
@@ -157,18 +172,18 @@ function setupEventBindings() {
                     else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
                 } else {
                     currentProject = response.project;
-                    renderPagesTable();        // 1. إعادة رسم الجدول بالبيانات الجديدة
-                    renderDashboardStats();    // 2. تحديث الإحصائيات
+                    renderPagesTable();
+                    renderDashboardStats();
                 }
 
             } else if (tool === 'paddle') {
-                const response = await window.pywebview.api.trigger_paddle_ocr(currentProjectId, start - 1, end - 1);
+                const response = await window.pywebview.api.trigger_paddle_ocr(currentProjectId, start - 1, end - 1, pageIndices);
                 if (!response.ok) {
                     if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
                 } else {
                     currentProject = response.project;
-                    renderPagesTable();        // 1. إعادة رسم الجدول بالبيانات الجديدة
-                    renderDashboardStats();    // 2. تحديث الإحصائيات
+                    renderPagesTable();
+                    renderDashboardStats();
                     paddleTrialsLeft = response.trials_left;
                     setupPaddleModal();
                 }

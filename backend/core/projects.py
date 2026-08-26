@@ -15,6 +15,8 @@ import hashlib
 import threading
 from datetime import datetime
 
+from .json_utils import dump_json, load_json
+
 
 class ProjectManager:
     def __init__(self, projects_dir="projects"):
@@ -63,22 +65,95 @@ class ProjectManager:
         return projects
 
     def load_project(self, project_id):
+        """Fast load — reads only project.json (page metadata + image paths). No per-page OCR scanning."""
         with self.lock:
             path = os.path.join(self.projects_dir, project_id, "project.json")
             if os.path.exists(path):
                 try:
-                    with open(path, "r", encoding="utf-8") as f:
-                        return json.load(f)
-                except (UnicodeDecodeError, json.JSONDecodeError) as e:
-                    print(f"[Projects] Corrupted {project_id}: {e}")
-                    return None
+                    return load_json(path)
                 except Exception as e:
-                    print(f"[Projects] Unexpected error {project_id}: {e}")
+                    print(f"[Projects] Load error {project_id}: {e}")
                     return None
             return None
 
+    def load_project_with_ocr(self, project_id):
+        """Full load — reads project.json AND hydrates per-page OCR data from pages/page_{i}.json.
+        Use only where OCR text data is needed (Review page, Export, Reapply processing).
+        Never use in preprocessing, batch workers, or storage operations."""
+        with self.lock:
+            data = self.load_project(project_id)
+            if not data or "pages" not in data:
+                return data
+            pages_dir = os.path.join(self.projects_dir, project_id, "pages")
+            if not os.path.isdir(pages_dir):
+                return data
+            for idx, page in enumerate(data["pages"]):
+                if not page.get("ocr_data"):
+                    page_file = os.path.join(pages_dir, f"page_{idx}.json")
+                    if os.path.exists(page_file):
+                        try:
+                            page_ocr = load_json(page_file)
+                            if page_ocr is not None:
+                                page["ocr_data"] = page_ocr if isinstance(page_ocr, list) else page_ocr.get("ocr_data", [])
+                        except Exception:
+                            pass
+            return data
+
+    def save_page_ocr(self, project_id, page_index, ocr_data):
+        """Save OCR data for an individual page into pages/page_{page_index}.json."""
+        with self.lock:
+            pages_dir = os.path.join(self.projects_dir, project_id, "pages")
+            os.makedirs(pages_dir, exist_ok=True)
+            path = os.path.join(pages_dir, f"page_{page_index}.json")
+            temp_path = path + ".tmp"
+            dump_json(ocr_data, temp_path, indent=2)
+            os.replace(temp_path, path)
+
+    def load_page_ocr(self, project_id, page_index):
+        """Load OCR data for a single page — checks pages/ first, falls back to project.json inline data."""
+        with self.lock:
+            path = os.path.join(self.projects_dir, project_id, "pages", f"page_{page_index}.json")
+            if os.path.exists(path):
+                try:
+                    data = load_json(path)
+                    return data if isinstance(data, list) else data.get("ocr_data", [])
+                except Exception as e:
+                    print(f"[Projects] Failed load page_ocr page {page_index}: {e}")
+            project = self.load_project(project_id)
+            if project and "pages" in project and 0 <= page_index < len(project["pages"]):
+                return project["pages"][page_index].get("ocr_data", [])
+            return []
+
+    def ensure_project_thumbnails(self, project_id):
+        """Ensure all pages in the project have corresponding thumbnail files in thumbs/ directory."""
+        import cv2
+        p_dir = os.path.join(self.projects_dir, project_id)
+        images_dir = os.path.join(p_dir, "images")
+        thumbs_dir = os.path.join(p_dir, "thumbs")
+        if not os.path.isdir(images_dir):
+            return
+        os.makedirs(thumbs_dir, exist_ok=True)
+        try:
+            for img_name in os.listdir(images_dir):
+                if not img_name.lower().endswith((".jpg", ".jpeg", ".png")):
+                    continue
+                thumb_path = os.path.join(thumbs_dir, img_name)
+                if not os.path.exists(thumb_path):
+                    img_full = os.path.join(images_dir, img_name)
+                    img_mat = cv2.imread(img_full)
+                    if img_mat is not None:
+                        h, w = img_mat.shape[:2]
+                        thumb_scale = 160.0 / max(w, h) if max(w, h) > 160 else 1.0
+                        thumb_img = cv2.resize(img_mat, (max(1, int(round(w * thumb_scale))), max(1, int(round(h * thumb_scale)))), interpolation=cv2.INTER_AREA)
+                        _, enc_thumb = cv2.imencode(".jpg", thumb_img, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
+                        with open(thumb_path, "wb") as f:
+                            f.write(enc_thumb.tobytes())
+        except Exception as e:
+            print(f"[Projects] ensure_project_thumbnails error {project_id}: {e}")
+
     def update_project(self, project_id, project_data):
         self._save_project_file(project_id, project_data)
+
 
     def update_project_metadata(self, project_id, new_metadata):
         with self.lock:
@@ -179,15 +254,14 @@ class ProjectManager:
         if os.path.exists(path):
             try:
                 with open(path, "r", encoding="utf-8") as f:
-                    return json.load(f)
+                    return load_json(path)
             except Exception:
                 return {}
         return {}
 
     def save_app_settings(self, settings):
         path = os.path.join(self.projects_dir, "app_settings.json")
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(settings, f, ensure_ascii=False, indent=2)
+        dump_json(settings, path, indent=2)
         return True
 
     # --- Internal atomic save ---
@@ -204,10 +278,7 @@ class ProjectManager:
                     print(f"[Projects] Backup failed: {e}")
 
             os.makedirs(os.path.dirname(path), exist_ok=True)
-            with open(temp_path, "w", encoding="utf-8") as f:
-                json.dump(project_data, f, ensure_ascii=False, indent=4)
-                f.flush()
-                os.fsync(f.fileno())
+            dump_json(project_data, temp_path, indent=2)
             os.replace(temp_path, path)
 
     # --- Raw OCR backups ---
@@ -217,10 +288,7 @@ class ProjectManager:
             os.makedirs(raw_dir, exist_ok=True)
             path = os.path.join(raw_dir, f"page_{page_index}.json")
             temp_path = path + ".tmp"
-            with open(temp_path, "w", encoding="utf-8") as f:
-                json.dump(raw_ocr_data, f, ensure_ascii=False, indent=4)
-                f.flush()
-                os.fsync(f.fileno())
+            dump_json(raw_ocr_data, temp_path, indent=2)
             os.replace(temp_path, path)
 
     def load_raw_ocr(self, project_id, page_index):
@@ -228,8 +296,7 @@ class ProjectManager:
             path = os.path.join(self.projects_dir, project_id, "raw_ocr", f"page_{page_index}.json")
             if os.path.exists(path):
                 try:
-                    with open(path, "r", encoding="utf-8") as f:
-                        return json.load(f)
+                    return load_json(path)
                 except Exception as e:
                     print(f"[Projects] Failed load raw_ocr page {page_index}: {e}")
 

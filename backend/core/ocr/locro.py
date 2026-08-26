@@ -4,7 +4,10 @@ Locro OCR adapter - offline Chrome ScreenAI.
 
 
 def get_screen_ai():
-    from locro import ScreenAI
+    try:
+        from ...vendor.locro import ScreenAI
+    except (ImportError, ValueError):
+        from backend.vendor.locro import ScreenAI
 
     try:
         return ScreenAI()

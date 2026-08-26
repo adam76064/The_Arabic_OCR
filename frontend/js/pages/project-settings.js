@@ -47,6 +47,44 @@ async function initSettings() {
     const numbersRadio = document.querySelector(`input[name="ps_numbers"][value="${numbers}"]`);
     if (numbersRadio) numbersRadio.checked = true;
 
+    // Live Sandbox updating
+    const updateLiveSandbox = () => {
+        const input = document.getElementById('sandbox-input')?.value || '';
+        const outputEl = document.getElementById('sandbox-output');
+        if (!outputEl) return;
+
+        let res = input;
+        if (document.getElementById('ps-remove-kasheeda')?.checked) res = res.replace(/\u0640+/g, '');
+        if (document.getElementById('ps-clean-spaces')?.checked) res = res.replace(/[ \t]+/g, ' ');
+        if (document.getElementById('ps-fix-punct')?.checked) res = res.replace(/\s+([،؛.؟!])/g, '$1 ');
+        if (document.getElementById('ps-fix-waw')?.checked) res = res.replace(/(^|\s)و\s+/g, '$1و');
+
+        const curTashkeel = document.querySelector('input[name="ps_tashkeel"]:checked')?.value || 'none';
+        if (curTashkeel === 'remove_all') res = res.replace(/[\u064B-\u0652\u0670]/g, '');
+        else if (curTashkeel === 'keep_tanween') res = res.replace(/[\u064E\u064F\u0650\u0652\u0670]/g, '');
+
+        const curTanween = document.querySelector('input[name="ps_tanween"]:checked')?.value || 'none';
+        if (curTanween === 'before_alf') res = res.replace(/اً/g, 'ًا');
+        else if (curTanween === 'on_alf') res = res.replace(/ًا/g, 'اً');
+
+        const curNums = document.querySelector('input[name="ps_numbers"]:checked')?.value || 'none';
+        if (curNums === 'to_arabic') {
+            const hindiDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            hindiDigits.forEach((d, i) => { res = res.replaceAll(d, String(i)); });
+        } else if (curNums === 'to_hindu') {
+            const hindiDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            for (let i = 0; i <= 9; i++) { res = res.replaceAll(String(i), hindiDigits[i]); }
+        }
+
+        outputEl.textContent = res;
+    };
+
+    document.querySelectorAll('#project-settings-form input, #sandbox-input').forEach(el => {
+        el.addEventListener('input', updateLiveSandbox);
+        el.addEventListener('change', updateLiveSandbox);
+    });
+    updateLiveSandbox();
+
     // 3. Networking & Cooperative Settings
     const lanBroadcast = document.getElementById('ps-lan-broadcast');
     const lanBadge = document.getElementById('lan-status-badge');

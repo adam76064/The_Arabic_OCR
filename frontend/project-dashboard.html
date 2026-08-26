@@ -8,54 +8,134 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            
-            <div>
-                <h1 style="font-size: 24px; color: #2c3e50;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
-                <p id="dashboard-proj-title" style="color: #888; margin-top: 5px;" data-i18n="dash.loading">جاري التحميل...</p>
-            </div>
-            
-            <div style="display: flex; gap: 10px;">
-                        <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
-                        <button id="back-to-review-btn" class="btn-secondary" data-icon="back" data-i18n="dash.back">العودة</button>
-                        <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export" data-i18n="dash.export">تصدير</button>
-            </div>
+    <main id="main-content" class="home-main" style="flex: 1; min-width: 0; max-width: 1200px; margin: 0 auto; padding: 24px 20px; box-sizing: border-box; width: 100%;">
+        <!-- Universal Breadcrumbs -->
+        <nav class="app-breadcrumbs">
+            <a href="index.html" data-i18n="nav.home">الرئيسية</a>
+            <span class="crumb-sep">/</span>
+            <a href="projects.html" data-i18n="nav.projects">المشاريع</a>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-active" id="dashboard-proj-title">...</span>
+        </nav>
 
+        <!-- Top Header & Actions -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <h1 style="font-size: 22px; color: var(--color-text); margin: 0; font-weight: 800;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
+                <p id="dashboard-proj-subtitle" style="color: var(--color-text-muted); margin-top: 4px; font-size: 13px;">استعراض الصفحات واستخراج النصوص والتخطيط</p>
+            </div>
+            
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <button id="dashboard-global-ocr-btn" class="btn-primary" data-icon="ocr" title="بدء التعرف الضوئي (OCR)"><span data-i18n="dash.ocr">OCR</span></button>
+                <button id="dashboard-preprocess-btn" class="btn-secondary" data-icon="preprocess" data-i18n="dash.preprocessing">معالجة أولية</button>
+                <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
+                <button id="back-to-review-btn" class="btn-primary" data-icon="edit" data-i18n="dash.review">تدقيق</button>
+                <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export" data-i18n="dash.export">تصدير</button>
+            </div>
         </div>
 
-        <!-- Collaboration & Broadcasting Live Status Panel -->
-        <div id="dashboard-coop-panel" style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-weight: bold; font-size: 15px; color: #1e293b;" data-icon-label="lan" data-i18n="dash.collab">وسائل العمل والتعاون:</span>
-                    <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">محلي: متوقف</button>
-                </div>
+        <!-- Interactive Pipeline Stepper -->
+        <div class="pipeline-stepper">
+            <div class="pipeline-step" id="step-preprocess" title="ضبط استقامة الصفحات، القص، والهوامش">
+                <span class="step-num">1</span>
+                <span>المعالجة الأولية (ScanTailor)</span>
             </div>
-            
-            <div style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; font-size: 13px;">
-                <span style="color: #64748b; font-weight: bold;" data-icon-label="user" data-i18n="dash.members">الأعضاء المتصلون حالياً:</span>
-                <div id="dash-active-collaborators" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <span style="color: #94a3b8; font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>
-                </div>
+            <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+            <div class="pipeline-step" id="step-ocr" title="استخراج النصوص بـ PaddleOCR أو Google Lens أو LLM">
+                <span class="step-num">2</span>
+                <span>استخراج النصوص (OCR)</span>
+            </div>
+            <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+            <div class="pipeline-step" id="step-layout" title="تعديل الكتل والفقرات والجداول">
+                <span class="step-num">3</span>
+                <span>محرر التخطيط (Layout)</span>
+            </div>
+            <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+            <div class="pipeline-step active" id="step-review" title="مراجعة وتدقيق وتنسيق النص">
+                <span class="step-num">4</span>
+                <span>محرر التدقيق (Review)</span>
+            </div>
+            <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
+            <div class="pipeline-step" id="step-export" title="تصدير DOCX / PDF / ePub">
+                <span class="step-num">5</span>
+                <span>التصدير النهائي (Export)</span>
+            </div>
+        </div>
+
+        <!-- Collaboration Status Bar (Compact) -->
+        <div id="dashboard-coop-panel" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 12px 18px; margin-bottom: 20px; box-shadow: var(--shadow-xs); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 700; font-size: 13px; color: var(--color-text);" data-icon-label="lan" data-i18n="dash.collab">التعاون المحلي (LAN):</span>
+                <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">محلي: متوقف</button>
+            </div>
+            <div id="dash-active-collaborators" style="display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--color-text-muted);">
+                <span style="font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>
             </div>
         </div>
 
         <div id="dashboard-stats-container" style="margin-bottom: 20px;"></div>
 
-        <table class="dashboard-table">
+        <!-- Controls Row: View Mode + Select All -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--color-text);">
+                    <input type="checkbox" id="dash-select-all-cb" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                    <span>تحديد جميع الصفحات</span>
+                </label>
+            </div>
+
+            <!-- View Switcher -->
+            <div style="display: flex; gap: 4px; background: var(--color-bg-muted); padding: 3px; border-radius: var(--radius-md);">
+                <button id="view-mode-grid" class="btn-icon active" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض المصغرات الشبكي" data-icon="layout"></button>
+                <button id="view-mode-table" class="btn-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض الجدول" data-icon="order"></button>
+            </div>
+        </div>
+
+        <!-- Grid Container -->
+        <div id="pages-grid-container" class="pages-grid"></div>
+
+        <!-- Table Container -->
+        <div id="pages-table-wrapper" class="table-wrapper hidden">
+            <table class="dashboard-table" style="margin-top: 0;">
                 <thead>
                     <tr>
-                        <th style="width: 80px;" data-i18n="dash.page">الصفحة</th>
-                        <th data-i18n="dash.ocr">حالة النصوص (OCR)</th>
-                        <th data-i18n="dash.layout">حالة التخطيط (Layout)</th>
-                        <th data-i18n="dash.review">حالة التدقيق (Review)</th>
+                        <th style="width: 40px;"><input type="checkbox" id="dash-table-header-cb" style="accent-color: var(--color-primary);"></th>
+                        <th style="width: 70px;" data-i18n="dash.page">الصفحة</th>
+                        <th data-i18n="dash.ocr">OCR</th>
+                        <th data-i18n="dash.layout">تخطيط</th>
+                        <th data-i18n="dash.review">تدقيق</th>
                         <th style="text-align: end; padding-inline-start: 20px;" data-i18n="dash.actions">الإجراءات</th>
                     </tr>
                 </thead>
-            <tbody id="pages-table-body">
-                </tbody>
-        </table>
+                <tbody id="pages-table-body"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Context Menu for Pages -->
+    <div id="page-context-menu" class="custom-context-menu hidden">
+        <div class="menu-header" id="ctx-page-title">إجراءات الصفحة</div>
+        <button type="button" class="ctx-item" id="ctx-action-ocr"><span>بدء التعرف الضوئي (OCR)</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-layout"><span>فتح محرر التخطيط</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-preprocess"><span>المعالجة الأولية (ScanTailor)</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-review"><span>فتح المراجعة والتدقيق</span></button>
+        <div class="ctx-divider"></div>
+        <button type="button" class="ctx-item" id="ctx-action-mark-reviewed"><span>تحديد كـ "تمت المراجعة"</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-mark-unreviewed"><span>إلغاء حالة المراجعة</span></button>
+        <div class="ctx-divider"></div>
+        <button type="button" class="ctx-item danger" id="ctx-action-delete"><span>حذف الصفحة</span></button>
+    </div>
+
+    <!-- Floating Batch Action Bar -->
+    <div id="floating-batch-bar" class="floating-batch-bar">
+        <span class="batch-count-badge" id="batch-selected-count">0</span>
+        <span style="font-size: 13px; font-weight: 600;">صفحة محددة</span>
+        <div style="display: flex; gap: 8px;">
+            <button id="btn-batch-ocr" class="btn-primary" style="padding: 5px 14px; font-size: 12px;" data-icon="ocr">OCR</button>
+            <button id="btn-batch-preprocess" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="preprocess">معالجة أولية</button>
+            <button id="btn-batch-layout" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="layout">تخطيط</button>
+            <button id="btn-batch-clear" class="btn-plain" style="color: #94a3b8; font-size: 12px; margin-inline-start: 8px;">إلغاء التحديد</button>
+        </div>
     </div>
 
     <div id="paddle-ocr-modal" class="modal hidden">

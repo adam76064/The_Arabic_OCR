@@ -18,6 +18,12 @@ function setupToolbar() {
     wireTool('tool-move', 'move');
     wireTool('tool-order', 'order');
 
+    document.getElementById('tool-flowlines')?.addEventListener('click', (e) => {
+        window.showReadingFlowlines = !window.showReadingFlowlines;
+        e.currentTarget.classList.toggle('active-tool', window.showReadingFlowlines);
+        if (typeof drawCanvas === 'function') drawCanvas();
+    });
+
     document.getElementById('btn-delete')?.addEventListener('click', () => { saveHistoryState(); deleteSelected(); });
     document.getElementById('btn-merge')?.addEventListener('click', () => { saveHistoryState(); mergeSelected(); });
 

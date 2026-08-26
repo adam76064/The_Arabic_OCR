@@ -16,7 +16,17 @@ function injectPropertiesPanel() {
             </div>
             
             <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.type')}</label>
-            <select id="prop-category" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 16px; font-size: 13px; outline: none; cursor: pointer;">
+            <div class="category-quick-chips" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 12px;">
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📝 نص</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">👑 عنوان</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📌 فرعي</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📖 قرآن</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📜 شعر</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📑 حاشية</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📊 جدول</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">🖼️ صورة</button>
+            </div>
+            <select id="prop-category" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 14px; font-size: 12px; outline: none; cursor: pointer;">
                 ${getAllCategories().map(c => `<option value="${c}">${getCategoryNameAR(c)}</option>`).join('')}
             </select>
             
@@ -84,6 +94,26 @@ function injectPropertiesPanel() {
     // --------------------------------
 
     // تفعيل الأحداث الخاصة بالخصائص
+    document.querySelectorAll('.cat-quick-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            if (selectedBoxes.size === 0) return;
+            const newCat = e.currentTarget.dataset.cat;
+            const catSelect = document.getElementById('prop-category');
+            if (catSelect) catSelect.value = newCat;
+            
+            saveHistoryState();
+            const idx = Array.from(selectedBoxes)[0];
+            const oldCat = ocrData[idx].category;
+            ocrData[idx].category = newCat;
+            if (isTableLike(newCat)) {
+                await handleTableCategoryChangeInLayout(idx, newCat, oldCat);
+            } else {
+                updateSelectionUI(); drawCanvas();
+                autoSaveLayoutData();
+            }
+        });
+    });
+
     document.getElementById('prop-category').addEventListener('change', async (e) => {
         saveHistoryState();
         const idx = Array.from(selectedBoxes)[0];

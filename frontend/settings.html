@@ -62,20 +62,29 @@
 
         <div class="sticky-nav-wrapper">
             <div class="compact-settings-nav">
-                <h1 data-i18n="settings.title" style="font-size: 19px; margin: 0; color: #0f172a; font-weight: 700;">⚙️ الإعدادات العامة</h1>
+                <h1 data-i18n="settings.title" style="font-size: 19px; margin: 0; color: var(--color-text); font-weight: 700;">الإعدادات العامة</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <button type="button" id="btn-cancel-settings" data-i18n="settings.cancel" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
                     <button type="button" id="save-settings" data-i18n="settings.save" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
                     <div style="border-inline-start: 1px solid #cbd5e1; padding-inline-start: 10px; margin-inline-start: 4px;">
-                        <button type="button" id="btn-back" class="btn-secondary" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span>⟵</span> <span data-i18n="settings.back">عودة</span>
+                        <button type="button" id="btn-back" class="btn-secondary" data-icon="back" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
+                            <span data-i18n="settings.back">عودة</span>
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Settings Categorized Tabs -->
+            <div class="settings-tabs" id="settings-tab-bar" style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 2px;">
+                <button type="button" class="btn-secondary active settings-tab-btn" data-tab="all" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الكل</button>
+                <button type="button" class="btn-secondary settings-tab-btn" data-tab="general" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">عام والحفظ</button>
+                <button type="button" class="btn-secondary settings-tab-btn" data-tab="ai" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الذكاء الاصطناعي وOCR</button>
+                <button type="button" class="btn-secondary settings-tab-btn" data-tab="review" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">المراجعة والتصنيفات</button>
+                <button type="button" class="btn-secondary settings-tab-btn" data-tab="shortcuts" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الاختصارات</button>
+            </div>
         </div>
 
-        <div class="settings-card">
+        <div class="settings-card" data-tab-section="general">
             <div class="settings-section-title" data-i18n="settings.storage">موقع حفظ البيانات (Data Storage)</div>
             <div class="section-hint" data-i18n="settings.storageHint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
             <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
@@ -84,7 +93,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="general">
             <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
             <div class="setting-row language-setting-row">
                 <div>
@@ -99,7 +108,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="review">
             <div class="settings-section-title" data-i18n="settings.review">المراجعة</div>
             <div class="setting-row">
                 <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
@@ -123,8 +132,8 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
-            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
+        <div class="settings-card" data-tab-section="general">
+            <div class="settings-section-title" data-i18n="settings.interface">الواجهة والتكبير</div>
             <div class="setting-row">
                 <span class="setting-label" data-i18n="settings.zoom">تكبير الواجهة</span>
                 <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-inline-start:12px;">
@@ -132,7 +141,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="general">
             <div class="settings-section-title" data-i18n="settings.history">التراجع والإعادة (Undo / Redo)</div>
             <div class="setting-row">
                 <span class="setting-label" data-i18n="settings.historyLimit">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
@@ -143,7 +152,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="review">
             <div class="settings-section-title" data-i18n="settings.categories">التصنيفات المخصصة (Categories)</div>
             <div class="section-hint" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
             
@@ -156,7 +165,7 @@
             <div id="custom-categories-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="general">
             <div class="settings-section-title" data-i18n="settings.deletion">إعدادات الحذف والملفات (Deletion Preferences)</div>
             <div class="section-hint" data-i18n="help.deletion">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
             
@@ -181,7 +190,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="ai">
             <div class="settings-section-title" data-i18n="settings.llmPrompt">تعليمات النماذج الذكية (LLM System Prompt)</div>
             <div class="section-hint" data-i18n="help.llm">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
             
@@ -194,7 +203,7 @@
             </div>
         </div>
 
-        <div class="settings-card" style="margin-top:16px;">
+        <div class="settings-card" data-tab-section="shortcuts">
             <div class="settings-section-title" data-i18n="settings.shortcuts">اختصارات لوحة المفاتيح</div>
             <div class="section-hint" data-i18n="help.shortcuts">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
             <div id="shortcuts-list" style="margin-top:10px;"></div>
@@ -498,6 +507,29 @@
                 renderCustomCategories();
             }
         };
+
+        // Tab Switching Logic
+        document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.settings-tab-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                });
+                btn.classList.add('active');
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+
+                const tab = btn.dataset.tab;
+                document.querySelectorAll('.settings-card').forEach(card => {
+                    if (tab === 'all' || card.dataset.tabSection === tab) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
 
         const navigateBack = () => {
             if (window.history.length > 1) {
