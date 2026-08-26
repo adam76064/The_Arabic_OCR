@@ -122,7 +122,7 @@
                     <div class="stage-panel" id="panel-split">
                         <div class="param-group">
                             <label class="param-label" data-i18n="split.layoutMode">نوع التخطيط:</label>
-                            <select id="split-layout-type" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <select id="split-layout-type" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                                 <option value="auto" data-i18n="split.modeAuto">تلقائي (كشف صفحات مفردة / مزدوجة)</option>
                                 <option value="two_pages" data-i18n="split.modeTwoPages">صفحتين مزدوجتين (كتاب مفتوح)</option>
                                 <option value="single_page" data-i18n="split.modeSinglePage">صفحة واحدة مفردة</option>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="param-group">
                             <label class="param-label" data-i18n="split.direction">ترتيب القراءة والتقسيم:</label>
-                            <select id="split-direction" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <select id="split-direction" class="form-control" style="width: 100%; padding: 7px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                                 <option value="rtl" data-i18n="split.dirRTL">من اليمين لليسار (عربي - اليمين أولاً)</option>
                                 <option value="ltr" data-i18n="split.dirLTR">من اليسار لليمين (لاتيني - اليسار أولاً)</option>
                             </select>
@@ -174,32 +174,32 @@
                             <label class="param-label" data-i18n="layout.margins">الهوامش الخارجية المحيطة بالنص (ملم):</label>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                 <div>
-                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.top">أعلى:</span>
-                                    <input type="number" id="margin-top" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <span style="font-size: 11px; color: var(--color-text-muted);" data-i18n="layout.top">أعلى:</span>
+                                    <input type="number" id="margin-top" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);">
                                 </div>
                                 <div>
-                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.bottom">أسفل:</span>
-                                    <input type="number" id="margin-bottom" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <span style="font-size: 11px; color: var(--color-text-muted);" data-i18n="layout.bottom">أسفل:</span>
+                                    <input type="number" id="margin-bottom" min="0" max="100" value="10" style="width: 100%; padding: 4px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);">
                                 </div>
                                 <div>
-                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.left">يسار:</span>
-                                    <input type="number" id="margin-left" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <span style="font-size: 11px; color: var(--color-text-muted);" data-i18n="layout.left">يسار:</span>
+                                    <input type="number" id="margin-left" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);">
                                 </div>
                                 <div>
-                                    <span style="font-size: 11px; color: #64748b;" data-i18n="layout.right">يمين:</span>
-                                    <input type="number" id="margin-right" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <span style="font-size: 11px; color: var(--color-text-muted);" data-i18n="layout.right">يمين:</span>
+                                    <input type="number" id="margin-right" min="0" max="100" value="15" style="width: 100%; padding: 4px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);">
                                 </div>
                             </div>
                         </div>
                         <div class="param-group">
                             <label class="param-label" data-i18n="layout.alignment">المحاذاة داخل الصفحة:</label>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                <select id="align-horizontal" style="padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                <select id="align-horizontal" style="padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                                     <option value="CENTER" data-i18n="layout.alignCenter">أفقي: وسط</option>
                                     <option value="LEFT" data-i18n="layout.alignLeft">أفقي: يسار</option>
                                     <option value="RIGHT" data-i18n="layout.alignRight">أفقي: يمين</option>
                                 </select>
-                                <select id="align-vertical" style="padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                <select id="align-vertical" style="padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                                     <option value="CENTER" data-i18n="layout.valignCenter">عمودي: وسط</option>
                                     <option value="TOP" data-i18n="layout.valignTop">عمودي: أعلى</option>
                                     <option value="BOTTOM" data-i18n="layout.valignBottom">عمودي: أسفل</option>
@@ -207,8 +207,8 @@
                             </div>
                         </div>
                         <div class="param-group" style="margin-top: 6px;">
-                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;">
-                                <input type="checkbox" id="match-other-pages" checked>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; color: var(--color-text);">
+                                <input type="checkbox" id="match-other-pages" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="layout.matchOtherPages">توحيد أبعاد كل الصفحات حسب أوسع صفحة (Match other pages)</span>
                             </label>
                         </div>
@@ -219,7 +219,7 @@
                     <div class="stage-panel" id="panel-output">
                         <div class="param-group">
                             <label class="param-label" data-i18n="output.engine">خوارزمية المعالجة والترميز:</label>
-                            <select id="binarization-engine" style="width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <select id="binarization-engine" style="width: 100%; padding: 7px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
                                 <option value="none" selected data-i18n="output.engineNone">بدون ترميز (الحفاظ على الصورة الأصلية - الافتراضي)</option>
                                 <option value="zigzag" data-i18n="output.engineZigzag">ZigZag (خوارزمية Bloechle الأصلية - فائق الدقة لإزالة الظلال)</option>
                                 <option value="otsu" data-i18n="output.engineOtsu">Otsu (عالمي متكيف - قياسي)</option>
@@ -312,64 +312,64 @@
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label class="form-label" style="font-weight: bold; margin-bottom: 6px; display: block;" data-i18n="batch.scopeLabel">نطاق الصفحات المراد معالجتها:</label>
                         <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px;">
-                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
-                                <input type="radio" name="batch-scope" value="all" checked>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: var(--color-text);">
+                                <input type="radio" name="batch-scope" value="all" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="batch.scopeAll">جميع صفحات المشروع</span>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
-                                <input type="radio" name="batch-scope" value="range">
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: var(--color-text);">
+                                <input type="radio" name="batch-scope" value="range" style="accent-color: var(--color-primary);">
                                 <span data-i18n="batch.scopeRange">نطاق مخصص:</span>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
-                                <input type="radio" name="batch-scope" value="current">
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: var(--color-text);">
+                                <input type="radio" name="batch-scope" value="current" style="accent-color: var(--color-primary);">
                                 <span data-i18n="batch.scopeCurrent">الصفحة الحالية فقط</span>
                             </label>
                         </div>
-                        <input type="text" id="batch-range-input" class="form-control" placeholder="1-50, 60, 70-80" style="margin-top: 8px; padding: 6px 10px; font-size: 13px; width: 100%;">
+                        <input type="text" id="batch-range-input" class="form-control" placeholder="1-50, 60, 70-80" style="margin-top: 8px; padding: 6px 10px; font-size: 13px; width: 100%; background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md);">
                     </div>
 
                     <!-- Stages checklist -->
-                    <div class="form-group" style="margin-bottom: 16px; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                    <div class="form-group" style="margin-bottom: 16px; border-top: 1px solid var(--color-border); padding-top: 12px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <label class="form-label" style="font-weight: bold; margin: 0;" data-i18n="batch.stagesLabel">المراحل المطلوب تنفيذها:</label>
+                            <label class="form-label" style="font-weight: bold; margin: 0; color: var(--color-text);" data-i18n="batch.stagesLabel">المراحل المطلوب تنفيذها:</label>
                             <div style="display: flex; gap: 6px;">
-                                <button type="button" id="btn-batch-preset-all" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetAll">الكل</button>
-                                <button type="button" id="btn-batch-preset-from-curr" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetFromCurrent">من الحالية</button>
-                                <button type="button" id="btn-batch-preset-only-curr" class="btn-plain" style="font-size: 11px; padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px;" data-i18n="batch.presetOnlyCurrent">الحالية فقط</button>
+                                <button type="button" id="btn-batch-preset-all" class="btn-plain" style="font-size: 11px; padding: 3px 8px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);" data-i18n="batch.presetAll">الكل</button>
+                                <button type="button" id="btn-batch-preset-from-curr" class="btn-plain" style="font-size: 11px; padding: 3px 8px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);" data-i18n="batch.presetFromCurrent">من الحالية</button>
+                                <button type="button" id="btn-batch-preset-only-curr" class="btn-plain" style="font-size: 11px; padding: 3px 8px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);" data-i18n="batch.presetOnlyCurrent">الحالية فقط</button>
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--color-bg-alt); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border); color: var(--color-text);">
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="orientation" checked>
+                                <input type="checkbox" class="batch-stage-check" value="orientation" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.orientation">1. تعديل الاتجاه</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="split" checked>
+                                <input type="checkbox" class="batch-stage-check" value="split" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.split">2. تقسيم الصفحات</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="deskew" checked>
+                                <input type="checkbox" class="batch-stage-check" value="deskew" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.deskew">3. ضبط الميلان</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="content" checked>
+                                <input type="checkbox" class="batch-stage-check" value="content" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.content">4. تحديد المحتوى</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="layout" checked>
+                                <input type="checkbox" class="batch-stage-check" value="layout" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.layout">5. الهوامش والتخطيط</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
-                                <input type="checkbox" class="batch-stage-check" value="output" checked>
+                                <input type="checkbox" class="batch-stage-check" value="output" checked style="accent-color: var(--color-primary);">
                                 <span data-i18n="stage.output">6. الترميز والمعالجة</span>
                             </label>
                         </div>
                     </div>
 
-                    <div class="form-group" style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer; color: #475569;">
-                            <input type="checkbox" id="batch-from-original" checked>
+                    <div class="form-group" style="border-top: 1px solid var(--color-border); padding-top: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer; color: var(--color-text-secondary);">
+                            <input type="checkbox" id="batch-from-original" checked style="accent-color: var(--color-primary);">
                             <span data-i18n="batch.fromOriginal">البدء من المسح الأصلي غير المعدل (موصى به عند معالجة كافة المراحل)</span>
                         </label>
                     </div>
@@ -383,7 +383,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid #e2e8f0;">
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--color-border); background: var(--color-bg);">
                 <button class="btn-secondary" id="btn-cancel-batch" style="display: none;" data-i18n="batch.cancel">إيقاف</button>
                 <button class="btn-primary" id="btn-start-batch" data-i18n="batch.start">بدء المعالجة المجمعة</button>
             </div>

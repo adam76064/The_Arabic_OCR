@@ -7,6 +7,7 @@
     try {
       const stored = localStorage.getItem('app_theme');
       if (stored === 'dark' || stored === 'light' || stored === 'auto') return stored;
+      if (window.__appSettings?.theme) return window.__appSettings.theme;
       if (window.__appSettings?.darkMode || window.__appSettings?.nightMode) return 'dark';
     } catch (e) {}
     return 'auto';
@@ -35,7 +36,7 @@
     const effective = resolveEffectiveTheme(themeSetting);
     const isDark = effective === 'dark';
 
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', effective);
     document.documentElement.classList.toggle('night-mode', isDark);
     document.documentElement.classList.toggle('dark-mode', isDark);
     
@@ -80,7 +81,7 @@
     const labelText = window.AppI18n ? window.AppI18n.t(labelKey) : (isDark ? 'الوضع النهاري' : 'الوضع الليلي');
     const svgIcon = window.AppIcons ? window.AppIcons.get(iconName) : '';
 
-    document.querySelectorAll('.theme-toggle-btn, #theme-toggle-btn, #btn-toggle-theme').forEach(btn => {
+    document.querySelectorAll('.theme-toggle-btn, #theme-toggle-btn, #btn-toggle-theme, #sidebar-theme-toggle').forEach(btn => {
       btn.title = labelText;
       btn.setAttribute('aria-label', labelText);
       const labelSpan = btn.querySelector('.theme-label, span');
@@ -109,17 +110,20 @@
     },
     setTheme(theme) {
       applyTheme(theme);
+      if (typeof saveAppSettings === 'function') saveAppSettings();
     },
     getPalette() {
       return getStoredPalette();
     },
     setPalette(palette) {
       applyPalette(palette);
+      if (typeof saveAppSettings === 'function') saveAppSettings();
     },
     toggle() {
       const currentEffective = this.getEffectiveTheme();
       const next = currentEffective === 'dark' ? 'light' : 'dark';
       applyTheme(next);
+      if (typeof saveAppSettings === 'function') saveAppSettings();
       return next;
     },
     init() {
@@ -130,7 +134,7 @@
       applyPalette(palette);
 
       // Bind all existing toggle buttons in DOM
-      document.querySelectorAll('.theme-toggle-btn, #theme-toggle-btn, #btn-toggle-theme').forEach(btn => {
+      document.querySelectorAll('.theme-toggle-btn, #theme-toggle-btn, #btn-toggle-theme, #sidebar-theme-toggle').forEach(btn => {
         if (!btn._themeBound) {
           btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -156,6 +160,7 @@
   const earlyEffective = resolveEffectiveTheme(earlySetting);
   document.documentElement.setAttribute('data-theme', earlyEffective);
   document.documentElement.classList.toggle('night-mode', earlyEffective === 'dark');
+  document.documentElement.classList.toggle('dark-mode', earlyEffective === 'dark');
 
   const earlyPalette = getStoredPalette();
   if (earlyPalette && earlyPalette !== 'default' && earlyPalette !== 'emerald') {
@@ -164,12 +169,20 @@
 
   document.addEventListener('DOMContentLoaded', () => ThemeManager.init());
   window.addEventListener('appSettingsLoaded', () => {
-    if (window.__appSettings?.theme) {
+    // Preserve local explicit preference; only apply backend if no local preference is found
+    const localTheme = localStorage.getItem('app_theme');
+    if (localTheme) {
+      applyTheme(localTheme);
+    } else if (window.__appSettings?.theme) {
       applyTheme(window.__appSettings.theme);
     } else if (window.__appSettings?.darkMode !== undefined) {
       applyTheme(window.__appSettings.darkMode ? 'dark' : 'light');
     }
-    if (window.__appSettings?.palette) {
+
+    const localPalette = localStorage.getItem('app_palette');
+    if (localPalette) {
+      applyPalette(localPalette);
+    } else if (window.__appSettings?.palette) {
       applyPalette(window.__appSettings.palette);
     }
   });

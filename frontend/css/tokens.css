@@ -89,11 +89,12 @@
   --cat-page-num-accent: #0d9488;
 
   /* Sidebar Theme */
-  --color-sidebar: #0f172a;
-  --color-sidebar-hover: #1e293b;
-  --color-sidebar-active: #334155;
-  --color-sidebar-text: #f8fafc;
-  --color-sidebar-muted: #94a3b8;
+  --color-sidebar: #ffffff;
+  --color-sidebar-hover: #f1f5f9;
+  --color-sidebar-active: #e2e8f0;
+  --color-sidebar-text: #0f172a;
+  --color-sidebar-muted: #64748b;
+  --color-sidebar-border: #e2e8f0;
 
   /* Typography */
   --font-ui: 'IBM Plex Sans Arabic', 'Cairo', 'Segoe UI', Tahoma, system-ui, sans-serif;
@@ -194,6 +195,14 @@ body.dark-mode {
   --color-danger-light: rgba(220, 38, 38, 0.15);
   --color-warning-light: rgba(217, 119, 6, 0.15);
   --color-info-light: rgba(2, 132, 199, 0.15);
+
+  /* Sidebar Theme (Dark Mode) */
+  --color-sidebar: #161b22;
+  --color-sidebar-hover: #1f242d;
+  --color-sidebar-active: #2d333b;
+  --color-sidebar-text: #f1f5f9;
+  --color-sidebar-muted: #8b949e;
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
 
   /* Category backgrounds for night mode */
   --cat-text-bg: rgba(2, 132, 199, 0.12);

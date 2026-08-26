@@ -10,7 +10,7 @@
 
   // Instant zero-flash dark mode
   try {
-    var storedTheme = localStorage.getItem('app_theme');
+    var storedTheme = localStorage.getItem('app_theme') || 'auto';
     var isDark = false;
     if (storedTheme === 'dark') {
       isDark = true;
