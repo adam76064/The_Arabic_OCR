@@ -459,7 +459,7 @@ class Api:
                     for b in existing_data:
                         b['text'] = ""
                         b['_temp_lines'] = []
-                        if b.get('category') == 'Table' and 'table_structure' in b:
+                        if (b.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in b:
                             for cell in b['table_structure'].get('cells', []):
                                 cell['text'] = ""
                                 cell['_ordered_lines'] = []
@@ -476,7 +476,7 @@ class Api:
                                 for e_block in existing_data:
                                     bx1, by1, bx2, by2 = e_block['bbox']
                                     if (bx1 - 10) <= wx <= (bx2 + 10) and (by1 - 10) <= wy <= (by2 + 10):
-                                        if e_block.get('category') == 'Table' and 'table_structure' in e_block:
+                                        if (e_block.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in e_block:
                                             b_id = id(e_block)
                                             if b_id not in table_line_words:
                                                 table_line_words[b_id] = {id(c): [] for c in e_block['table_structure']['cells']}
@@ -489,7 +489,7 @@ class Api:
                                             e_block['_temp_lines'].append((wy, line))
                                         break
                             for e_block in existing_data:
-                                if e_block.get('category') == 'Table' and 'table_structure' in e_block:
+                                if (e_block.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in e_block:
                                     b_id = id(e_block)
                                     if b_id in table_line_words:
                                         for cell in e_block['table_structure']['cells']:
@@ -497,7 +497,7 @@ class Api:
                                             if words_in_cell:
                                                 cell['_ordered_lines'].append(" ".join(words_in_cell))
                     for b in existing_data:
-                        if b.get('category') == 'Table' and 'table_structure' in b:
+                        if (b.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in b:
                             all_cell_texts = []
                             for cell in b['table_structure'].get('cells', []):
                                 if '_ordered_lines' in cell:
@@ -520,12 +520,12 @@ class Api:
                             b['text'] = "\n".join([line_obj.get('text', '') for line_obj in b['lines']])
                             del b['_temp_lines']
 
-                    table_structures_backup = {i: b['table_structure'] for i, b in enumerate(existing_data) if 'table_structure' in b}
+                    table_structures_backup = {i: (b['table_structure'], b.get('category', 'Table')) for i, b in enumerate(existing_data) if 'table_structure' in b}
                     cleaned_elements = self._apply_cleaning_to_elements(existing_data, text_config, page_data, engine_dpi=72.0)
-                    for idx, ts in table_structures_backup.items():
+                    for idx, (ts, orig_cat) in table_structures_backup.items():
                         if idx < len(cleaned_elements):
                             cleaned_elements[idx]['table_structure'] = ts
-                            cleaned_elements[idx]['category'] = 'Table'
+                            cleaned_elements[idx]['category'] = orig_cat or 'Table'
                     project['pages'][current_idx]['ocr_data'] = cleaned_elements
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)
 
@@ -631,7 +631,7 @@ class Api:
                     for b in existing_data:
                         b['text'] = ""
                         b['_temp_lines'] = []
-                        if b.get('category') == 'Table' and 'table_structure' in b:
+                        if (b.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in b:
                             for cell in b['table_structure'].get('cells', []):
                                 cell['text'] = ""
                                 cell['_ordered_lines'] = []
@@ -648,7 +648,7 @@ class Api:
                                 for e_block in existing_data:
                                     bx1, by1, bx2, by2 = e_block['bbox']
                                     if (bx1 - 10) <= wx <= (bx2 + 10) and (by1 - 10) <= wy <= (by2 + 10):
-                                        if e_block.get('category') == 'Table' and 'table_structure' in e_block:
+                                        if (e_block.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in e_block:
                                             b_id = id(e_block)
                                             if b_id not in table_line_words:
                                                 table_line_words[b_id] = {id(c): [] for c in e_block['table_structure']['cells']}
@@ -661,7 +661,7 @@ class Api:
                                             e_block['_temp_lines'].append((wy, line))
                                         break
                             for e_block in existing_data:
-                                if e_block.get('category') == 'Table' and 'table_structure' in e_block:
+                                if (e_block.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in e_block:
                                     b_id = id(e_block)
                                     if b_id in table_line_words:
                                         for cell in e_block['table_structure']['cells']:
@@ -670,7 +670,7 @@ class Api:
                                                 cell['_ordered_lines'].append(" ".join(words_in_cell))
 
                     for b in existing_data:
-                        if b.get('category') == 'Table' and 'table_structure' in b:
+                        if (b.get('category') in ('Table', 'Vertical-poetry', 'Poem')) and 'table_structure' in b:
                             all_cell_texts = []
                             for cell in b['table_structure'].get('cells', []):
                                 if '_ordered_lines' in cell:
@@ -693,12 +693,12 @@ class Api:
                             b['text'] = "\n".join([line_obj.get('text', '') for line_obj in b['lines']])
                             del b['_temp_lines']
 
-                    table_structures_backup = {i: b['table_structure'] for i, b in enumerate(existing_data) if 'table_structure' in b}
+                    table_structures_backup = {i: (b['table_structure'], b.get('category', 'Table')) for i, b in enumerate(existing_data) if 'table_structure' in b}
                     cleaned_elements = self._apply_cleaning_to_elements(existing_data, text_config, page_data, engine_dpi=72.0)
-                    for idx, ts in table_structures_backup.items():
+                    for idx, (ts, orig_cat) in table_structures_backup.items():
                         if idx < len(cleaned_elements):
                             cleaned_elements[idx]['table_structure'] = ts
-                            cleaned_elements[idx]['category'] = 'Table'
+                            cleaned_elements[idx]['category'] = orig_cat or 'Table'
 
                     project['pages'][current_idx]['ocr_data'] = cleaned_elements
                     self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)

@@ -20,7 +20,7 @@ function injectPropertiesPanel() {
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Title')}</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Section-header')}</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Quran')}</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Poem')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Vertical-poetry" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Vertical-poetry')}</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Footnote')}</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Table')}</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Picture')}</button>
