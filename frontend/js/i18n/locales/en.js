@@ -3,7 +3,7 @@ window.AppLocales.en = {
   meta: { name:'English', nativeName:'English', direction:'ltr' },
   messages: {
     'app.name':'OCR Review Tool','nav.home':'Home','nav.projects':'Projects',
-    'nav.newProject':'New Project','nav.settings':'Settings','nav.exit':'Exit',
+    'nav.newProject':'New Project','nav.settings':'Settings','nav.exit':'Exit','nav.theme':'Night Mode',
     'sidebar.hide':'Hide sidebar','sidebar.show':'Show sidebar',
     'home.welcome':'Welcome','home.chooseAction':'Choose what you would like to do',
     'home.dropzone.title':'Drag & drop a PDF file here to create a project or click to browse',

@@ -3,7 +3,7 @@ window.AppLocales.ar = {
   meta: { name:'العربية', nativeName:'العربية', direction:'rtl' },
   messages: {
     'app.name':'أداة مراجعة OCR','nav.home':'الرئيسية','nav.projects':'المشاريع',
-    'nav.newProject':'مشروع جديد','nav.settings':'الإعدادات','nav.exit':'خروج',
+    'nav.newProject':'مشروع جديد','nav.settings':'الإعدادات','nav.exit':'خروج','nav.theme':'الوضع الليلي',
     'sidebar.hide':'إخفاء الشريط الجانبي','sidebar.show':'فتح الشريط الجانبي',
     'home.welcome':'مرحبًا بكم','home.chooseAction':'اختر ما تريد القيام به',
     'home.dropzone.title':'اسحب وأفلت ملف PDF هنا لإنشاء مشروع جديد أو انقر للاختيار',

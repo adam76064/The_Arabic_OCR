@@ -155,6 +155,10 @@
 }
 
 /* ── Comprehensive Dark / Deep Charcoal Studio Night Mode ──────────────── */
+:root[data-theme="dark"],
+html[data-theme="dark"],
+html.night-mode,
+html.dark-mode,
 body.night-mode,
 [data-theme="dark"] body,
 body.dark-mode {

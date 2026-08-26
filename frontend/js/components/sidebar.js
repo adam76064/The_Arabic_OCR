@@ -32,6 +32,9 @@
                     <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">${icon('projects')}<span data-i18n="nav.projects">المشاريع</span></a>
                     <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">${icon('plus')}<span data-i18n="nav.newProject">مشروع جديد</span></a>
                     <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">${icon('settings')}<span data-i18n="nav.settings">الإعدادات</span></a>
+                    <button type="button" id="sidebar-theme-toggle" class="sidebar-link theme-toggle-btn" style="background:none; border:none; width:100%; text-align:inherit; cursor:pointer;">
+                        ${icon('moon')}<span class="theme-label" data-i18n="nav.theme">الوضع الليلي</span>
+                    </button>
                     <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">${icon('exit')}<span data-i18n="nav.exit">خروج</span></a>
                 </nav>
                 <div class="sidebar-project-info" id="sidebar-project-info" style="${currentPath.includes('review') ? '' : 'display:none;'}">
@@ -54,8 +57,17 @@
     const toggleBtn = document.getElementById('toggle-sidebar');
     const tabBtn = document.getElementById('sidebar-collapsed-tab');
     const exitBtn = document.getElementById('sidebar-exit-btn');
+    const themeBtn = document.getElementById('sidebar-theme-toggle');
 
     if (!sidebar) return;
+
+    if (themeBtn && !themeBtn._themeBound) {
+      themeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.ThemeManager) window.ThemeManager.toggle();
+      });
+      themeBtn._themeBound = true;
+    }
 
     function setCollapsed(collapsed) {
       sidebar.classList.toggle('collapsed', collapsed);

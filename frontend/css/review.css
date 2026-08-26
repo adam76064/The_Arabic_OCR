@@ -150,6 +150,11 @@
   cursor: pointer;
 }
 
+/* ── Image Viewer (Hidden by default in Review Studio) ─────────────────── */
+#image-viewer {
+  display: none !important;
+}
+
 /* ── Editor Container ──────────────────────────────────────────────────── */
 .editor-container {
   display: flex;

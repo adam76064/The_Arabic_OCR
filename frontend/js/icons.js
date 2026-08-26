@@ -1,5 +1,5 @@
 /**
- * js/icons.js — Centralised 100% SVG Icon Registry (Zero Emojis).
+ * js/icons.js — Centralised 100% SVG Vector Icon Registry (Zero Emojis).
  *
  * All icons are 18×18 stroke-based SVG vectors with stroke-width="1.75".
  * Uses `currentColor` to inherit dynamic colors and states automatically.
@@ -18,7 +18,9 @@
     exit:         S('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>'),
     plus:         S('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
     lan:          S('<path d="M5 12H3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2"/><path d="M19 12h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M12 2v4"/><circle cx="12" cy="9" r="3"/><path d="M6.5 15.5a7 7 0 0 0 11 0"/>'),
+    network:      S('<path d="M5 12H3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2"/><path d="M19 12h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M12 2v4"/><circle cx="12" cy="9" r="3"/><path d="M6.5 15.5a7 7 0 0 0 11 0"/>'),
     logo:         S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>'),
+    name:         S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>'),
 
     // Theme & Display
     sun:          S('<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'),
@@ -52,6 +54,8 @@
     quran:        S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/>'),
     copy:         S('<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
     refresh:      S('<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>'),
+    notif:        S('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'),
+    pages:        S('<rect x="8" y="2" width="13" height="16" rx="2"/><path d="M4 6h2v14a2 2 0 0 0 2 2h10v2H6a2 2 0 0 1-2-2V6z"/>'),
 
     // Typography & Formatting
     bold:         S('<path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>'),
@@ -76,7 +80,8 @@
     zoomOut:      S('<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>'),
     zoomFit:      S('<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>'),
     crop:         S('<path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/>'),
-    dragHandle:   S('<circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>'),
+    drag:         S('<circle cx="9" cy="12" r="1.5"/><circle cx="9" cy="5" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="15" cy="19" r="1.5"/>'),
+    dragHandle:   S('<circle cx="9" cy="12" r="1.5"/><circle cx="9" cy="5" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="15" cy="19" r="1.5"/>'),
 
     // Layout Editor Tools
     select:       S('<path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/>'),
@@ -96,6 +101,7 @@
     dashboard:    S('<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>'),
     preview:      S('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'),
     batch:        S('<rect x="2" y="7" width="16" height="14" rx="2"/><path d="M6 3h14a2 2 0 0 1 2 2v12"/>'),
+    scan:         S('<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/>'),
     scanLine:     S('<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/>'),
     filter:       S('<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'),
     command:      S('<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>'),
@@ -110,27 +116,35 @@
     collapseRTL:  S('<path d="M15 18l-6-6 6-6"/>'),
     expandRTL:    S('<path d="M9 18l6-6-6-6"/>'),
 
-    // Export formats
+    // Export formats & Aliases
+    doc:          S('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>'),
+    docx:         S('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>'),
     fileDocx:     S('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>'),
+    epub:         S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
     fileEpub:     S('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
+    txt:          S('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'),
     fileTxt:      S('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'),
+    json:         S('<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>'),
     fileJson:     S('<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>'),
+    html:         S('<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/>'),
   };
 
   const AppIcons = {
     /**
      * Returns the raw SVG string for `name`.
-     * Falls back to a placeholder square if the icon doesn't exist.
+     * Falls back to a clean document icon if not found.
      */
     get(name, extraStyle = '') {
-      const fn = icons[name];
+      if (!name) return '';
+      const key = String(name).trim();
+      const fn = icons[key];
       if (fn) {
         if (extraStyle) {
           return fn.replace('<svg ', `<svg style="${extraStyle}" `);
         }
         return fn;
       }
-      return S('<rect x="3" y="3" width="18" height="18" rx="2"/>');
+      return S('<circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12.01" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/>');
     },
 
     /**
@@ -145,13 +159,27 @@
     },
 
     /**
-     * Replaces [data-icon="name"] with SVG icons.
+     * Replaces or prepends [data-icon="name"] with SVG icons.
      */
     applyAll(root = document) {
       root.querySelectorAll('[data-icon]').forEach(el => {
         const iconName = el.getAttribute('data-icon');
+        if (iconName) {
+          const svg = AppIcons.get(iconName);
+          if (el.classList.contains('btn-icon') || el.classList.contains('format-icon')) {
+            el.innerHTML = svg;
+          } else if (!el.querySelector('svg')) {
+            el.insertAdjacentHTML('afterbegin', svg + ' ');
+          }
+          el.setAttribute('data-icon-applied', '1');
+        }
+      });
+
+      root.querySelectorAll('[data-icon-label]').forEach(el => {
+        const iconName = el.getAttribute('data-icon-label');
         if (iconName && !el.querySelector('svg')) {
-          el.innerHTML = AppIcons.get(iconName);
+          el.insertAdjacentHTML('afterbegin', AppIcons.get(iconName) + ' ');
+          el.setAttribute('data-icon-applied', '1');
         }
       });
     }

@@ -3,7 +3,7 @@ window.AppLocales.de = {
   meta: { name:'Deutsch', nativeName:'Deutsch', direction:'ltr' },
   messages: {
     'app.name':'OCR-Prüfwerkzeug','nav.home':'Startseite','nav.projects':'Projekte',
-    'nav.newProject':'Neues Projekt','nav.settings':'Einstellungen','nav.exit':'Beenden',
+    'nav.newProject':'Neues Projekt','nav.settings':'Einstellungen','nav.exit':'Beenden','nav.theme':'Nachtmodus',
     'sidebar.hide':'Seitenleiste ausblenden','sidebar.show':'Seitenleiste anzeigen',
     'home.welcome':'Willkommen','home.chooseAction':'Wählen Sie, was Sie tun möchten',
     'home.dropzone.title':'PDF-Datei hierher ziehen oder klicken, um ein Projekt zu erstellen',
