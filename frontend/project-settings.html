@@ -347,17 +347,17 @@
                     <div class="settings-row">
                         <div class="form-group">
                             <label class="form-label" data-i18n="ps.title">عنوان الكتاب</label>
-                            <input type="text" id="ps-title" required placeholder="مثال: صحيح البخاري">
+                            <input type="text" id="ps-title" required placeholder="مثال: صحيح البخاري" data-i18n-placeholder="ps.titlePlaceholder">
                         </div>
                         <div class="form-group">
                             <label class="form-label" data-i18n="ps.author">المؤلف</label>
-                            <input type="text" id="ps-author" placeholder="اسم المؤلف أو المحقق">
+                            <input type="text" id="ps-author" placeholder="اسم المؤلف أو المحقق" data-i18n-placeholder="ps.authorPlaceholder">
                         </div>
                     </div>
                     <div class="settings-row">
                         <div class="form-group">
                             <label class="form-label" data-i18n="ps.publisher">دار النشر</label>
-                            <input type="text" id="ps-publisher" placeholder="دار النشر أو سنة الطبع">
+                            <input type="text" id="ps-publisher" placeholder="دار النشر أو سنة الطبع" data-i18n-placeholder="ps.publisherPlaceholder">
                         </div>
                         <div class="form-group">
                             <label class="form-label" data-i18n="ps.pageStart">بداية ترقيم الصفحات (PDF)</label>
@@ -431,15 +431,15 @@
                     <!-- Live Rule Sandbox -->
                     <div style="background: var(--color-bg); padding: 18px; border-radius: var(--radius-lg); border: 1px dashed var(--color-border-strong);">
                         <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--color-text); display: flex; align-items: center; gap: 6px;">
-                            <span data-icon="sparkles"></span> مختبر القواعد الحي (Live Rule Sandbox)
+                            <span data-icon="sparkles"></span> <span data-i18n="ps.sandboxTitle">مختبر القواعد الحي (Live Rule Sandbox)</span>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
                             <div>
-                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;">نص تجريبي للمعاينة:</label>
+                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;" data-i18n="ps.sandboxInput">نص تجريبي للمعاينة:</label>
                                 <textarea id="sandbox-input" style="width: 100%; height: 75px; padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); font-size: 13px; resize: vertical; background: var(--color-surface); color: var(--color-text); line-height: 1.6;">كِتـَاباً   قـَيِّماً  ،  و كَانَ  الـعَـمَلُ  مُـتـْقَـناً (١).</textarea>
                             </div>
                             <div>
-                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;">النتيجة الحية بعد تطبيق القواعد:</label>
+                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;" data-i18n="ps.sandboxOutput">النتيجة الحية بعد تطبيق القواعد:</label>
                                 <div id="sandbox-output" style="width: 100%; min-height: 75px; padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); font-size: 13px; color: var(--color-primary); font-weight: bold; white-space: pre-wrap; line-height: 1.6;"></div>
                             </div>
                         </div>
@@ -713,7 +713,7 @@
                     <div class="setting-item-row">
                         <div class="setting-item-info">
                             <span class="setting-item-label" data-i18n="ps.memberJoin">دخول وخروج الأعضاء</span>
-                            <span class="setting-item-hint">إظهار تنبيه عند انضمام عضو جديد للعمل على المشروع.</span>
+                            <span class="setting-item-hint" data-i18n="ps.memberJoinHint">إظهار تنبيه عند انضمام عضو جديد للعمل على المشروع.</span>
                         </div>
                         <label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label>
                     </div>
@@ -721,7 +721,7 @@
                     <div class="setting-item-row">
                         <div class="setting-item-info">
                             <span class="setting-item-label" data-i18n="ps.pageReviewDone">إنهاء مراجعة صفحة</span>
-                            <span class="setting-item-hint">إظهار إشعار عندما ينهي أي عضو مراجعة صفحة بالكامل.</span>
+                            <span class="setting-item-hint" data-i18n="ps.pageReviewDoneHint">إظهار إشعار عندما ينهي أي عضو مراجعة صفحة بالكامل.</span>
                         </div>
                         <label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label>
                     </div>
@@ -729,7 +729,7 @@
                     <div class="setting-item-row">
                         <div class="setting-item-info">
                             <span class="setting-item-label" data-i18n="ps.liveEdit">تعديل حي من مشترك</span>
-                            <span class="setting-item-hint">إظهار تنبيهات التعديل الحي اللحظية أثناء التدقيق المشترك.</span>
+                            <span class="setting-item-hint" data-i18n="ps.liveEditHint">إظهار تنبيهات التعديل الحي اللحظية أثناء التدقيق المشترك.</span>
                         </div>
                         <label class="switch"><input type="checkbox" id="ps-notif-edit"><span class="slider"></span></label>
                     </div>

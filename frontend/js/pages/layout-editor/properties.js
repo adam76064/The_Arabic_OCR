@@ -16,14 +16,14 @@ function injectPropertiesPanel() {
             
             <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: var(--color-text-secondary);">${propertiesText('properties.type')}</label>
             <div class="category-quick-chips" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 12px;">
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">نص</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">عنوان</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">فرعي</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">قرآن</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">شعر</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">حاشية</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">جدول</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">صورة</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Text')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Title')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Section-header')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Quran')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Poem')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Footnote')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Table')}</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">${propertiesText('category.Picture')}</button>
             </div>
             <select id="prop-category" style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 14px; font-size: 12px; outline: none; cursor: pointer; background: var(--color-bg-alt); color: var(--color-text);">
                 ${getAllCategories().map(c => `<option value="${c}" style="background: var(--color-surface); color: var(--color-text);">${getCategoryNameAR(c)}</option>`).join('')}
@@ -143,15 +143,15 @@ function injectPropertiesPanel() {
         const btn = document.getElementById('btn-auto-table');
         const method = document.getElementById('table-extract-method').value;
         
-        btn.textContent = 'جاري التحليل...'; btn.disabled = true;
+        btn.textContent = propertiesText('properties.analyzing'); btn.disabled = true;
         try {
             await window.pywebview.api.update_page_ocr(currentProject.id, currentPageIndex, ocrData);
             const response = await window.pywebview.api.auto_layout_table_block(currentProject.id, currentPageIndex, idx, method);
             if (response.ok && response.table_structure) {
                 ocrData[idx].table_structure = response.table_structure;
                 drawCanvas(); 
-            } else alert("Failed to analyze table."); 
-        } catch (e) { alert('Error communicating with backend.'); } 
+            } else alert(propertiesText('properties.tableAnalyzeFailed')); 
+        } catch (e) { alert(propertiesText('properties.backendError')); } 
         finally { btn.textContent = propertiesText('properties.tableLayout'); btn.disabled = false; }
     });
 }

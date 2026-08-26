@@ -190,7 +190,7 @@ function setupEventBindings() {
             }
         } catch (err) {
             console.error("Critical Frontend Error:", err);
-            alert("حدث خطأ حرج:\n" + err.message);
+            alert((window.AppI18n ? window.AppI18n.t('error.critical') : "حدث خطأ حرج:\n") + err.message);
             progressModal.classList.add('hidden');
         }
     });

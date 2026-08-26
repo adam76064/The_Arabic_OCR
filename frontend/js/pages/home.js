@@ -85,7 +85,7 @@ async function initHome() {
           <div style="display: flex; align-items: center; gap: 14px;">
             <div style="text-align: end; min-width: 80px;">
               <span class="status-badge ${pct === 100 ? 'completed' : (pct > 0 ? 'reviewed' : 'pending')}">
-                ${pct === 100 ? 'مكتمل' : (pct > 0 ? `${pct}% منجز` : 'جديد')}
+                ${pct === 100 ? (window.AppI18n ? window.AppI18n.t('filter.completed') : 'مكتمل') : (pct > 0 ? (window.AppI18n ? `${pct}% ` + window.AppI18n.t('stats.completed') : `${pct}% منجز`) : (window.AppI18n ? window.AppI18n.t('filter.new') : 'جديد'))}
               </span>
             </div>
             <div class="recent-progress" style="width: 120px;"><div class="recent-progress-fill" style="width:${pct}%"></div></div>

@@ -33,7 +33,7 @@
             </div>
 
             <div class="header-right">
-                <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" title="الوضع الليلي / النهاري" data-icon="moon"></button>
+                <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" data-i18n-title="nav.themeToggle" title="الوضع الليلي / النهاري" data-icon="moon"></button>
                 <button id="btn-open-batch" class="btn-primary" data-icon="batch" data-i18n="preprocessing.batchProcess">معالجة مجمعة (Batch Wizard)</button>
             </div>
         </header>
@@ -91,7 +91,7 @@
                 </div>
 
                 <!-- Floating Next Stage Button -->
-                <button id="btn-next-stage-floating" class="btn-next-stage-floating" title="الانتقال للمرحلة التالية">
+                <button id="btn-next-stage-floating" class="btn-next-stage-floating" data-i18n-title="preprocessing.nextStageTitle" title="الانتقال للمرحلة التالية">
                     <span data-i18n="preprocessing.nextStage">المرحلة التالية</span>
                     <span>➔</span>
                 </button>
@@ -377,7 +377,7 @@
 
                 <!-- Progress Section (Hidden during config) -->
                 <div id="batch-progress-section" class="batch-progress-box" style="display: none;">
-                    <div id="batch-status-text" style="font-size: 13px; font-weight: bold; color: #1e293b; text-align: center;">جاري المعالجة...</div>
+                    <div id="batch-status-text" style="font-size: 13px; font-weight: bold; color: var(--color-text); text-align: center;" data-i18n="preprocessing.applying">جاري المعالجة...</div>
                     <div class="batch-progress-bar">
                         <div class="batch-progress-fill" id="batch-progress-fill"></div>
                     </div>

@@ -91,9 +91,9 @@
                 <label class="radio-item"><input type="radio" name="exp-pages" value="range"> <span data-i18n="export.range">نطاق صفحات محدد</span></label>
             </div>
             <div id="exp-range-inputs" class="hidden" style="display: flex; gap: 10px; align-items: center; margin-top: 14px; background: var(--color-bg); padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-                <span>من صفحة:</span>
+                <span data-i18n="export.fromPage">من صفحة:</span>
                 <input type="number" id="exp-from" value="1" min="1" style="width: 70px; padding: 6px; border-radius: 4px; border: 1px solid var(--color-border-strong); text-align: center;">
-                <span>إلى صفحة:</span>
+                <span data-i18n="export.toPage">إلى صفحة:</span>
                 <input type="number" id="exp-to" value="1" min="1" style="width: 70px; padding: 6px; border-radius: 4px; border: 1px solid var(--color-border-strong); text-align: center;">
             </div>
         </div>
@@ -109,8 +109,8 @@
                     <input type="checkbox" name="exp-format" value="docx" checked style="display:none;">
                     <div class="format-icon" data-icon="doc"></div>
                     <div class="format-info">
-                        <div class="format-title">Microsoft Word (.docx)</div>
-                        <div class="format-desc">منسق بالكامل مع الحواشي السفلية، الأبيات الشعرية، والجداول المنسقة.</div>
+                        <div class="format-title" data-i18n="export.docxTitle">Microsoft Word (.docx)</div>
+                        <div class="format-desc" data-i18n="export.docxDesc">منسق بالكامل مع الحواشي السفلية، الأبيات الشعرية، والجداول المنسقة.</div>
                     </div>
                 </div>
 
@@ -119,8 +119,8 @@
                     <input type="checkbox" name="exp-format" value="txt" style="display:none;">
                     <div class="format-icon" data-icon="edit"></div>
                     <div class="format-info">
-                        <div class="format-title">نص عادي (.txt)</div>
-                        <div class="format-desc">نص تسلسلي نقي ومباشر مع فواصل الصفحات القياسية.</div>
+                        <div class="format-title" data-i18n="export.txtTitle">نص عادي (.txt)</div>
+                        <div class="format-desc" data-i18n="export.txtDesc">نص تسلسلي نقي ومباشر مع فواصل الصفحات القياسية.</div>
                     </div>
                 </div>
 
@@ -129,8 +129,8 @@
                     <input type="checkbox" name="exp-format" value="json" style="display:none;">
                     <div class="format-icon" data-icon="settings"></div>
                     <div class="format-info">
-                        <div class="format-title">بيانات خام (.json)</div>
-                        <div class="format-desc">بيانات مهيكلة كاملة للكتل والإحداثيات لتدريب النماذج والبحث.</div>
+                        <div class="format-title" data-i18n="export.jsonTitle">بيانات خام (.json)</div>
+                        <div class="format-desc" data-i18n="export.jsonDesc">بيانات مهيكلة كاملة للكتل والإحداثيات لتدريب النماذج والبحث.</div>
                     </div>
                 </div>
 
@@ -139,8 +139,8 @@
                     <input type="checkbox" name="exp-format" value="html" style="display:none;">
                     <div class="format-icon" data-icon="lan"></div>
                     <div class="format-info">
-                        <div class="format-title">صفحة ويب (.html)</div>
-                        <div class="format-desc">صفحة ويب مستقلة منسقة مع دعم خطوط الويب العربية الحديثة.</div>
+                        <div class="format-title" data-i18n="export.htmlTitle">صفحة ويب (.html)</div>
+                        <div class="format-desc" data-i18n="export.htmlDesc">صفحة ويب مستقلة منسقة مع دعم خطوط الويب العربية الحديثة.</div>
                     </div>
                 </div>
 
@@ -149,8 +149,8 @@
                     <input type="checkbox" name="exp-format" value="epub3" style="display:none;">
                     <div class="format-icon" data-icon="book"></div>
                     <div class="format-info">
-                        <div class="format-title">كتاب إلكتروني (.epub)</div>
-                        <div class="format-desc">متوافق مع المكتبة الشاملة وتطبيقات قارئات الكتب العربية.</div>
+                        <div class="format-title" data-i18n="export.epubTitle">كتاب إلكتروني (.epub)</div>
+                        <div class="format-desc" data-i18n="export.epubDesc">متوافق مع المكتبة الشاملة وتطبيقات قارئات الكتب العربية.</div>
                     </div>
                 </div>
             </div>
@@ -247,7 +247,7 @@
                 }
                 const btn = document.getElementById('execute-export-btn');
                 btn.disabled = true;
-                btn.textContent = '⏳ جاري التصدير...';
+                btn.textContent = window.AppI18n ? window.AppI18n.t('export.exporting') : '⏳ جاري التصدير...';
 
                 try {
                     const options = {
@@ -264,7 +264,7 @@
                         alert((window.AppI18n ? window.AppI18n.t('export.failed') : 'فشل التصدير:') + ' ' + (res?.error || ''));
                     }
                 } catch (e) {
-                    alert('خطأ أثناء التصدير: ' + e);
+                    alert((window.AppI18n ? window.AppI18n.t('export.error') : 'خطأ أثناء التصدير: ') + e);
                 } finally {
                     btn.disabled = false;
                     btn.textContent = window.AppI18n ? window.AppI18n.t('export.execute') : 'تصدير الملفات المحددة الآن ➔';

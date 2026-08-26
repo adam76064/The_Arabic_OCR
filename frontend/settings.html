@@ -404,7 +404,7 @@
         <div class="settings-hero-header">
             <div class="settings-hero-title">
                 <h1 data-i18n="settings.title">الإعدادات العامة</h1>
-                <p data-i18n="settings.storageHint">تخصيص المظهر، لغة الواجهة، قواعد المعالجة، والبيانات</p>
+                <p data-i18n="settings.storageSubtitle">تخصيص المظهر، لغة الواجهة، قواعد المعالجة، والبيانات</p>
             </div>
             
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -415,12 +415,12 @@
 
         <!-- Categorized Nav Tabs -->
         <nav class="settings-nav-tabs" id="settings-tab-bar">
-            <button type="button" class="settings-tab-btn active" data-tab="appearance" data-icon-label="sun">المظهر والواجهة</button>
-            <button type="button" class="settings-tab-btn" data-tab="storage" data-icon-label="folder">موقع البيانات</button>
-            <button type="button" class="settings-tab-btn" data-tab="review" data-icon-label="edit">المراجعة والتدقيق</button>
-            <button type="button" class="settings-tab-btn" data-tab="categories" data-icon-label="tag">التصنيفات</button>
-            <button type="button" class="settings-tab-btn" data-tab="ai" data-icon-label="sparkles">الذكاء الاصطناعي</button>
-            <button type="button" class="settings-tab-btn" data-tab="shortcuts" data-icon-label="keyboard">الاختصارات</button>
+            <button type="button" class="settings-tab-btn active" data-tab="appearance" data-icon-label="sun" data-i18n="settings.tabAppearance">المظهر والواجهة</button>
+            <button type="button" class="settings-tab-btn" data-tab="storage" data-icon-label="folder" data-i18n="settings.tabStorage">موقع البيانات</button>
+            <button type="button" class="settings-tab-btn" data-tab="review" data-icon-label="edit" data-i18n="settings.tabReview">المراجعة والتدقيق</button>
+            <button type="button" class="settings-tab-btn" data-tab="categories" data-icon-label="tag" data-i18n="settings.tabCategories">التصنيفات</button>
+            <button type="button" class="settings-tab-btn" data-tab="ai" data-icon-label="sparkles" data-i18n="settings.tabAi">الذكاء الاصطناعي</button>
+            <button type="button" class="settings-tab-btn" data-tab="shortcuts" data-icon-label="keyboard" data-i18n="settings.tabShortcuts">الاختصارات</button>
         </nav>
 
         <!-- ── TAB 1: APPEARANCE & INTERFACE ───────────────────────────────── -->
@@ -430,55 +430,55 @@
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="moon"></div>
                     <div>
-                        <div class="settings-card-title">الوضع الليلي والمظهر (Appearance & Theme)</div>
+                        <div class="settings-card-title" data-i18n="settings.appearance">الوضع الليلي والمظهر (Appearance & Theme)</div>
                     </div>
                 </div>
-                <div class="settings-card-desc">اختر السمة المرئية المفضلة للتطبيق لتوفير راحة العين أثناء العمل المطول.</div>
+                <div class="settings-card-desc" data-i18n="settings.appearanceDesc">اختر السمة المرئية المفضلة للتطبيق لتوفير راحة العين أثناء العمل المطول.</div>
 
                 <div class="theme-options-grid">
                     <div class="theme-choice-card" id="theme-card-light" data-theme-val="light">
                         <div class="theme-choice-preview preview-light"></div>
-                        <span>الوضع النهاري (Light)</span>
+                        <span data-i18n="theme.lightMode">الوضع النهاري (Light)</span>
                     </div>
                     <div class="theme-choice-card" id="theme-card-dark" data-theme-val="dark">
                         <div class="theme-choice-preview preview-dark"></div>
-                        <span>الوضع الليلي (Dark)</span>
+                        <span data-i18n="theme.darkMode">الوضع الليلي (Dark)</span>
                     </div>
                     <div class="theme-choice-card" id="theme-card-auto" data-theme-val="auto">
                         <div class="theme-choice-preview preview-auto"></div>
-                        <span>تلقائي (حسب النظام)</span>
+                        <span data-i18n="theme.autoMode">تلقائي (حسب النظام)</span>
                     </div>
                 </div>
 
                 <!-- Palette Selection -->
                 <div style="margin-top: 24px; border-top: 1px solid var(--color-border); padding-top: 18px;">
-                    <div class="setting-item-label" style="font-size: 14px; margin-bottom: 4px;">لوحات ألوان ونغمات الواجهة (Theme Color Palettes)</div>
-                    <div class="setting-item-hint">اختر نغمة الألوان ودرجات التمييز المفضلة عبر كافة صفحات ومحررات التطبيق:</div>
+                    <div class="setting-item-label" style="font-size: 14px; margin-bottom: 4px;" data-i18n="settings.paletteTitle">لوحات ألوان ونغمات الواجهة (Theme Color Palettes)</div>
+                    <div class="setting-item-hint" data-i18n="settings.paletteHint">اختر نغمة الألوان ودرجات التمييز المفضلة عبر كافة صفحات ومحررات التطبيق:</div>
 
                     <div class="palette-options-grid">
                         <div class="palette-choice-card active" data-palette-val="default">
                             <div class="palette-choice-swatch" style="background: #0f766e; color: white;">●</div>
-                            <span>الزمردي العربي (Emerald)</span>
+                            <span data-i18n="theme.paletteEmerald">الزمردي العربي (Emerald)</span>
                         </div>
                         <div class="palette-choice-card" data-palette-val="ocean">
                             <div class="palette-choice-swatch" style="background: #2563eb; color: white;">●</div>
-                            <span>الأزرق المحيطي (Ocean)</span>
+                            <span data-i18n="theme.paletteOcean">الأزرق المحيطي (Ocean)</span>
                         </div>
                         <div class="palette-choice-card" data-palette-val="sepia">
                             <div class="palette-choice-swatch" style="background: #b45309; color: #fbf7ee;">●</div>
-                            <span>المخطوطات الدافئة (Sepia)</span>
+                            <span data-i18n="theme.paletteSepia">المخطوطات الدافئة (Sepia)</span>
                         </div>
                         <div class="palette-choice-card" data-palette-val="amethyst">
                             <div class="palette-choice-swatch" style="background: #7c3aed; color: white;">●</div>
-                            <span>الأرجواني الملكي (Amethyst)</span>
+                            <span data-i18n="theme.paletteAmethyst">الأرجواني الملكي (Amethyst)</span>
                         </div>
                         <div class="palette-choice-card" data-palette-val="crimson">
                             <div class="palette-choice-swatch" style="background: #be123c; color: white;">●</div>
-                            <span>الياقوتي القرمزي (Ruby)</span>
+                            <span data-i18n="theme.paletteCrimson">الياقوتي القرمزي (Ruby)</span>
                         </div>
                         <div class="palette-choice-card" data-palette-val="slate">
                             <div class="palette-choice-swatch" style="background: #475569; color: white;">●</div>
-                            <span>الفحمي الكلاسيكي (Slate)</span>
+                            <span data-i18n="theme.paletteSlate">الفحمي الكلاسيكي (Slate)</span>
                         </div>
                     </div>
                 </div>
@@ -508,7 +508,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.zoom">تكبير عناصر الواجهة (UI Zoom)</span>
-                        <span class="setting-item-hint">ضبط مقياس عرض الشاشة والأزرار</span>
+                        <span class="setting-item-hint" data-i18n="settings.zoomHint">ضبط مقياس عرض الشاشة والأزرار</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px; min-width: 220px;">
                         <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" class="range-slider" style="flex: 1;">
@@ -527,7 +527,7 @@
                         <div class="settings-card-title" data-i18n="settings.storage">موقع حفظ البيانات والمشاريع</div>
                     </div>
                 </div>
-                <div class="settings-card-desc" data-i18n="settings.storageHint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
+                <div class="settings-card-desc" data-i18n="settings.storageDesc">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
                 
                 <div style="display: flex; gap: 10px; align-items: stretch; margin-top: 10px;">
                     <input type="text" id="app-data-path-input" readonly style="flex: 1; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-bg); color: var(--color-text); font-family: var(--font-mono); font-size: 13px;" dir="ltr">
@@ -546,7 +546,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.promptPage">تأكيد حذف الصفحات</span>
-                        <span class="setting-item-hint">إظهار رسالة تأكيد تحذيرية دائماً قبل حذف أي صفحة من المشروع</span>
+                        <span class="setting-item-hint" data-i18n="settings.promptPageHint">إظهار رسالة تأكيد تحذيرية دائماً قبل حذف أي صفحة من المشروع</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
                 </div>
@@ -554,7 +554,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.deletePageFiles">حذف ملفات الصفحة من القرص الصلب</span>
-                        <span class="setting-item-hint">مسح صور الصفحة وملفات JSON الخاصة بها نهائياً من القرص عند الحذف</span>
+                        <span class="setting-item-hint" data-i18n="settings.deletePageFilesHint">مسح صور الصفحة وملفات JSON الخاصة بها نهائياً من القرص عند الحذف</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
                 </div>
@@ -562,7 +562,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.promptProject">تأكيد حذف المشاريع</span>
-                        <span class="setting-item-hint">إظهار رسالة تأكيد تحذيرية قبل حذف أي مشروع بالكامل</span>
+                        <span class="setting-item-hint" data-i18n="settings.promptProjectHint">إظهار رسالة تأكيد تحذيرية قبل حذف أي مشروع بالكامل</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
                 </div>
@@ -570,7 +570,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.deleteProjectFiles">حذف مجلد المشروع نهائياً</span>
-                        <span class="setting-item-hint">مسح كامل مجلد المشروع وملفات الصفحات من القرص عند الحذف</span>
+                        <span class="setting-item-hint" data-i18n="settings.deleteProjectFilesHint">مسح كامل مجلد المشروع وملفات الصفحات من القرص عند الحذف</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
                 </div>
@@ -583,14 +583,14 @@
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="edit"></div>
                     <div>
-                        <div class="settings-card-title" data-i18n="settings.review">تفضيلات استوديو المراجعة والتدقيق</div>
+                        <div class="settings-card-title" data-i18n="settings.reviewStudio">تفضيلات استوديو المراجعة والتدقيق</div>
                     </div>
                 </div>
 
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.autoMark">تحديد الكتلة كـ "مراجعة" تلقائياً</span>
-                        <span class="setting-item-hint">وسم الكتلة النصية بأنها تمت مراجعتها فور تعديلها أو الانتقال منها</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoMarkHint">وسم الكتلة النصية بأنها تمت مراجعتها فور تعديلها أو الانتقال منها</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
                 </div>
@@ -598,7 +598,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.autoSaveReview">الحفظ التلقائي في صفحة المراجعة</span>
-                        <span class="setting-item-hint">حفظ التعديلات فورياً في ملفات الصفحة عند التنقل بين الكتل</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoSaveReviewHint">حفظ التعديلات فورياً في ملفات الصفحة عند التنقل بين الكتل</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
                 </div>
@@ -606,7 +606,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.autoSaveLayout">الحفظ التلقائي في محرر التخطيط</span>
-                        <span class="setting-item-hint">حفظ مواضع الكتل تلقائياً عند تغيير الصفحة</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoSaveLayoutHint">حفظ مواضع الكتل تلقائياً عند تغيير الصفحة</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
                 </div>
@@ -614,7 +614,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.showCrop">إظهار نافذة الاقتطاع المباشر</span>
-                        <span class="setting-item-hint">عرض الجزء المقتطع من الصورة الأصلية المقابل للكتلة المحددة</span>
+                        <span class="setting-item-hint" data-i18n="settings.showCropHint">عرض الجزء المقتطع من الصورة الأصلية المقابل للكتلة المحددة</span>
                     </div>
                     <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
                 </div>
@@ -622,7 +622,7 @@
                 <div class="setting-item-row">
                     <div class="setting-item-info">
                         <span class="setting-item-label" data-i18n="settings.historyLimit">عدد خطوات التراجع والإعادة (Undo/Redo)</span>
-                        <span class="setting-item-hint">عدد العمليات المحفوظة في ذاكرة المشروع للتراجع</span>
+                        <span class="setting-item-hint" data-i18n="settings.historyLimitHint">عدد العمليات المحفوظة في ذاكرة المشروع للتراجع</span>
                     </div>
                     <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width: 90px; padding: 6px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); text-align: center; font-weight: 700;">
                 </div>
@@ -635,7 +635,7 @@
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="tag"></div>
                     <div>
-                        <div class="settings-card-title" data-i18n="settings.categories">التصنيفات المخصصة للكتل النصية</div>
+                        <div class="settings-card-title" data-i18n="settings.customCategories">التصنيفات المخصصة للكتل النصية</div>
                     </div>
                 </div>
                 <div class="settings-card-desc" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية مع تحديد لون مميز لكل تصنيف ليظهر في محرر التخطيط والمراجعة.</div>
@@ -656,10 +656,10 @@
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="sparkles"></div>
                     <div>
-                        <div class="settings-card-title" data-i18n="settings.llmPrompt">تعليمات النماذج الذكية العامة (LLM System Prompt)</div>
+                        <div class="settings-card-title" data-i18n="settings.llmSystemPrompt">تعليمات النماذج الذكية العامة (LLM System Prompt)</div>
                     </div>
                 </div>
-                <div class="settings-card-desc" data-i18n="help.llm">التعليمات البرمجية لتوجيه نماذج الذكاء الاصطناعي (Gemini, Claude, GPT, Qwen) عند استخراج كتل وتنسيقات النصوص العربية.</div>
+                <div class="settings-card-desc" data-i18n="settings.llmPromptDesc">التعليمات البرمجية لتوجيه نماذج الذكاء الاصطناعي (Gemini, Claude, GPT, Qwen) عند استخراج كتل وتنسيقات النصوص العربية.</div>
 
                 <div class="form-group">
                     <textarea id="llm-system-prompt" rows="12" style="width: 100%; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-bg); color: var(--color-text); direction: ltr; text-align: left;"></textarea>
@@ -677,10 +677,10 @@
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="keyboard"></div>
                     <div>
-                        <div class="settings-card-title" data-i18n="settings.shortcuts">اختصارات لوحة المفاتيح المخصصة</div>
+                        <div class="settings-card-title" data-i18n="settings.shortcutsTitle">اختصارات لوحة المفاتيح المخصصة</div>
                     </div>
                 </div>
-                <div class="settings-card-desc" data-i18n="help.shortcuts">انقر على زر أي اختصار ثم اضغط المفاتيح الجديدة لتعيينها. يجب أن يتضمن الاختصار Ctrl أو Alt أو أحد المفاتيح الخاصة.</div>
+                <div class="settings-card-desc" data-i18n="settings.shortcutsDesc">انقر على زر أي اختصار ثم اضغط المفاتيح الجديدة لتعيينها. يجب أن يتضمن الاختصار Ctrl أو Alt أو أحد المفاتيح الخاصة.</div>
 
                 <div id="shortcuts-list"></div>
 

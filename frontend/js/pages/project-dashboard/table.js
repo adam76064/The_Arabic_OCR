@@ -283,9 +283,9 @@ function renderPagesTable() {
                     </div>
                     <div class="page-card-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
                         <button class="btn-secondary single-ocr-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="ocr">OCR</button>
-                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="preprocess">معالجة</button>
-                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="layout">تخطيط</button>
-                        <button class="btn-primary open-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="review">مراجعة</button>
+                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="preprocess">${dashboardText('dash.preprocessing')}</button>
+                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="layout">${dashboardText('dashboard.layout')}</button>
+                        <button class="btn-primary open-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="review">${dashboardText('dash.review')}</button>
                     </div>
                 </div>
             `;
@@ -503,7 +503,8 @@ function bindTableButtons() {
             const idx = parseInt(e.currentTarget.dataset.index, 10);
             const shouldPrompt = window.__appSettings?.promptDeletePage !== false;
             if (shouldPrompt) {
-                if (!confirm(`هل أنت متأكد من حذف الصفحة رقم ${idx + 1}؟`)) return;
+                const promptMsg = window.AppI18n ? window.AppI18n.t('dash.deletePageConfirm', { num: idx + 1 }) : `هل أنت متأكد من حذف الصفحة رقم ${idx + 1}؟`;
+                if (!confirm(promptMsg)) return;
             }
             try {
                 await window.pywebview.api.delete_project_page(currentProjectId, idx);
@@ -512,7 +513,7 @@ function bindTableButtons() {
                 renderPagesTable();
                 renderDashboardStats();
             } catch (err) {
-                alert('فشل حذف الصفحة: ' + err);
+                alert((window.AppI18n ? window.AppI18n.t('dash.deleteFailed') : 'فشل حذف الصفحة: ') + err);
             }
         });
     });
@@ -541,8 +542,8 @@ function setupContextMenu() {
             const titleEl = document.getElementById('ctx-page-title');
             if (titleEl) {
                 titleEl.textContent = selectedPageIndices.size > 1 
-                    ? `إجراءات ${selectedPageIndices.size} صفحات محددة` 
-                    : `إجراءات صفحة ${contextMenuTargetIndex + 1}`;
+                    ? (window.AppI18n ? window.AppI18n.t('dash.ctxMultiPages', { count: selectedPageIndices.size }) : `إجراءات ${selectedPageIndices.size} صفحات محددة`)
+                    : (window.AppI18n ? window.AppI18n.t('dash.ctxSinglePage', { num: contextMenuTargetIndex + 1 }) : `إجراءات صفحة ${contextMenuTargetIndex + 1}`);
             }
 
             // Position context menu
@@ -610,7 +611,7 @@ function setupContextMenu() {
             await window.pywebview.api.update_project(currentProjectId, currentProject);
             renderPagesTable();
             renderDashboardStats();
-            if (window.showNotif) window.showNotif('تم تحديد الصفحات كـ "تمت المراجعة"', 'success');
+            if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('dash.markedReviewed') : 'تم تحديد الصفحات كـ "تمت المراجعة"', 'success');
         });
 
         document.getElementById('ctx-action-mark-unreviewed')?.addEventListener('click', async () => {
@@ -627,14 +628,15 @@ function setupContextMenu() {
             await window.pywebview.api.update_project(currentProjectId, currentProject);
             renderPagesTable();
             renderDashboardStats();
-            if (window.showNotif) window.showNotif('تم إلغاء حالة المراجعة للصفحات المحددة', 'info');
+            if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('dash.unmarkedReviewed') : 'تم إلغاء حالة المراجعة للصفحات المحددة', 'info');
         });
 
         document.getElementById('ctx-action-delete')?.addEventListener('click', async () => {
             menu.classList.add('hidden');
             const indices = selectedPageIndices.size > 0 ? Array.from(selectedPageIndices) : [contextMenuTargetIndex];
             if (indices.length === 0 || indices[0] < 0) return;
-            if (!confirm(`هل أنت متأكد من حذف ${indices.length} صفحة من المشروع؟`)) return;
+            const confirmMsg = window.AppI18n ? window.AppI18n.t('dash.deleteMultiPagesConfirm', { count: indices.length }) : `هل أنت متأكد من حذف ${indices.length} صفحة من المشروع؟`;
+            if (!confirm(confirmMsg)) return;
             const sortedDesc = indices.sort((a, b) => b - a);
             for (const idx of sortedDesc) {
                 await window.pywebview.api.delete_project_page(currentProjectId, idx);

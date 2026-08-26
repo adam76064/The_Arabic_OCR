@@ -110,9 +110,13 @@ function openPaddleModalForBatch(indices) {
     const rangeHint = document.getElementById('range-hint-text');
     if (rangeHint) {
         if (indices.length > 1) {
-            rangeHint.textContent = `الصفحات المحددة (${indices.length} صفحة): ${window.selectedBatchIndices.map(i => i + 1).join('، ')}`;
+            rangeHint.textContent = window.AppI18n 
+                ? window.AppI18n.t('dash.selectedPagesList', { count: indices.length, pages: window.selectedBatchIndices.map(i => i + 1).join(', ') })
+                : `الصفحات المحددة (${indices.length} صفحة): ${window.selectedBatchIndices.map(i => i + 1).join('، ')}`;
         } else {
-            rangeHint.textContent = `الصفحة المحددة: ${minPage}`;
+            rangeHint.textContent = window.AppI18n 
+                ? window.AppI18n.t('dash.selectedSinglePage', { num: minPage })
+                : `الصفحة المحددة: ${minPage}`;
         }
     }
     
@@ -151,7 +155,11 @@ function openPaddleModalForSinglePage(pageIndex) {
     document.getElementById('ocr-end-page').value = pageIndex + 1;
 
     const rangeHint = document.getElementById('range-hint-text');
-    if (rangeHint) rangeHint.textContent = `الصفحة المحددة: ${pageIndex + 1}`;
+    if (rangeHint) {
+        rangeHint.textContent = window.AppI18n 
+            ? window.AppI18n.t('dash.selectedSinglePage', { num: pageIndex + 1 })
+            : `الصفحة المحددة: ${pageIndex + 1}`;
+    }
 
     const selectedRadio = document.querySelector('input[name="ocr-range"][value="selected"]');
     if (selectedRadio) selectedRadio.click();

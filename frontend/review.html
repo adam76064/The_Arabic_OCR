@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="js/i18n/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مراجعة — أداة مراجعة OCR</title>
+    <title data-i18n-document-title="title.review">مراجعة — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/review.css">
     <script src="js/vendor/marked.min.js"></script>
@@ -19,7 +19,7 @@
                     <span data-i18n="review.bookPage">صفحة الكتاب:</span> <strong id="logical-page-display">1</strong>
                     &nbsp;|&nbsp; PDF:
                     <input type="number" id="current-page-num" value="1">
-                    من <span id="total-pages">1</span>
+                    <span data-i18n="review.of">من</span> <span id="total-pages">1</span>
                 </span>
                 <button id="next-page" class="nav-btn" data-i18n-title="review.next" title="التالي">›</button>
             </div>
@@ -45,7 +45,7 @@
                 <button id="block-font-increase" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontUp" title="تكبير حجم عرض النص">A+</button>
             </div>
 
-            <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" title="الوضع الليلي / النهاري" data-icon="moon"></button>
+            <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" data-i18n-title="nav.themeToggle" title="الوضع الليلي / النهاري" data-icon="moon"></button>
 
             <div class="page-nav" style="position: relative; margin-inline-start: 8px;">
                 <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
@@ -142,13 +142,13 @@
                 <div class="form-group">
                     <label data-i18n="review.applyTo">تطبيق على</label>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                        <label class="radio-item"><input type="radio" name="ocr-range-mode" value="current" checked> الصفحة الحالية فقط</label>
-                        <label class="radio-item"><input type="radio" name="ocr-range-mode" value="range"> نطاق صفحات</label>
+                        <label class="radio-item"><input type="radio" name="ocr-range-mode" value="current" checked> <span data-i18n="review.currentPageOnly">الصفحة الحالية فقط</span></label>
+                        <label class="radio-item"><input type="radio" name="ocr-range-mode" value="range"> <span data-i18n="review.pageRange">نطاق صفحات</span></label>
                     </div>
                 </div>
                 <div id="ocr-range-inputs" class="hidden" style="display:flex;gap:8px;align-items:center;margin-top:8px;background:var(--color-bg);padding:10px;border-radius:var(--radius-md);">
-                    من <input type="number" id="ocr-range-from" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
-                    إلى <input type="number" id="ocr-range-to" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
+                    <span data-i18n="review.from">من</span> <input type="number" id="ocr-range-from" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
+                    <span data-i18n="review.to">إلى</span> <input type="number" id="ocr-range-to" value="1" min="1" style="width:70px;padding:5px 8px;border:1px solid var(--color-border-strong);border-radius:4px;background:var(--color-surface);color:var(--color-text);">
                     <span style="font-size:12px;color:var(--color-text-muted);" data-i18n="review.pdfNumbers">(أرقام PDF)</span>
                 </div>
                 <div class="form-actions" style="margin-top:16px;">
