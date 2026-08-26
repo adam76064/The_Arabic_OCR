@@ -26,6 +26,10 @@ async function initProjects() {
       filterAndDisplayProjects();
     });
   });
+
+  window.addEventListener('languageChanged', () => {
+    filterAndDisplayProjects();
+  });
 }
 
 function filterAndDisplayProjects() {
@@ -85,6 +89,10 @@ function filterAndDisplayProjects() {
     `;
     tbody.appendChild(tr);
   });
+
+  if (window.AppIcons && typeof window.AppIcons.applyIcons === 'function') {
+    window.AppIcons.applyIcons(tbody);
+  }
 
   bindTableActionButtons();
 }

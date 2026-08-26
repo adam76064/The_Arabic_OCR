@@ -228,7 +228,7 @@ function renderQuranBatch(isAppending = false) {
     if (quranRenderIndex < currentQuranResults.length) {
         const tr = document.createElement('tr');
         tr.id = 'quran-load-more-row';
-        tr.innerHTML = `<td colspan="3" style="padding: 0;"><button class="quran-load-more-btn">تحميل المزيد (${currentQuranResults.length - quranRenderIndex}) ▾</button></td>`;
+        tr.innerHTML = `<td colspan="3" style="padding: 0;"><button class="quran-load-more-btn">${quranText('quran.loadMore', { count: currentQuranResults.length - quranRenderIndex })}</button></td>`;
         tr.querySelector('button').addEventListener('click', () => renderQuranBatch(true));
         tbody.appendChild(tr);
     }

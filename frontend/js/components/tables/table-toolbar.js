@@ -26,7 +26,7 @@ const TABLE_ICONS = {
 const tableText = (key) => window.AppI18n?.t(key) || key;
 
 const TABLE_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" id="tb-insert-table" title=tableText('table.insert')>${TABLE_ICONS.insertTable}</button>
+    <button class="toolbar-icon-btn" id="tb-insert-table" title="${tableText('table.insert')}">${TABLE_ICONS.insertTable}</button>
     <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
     <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
     <span class="toolbar-icon-sep"></span>

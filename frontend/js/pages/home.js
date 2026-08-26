@@ -78,7 +78,7 @@ async function initHome() {
               <span class="recent-card-title" style="color: var(--color-text); font-weight: 700; display: block;">${safeTitle}</span>
               <div class="recent-card-meta" style="color: var(--color-text-muted); font-size: 12px; margin-top: 3px;">
                 ${safeAuthor ? `${safeAuthor} · ` : ''}
-                ${total} ${window.AppI18n ? window.AppI18n.t('projects.pages') : 'صفحة'} · ${dateStr}
+                ${total} ${window.AppI18n ? (total === 1 ? window.AppI18n.t('dash.page') : window.AppI18n.t('dashStats.pages')) : 'صفحة'} · ${dateStr}
               </div>
             </div>
           </div>
@@ -105,6 +105,10 @@ async function initHome() {
   document.getElementById('settings-overlay')?.addEventListener('click', close);
   document.getElementById('home-settings-btn')?.addEventListener('click', ()=> settingsModal?.classList.remove('hidden'));
 }
+
+window.addEventListener('languageChanged', () => {
+  initHome();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.AppApi && typeof window.AppApi.ready === 'function') {

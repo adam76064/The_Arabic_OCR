@@ -83,35 +83,35 @@
       cmds.push(
         {
           id: 'proj-dashboard',
-          title: 'لوحة تحكم المشروع (OCR Dashboard)',
+          title: t('dash.title', 'لوحة تحكم المشروع (OCR Dashboard)'),
           icon: 'dashboard',
           category: 'project',
           action: () => (window.location.href = `project-dashboard.html${projQuery}`)
         },
         {
           id: 'proj-preprocess',
-          title: 'استوديو المعالجة الأولية (ScanTailor Studio)',
+          title: t('dash.stepPreprocess', 'المعالجة الأولية (ScanTailor Studio)'),
           icon: 'preprocess',
           category: 'project',
           action: () => (window.location.href = `preprocessing.html${projQuery}`)
         },
         {
           id: 'proj-review',
-          title: 'محرر التدقيق والمراجعة (Review Studio)',
+          title: t('dash.stepReview', 'محرر التدقيق والمراجعة (Review Studio)'),
           icon: 'review',
           category: 'project',
           action: () => (window.location.href = `review.html${projQuery}`)
         },
         {
           id: 'proj-export',
-          title: 'تصدير المشروع (Export Studio)',
+          title: t('export.title', 'تصدير المشروع (Export Studio)'),
           icon: 'export',
           category: 'project',
           action: () => (window.location.href = `export.html${projQuery}`)
         },
         {
           id: 'proj-settings',
-          title: 'إعدادات المشروع الحالي',
+          title: t('projectSettings.title', 'إعدادات المشروع الحالي'),
           icon: 'settings',
           category: 'project',
           action: () => (window.location.href = `project-settings.html${projQuery}`)
@@ -126,13 +126,15 @@
     if (isPaletteOpen) return;
     isPaletteOpen = true;
 
+    const t = (k, def) => (global.AppI18n ? global.AppI18n.t(k) : def);
+
     paletteOverlay = document.createElement('div');
     paletteOverlay.className = 'command-palette-overlay';
     paletteOverlay.innerHTML = `
       <div class="command-palette-box">
         <div class="command-palette-search">
           ${getIcon('search')}
-          <input type="text" id="cmd-palette-input" placeholder="اكتب أمراً أو ابحث في الصفحات..." autocomplete="off">
+          <input type="text" id="cmd-palette-input" placeholder="${t('command.placeholder', 'اكتب أمراً أو ابحث في الصفحات...')}" autocomplete="off">
         </div>
         <div class="command-palette-list" id="cmd-palette-list"></div>
       </div>
@@ -149,7 +151,7 @@
     function renderList() {
       list.innerHTML = '';
       if (filteredCommands.length === 0) {
-        list.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--color-text-muted); font-size: 13px;">لا توجد أوامر مطابقة</div>`;
+        list.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--color-text-muted); font-size: 13px;">${t('command.noResults', 'لا توجد أوامر مطابقة')}</div>`;
         return;
       }
 

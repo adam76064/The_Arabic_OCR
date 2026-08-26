@@ -842,3 +842,113 @@
 .floating-text-tools button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* ── Table & Table Cell Selection ────────────────────────────────────────── */
+.review-table,
+.layout-table-overlay {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.review-table td,
+.review-table th,
+.layout-table-overlay td,
+.layout-table-overlay th {
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  min-width: 32px;
+  min-height: 24px;
+  position: relative;
+  transition: background-color var(--trans-fast), outline var(--trans-fast);
+}
+
+.review-table td:focus,
+.review-table th:focus,
+.layout-table-overlay td:focus,
+.layout-table-overlay th:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+td.tcell-selected,
+th.tcell-selected,
+.review-table td.tcell-selected,
+.layout-table-overlay td.tcell-selected {
+  background-color: var(--color-primary-subtle, rgba(37, 99, 235, 0.2)) !important;
+  outline: 2px solid var(--color-primary, #2563eb) !important;
+  outline-offset: -2px;
+  position: relative;
+  z-index: 2;
+}
+
+body.table-cell-select-mode {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  cursor: cell !important;
+}
+
+body.table-cell-select-mode .review-table td,
+body.table-cell-select-mode .layout-table-overlay td {
+  cursor: cell !important;
+}
+
+/* ── Table & Block Context Menu ─────────────────────────────────────────── */
+.table-ctx-menu {
+  position: absolute;
+  z-index: 5000;
+  min-width: 200px;
+  background: var(--color-surface-elevated, #ffffff);
+  border: 1px solid var(--color-border-strong, #cbd5e1);
+  box-shadow: var(--shadow-xl, 0 10px 25px -5px rgba(0, 0, 0, 0.2));
+  border-radius: var(--radius-md, 8px);
+  padding: 6px 0;
+  color: var(--color-text, #1e293b);
+  overflow: hidden;
+  user-select: none;
+}
+
+.table-ctx-menu .ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: var(--text-sm, 13px);
+  color: var(--color-text);
+  transition: background var(--trans-fast), color var(--trans-fast);
+}
+
+.table-ctx-menu .ctx-item:hover {
+  background: var(--color-bg-alt, #f1f5f9);
+  color: var(--color-primary, #2563eb);
+}
+
+.table-ctx-menu .ctx-item.danger {
+  color: var(--color-danger, #ef4444);
+}
+
+.table-ctx-menu .ctx-item.danger:hover {
+  background: var(--color-danger-light, rgba(239, 68, 68, 0.15));
+}
+
+.table-ctx-menu .ctx-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: default;
+}
+
+.table-ctx-menu .ctx-item svg {
+  flex-shrink: 0;
+}
+
+.table-ctx-menu hr,
+.table-ctx-menu .ctx-divider {
+  border: 0;
+  height: 1px;
+  background: var(--color-border, #e2e8f0);
+  margin: 4px 0;
+}
+

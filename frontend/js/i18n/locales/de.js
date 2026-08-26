@@ -1,6 +1,6 @@
 window.AppLocales = window.AppLocales || {};
 window.AppLocales.de = {
-  meta: { name: "Deutsch", nativeName: "Deutsch", direction: "ltr" },
+  meta: {"name":"Deutsch","nativeName":"Deutsch","direction":"ltr"},
   messages: {
     "app.name": "OCR-Prüfwerkzeug",
     "batch.cancel": "Abbrechen",
@@ -48,7 +48,11 @@ window.AppLocales.de = {
     "collab.lanOff": "Lokal: aus",
     "collab.lanOn": "Lokal: aktiv",
     "collab.noMembers": "Derzeit sind keine Mitglieder verbunden",
+    "command.noResults": "Keine übereinstimmenden Befehle",
+    "command.placeholder": "Befehl eingeben oder Seiten durchsuchen...",
     "content.autoDetect": "Inhaltsbox automatisch erkennen",
+    "content.detecting": "Inhaltsbox wird automatisch erkannt...",
+    "content.fullPageSelected": "Gesamter Seitenbereich ausgewählt",
     "content.labelInside": "Etikett im Text",
     "content.reset": "Ganze Seite auswählen",
     "content.tipHandles": "Ziehen Sie an den 8 Griffen, um die Inhaltsbox anzupassen, oder innen, um sie zu verschieben.",
@@ -112,10 +116,15 @@ window.AppLocales.de = {
     "dash.startRangeHint": "Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.",
     "dash.startReview": "Prüfen",
     "dash.stepExport": "Finaler Export",
+    "dash.stepExportDesc": "Exportieren nach DOCX / PDF / ePub",
     "dash.stepLayout": "Layout-Editor",
+    "dash.stepLayoutDesc": "Blöcke, Absätze und Tabellen bearbeiten",
     "dash.stepOcr": "Texterkennung (OCR)",
+    "dash.stepOcrDesc": "Textextraktion mit PaddleOCR, Google Lens oder LLM",
     "dash.stepPreprocess": "Vorverarbeitung (ScanTailor)",
+    "dash.stepPreprocessDesc": "Seitenausrichtung, Zuschnitt und Ränder",
     "dash.stepReview": "Korrektur-Editor",
+    "dash.stepReviewDesc": "Text überprüfen, korrigieren und formatieren",
     "dash.subtitle": "Seiten durchsuchen, Texterkennung und Layoutgestaltung",
     "dash.title": "Projektseiten verwalten",
     "dash.to": "Bis",
@@ -352,6 +361,7 @@ window.AppLocales.de = {
     "ocr.apiKey": "API-Schlüssel:",
     "ocr.apiPlaceholder": "API-Schlüssel eingeben…",
     "ocr.baseUrl": "Server-URL (Basis-URL):",
+    "ocr.baseUrlPlaceholder": "z.B. https://inference.dahl.global/v1",
     "ocr.blockScan": "Aktuelle Blöcke scannen (BBoxes)",
     "ocr.custom": "Benutzerdefinierter Server (OpenAI-kompatibel)",
     "ocr.defaultRange": "Der Standardbereich beginnt bei der ersten unverarbeiteten Seite.",
@@ -366,6 +376,7 @@ window.AppLocales.de = {
     "ocr.limitText": "Drei kostenlose Dateien sind täglich verfügbar. Verbleibend:",
     "ocr.locroHint": "Ein lokales Werkzeug auf Basis von ScreenAI, integriert in Chrome. Es unterstützt hochpräzise Textverarbeitung und Wortkonfidenzen; die Engine wird bei Bedarf automatisch heruntergeladen.",
     "ocr.modelName": "Modellname:",
+    "ocr.modelNamePlaceholder": "z.B. MiniMaxAI/MiniMax-M2.7",
     "ocr.other": "Andere",
     "ocr.progressHint": "Dies kann je nach Dateigröße und Internetgeschwindigkeit etwas dauern.",
     "ocr.progressTitle": "Verarbeitung läuft…",
@@ -409,6 +420,7 @@ window.AppLocales.de = {
     "preprocessing.batchProcess": "Stapelverarbeitung für alle Seiten",
     "preprocessing.confirmReset": "Möchten Sie diese Seite wirklich auf den ursprünglichen, unbearbeiteten Scan zurücksetzen?",
     "preprocessing.finishPreprocessing": "Vorverarbeitung abschließen",
+    "preprocessing.goToPage": "Zu Seite {page} wechseln",
     "preprocessing.nextPage": "Nächste Seite",
     "preprocessing.nextStage": "Nächste Stufe",
     "preprocessing.nextStageTitle": "Zur nächsten Stufe wechseln",
@@ -909,6 +921,6 @@ window.AppLocales.de = {
     "title.projectSettings": "Projekteinstellungen — OCR-Prüfwerkzeug",
     "title.projects": "Projekte — OCR-Prüfwerkzeug",
     "title.review": "Projekt prüfen — OCR-Prüfwerkzeug",
-    "title.settings": "Einstellungen — OCR-Prüfwerkzeug",
+    "title.settings": "Einstellungen — OCR-Prüfwerkzeug"
   }
 };

@@ -990,13 +990,15 @@
                 row.innerHTML = `
                     <div style="display:flex; align-items:center; gap:10px;">
                         <div style="width:16px; height:16px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
-                        <span style="font-size:14px; font-weight:700; color:var(--color-text);">${name}</span>
+                        <span style="font-size:14px; font-weight:700; color:var(--color-text);">${window.AppI18n ? window.AppI18n.categoryLabel(name) : name}</span>
                     </div>
                     <button type="button" style="padding:4px 10px; font-size:12px; background:var(--color-danger-light); color:var(--color-danger); border:1px solid var(--color-danger-border); border-radius:var(--radius-sm); cursor:pointer;" onclick="deleteCustomCategory('${name}')">${window.AppI18n ? window.AppI18n.t('settings.delete') : 'حذف'}</button>
                 `;
                 container.appendChild(row);
             }
         }
+
+        window.addEventListener('languageChanged', renderCustomCategories);
 
         document.getElementById('add-cat-btn')?.addEventListener('click', () => {
             const name = document.getElementById('new-cat-name').value.trim();

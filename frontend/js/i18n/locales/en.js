@@ -1,6 +1,6 @@
 window.AppLocales = window.AppLocales || {};
 window.AppLocales.en = {
-  meta: { name: "English", nativeName: "English", direction: "ltr" },
+  meta: {"name":"English","nativeName":"English","direction":"ltr"},
   messages: {
     "app.name": "OCR Review Tool",
     "batch.cancel": "Cancel",
@@ -48,7 +48,11 @@ window.AppLocales.en = {
     "collab.lanOff": "Local: off",
     "collab.lanOn": "Local: on",
     "collab.noMembers": "No members are currently connected",
+    "command.noResults": "No matching commands",
+    "command.placeholder": "Type a command or search pages...",
     "content.autoDetect": "Auto-Detect Content Box",
+    "content.detecting": "Auto-detecting content box...",
+    "content.fullPageSelected": "Full page area selected",
     "content.labelInside": "Label Inside Text",
     "content.reset": "Select Full Page",
     "content.tipHandles": "Drag the 8 handles to resize the content box, or drag inside to move.",
@@ -112,10 +116,15 @@ window.AppLocales.en = {
     "dash.startRangeHint": "The default range starts at the first unprocessed page.",
     "dash.startReview": "Review",
     "dash.stepExport": "Final Export",
+    "dash.stepExportDesc": "Export to DOCX / PDF / ePub",
     "dash.stepLayout": "Layout Editor",
+    "dash.stepLayoutDesc": "Edit blocks, paragraphs, and tables",
     "dash.stepOcr": "Text Recognition (OCR)",
+    "dash.stepOcrDesc": "Extract text with PaddleOCR, Google Lens, or LLM",
     "dash.stepPreprocess": "Preprocessing (ScanTailor)",
+    "dash.stepPreprocessDesc": "Page deskewing, cropping, and margins",
     "dash.stepReview": "Review Editor",
+    "dash.stepReviewDesc": "Review, proofread, and format text",
     "dash.subtitle": "Browse pages, OCR extraction, and layout composition",
     "dash.title": "Project page management",
     "dash.to": "To",
@@ -352,6 +361,7 @@ window.AppLocales.en = {
     "ocr.apiKey": "API key:",
     "ocr.apiPlaceholder": "Enter API key…",
     "ocr.baseUrl": "Server URL (base URL):",
+    "ocr.baseUrlPlaceholder": "e.g. https://inference.dahl.global/v1",
     "ocr.blockScan": "Scan current blocks (BBoxes)",
     "ocr.custom": "Custom server (OpenAI compatible)",
     "ocr.defaultRange": "The default range starts at the first unprocessed page.",
@@ -366,6 +376,7 @@ window.AppLocales.en = {
     "ocr.limitText": "Three free files are available daily. Remaining:",
     "ocr.locroHint": "A local tool based on ScreenAI integrated with Chrome. It supports high-accuracy text processing and word confidence extraction; the engine downloads automatically when unavailable.",
     "ocr.modelName": "Model name:",
+    "ocr.modelNamePlaceholder": "e.g. MiniMaxAI/MiniMax-M2.7",
     "ocr.other": "Other",
     "ocr.progressHint": "This may take some time depending on file size and internet speed.",
     "ocr.progressTitle": "Processing…",
@@ -409,6 +420,7 @@ window.AppLocales.en = {
     "preprocessing.batchProcess": "Batch Process All Pages",
     "preprocessing.confirmReset": "Are you sure you want to revert this page to the original unedited scan?",
     "preprocessing.finishPreprocessing": "Finish Preprocessing",
+    "preprocessing.goToPage": "Go to page {page}",
     "preprocessing.nextPage": "Next Page",
     "preprocessing.nextStage": "Next Stage",
     "preprocessing.nextStageTitle": "Proceed to next stage",
@@ -909,6 +921,6 @@ window.AppLocales.en = {
     "title.projectSettings": "Project settings — OCR Review Tool",
     "title.projects": "Projects — OCR Review Tool",
     "title.review": "Review project — OCR Review Tool",
-    "title.settings": "Settings — OCR Review Tool",
+    "title.settings": "Settings — OCR Review Tool"
   }
 };

@@ -25,6 +25,11 @@ async function initLayoutEditor() {
     setupToolbar();
     loadImageAndCanvas(page);
     setupKeyboardShortcuts();
+
+    window.addEventListener('languageChanged', () => {
+        injectPropertiesPanel();
+        if (typeof updateSelectionUI === 'function') updateSelectionUI();
+    });
 }
 
 
