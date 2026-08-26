@@ -236,21 +236,21 @@ function renderPagesTable() {
                     </span>
                 </td>
                 <td>
-                    <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isOcred ? 'background: #e0f2fe; color: #0369a1;' : 'background: #f1f5f9; color: #64748b;'}">
+                    <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isOcred ? 'background: var(--color-primary-light); color: var(--color-primary);' : 'background: var(--color-bg-alt); color: var(--color-text-muted);'}">
                         ${isOcred ? dashboardText('dashboard.autoLayout') : dashboardText('dashboard.notLaidOut')}
                     </span>
                 </td>
                 <td>
-                    <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isReviewed ? 'background: #d1fae5; color: #059669;' : 'background: #fef3c7; color: #d97706;'}">
+                    <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isReviewed ? 'background: var(--color-success-light); color: var(--color-success);' : 'background: var(--color-warning-light); color: var(--color-warning);'}">
                         ${isReviewed ? iconBadge('check', dashboardText('dashboard.reviewed')) : iconBadge('clock', dashboardText('dashboard.waitingReview'))}
                     </span>
                 </td>
                 <td style="text-align: end;">
                     <div style="display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap;">
                         <button class="btn-secondary single-ocr-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;" data-icon="ocr">OCR</button>
-                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;">${dashboardText('dash.preprocessing')}</button>
-                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;">${dashboardText('dashboard.layout')}</button>
-                        <button class="btn-primary open-page-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;">${dashboardText('dash.review')}</button>
+                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;" data-icon="preprocess">${dashboardText('dash.preprocessing')}</button>
+                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;" data-icon="layout">${dashboardText('dashboard.layout')}</button>
+                        <button class="btn-primary open-page-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;" data-icon="review">${dashboardText('dash.review')}</button>
                         <button class="btn-danger remove-page-btn" data-index="${index}" style="padding: 4px 8px; font-size: 12px;" data-icon="delete"></button>
                     </div>
                 </td>
@@ -264,7 +264,7 @@ function renderPagesTable() {
             card.className = `page-card ${isChecked ? 'selected' : ''}`;
             card.dataset.index = index;
             card.innerHTML = `
-                <div class="page-card-thumb" data-index="${index}" style="position: relative; overflow: hidden; border-radius: var(--radius-md); background: #f8fafc;">
+                <div class="page-card-thumb" data-index="${index}" style="position: relative; overflow: hidden; border-radius: var(--radius-md); background: var(--color-bg-alt);">
                     <div class="page-card-header">
                         <span class="page-num-pill">${pageNum}</span>
                         <input type="checkbox" class="page-checkbox" data-index="${index}" ${isChecked ? 'checked' : ''} style="accent-color: var(--color-primary); width: 18px; height: 18px;">
@@ -282,10 +282,10 @@ function renderPagesTable() {
                         </span>
                     </div>
                     <div class="page-card-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-                        <button class="btn-secondary single-ocr-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;">OCR</button>
-                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;">معالجة</button>
-                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;">تخطيط</button>
-                        <button class="btn-primary open-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;">مراجعة</button>
+                        <button class="btn-secondary single-ocr-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="ocr">OCR</button>
+                        <button class="btn-secondary preprocess-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="preprocess">معالجة</button>
+                        <button class="btn-secondary layout-editor-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="layout">تخطيط</button>
+                        <button class="btn-primary open-page-btn" data-index="${index}" style="font-size: 11px; padding: 4px 6px;" data-icon="review">مراجعة</button>
                     </div>
                 </div>
             `;
