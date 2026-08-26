@@ -1,6 +1,7 @@
 """
 Main entry - slim version using new organized backend/app/api.
 Fixes pywebview WinForms logging OSError on Windows and handles valid file URIs.
+Patches pywebview race condition on Windows where early JS API calls execute before window.shown is set.
 """
 import os
 import sys
@@ -9,7 +10,7 @@ import warnings
 from pathlib import Path
 
 # Silence third-party dependency warnings (e.g. requests / urllib3 mismatch on newer Python versions)
-warnings.filterwarnings('ignore', category=Warning)
+warnings.filterwarnings('ignore')
 
 # --- Fix pywebview logging flood that causes OSError [WinError 1] on WinForms ---
 # pywebview's util.py does logger.debug(...) which tries to write to stderr.
@@ -28,6 +29,24 @@ except Exception:
     pass
 
 import webview
+import webview.window
+
+# --- Fix pywebview WinForms / Chromium early IPC race condition ---
+# On Windows, EdgeChromium loads HTML and fires JS API calls before WinForms sets window.shown.
+# By making evaluate_js wait for self.shown rather than immediately raising WebViewException,
+# early API return value callbacks from Python threads complete safely without crashing.
+try:
+    if hasattr(webview, 'window') and hasattr(webview.window, 'Window'):
+        _orig_evaluate_js = webview.window.Window.evaluate_js
+
+        def _safe_evaluate_js(self, script, callback=None):
+            if hasattr(self, 'shown') and hasattr(self.shown, 'wait') and not self.shown.is_set():
+                self.shown.wait(timeout=15.0)
+            return _orig_evaluate_js(self, script, callback)
+
+        webview.window.Window.evaluate_js = _safe_evaluate_js
+except Exception:
+    pass
 
 from backend.app.api import Api
 from backend.app.api import cleanup_old_residue as _cleanup
@@ -64,6 +83,18 @@ def main():
         height=800,
         min_size=(1000, 700),
     )
+
+    # Double layer safety: also patch instance evaluate_js
+    try:
+        _inst_evaluate_js = window.evaluate_js
+        def _safe_inst_evaluate_js(script, callback=None):
+            if hasattr(window, 'shown') and hasattr(window.shown, 'wait') and not window.shown.is_set():
+                window.shown.wait(timeout=15.0)
+            return _inst_evaluate_js(script, callback)
+        window.evaluate_js = _safe_inst_evaluate_js
+    except Exception:
+        pass
+
     api.set_window(window)
     
     # Start webview with debug enabled and safe fallback
