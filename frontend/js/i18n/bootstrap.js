@@ -26,6 +26,11 @@
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('night-mode', 'dark-mode');
     }
+
+    var storedPalette = localStorage.getItem('app_palette');
+    if (storedPalette && storedPalette !== 'default' && storedPalette !== 'emerald') {
+      document.documentElement.setAttribute('data-palette', storedPalette);
+    }
   } catch (_) {}
 
   // Do not reveal untranslated fallback text before AppI18n applies the locale.

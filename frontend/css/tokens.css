@@ -211,3 +211,147 @@ body.dark-mode {
   --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.6);
   --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.7);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THEME COLOR PALETTES (Emerald, Ocean/Indigo, Sepia Manuscript, Amethyst, Crimson, Slate)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Ocean Indigo Palette ── */
+[data-palette="ocean"],
+:root[data-palette="ocean"] {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-active: #1e40af;
+  --color-primary-light: #eff6ff;
+  --color-primary-subtle: #dbeafe;
+  --color-primary-border: #bfdbfe;
+}
+:root[data-palette="ocean"][data-theme="dark"],
+html[data-palette="ocean"][data-theme="dark"],
+html[data-palette="ocean"].night-mode,
+[data-palette="ocean"] body.night-mode {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-primary-active: #2563eb;
+  --color-primary-light: rgba(59, 130, 246, 0.15);
+  --color-primary-subtle: rgba(59, 130, 246, 0.25);
+  --color-primary-border: rgba(59, 130, 246, 0.4);
+}
+
+/* ── 2. Warm Sepia / Manuscript Palette ── */
+[data-palette="sepia"],
+:root[data-palette="sepia"] {
+  --color-bg: #fbf7ee;
+  --color-bg-alt: #f4ede0;
+  --color-bg-muted: #e8dcce;
+  --color-canvas: #ede4d3;
+  --color-surface: #fffdfa;
+  --color-surface-hover: #f7f0e4;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e4d7c5;
+  --color-border-subtle: #eee5d8;
+  --color-border-strong: #cfbeaa;
+  --color-text: #2a2118;
+  --color-text-secondary: #4a3b2c;
+  --color-text-muted: #786552;
+  --color-sidebar: #221c16;
+  --color-sidebar-hover: #322921;
+  --color-primary: #b45309;
+  --color-primary-hover: #92400e;
+  --color-primary-active: #78350f;
+  --color-primary-light: #fef3c7;
+  --color-primary-subtle: #fde68a;
+  --color-primary-border: #fcd34d;
+}
+:root[data-palette="sepia"][data-theme="dark"],
+html[data-palette="sepia"][data-theme="dark"],
+html[data-palette="sepia"].night-mode,
+[data-palette="sepia"] body.night-mode {
+  --color-bg: #1c1713;
+  --color-bg-alt: #26201a;
+  --color-bg-muted: #332b23;
+  --color-canvas: #14100c;
+  --color-surface: #26201a;
+  --color-surface-hover: #332b23;
+  --color-surface-elevated: #2f2720;
+  --color-border: rgba(230, 218, 200, 0.1);
+  --color-border-subtle: rgba(230, 218, 200, 0.05);
+  --color-border-strong: rgba(230, 218, 200, 0.2);
+  --color-text: #f5eedf;
+  --color-text-secondary: #dcd0bd;
+  --color-text-muted: #a69884;
+  --color-sidebar: #14100c;
+  --color-sidebar-hover: #1f1913;
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-primary-active: #d97706;
+  --color-primary-light: rgba(245, 158, 11, 0.18);
+  --color-primary-subtle: rgba(245, 158, 11, 0.28);
+  --color-primary-border: rgba(245, 158, 11, 0.45);
+}
+
+/* ── 3. Royal Amethyst Palette ── */
+[data-palette="amethyst"],
+:root[data-palette="amethyst"] {
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-active: #5b21b6;
+  --color-primary-light: #f5f3ff;
+  --color-primary-subtle: #ede9fe;
+  --color-primary-border: #ddd6fe;
+}
+:root[data-palette="amethyst"][data-theme="dark"],
+html[data-palette="amethyst"][data-theme="dark"],
+html[data-palette="amethyst"].night-mode,
+[data-palette="amethyst"] body.night-mode {
+  --color-primary: #a78bfa;
+  --color-primary-hover: #c4b5fd;
+  --color-primary-active: #8b5cf6;
+  --color-primary-light: rgba(167, 139, 250, 0.15);
+  --color-primary-subtle: rgba(167, 139, 250, 0.25);
+  --color-primary-border: rgba(167, 139, 250, 0.4);
+}
+
+/* ── 4. Crimson Ruby Palette ── */
+[data-palette="crimson"],
+:root[data-palette="crimson"] {
+  --color-primary: #be123c;
+  --color-primary-hover: #9f1239;
+  --color-primary-active: #881337;
+  --color-primary-light: #fff1f2;
+  --color-primary-subtle: #ffe4e6;
+  --color-primary-border: #fecdd3;
+}
+:root[data-palette="crimson"][data-theme="dark"],
+html[data-palette="crimson"][data-theme="dark"],
+html[data-palette="crimson"].night-mode,
+[data-palette="crimson"] body.night-mode {
+  --color-primary: #fb7185;
+  --color-primary-hover: #fda4af;
+  --color-primary-active: #f43f5e;
+  --color-primary-light: rgba(251, 113, 133, 0.15);
+  --color-primary-subtle: rgba(251, 113, 133, 0.25);
+  --color-primary-border: rgba(251, 113, 133, 0.4);
+}
+
+/* ── 5. Classic Slate / Charcoal Palette ── */
+[data-palette="slate"],
+:root[data-palette="slate"] {
+  --color-primary: #475569;
+  --color-primary-hover: #334155;
+  --color-primary-active: #1e293b;
+  --color-primary-light: #f1f5f9;
+  --color-primary-subtle: #e2e8f0;
+  --color-primary-border: #cbd5e1;
+}
+:root[data-palette="slate"][data-theme="dark"],
+html[data-palette="slate"][data-theme="dark"],
+html[data-palette="slate"].night-mode,
+[data-palette="slate"] body.night-mode {
+  --color-primary: #94a3b8;
+  --color-primary-hover: #cbd5e1;
+  --color-primary-active: #64748b;
+  --color-primary-light: rgba(148, 163, 184, 0.15);
+  --color-primary-subtle: rgba(148, 163, 184, 0.25);
+  --color-primary-border: rgba(148, 163, 184, 0.4);
+}

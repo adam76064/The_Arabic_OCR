@@ -1,5 +1,5 @@
 /**
- * js/core/theme.js — Unified Theme Engine (Calm Light & Deep Charcoal Dark Studio)
+ * js/core/theme.js — Unified Theme Engine (Calm Light, Deep Charcoal Dark Studio & Color Palettes)
  * Supports instant switching, localStorage persistence, system sync, and zero-flash startup.
  */
 (function (global) {
@@ -10,6 +10,15 @@
       if (window.__appSettings?.darkMode || window.__appSettings?.nightMode) return 'dark';
     } catch (e) {}
     return 'auto';
+  }
+
+  function getStoredPalette() {
+    try {
+      const p = localStorage.getItem('app_palette');
+      if (p) return p;
+      if (window.__appSettings?.palette) return window.__appSettings.palette;
+    } catch (e) {}
+    return 'default';
   }
 
   function resolveEffectiveTheme(themeSetting) {
@@ -50,6 +59,21 @@
     window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: effective, isDark, setting: themeSetting } }));
   }
 
+  function applyPalette(palette) {
+    const valid = ['default', 'emerald', 'ocean', 'sepia', 'amethyst', 'crimson', 'slate'];
+    const p = valid.includes(palette) ? palette : 'default';
+    if (p === 'default' || p === 'emerald') {
+      document.documentElement.removeAttribute('data-palette');
+    } else {
+      document.documentElement.setAttribute('data-palette', p);
+    }
+    try {
+      localStorage.setItem('app_palette', p);
+      if (window.__appSettings) window.__appSettings.palette = p;
+    } catch (e) {}
+    window.dispatchEvent(new CustomEvent('paletteChanged', { detail: { palette: p } }));
+  }
+
   function updateToggleButtons(isDark) {
     const iconName = isDark ? 'sun' : 'moon';
     const labelKey = isDark ? 'theme.lightMode' : 'theme.darkMode';
@@ -86,6 +110,12 @@
     setTheme(theme) {
       applyTheme(theme);
     },
+    getPalette() {
+      return getStoredPalette();
+    },
+    setPalette(palette) {
+      applyPalette(palette);
+    },
     toggle() {
       const currentEffective = this.getEffectiveTheme();
       const next = currentEffective === 'dark' ? 'light' : 'dark';
@@ -95,6 +125,9 @@
     init() {
       const initial = getStoredTheme();
       applyTheme(initial);
+
+      const palette = getStoredPalette();
+      applyPalette(palette);
 
       // Bind all existing toggle buttons in DOM
       document.querySelectorAll('.theme-toggle-btn, #theme-toggle-btn, #btn-toggle-theme').forEach(btn => {
@@ -124,12 +157,20 @@
   document.documentElement.setAttribute('data-theme', earlyEffective);
   document.documentElement.classList.toggle('night-mode', earlyEffective === 'dark');
 
+  const earlyPalette = getStoredPalette();
+  if (earlyPalette && earlyPalette !== 'default' && earlyPalette !== 'emerald') {
+    document.documentElement.setAttribute('data-palette', earlyPalette);
+  }
+
   document.addEventListener('DOMContentLoaded', () => ThemeManager.init());
   window.addEventListener('appSettingsLoaded', () => {
     if (window.__appSettings?.theme) {
       applyTheme(window.__appSettings.theme);
     } else if (window.__appSettings?.darkMode !== undefined) {
       applyTheme(window.__appSettings.darkMode ? 'dark' : 'light');
+    }
+    if (window.__appSettings?.palette) {
+      applyPalette(window.__appSettings.palette);
     }
   });
 

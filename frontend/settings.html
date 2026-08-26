@@ -264,6 +264,55 @@
             background: linear-gradient(135deg, #ffffff 50%, #0e1117 50%);
         }
 
+        /* Palette Cards */
+        .palette-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .palette-choice-card {
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 12px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all var(--trans-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            font-size: var(--text-xs);
+            font-weight: 600;
+        }
+
+        .palette-choice-card:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface-hover);
+        }
+
+        .palette-choice-card.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .palette-choice-swatch {
+            width: 100%;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
         /* Shortcuts Editor */
         .shortcut-row {
             display: flex;
@@ -398,6 +447,39 @@
                     <div class="theme-choice-card" id="theme-card-auto" data-theme-val="auto">
                         <div class="theme-choice-preview preview-auto"></div>
                         <span>تلقائي (حسب النظام)</span>
+                    </div>
+                </div>
+
+                <!-- Palette Selection -->
+                <div style="margin-top: 24px; border-top: 1px solid var(--color-border); padding-top: 18px;">
+                    <div class="setting-item-label" style="font-size: 14px; margin-bottom: 4px;">لوحات ألوان ونغمات الواجهة (Theme Color Palettes)</div>
+                    <div class="setting-item-hint">اختر نغمة الألوان ودرجات التمييز المفضلة عبر كافة صفحات ومحررات التطبيق:</div>
+
+                    <div class="palette-options-grid">
+                        <div class="palette-choice-card active" data-palette-val="default">
+                            <div class="palette-choice-swatch" style="background: #0f766e; color: white;">●</div>
+                            <span>الزمردي العربي (Emerald)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="ocean">
+                            <div class="palette-choice-swatch" style="background: #2563eb; color: white;">●</div>
+                            <span>الأزرق المحيطي (Ocean)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="sepia">
+                            <div class="palette-choice-swatch" style="background: #b45309; color: #fbf7ee;">●</div>
+                            <span>المخطوطات الدافئة (Sepia)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="amethyst">
+                            <div class="palette-choice-swatch" style="background: #7c3aed; color: white;">●</div>
+                            <span>الأرجواني الملكي (Amethyst)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="crimson">
+                            <div class="palette-choice-swatch" style="background: #be123c; color: white;">●</div>
+                            <span>الياقوتي القرمزي (Ruby)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="slate">
+                            <div class="palette-choice-swatch" style="background: #475569; color: white;">●</div>
+                            <span>الفحمي الكلاسيكي (Slate)</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -647,6 +729,25 @@
             });
         });
 
+        function syncPaletteCards() {
+            const currentPalette = (window.ThemeManager ? window.ThemeManager.getPalette() : localStorage.getItem('app_palette')) || 'default';
+            document.querySelectorAll('.palette-choice-card').forEach(card => {
+                const val = card.dataset.paletteVal;
+                const isSelected = val === currentPalette || (currentPalette === 'emerald' && val === 'default') || (!currentPalette && val === 'default');
+                card.classList.toggle('active', isSelected);
+            });
+        }
+
+        document.querySelectorAll('.palette-choice-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const val = card.dataset.paletteVal;
+                if (window.ThemeManager) {
+                    window.ThemeManager.setPalette(val);
+                }
+                syncPaletteCards();
+            });
+        });
+
         function populateForm() {
             document.getElementById('auto-mark-reviewed').checked = window.__appSettings.autoMarkReviewed !== false;
             document.getElementById('auto-save-review').checked = window.__appSettings.autoSaveReview === true;
@@ -669,6 +770,7 @@
             renderShortcutsList();
             renderCustomCategories();
             syncThemeCards();
+            syncPaletteCards();
         }
 
         function renderShortcutsList() {
@@ -936,6 +1038,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             populateForm();
             syncThemeCards();
+            syncPaletteCards();
         });
     </script>
 </body>
