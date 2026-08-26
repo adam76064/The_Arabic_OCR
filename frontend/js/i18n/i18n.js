@@ -90,7 +90,11 @@
       if (key) document.title = t(key);
     });
     document.documentElement.classList.add('i18n-ready');
-    global.dispatchEvent(new CustomEvent('languageChanged', { detail: { language, direction } }));
+    if (global.dispatchEvent && typeof global.dispatchEvent === 'function') {
+      try {
+        global.dispatchEvent(new CustomEvent('languageChanged', { detail: { language, direction } }));
+      } catch (_) {}
+    }
   }
 
   async function setLanguage(language, { persist = true } = {}) {
