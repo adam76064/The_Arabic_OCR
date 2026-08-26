@@ -108,7 +108,7 @@
     scan:         S('<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/>'),
     scanLine:     S('<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/>'),
     filter:       S('<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'),
-    command:      S('<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>'),
+    command:      S('<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0 3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>'),
 
     // Direction arrows & chevrons
     prev:         S('<polyline points="15 18 9 12 15 6"/>'),
@@ -169,21 +169,28 @@
       root.querySelectorAll('[data-icon]').forEach(el => {
         const iconName = el.getAttribute('data-icon');
         if (iconName) {
+          // Guard: skip if the exact icon has already been rendered
+          if (el.getAttribute('data-icon-applied') === iconName) return;
+
           const svg = AppIcons.get(iconName);
           if (el.classList.contains('btn-icon') || el.classList.contains('format-icon') || el.classList.contains('settings-card-icon') || el.classList.contains('dropzone-icon') || el.classList.contains('card-icon')) {
             el.innerHTML = svg;
           } else if (!el.querySelector('svg')) {
             el.insertAdjacentHTML('afterbegin', svg + ' ');
           }
-          el.setAttribute('data-icon-applied', '1');
+          el.setAttribute('data-icon-applied', iconName);
         }
       });
 
       root.querySelectorAll('[data-icon-label]').forEach(el => {
         const iconName = el.getAttribute('data-icon-label');
-        if (iconName && !el.querySelector('svg')) {
-          el.insertAdjacentHTML('afterbegin', AppIcons.get(iconName) + ' ');
-          el.setAttribute('data-icon-applied', '1');
+        if (iconName) {
+          // Guard: skip if already applied
+          if (el.getAttribute('data-icon-applied') === iconName) return;
+          if (!el.querySelector('svg')) {
+            el.insertAdjacentHTML('afterbegin', AppIcons.get(iconName) + ' ');
+          }
+          el.setAttribute('data-icon-applied', iconName);
         }
       });
     }

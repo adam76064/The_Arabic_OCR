@@ -111,7 +111,9 @@ async function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.get_projects === 'function') {
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initApp);
+    } else if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.get_projects === 'function') {
         initApp();
     } else {
         window.addEventListener('pywebviewready', initApp);

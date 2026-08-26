@@ -30,6 +30,11 @@ async function initLayoutEditor() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview) initLayoutEditor();
-    else window.addEventListener('pywebviewready', initLayoutEditor);
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initLayoutEditor);
+    } else if (window.pywebview && window.pywebview.api) {
+        initLayoutEditor();
+    } else {
+        window.addEventListener('pywebviewready', initLayoutEditor);
+    }
 });

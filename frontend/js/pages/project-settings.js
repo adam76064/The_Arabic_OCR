@@ -455,8 +455,13 @@ if (backToReviewBtn) backToReviewBtn.remove();
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview) initSettings();
-    else window.addEventListener('pywebviewready', initSettings);
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initSettings);
+    } else if (window.pywebview && window.pywebview.api) {
+        initSettings();
+    } else {
+        window.addEventListener('pywebviewready', initSettings);
+    }
 });
 
 // ─── POST-PROCESSING SETTINGS ───────────────────────────────────────────────

@@ -199,11 +199,11 @@ function setupEventBindings() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // التحقق الصارم من وجود الـ api والدالة المطلوبة تحديداً
-    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.load_project === 'function') {
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initDashboard);
+    } else if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.load_project === 'function') {
         initDashboard();
     } else {
-        // الانتظار حتى يكتمل حقن جميع الدوال
         window.addEventListener('pywebviewready', initDashboard);
     }
 });

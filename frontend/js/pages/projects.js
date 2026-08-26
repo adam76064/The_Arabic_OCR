@@ -163,6 +163,11 @@ async function renderProjectsTable() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) initProjects();
-  else window.addEventListener('pywebviewready', initProjects);
+  if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(initProjects);
+  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+    initProjects();
+  } else {
+    window.addEventListener('pywebviewready', initProjects);
+  }
 });

@@ -107,6 +107,11 @@ async function initHome() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) initHome();
-  else window.addEventListener('pywebviewready', initHome);
+  if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(initHome);
+  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+    initHome();
+  } else {
+    window.addEventListener('pywebviewready', initHome);
+  }
 });

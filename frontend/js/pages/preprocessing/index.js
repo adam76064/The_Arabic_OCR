@@ -364,7 +364,9 @@
   global.PreprocessingStudio = new PreprocessingStudio();
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview && window.pywebview.api) {
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+      window.AppApi.ready().then(() => global.PreprocessingStudio.init());
+    } else if (window.pywebview && window.pywebview.api) {
       global.PreprocessingStudio.init();
     } else {
       window.addEventListener('pywebviewready', () => {
