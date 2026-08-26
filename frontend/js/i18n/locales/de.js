@@ -4,6 +4,8 @@ window.AppLocales.de = {
   messages: {
     'app.name':'OCR-Prüfwerkzeug','nav.home':'Startseite','nav.projects':'Projekte',
     'nav.newProject':'Neues Projekt','nav.settings':'Einstellungen','nav.exit':'Beenden','nav.theme':'Nachtmodus',
+    'theme.darkMode':'Dunkelmodus','theme.lightMode':'Hellmodus','theme.autoMode':'Automatisch (System)',
+    'theme.toggleDark':'Dunkelmodus aktivieren','theme.toggleLight':'Hellmodus aktivieren',
     'sidebar.hide':'Seitenleiste ausblenden','sidebar.show':'Seitenleiste anzeigen',
     'home.welcome':'Willkommen','home.chooseAction':'Wählen Sie, was Sie tun möchten',
     'home.dropzone.title':'PDF-Datei hierher ziehen oder klicken, um ein Projekt zu erstellen',
@@ -423,6 +425,9 @@ window.AppLocales.de = {
     'table.deleteCurrentCol':'Aktuelle Spalte löschen',
     'table.splitVertical':'Zelle mittig vertikal teilen',
     'table.splitHorizontal':'Zelle mittig horizontal teilen',
+    'projectSettings.headerSubtitle':'Projekt-Metadaten, OCR-Textverarbeitungsregeln und Kategorieformatierung anpassen',
+    'projectSettings.metaDesc':'Buch-Metadaten und Startpunkt für die logische Seitennummerierung.',
+    'projectSettings.notifDesc':'Benachrichtigungen für kollaborative Projektereignisse anpassen.',
     'projectSettings.loadFailed':'Projekt konnte nicht geladen werden',
     'projectSettings.saving':'Wird gespeichert…',
     'projectSettings.save':'Einstellungen speichern',

@@ -8,105 +8,457 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <style>
-        .settings-container { max-width: 980px; margin: 30px auto; padding: 0 20px; }
-        .settings-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-xs); }
-        .settings-card h3 { margin-top: 0; margin-bottom: 18px; color: var(--color-text); font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; }
-        .settings-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-        .settings-row > div { flex: 1; min-width: 200px; }
-        .grid-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-        .cloud-box { background: var(--color-bg); padding: 16px; border-radius: 8px; border: 1px solid var(--color-border); }
+        .settings-layout-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        .settings-hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .settings-hero-title h1 {
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .settings-hero-title p {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        .settings-nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .settings-tab-btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--color-text-muted);
+            transition: all var(--trans-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .settings-tab-btn:hover {
+            color: var(--color-text);
+            background: var(--color-surface-hover);
+        }
+
+        .settings-tab-btn.active {
+            background: var(--color-surface);
+            color: var(--color-primary);
+            border-color: var(--color-border);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .settings-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .settings-panel.hidden {
+            display: none !important;
+        }
+
+        .settings-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: var(--shadow-xs);
+            transition: all var(--trans-fast);
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .settings-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-card-title {
+            font-size: var(--text-md);
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .settings-card-desc {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .settings-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .setting-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--color-border-subtle);
+            gap: 16px;
+        }
+
+        .setting-item-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-item-row:first-child {
+            padding-top: 0;
+        }
+
+        .setting-item-info {
+            flex: 1;
+        }
+
+        .setting-item-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .setting-item-hint {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+
+        .grid-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            color: var(--color-text);
+            transition: all var(--trans-fast);
+            user-select: none;
+        }
+
+        .option-item:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface-hover);
+        }
+
+        .option-item input[type="checkbox"] {
+            accent-color: var(--color-primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .radio-group-box {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+        }
+
+        .radio-group-title {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .radio-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: var(--color-primary);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .feature-box {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        /* Modern Switch Slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--color-bg-muted);
+            transition: .2s;
+            border-radius: 24px;
+            border: 1px solid var(--color-border-strong);
+        }
+
+        .switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .2s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .switch input:checked + .slider {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
     </style>
 </head>
 <body class="home-page">
 
-    <main class="settings-container" style="max-width: 980px; margin: 10px auto; padding: 0 20px;">
-        <div class="sticky-nav-wrapper">
-            <div class="compact-settings-nav">
-                <h1 id="page-title-display" style="font-size: 19px; margin: 0; color: var(--color-text); font-weight: 700;" data-i18n="ps.loading">جاري التحميل...</h1>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <button type="button" id="btn-cancel" class="btn-plain" style="font-size: 13.5px;" data-i18n="ps.cancel">إلغاء</button>
-                    <button type="submit" form="project-settings-form" id="btn-save" class="btn-success" style="font-size: 13px; padding: 6px 16px;" data-i18n="ps.save">حفظ الإعدادات</button>
-                    <div style="border-inline-start: 1px solid #cbd5e1; padding-inline-start: 10px; margin-inline-start: 4px;">
-                        <button type="button" id="btn-back" class="btn-secondary" data-icon="back" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span data-i18n="ps.back">عودة</span>
-                        </button>
-                    </div>
-                </div>
+    <main class="settings-layout-wrapper">
+        <!-- Top Hero Header & Global Save Action -->
+        <div class="settings-hero-header">
+            <div class="settings-hero-title">
+                <h1 id="page-title-display" data-i18n="ps.loading">جاري التحميل...</h1>
+                <p data-i18n="projectSettings.headerSubtitle">تخصيص بيانات المشروع وقواعد معالجة النصوص وتنسيقات التصنيفات</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" id="btn-back" class="btn-secondary" data-icon="back">
+                    <span data-i18n="ps.back">عودة</span>
+                </button>
+                <button type="button" id="btn-cancel" class="btn-plain" data-i18n="ps.cancel">إلغاء</button>
+                <button type="submit" form="project-settings-form" id="btn-save" class="btn-primary" data-icon="check">
+                    <span data-i18n="ps.save">حفظ الإعدادات</span>
+                </button>
             </div>
         </div>
 
+        <!-- Studio Nav Tabs -->
+        <div class="settings-nav-tabs">
+            <button type="button" class="settings-tab-btn active" data-tab="meta" data-icon="book">
+                <span data-i18n="ps.metadata">البيانات الأساسية</span>
+            </button>
+            <button type="button" class="settings-tab-btn" data-tab="ocr" data-icon="sparkles">
+                <span data-i18n="ps.processing">قواعد المعالجة</span>
+            </button>
+            <button type="button" class="settings-tab-btn" data-tab="formatting" data-icon="edit">
+                <span data-i18n="ps.categoryFormatting">تنسيق التصنيفات</span>
+            </button>
+            <button type="button" class="settings-tab-btn" data-tab="post" data-icon="tools">
+                <span data-i18n="ps.postProcessing">ما بعد OCR</span>
+            </button>
+            <button type="button" class="settings-tab-btn" data-tab="collab" data-icon="lan">
+                <span data-i18n="ps.collaboration">المشاركة والشبكة</span>
+            </button>
+            <button type="button" class="settings-tab-btn" data-tab="notif" data-icon="notif">
+                <span data-i18n="ps.notifications">الإشعارات</span>
+            </button>
+        </div>
+
         <form id="project-settings-form">
-            <div class="settings-card">
-                <h3 data-i18n="ps.metadata">البيانات الأساسية</h3>
-                <div class="settings-row">
-                    <div class="form-group"><label data-i18n="ps.title">عنوان الكتاب</label><input type="text" id="ps-title" required></div>
-                    <div class="form-group"><label data-i18n="ps.author">المؤلف</label><input type="text" id="ps-author"></div>
-                </div>
-                <div class="settings-row">
-                    <div class="form-group"><label data-i18n="ps.publisher">دار النشر</label><input type="text" id="ps-publisher"></div>
-                    <div class="form-group"><label data-i18n="ps.pageStart">بداية ترقيم الصفحات (PDF)</label><input type="number" id="ps-logical-start" min="1"></div>
-                </div>
-            </div>
-
-            <div class="settings-card">
-                <h3 data-i18n="ps.processing">قواعد معالجة النصوص (OCR)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.processingHint">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</p>
-                
-                <div class="grid-options" style="margin-bottom: 20px;">
-                    <label class="option-item"><input type="checkbox" id="ps-remove-kasheeda"><span class="option-check"></span><span data-i18n="ps.removeKasheeda">إزالة الكشيدة (التطويل ـ)</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-clean-lines"><span class="option-check"></span><span data-i18n="ps.cleanLines">إزالة الأسطر الزائدة</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-clean-spaces"><span class="option-check"></span><span data-i18n="ps.cleanSpaces">إزالة المسافات المتكررة</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-fix-punct"><span class="option-check"></span><span data-i18n="ps.fixPunctuation">تصحيح علامات الترقيم</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-fix-waw"><span class="option-check"></span><span data-i18n="ps.fixWaw">لصق واو العطف</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-super-footnotes"><span class="option-check"></span><span data-i18n="ps.footnotes">أرقام الحواشي كنص علوي</span></label>
-                    <label class="option-item"><input type="checkbox" id="ps-norm-hamza"><span class="option-check"></span><span data-i18n="ps.hamza">توحيد صور الهمزة</span></label>
-                </div>
-
-                <div class="settings-row">
-                    <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.tashkeel">التعامل مع التشكيل:</span>
-                        <label class="radio-item"><input type="radio" name="ps_tashkeel" value="none"> <span data-i18n="ps.keep">إبقاؤه كما هو</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_tashkeel" value="keep_tanween"> <span data-i18n="ps.keepTanween">الاحتفاظ بالتنوين والشدة فقط</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_tashkeel" value="remove_all"> <span data-i18n="ps.removeAll">إزالة الكل</span></label>
+            <!-- ════ TAB 1: METADATA ════ -->
+            <div class="settings-panel" id="panel-meta">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="book"></div>
+                        <div class="settings-card-title" data-i18n="ps.metadata">بيانات الكتاب والمشروع</div>
                     </div>
-                    <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.tanween">التنوين المنصوب:</span>
-                        <label class="radio-item"><input type="radio" name="ps_tanween" value="none"> <span data-i18n="ps.noChange">بلا تغيير</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_tanween" value="before_alf"> <span data-i18n="ps.beforeAlif">قبل الألف (كتابًا)</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_tanween" value="on_alf"> <span data-i18n="ps.onAlif">على الألف (كتاباً)</span></label>
-                    </div>
-                    <div>
-                        <span class="radio-label" style="font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="ps.numbers">صيغة الأرقام:</span>
-                        <label class="radio-item"><input type="radio" name="ps_numbers" value="none"> <span data-i18n="ps.keepNumbers">إبقاؤها كما هي</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_numbers" value="to_arabic"> <span data-i18n="ps.toArabic">تحويل إلى أرقام عربية (1, 2, 3)</span></label>
-                        <label class="radio-item"><input type="radio" name="ps_numbers" value="to_hindu"> <span data-i18n="ps.toHindi">تحويل إلى أرقام هندية (١, ٢, ٣)</span></label>
-                    </div>
-                </div>
+                    <div class="settings-card-desc" data-i18n="projectSettings.metaDesc">المعلومات الوصفية للكتاب وتحديد نقطة بداية الترقيم الفعلي.</div>
 
-                <!-- Live Rule Sandbox -->
-                <div style="margin-top: 20px; background: var(--color-bg); padding: 16px; border-radius: var(--radius-md); border: 1px dashed var(--color-border-strong);">
-                    <div style="font-weight: bold; font-size: 13px; margin-bottom: 8px; color: var(--color-text);">مختبر القواعد الحي (Live Rule Sandbox):</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div>
-                            <label style="font-size: 11.5px; color: var(--color-text-muted);">نص تجريبي للمعاينة:</label>
-                            <textarea id="sandbox-input" style="width: 100%; height: 70px; padding: 8px; border-radius: 6px; border: 1px solid var(--color-border-strong); font-size: 13px; resize: vertical; background: var(--color-surface); color: var(--color-text);">كِتـَاباً   قـَيِّماً  ،  و كَانَ  الـعَـمَلُ  مُـتـْقَـناً (١).</textarea>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.title">عنوان الكتاب</label>
+                            <input type="text" id="ps-title" required placeholder="مثال: صحيح البخاري">
                         </div>
-                        <div>
-                            <label style="font-size: 11.5px; color: var(--color-text-muted);">النتيجة الحية بعد تطبيق القواعد:</label>
-                            <div id="sandbox-output" style="width: 100%; min-height: 70px; padding: 8px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); font-size: 13px; color: var(--color-primary); font-weight: bold; white-space: pre-wrap;"></div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.author">المؤلف</label>
+                            <input type="text" id="ps-author" placeholder="اسم المؤلف أو المحقق">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.publisher">دار النشر</label>
+                            <input type="text" id="ps-publisher" placeholder="دار النشر أو سنة الطبع">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.pageStart">بداية ترقيم الصفحات (PDF)</label>
+                            <input type="number" id="ps-logical-start" min="1" value="1">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="settings-card">
-                <h3 data-i18n="ps.categoryFormatting">تنسيقات تصنيفات الكتل النصية (Category Formatting Rules)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; margin-top: -10px;" data-i18n="ps.categoryHint">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</p>
-                
-                <div class="settings-row" style="align-items: center; background: var(--color-bg); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: 18px;">
-                    <div style="flex: 2;">
-                        <label style="font-weight: bold; font-size: 14px; color: var(--color-text); display: block; margin-bottom: 4px;" data-i18n="ps.chooseCategory">اختر التصنيف للتعديل:</label>
-                        <select id="cat-fmt-select" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-strong); border-radius: 6px; font-size: 14px; background: var(--color-surface); color: var(--color-text);">
+            <!-- ════ TAB 2: OCR & TEXT PROCESSING RULES ════ -->
+            <div class="settings-panel hidden" id="panel-ocr">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="sparkles"></div>
+                        <div class="settings-card-title" data-i18n="ps.processing">قواعد تنقيح ومعالجة النصوص (OCR)</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="ps.processingHint">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</div>
+
+                    <div class="grid-options" style="margin-bottom: 20px;">
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-remove-kasheeda">
+                            <span data-i18n="ps.removeKasheeda">إزالة الكشيدة (التطويل ـ)</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-clean-lines">
+                            <span data-i18n="ps.cleanLines">إزالة الأسطر الزائدة</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-clean-spaces">
+                            <span data-i18n="ps.cleanSpaces">إزالة المسافات المتكررة</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-fix-punct">
+                            <span data-i18n="ps.fixPunctuation">تصحيح علامات الترقيم</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-fix-waw">
+                            <span data-i18n="ps.fixWaw">لصق واو العطف</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-super-footnotes">
+                            <span data-i18n="ps.footnotes">أرقام الحواشي كنص علوي</span>
+                        </label>
+                        <label class="option-item">
+                            <input type="checkbox" id="ps-norm-hamza">
+                            <span data-i18n="ps.hamza">توحيد صور الهمزة</span>
+                        </label>
+                    </div>
+
+                    <div class="settings-row" style="margin-bottom: 20px;">
+                        <div class="radio-group-box">
+                            <span class="radio-group-title" data-i18n="ps.tashkeel">التعامل مع التشكيل:</span>
+                            <label class="radio-item"><input type="radio" name="ps_tashkeel" value="none"> <span data-i18n="ps.keep">إبقاؤه كما هو</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_tashkeel" value="keep_tanween"> <span data-i18n="ps.keepTanween">الاحتفاظ بالتنوين والشدة فقط</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_tashkeel" value="remove_all"> <span data-i18n="ps.removeAll">إزالة الكل</span></label>
+                        </div>
+                        <div class="radio-group-box">
+                            <span class="radio-group-title" data-i18n="ps.tanween">التنوين المنصوب:</span>
+                            <label class="radio-item"><input type="radio" name="ps_tanween" value="none"> <span data-i18n="ps.noChange">بلا تغيير</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_tanween" value="before_alf"> <span data-i18n="ps.beforeAlif">قبل الألف (كتابًا)</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_tanween" value="on_alf"> <span data-i18n="ps.onAlif">على الألف (كتاباً)</span></label>
+                        </div>
+                        <div class="radio-group-box">
+                            <span class="radio-group-title" data-i18n="ps.numbers">صيغة الأرقام:</span>
+                            <label class="radio-item"><input type="radio" name="ps_numbers" value="none"> <span data-i18n="ps.keepNumbers">إبقاؤها كما هي</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_numbers" value="to_arabic"> <span data-i18n="ps.toArabic">تحويل إلى أرقام عربية (1, 2, 3)</span></label>
+                            <label class="radio-item"><input type="radio" name="ps_numbers" value="to_hindu"> <span data-i18n="ps.toHindi">تحويل إلى أرقام هندية (١, ٢, ٣)</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Live Rule Sandbox -->
+                    <div style="background: var(--color-bg); padding: 18px; border-radius: var(--radius-lg); border: 1px dashed var(--color-border-strong);">
+                        <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--color-text); display: flex; align-items: center; gap: 6px;">
+                            <span data-icon="sparkles"></span> مختبر القواعد الحي (Live Rule Sandbox)
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                            <div>
+                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;">نص تجريبي للمعاينة:</label>
+                                <textarea id="sandbox-input" style="width: 100%; height: 75px; padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); font-size: 13px; resize: vertical; background: var(--color-surface); color: var(--color-text); line-height: 1.6;">كِتـَاباً   قـَيِّماً  ،  و كَانَ  الـعَـمَلُ  مُـتـْقَـناً (١).</textarea>
+                            </div>
+                            <div>
+                                <label style="font-size: 11.5px; color: var(--color-text-muted); display: block; margin-bottom: 4px;">النتيجة الحية بعد تطبيق القواعد:</label>
+                                <div id="sandbox-output" style="width: 100%; min-height: 75px; padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); font-size: 13px; color: var(--color-primary); font-weight: bold; white-space: pre-wrap; line-height: 1.6;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ TAB 3: CATEGORY FORMATTING ════ -->
+            <div class="settings-panel hidden" id="panel-formatting">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="edit"></div>
+                        <div class="settings-card-title" data-i18n="ps.categoryFormatting">تنسيقات تصنيفات الكتل النصية</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="ps.categoryHint">تحديد التنسيق الافتراضي لكل نوع من الكتل (عنوان، نص عادي، حواشي... إلخ) ليُطبق تلقائياً على نتائج الـ OCR والتصدير.</div>
+
+                    <div style="background: var(--color-bg); padding: 14px 18px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 20px;">
+                        <label style="font-weight: 700; font-size: 13.5px; color: var(--color-text); display: block; margin-bottom: 6px;" data-i18n="ps.chooseCategory">اختر التصنيف للتعديل:</label>
+                        <select id="cat-fmt-select" style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); font-size: 14px; background: var(--color-surface); color: var(--color-text);">
                             <option value="Text" data-i18n="category.Text">نص عادي (Text)</option>
                             <option value="Title" data-i18n="category.Title">عنوان رئيسي (Title)</option>
                             <option value="Section-header" data-i18n="category.Section-header">عنوان فرعي (Section-header)</option>
@@ -119,249 +471,274 @@
                             <option value="Table" data-i18n="category.Table">جدول (Table)</option>
                         </select>
                     </div>
-                </div>
 
-                <div id="cat-fmt-panel" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
-                    <div class="grid-options" style="margin-bottom: 16px;">
-                        <label class="option-item"><input type="checkbox" id="cf-bold"><span class="option-check"></span><span style="font-weight: bold;" data-i18n="ps.bold">غمق (Bold)</span></label>
-                        <label class="option-item"><input type="checkbox" id="cf-italic"><span class="option-check"></span><span style="font-style: italic;" data-i18n="ps.italic">مائل (Italic)</span></label>
-                        <label class="option-item"><input type="checkbox" id="cf-underline"><span class="option-check"></span><span style="text-decoration: underline;" data-i18n="ps.underline">تسطير (Underline)</span></label>
-                    </div>
+                    <div id="cat-fmt-panel" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px;">
+                        <div class="grid-options" style="margin-bottom: 18px;">
+                            <label class="option-item"><input type="checkbox" id="cf-bold"><span style="font-weight: bold;" data-i18n="ps.bold">غمق (Bold)</span></label>
+                            <label class="option-item"><input type="checkbox" id="cf-italic"><span style="font-style: italic;" data-i18n="ps.italic">مائل (Italic)</span></label>
+                            <label class="option-item"><input type="checkbox" id="cf-underline"><span style="text-decoration: underline;" data-i18n="ps.underline">تسطير (Underline)</span></label>
+                        </div>
 
-                    <div class="settings-row" style="margin-bottom: 16px;">
-                        <div class="form-group">
-                            <label data-i18n="ps.fontFamily">نوع الخط (Font Family)</label>
-                            <select id="cf-font-family" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="" data-i18n="ps.default">الافتراضي</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Simplified Arabic">Simplified Arabic</option>
-                                <option value="Traditional Arabic">Traditional Arabic</option>
-                                <option value="Amiri">Amiri</option>
-                                <option value="Cairo">Cairo</option>
-                                <option value="Tahoma">Tahoma</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="ps.fontSize">حجم الخط (Font Size)</label>
-                            <select id="cf-font-size" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="" data-i18n="ps.default">الافتراضي</option>
-                                <option value="10pt" data-i18n="ps.tiny">10 pt (صغير جداً)</option>
-                                <option value="12pt" data-i18n="ps.small">12 pt (صغير)</option>
-                                <option value="14pt" data-i18n="ps.normal">14 pt (عادي)</option>
-                                <option value="16pt" data-i18n="ps.medium">16 pt (متوسط)</option>
-                                <option value="18pt" data-i18n="ps.large">18 pt (كبير)</option>
-                                <option value="24pt" data-i18n="ps.xlarge">24 pt (كبير جداً)</option>
-                                <option value="32pt" data-i18n="ps.hugeTitle">32 pt (عنوان ضخم)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-row" style="margin-bottom: 16px;">
-                        <div class="form-group">
-                            <label data-i18n="ps.direction">الاتجاه (Direction)</label>
-                            <select id="cf-direction" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="rtl" data-i18n="ps.rtl">من اليمين لليسار (RTL)</option>
-                                <option value="ltr" data-i18n="ps.ltr">من اليسار لليمين (LTR)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="ps.alignment">المحاذاة (Alignment)</label>
-                            <select id="cf-align" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="right" data-i18n="ps.right">يمين (Right)</option>
-                                <option value="center" data-i18n="ps.center">وسط (Center)</option>
-                                <option value="left" data-i18n="ps.left">يسار (Left)</option>
-                                <option value="justify" data-i18n="ps.justify">ضبط (Justify)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-row" style="margin-bottom: 16px;">
-                        <div class="form-group">
-                            <label data-i18n="ps.lineSpacing">تباعد الأسطر (Line Spacing)</label>
-                            <select id="cf-line-spacing" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="" data-i18n="ps.default">الافتراضي</option>
-                                <option value="1.0" data-i18n="ps.single">1.0 (مفرد)</option>
-                                <option value="1.15">1.15</option>
-                                <option value="1.5">1.5</option>
-                                <option value="2.0" data-i18n="ps.double">2.0 (مزدوج)</option>
-                                <option value="2.5">2.5</option>
-                                <option value="3.0">3.0</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="ps.before">تباعد الفقرات (قبل)</label>
-                            <select id="cf-space-before" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="" data-i18n="ps.default">الافتراضي</option>
-                                <option value="0pt">0 pt</option>
-                                <option value="6pt">6 pt</option>
-                                <option value="12pt">12 pt</option>
-                                <option value="18pt">18 pt</option>
-                                <option value="24pt">24 pt</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="ps.after">تباعد الفقرات (بعد)</label>
-                            <select id="cf-space-after" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
-                                <option value="" data-i18n="ps.default">الافتراضي</option>
-                                <option value="0pt">0 pt</option>
-                                <option value="6pt">6 pt</option>
-                                <option value="12pt">12 pt</option>
-                                <option value="18pt">18 pt</option>
-                                <option value="24pt">24 pt</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-row">
-                        <div class="form-group">
-                            <label data-i18n="ps.textColor">لون النص (Text Color)</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="cf-color-picker" value="#000000" style="width: 40px; height: 36px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
-                                <input type="text" id="cf-color" value="#000000" style="flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.fontFamily">نوع الخط (Font Family)</label>
+                                <select id="cf-font-family">
+                                    <option value="" data-i18n="ps.default">الافتراضي</option>
+                                    <option value="Arial">Arial</option>
+                                    <option value="Simplified Arabic">Simplified Arabic</option>
+                                    <option value="Traditional Arabic">Traditional Arabic</option>
+                                    <option value="Amiri">Amiri</option>
+                                    <option value="Cairo">Cairo</option>
+                                    <option value="Tahoma">Tahoma</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.fontSize">حجم الخط (Font Size)</label>
+                                <select id="cf-font-size">
+                                    <option value="" data-i18n="ps.default">الافتراضي</option>
+                                    <option value="10pt" data-i18n="ps.tiny">10 pt (صغير جداً)</option>
+                                    <option value="12pt" data-i18n="ps.small">12 pt (صغير)</option>
+                                    <option value="14pt" data-i18n="ps.normal">14 pt (عادي)</option>
+                                    <option value="16pt" data-i18n="ps.medium">16 pt (متوسط)</option>
+                                    <option value="18pt" data-i18n="ps.large">18 pt (كبير)</option>
+                                    <option value="24pt" data-i18n="ps.xlarge">24 pt (كبير جداً)</option>
+                                    <option value="32pt" data-i18n="ps.hugeTitle">32 pt (عنوان ضخم)</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label data-i18n="ps.highlight">لون التظليل / الخلفية (Highlight)</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="cf-bg-picker" value="#ffffff" style="width: 40px; height: 36px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
-                                <input type="text" id="cf-bg-color" value="" data-i18n-placeholder="ps.transparent" placeholder="شفاف / بلا تظليل" style="flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
+
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.direction">الاتجاه (Direction)</label>
+                                <select id="cf-direction">
+                                    <option value="rtl" data-i18n="ps.rtl">من اليمين لليسار (RTL)</option>
+                                    <option value="ltr" data-i18n="ps.ltr">من اليسار لليمين (LTR)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.alignment">المحاذاة (Alignment)</label>
+                                <select id="cf-align">
+                                    <option value="right" data-i18n="ps.right">يمين (Right)</option>
+                                    <option value="center" data-i18n="ps.center">وسط (Center)</option>
+                                    <option value="left" data-i18n="ps.left">يسار (Left)</option>
+                                    <option value="justify" data-i18n="ps.justify">ضبط (Justify)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.lineSpacing">تباعد الأسطر (Line Spacing)</label>
+                                <select id="cf-line-spacing">
+                                    <option value="" data-i18n="ps.default">الافتراضي</option>
+                                    <option value="1.0" data-i18n="ps.single">1.0 (مفرد)</option>
+                                    <option value="1.15">1.15</option>
+                                    <option value="1.5">1.5</option>
+                                    <option value="2.0" data-i18n="ps.double">2.0 (مزدوج)</option>
+                                    <option value="2.5">2.5</option>
+                                    <option value="3.0">3.0</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.before">تباعد الفقرات (قبل)</label>
+                                <select id="cf-space-before">
+                                    <option value="" data-i18n="ps.default">الافتراضي</option>
+                                    <option value="0pt">0 pt</option>
+                                    <option value="6pt">6 pt</option>
+                                    <option value="12pt">12 pt</option>
+                                    <option value="18pt">18 pt</option>
+                                    <option value="24pt">24 pt</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.after">تباعد الفقرات (بعد)</label>
+                                <select id="cf-space-after">
+                                    <option value="" data-i18n="ps.default">الافتراضي</option>
+                                    <option value="0pt">0 pt</option>
+                                    <option value="6pt">6 pt</option>
+                                    <option value="12pt">12 pt</option>
+                                    <option value="18pt">18 pt</option>
+                                    <option value="24pt">24 pt</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.textColor">لون النص (Text Color)</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="color" id="cf-color-picker" value="#000000" style="width: 44px; height: 38px; padding: 2px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; background: var(--color-surface);">
+                                    <input type="text" id="cf-color" value="#000000" style="flex: 1; font-family: monospace;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="ps.highlight">لون التظليل / الخلفية (Highlight)</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="color" id="cf-bg-picker" value="#ffffff" style="width: 44px; height: 38px; padding: 2px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; background: var(--color-surface);">
+                                    <input type="text" id="cf-bg-color" value="" data-i18n-placeholder="ps.transparent" placeholder="شفاف / بلا تظليل" style="flex: 1; font-family: monospace;">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ═══════════════════════════════════════════════════════
-                 POST-PROCESSING SECTION
-                 ═══════════════════════════════════════════════════════ -->
-            <!-- ═══════════════════════════════════════════════════════
-                 POST-PROCESSING SECTION
-                 ═══════════════════════════════════════════════════════ -->
-            <div class="settings-card" id="post-processing-card">
-                <h3 data-i18n="ps.postProcessing">معالجة ما بعد OCR (Post-Processing)</h3>
-                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="projectSettings.postOverview">
-                    خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب وترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.
-                </p>
+            <!-- ════ TAB 4: POST-PROCESSING ════ -->
+            <div class="settings-panel hidden" id="panel-post">
+                <div class="settings-card" id="post-processing-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="tools"></div>
+                        <div class="settings-card-title" data-i18n="ps.postProcessing">معالجة ما بعد OCR (Post-Processing)</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="projectSettings.postOverview">خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.</div>
 
-                <!-- Arabic Reading Order Auto-Sorting Option -->
-                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <div>
-                            <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 15px;" data-i18n="ps.readingOrder">إعادة ترتيب المربعات حسب اتجاه القراءة العربي (من اليمين لليسار ومن الأعلى للأسفل)</h4>
-                            <p style="margin: 0; font-size: 12px; color: #0284c7;" data-i18n="projectSettings.readingDetail">
-                                يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
-                            </p>
+                    <!-- Reading Order -->
+                    <div class="feature-box">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px;">
+                            <div>
+                                <h4 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 14.5px; font-weight: 700;" data-i18n="ps.readingOrder">إعادة ترتيب المربعات حسب اتجاه القراءة العربي</h4>
+                                <p style="margin: 0; font-size: 12.5px; color: var(--color-text-muted); line-height: 1.5;" data-i18n="projectSettings.readingDetail">
+                                    يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
+                                </p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="ps-sort-reading-order">
+                                <span class="slider"></span>
+                            </label>
                         </div>
-                        <label class="switch" style="flex-shrink: 0; margin-inline-start: 12px;">
-                            <input type="checkbox" id="ps-sort-reading-order">
-                            <span class="slider"></span>
-                        </label>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+                            <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12.5px; padding: 6px 14px;" data-icon="sort" data-i18n="ps.runReadingOrder">ترتيب المربعات على الصفحات الآن</button>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-reading-order-sort" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;" data-i18n="ps.runReadingOrder">ترتيب المربعات على الصفحات الآن</button>
-                    </div>
-                </div>
 
-                <!-- Pagination Auto-Detection Option -->
-                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 18px; margin-bottom: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <div>
-                            <h4 style="margin: 0 0 4px 0; color: #15803d; font-size: 15px;" data-i18n="ps.pagination">الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
-                            <p style="margin: 0; font-size: 12px; color: #16a34a;" data-i18n="projectSettings.paginationDetail">
-                                يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
-                            </p>
+                    <!-- Pagination Detection -->
+                    <div class="feature-box">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px;">
+                            <div>
+                                <h4 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 14.5px; font-weight: 700;" data-i18n="ps.pagination">الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
+                                <p style="margin: 0; font-size: 12.5px; color: var(--color-text-muted); line-height: 1.5;" data-i18n="projectSettings.paginationDetail">
+                                    يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
+                                </p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="ps-detect-pagination">
+                                <span class="slider"></span>
+                            </label>
                         </div>
-                        <label class="switch" style="flex-shrink: 0; margin-inline-start: 12px;">
-                            <input type="checkbox" id="ps-detect-pagination">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; background: #dcfce7; color: #15803d; border-color: #86efac;" data-i18n="ps.runPagination">كشف أرقام الصفحات الآن</button>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+                            <button type="button" id="btn-run-pagination-detect" class="btn-secondary" style="font-size: 12.5px; padding: 6px 14px;" data-icon="search" data-i18n="ps.runPagination">كشف أرقام الصفحات الآن</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="settings-card">
-                <h3 data-i18n="ps.collaboration">المشاركة والعمل التعاوني (Cooperative Work)</h3>
+            <!-- ════ TAB 5: COLLABORATION & CLOUD ════ -->
+            <div class="settings-panel hidden" id="panel-collab">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="lan"></div>
+                        <div class="settings-card-title" data-i18n="ps.collaboration">المشاركة والعمل التعاوني (Cooperative Work)</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="ps.collabHint">تفعيل وضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والنسخ الاحتياطي.</div>
 
-                <p style="font-size: 13px; color: #64748b; margin-top: -10px; margin-bottom: 18px;" data-i18n="ps.collabHint">تفعيل أسطال ووضعيات العمل الجماعي والمزامنة الحية عبر الشبكة المحلية (LAN) والإنترنت (Cloud).</p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px;">
-                    
-                    <!-- LAN Cooperative Box -->
-                    <div style="background: #f0f9ff; padding: 18px; border-radius: 10px; border: 1px solid #bae6fd;">
+                    <!-- LAN Mode Box -->
+                    <div class="feature-box">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="margin: 0; color: #0369a1; font-size: 16px;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode)</h4>
-                            <span id="lan-status-badge" style="padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #fee2e2; color: #b91c1c;" data-i18n="ps.stopped">متوقف</span>
+                            <h4 style="margin: 0; color: var(--color-text); font-size: 15px; font-weight: 700;" data-i18n="ps.lanMode">وضع العمل المحلي (LAN Mode)</h4>
+                            <span id="lan-status-badge" style="padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; background: var(--color-danger-light); color: var(--color-danger);" data-i18n="ps.stopped">متوقف</span>
                         </div>
-                        <p style="font-size: 13px; color: #0369a1; margin-bottom: 14px;" data-i18n="ps.lanHint">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
-                        
+                        <p style="font-size: 12.5px; color: var(--color-text-muted); margin-bottom: 14px;" data-i18n="ps.lanHint">يتيح للأجهزة المتصلة بنفس الراوتر الاكتشاف التلقائي والعمل معاً.</p>
+
                         <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <label class="setting-row" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #e0f2fe; cursor: pointer;">
-                                <span style="font-size: 14px; font-weight: bold; color: #0f172a;" data-i18n="ps.enableLan">تفعيل وضع الشبكة المحلية</span>
+                            <label class="setting-item-row" style="background: var(--color-surface); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-border); cursor: pointer;">
+                                <span class="setting-item-label" style="margin: 0;" data-i18n="ps.enableLan">تفعيل وضع الشبكة المحلية</span>
                                 <span class="switch"><input type="checkbox" id="ps-lan-broadcast"><span class="slider"></span></span>
                             </label>
-                            
+
                             <!-- LAN Mode Action Tabs -->
-                            <div style="background: white; border-radius: 8px; border: 1px solid #bae6fd; padding: 12px;">
-                                <div style="display: flex; gap: 8px; border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 6px;">
-                                    <button type="button" id="lan-tab-host-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #0369a1; border-bottom: 2px solid #0369a1; cursor: pointer; padding: 4px 8px;" data-i18n="ps.hostPassword">تحديد كلمة السر (المالك)</button>
-                                    <button type="button" id="lan-tab-member-btn" style="background: none; border: none; font-weight: bold; font-size: 13px; color: #64748b; cursor: pointer; padding: 4px 8px;" data-i18n="ps.memberPassword">ربط بكلمة سر (عضو)</button>
+                            <div style="background: var(--color-surface); border-radius: var(--radius-md); border: 1px solid var(--color-border); padding: 14px;">
+                                <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--color-border); margin-bottom: 12px; padding-bottom: 8px;">
+                                    <button type="button" id="lan-tab-host-btn" class="settings-tab-btn active" style="font-size: 12.5px;" data-i18n="ps.hostPassword">تحديد كلمة السر (المالك)</button>
+                                    <button type="button" id="lan-tab-member-btn" class="settings-tab-btn" style="font-size: 12.5px;" data-i18n="ps.memberPassword">ربط بكلمة سر (عضو)</button>
                                 </div>
 
                                 <!-- Host Section -->
                                 <div id="lan-tab-host-sec">
                                     <div class="form-group" style="margin: 0;">
-                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;" data-i18n="ps.lanPassword">كلمة مرور الشبكة المحلية</label>
-                                        <input type="password" id="ps-lan-password" data-i18n-placeholder="ps.passwordPlaceholder" placeholder="أدخل كلمة مرور قوية للمشروع..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
-                                        <div id="lan-pwd-feedback" style="font-size: 11px; margin-top: 4px; color: #dc2626;"></div>
+                                        <label class="form-label" data-i18n="ps.lanPassword">كلمة مرور الشبكة المحلية</label>
+                                        <input type="password" id="ps-lan-password" data-i18n-placeholder="ps.passwordPlaceholder" placeholder="أدخل كلمة مرور قوية للمشروع...">
+                                        <div id="lan-pwd-feedback" style="font-size: 11px; margin-top: 4px; color: var(--color-danger);"></div>
                                     </div>
                                 </div>
 
                                 <!-- Member Section -->
                                 <div id="lan-tab-member-sec" class="hidden">
-                                    <div class="form-group" style="margin-bottom: 8px;">
-                                        <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;" data-i18n="ps.ownerPassword">كلمة مرور المالك للدخول</label>
-                                        <input type="password" id="member-lan-password" data-i18n-placeholder="ps.memberPlaceholder" placeholder="أدخل كلمة مرور الشبكة المحلية..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
+                                    <div class="form-group" style="margin-bottom: 10px;">
+                                        <label class="form-label" data-i18n="ps.ownerPassword">كلمة مرور المالك للدخول</label>
+                                        <input type="password" id="member-lan-password" data-i18n-placeholder="ps.memberPlaceholder" placeholder="أدخل كلمة مرور الشبكة المحلية...">
                                     </div>
-                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;" data-icon="lan" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية</button>
+                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px;" data-icon="lan" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Google Drive Auto-Save Settings -->
-                <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                    <div>
-                        <span style="font-weight: bold; font-size: 14px; color: #1e293b; display: block;" data-i18n="ps.driveAutosave">المزامنة التلقائية لـ Google Drive (Auto-Save):</span>
-                        <span style="font-size: 12px; color: #64748b;" data-i18n="ps.driveHint">حفظ نسخة احتياطية سحابية تلقائياً لمنع فقدان التعديلات عند انقطاع الاتصال.</span>
+                    <!-- Autosave interval -->
+                    <div class="setting-item-row" style="padding: 16px 0;">
+                        <div class="setting-item-info">
+                            <span class="setting-item-label" data-i18n="ps.driveAutosave">المزامنة التلقائية والنسخ الاحتياطي (Auto-Save)</span>
+                            <span class="setting-item-hint" data-i18n="ps.driveHint">حفظ نسخة احتياطية سحابية تلقائياً لمنع فقدان التعديلات عند انقطاع الاتصال.</span>
+                        </div>
+                        <select id="ps-autosave-interval" style="min-width: 180px;">
+                            <option value="5" selected data-i18n="ps.every5">كل 5 دقائق (الافتراضي)</option>
+                            <option value="10" data-i18n="ps.every10">كل 10 دقائق</option>
+                            <option value="15" data-i18n="ps.every15">كل 15 دقيقة</option>
+                            <option value="30" data-i18n="ps.every30">كل 30 دقيقة</option>
+                            <option value="0" data-i18n="ps.disableAutosave">إيقاف الحفظ التلقائي</option>
+                        </select>
                     </div>
-                    <select id="ps-autosave-interval" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: white;">
-                        <option value="5" selected data-i18n="ps.every5">كل 5 دقائق (الافتراضي)</option>
-                        <option value="10" data-i18n="ps.every10">كل 10 دقائق</option>
-                        <option value="15" data-i18n="ps.every15">كل 15 دقيقة</option>
-                        <option value="30" data-i18n="ps.every30">كل 30 دقيقة</option>
-                        <option value="0" data-i18n="ps.disableAutosave">إيقاف الحفظ التلقائي</option>
-                    </select>
                 </div>
             </div>
 
-            <div class="settings-card">
-                <h3 data-icon-label="notif" data-i18n="ps.notifications">إشعارات المشروع</h3>
-                <div class="settings-row" style="gap: 24px;">
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.memberJoin">دخول/خروج عضو</span></div>
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.pageReviewDone">إنهاء مراجعة صفحة</span></div>
-                    <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-edit"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.liveEdit">تعديل حي من مشترك</span></div>
+            <!-- ════ TAB 6: NOTIFICATIONS ════ -->
+            <div class="settings-panel hidden" id="panel-notif">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="notif"></div>
+                        <div class="settings-card-title" data-i18n="ps.notifications">إشعارات المشروع التعاوني</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="projectSettings.notifDesc">تخصيص الإشعارات الحية المنبثقة لأحداث المشروع.</div>
+
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <span class="setting-item-label" data-i18n="ps.memberJoin">دخول وخروج الأعضاء</span>
+                            <span class="setting-item-hint">إظهار تنبيه عند انضمام عضو جديد للعمل على المشروع.</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <span class="setting-item-label" data-i18n="ps.pageReviewDone">إنهاء مراجعة صفحة</span>
+                            <span class="setting-item-hint">إظهار إشعار عندما ينهي أي عضو مراجعة صفحة بالكامل.</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <span class="setting-item-label" data-i18n="ps.liveEdit">تعديل حي من مشترك</span>
+                            <span class="setting-item-hint">إظهار تنبيهات التعديل الحي اللحظية أثناء التدقيق المشترك.</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="ps-notif-edit"><span class="slider"></span></label>
+                    </div>
                 </div>
             </div>
         </form>
     </main>
 
-        <script src="js/icons.js"></script>
+    <script src="js/icons.js"></script>
     <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
@@ -379,6 +756,5 @@
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-settings.js"></script>
     <script src="js/apply-icons.js"></script>
-    
 </body>
 </html>

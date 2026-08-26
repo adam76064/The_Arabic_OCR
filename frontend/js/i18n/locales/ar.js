@@ -4,6 +4,8 @@ window.AppLocales.ar = {
   messages: {
     'app.name':'أداة مراجعة OCR','nav.home':'الرئيسية','nav.projects':'المشاريع',
     'nav.newProject':'مشروع جديد','nav.settings':'الإعدادات','nav.exit':'خروج','nav.theme':'الوضع الليلي',
+    'theme.darkMode':'الوضع الليلي','theme.lightMode':'الوضع النهاري','theme.autoMode':'تلقائي (حسب النظام)',
+    'theme.toggleDark':'تفعيل الوضع الليلي','theme.toggleLight':'تفعيل الوضع النهاري',
     'sidebar.hide':'إخفاء الشريط الجانبي','sidebar.show':'فتح الشريط الجانبي',
     'home.welcome':'مرحبًا بكم','home.chooseAction':'اختر ما تريد القيام به',
     'home.dropzone.title':'اسحب وأفلت ملف PDF هنا لإنشاء مشروع جديد أو انقر للاختيار',
@@ -423,6 +425,9 @@ window.AppLocales.ar = {
     'table.deleteCurrentCol':'حذف العمود الحالي',
     'table.splitVertical':'تقسيم الخلية (عمودياً من المنتصف)',
     'table.splitHorizontal':'تقسيم الخلية (أفقياً من المنتصف)',
+    'projectSettings.headerSubtitle':'تخصيص بيانات المشروع وقواعد معالجة النصوص وتنسيقات التصنيفات',
+    'projectSettings.metaDesc':'المعلومات الوصفية للكتاب وتحديد نقطة بداية الترقيم الفعلي.',
+    'projectSettings.notifDesc':'تخصيص الإشعارات الحية المنبثقة لأحداث المشروع التعاوني.',
     'projectSettings.loadFailed':'تعذّر تحميل المشروع',
     'projectSettings.saving':'جاري الحفظ...',
     'projectSettings.save':'حفظ الإعدادات',

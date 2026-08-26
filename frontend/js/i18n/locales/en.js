@@ -4,6 +4,8 @@ window.AppLocales.en = {
   messages: {
     'app.name':'OCR Review Tool','nav.home':'Home','nav.projects':'Projects',
     'nav.newProject':'New Project','nav.settings':'Settings','nav.exit':'Exit','nav.theme':'Night Mode',
+    'theme.darkMode':'Dark Mode','theme.lightMode':'Light Mode','theme.autoMode':'Auto (System)',
+    'theme.toggleDark':'Enable Dark Mode','theme.toggleLight':'Enable Light Mode',
     'sidebar.hide':'Hide sidebar','sidebar.show':'Show sidebar',
     'home.welcome':'Welcome','home.chooseAction':'Choose what you would like to do',
     'home.dropzone.title':'Drag & drop a PDF file here to create a project or click to browse',
@@ -423,6 +425,9 @@ window.AppLocales.en = {
     'table.deleteCurrentCol':'Delete current column',
     'table.splitVertical':'Split cell vertically in the middle',
     'table.splitHorizontal':'Split cell horizontally in the middle',
+    'projectSettings.headerSubtitle':'Customize project metadata, OCR text-processing rules, and category formatting',
+    'projectSettings.metaDesc':'Book metadata and starting point for logical page numbering.',
+    'projectSettings.notifDesc':'Customize live notifications for collaborative project events.',
     'projectSettings.loadFailed':'Unable to load project',
     'projectSettings.saving':'Saving…',
     'projectSettings.save':'Save settings',

@@ -7,40 +7,51 @@ const editorText = (key) => window.AppI18n?.t(key) || key;
 
 function updateReviewPanel() {
     if (!currentProject?.pages?.length) return;
-    document.getElementById('total-pages').textContent = currentProject.pages.length;
-    document.getElementById('current-page-num').value = currentPageIndex + 1;
+    const totalPagesEl = document.getElementById('total-pages');
+    if (totalPagesEl) totalPagesEl.textContent = currentProject.pages.length;
+    const currentPgNumEl = document.getElementById('current-page-num');
+    if (currentPgNumEl) currentPgNumEl.value = currentPageIndex + 1;
 
     const page = currentProject.pages[currentPageIndex];
     if (!page) return;
 
     const logicalStart = currentProject.metadata?.logical_start || 1;
-    document.getElementById('logical-page-display').textContent = currentPageIndex + logicalStart;
+    const logicalPageEl = document.getElementById('logical-page-display');
+    if (logicalPageEl) logicalPageEl.textContent = currentPageIndex + logicalStart;
 
     const imgPath = `file:///${window.__appDataPath}/projects/${currentProject.id}/images/${page.image_path}`;
-    const img = document.getElementById('page-image');
+    const pageImg = document.getElementById('page-image');
     const thumbImg = document.getElementById('thumb-image');
     const thumbPopup = document.getElementById('thumb-popup-image');
     const fullImg = document.getElementById('fullpage-image');
 
-    [thumbImg, thumbPopup, fullImg].forEach(el => el.src = imgPath);
-    img.src = imgPath;
+    [pageImg, thumbImg, thumbPopup, fullImg].forEach(el => {
+        if (el) el.src = imgPath;
+    });
 
-    img.onload = () => {
-        const canvas = document.getElementById('bbox-canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
+    const triggerImg = thumbImg || thumbPopup || pageImg || fullImg;
+    if (triggerImg) {
+        const onImgReady = () => {
+            const nativeW = page.native_width || (triggerImg.naturalWidth / 200 * 72);
+            const nativeH = page.native_height || (triggerImg.naturalHeight / 200 * 72);
+            scaleRatioX = triggerImg.naturalWidth / (nativeW || 1);
+            scaleRatioY = triggerImg.naturalHeight / (nativeH || 1);
 
-        // حساب معدل التكبير بناءً على حجم المستند الأصلي بدلاً من الـ 200 DPI الثابتة
-        // (تم إضافة fallback في حال كانت الأبعاد القديمة غير متوفرة)
-        const nativeW = page.native_width || (img.naturalWidth / 200 * 72);
-        const nativeH = page.native_height || (img.naturalHeight / 200 * 72);
-        scaleRatioX = img.naturalWidth / nativeW;
-        scaleRatioY = img.naturalHeight / nativeH;
+            const ocrData = page.ocr_data || [];
+            if (typeof renderBboxes === 'function') renderBboxes(ocrData, selectedBlockIndex);
+            if (typeof renderThumbCanvas === 'function') {
+                renderThumbCanvas('thumb-canvas', 'thumb-image', ocrData, selectedBlockIndex);
+                renderThumbCanvas('thumb-popup-canvas', 'thumb-popup-image', ocrData, selectedBlockIndex);
+                renderThumbCanvas('fullpage-canvas', 'fullpage-image', ocrData, selectedBlockIndex);
+            }
+        };
 
-        renderBboxes(page.ocr_data || [], selectedBlockIndex);
-        renderThumbCanvas('thumb-canvas', 'thumb-image', page.ocr_data || [], selectedBlockIndex);
-        renderThumbCanvas('thumb-popup-canvas', 'thumb-popup-image', page.ocr_data || [], selectedBlockIndex);
-    };
+        if (triggerImg.complete && triggerImg.naturalWidth > 0) {
+            onImgReady();
+        } else {
+            triggerImg.onload = onImgReady;
+        }
+    }
 
     renderBlocksList(page.ocr_data || []);
     showCroppedView(null);

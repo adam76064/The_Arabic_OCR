@@ -9,13 +9,12 @@ function injectPropertiesPanel() {
     if (oldPanel) oldPanel.remove();
 
     const panelHTML = `
-        <div id="block-props-panel" style="position: fixed; top: 90px; inset-inline-start: 30px; background: white; padding: 16px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; width: 220px; display: none; z-index: 1000; direction: inherit;">
-            <!-- تم إضافة المعرف prop-panel-header وتنسيقات السحب هنا -->
-            <div id="prop-panel-header" style="font-size: 14px; font-weight: bold; margin-bottom: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; color: #1e293b; cursor: grab; user-select: none; display: flex; align-items: center;">
-                <span style="color:#94a3b8; margin-inline-end:8px; cursor: inherit; font-size: 16px;">⋮⋮</span> ${propertiesText('properties.title')}
+        <div id="block-props-panel" style="position: fixed; top: 90px; inset-inline-start: 30px; background: var(--color-surface); padding: 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--color-border); width: 230px; display: none; z-index: 1000; direction: inherit; color: var(--color-text);">
+            <div id="prop-panel-header" style="font-size: 14px; font-weight: bold; margin-bottom: 12px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px; color: var(--color-text); cursor: grab; user-select: none; display: flex; align-items: center;">
+                <span style="color: var(--color-text-muted); margin-inline-end: 8px; cursor: inherit; font-size: 16px;">⋮⋮</span> ${propertiesText('properties.title')}
             </div>
             
-            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.type')}</label>
+            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: var(--color-text-secondary);">${propertiesText('properties.type')}</label>
             <div class="category-quick-chips" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 12px;">
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">نص</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">عنوان</button>
@@ -26,43 +25,54 @@ function injectPropertiesPanel() {
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">جدول</button>
                 <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">صورة</button>
             </div>
-            <select id="prop-category" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 14px; font-size: 12px; outline: none; cursor: pointer;">
-                ${getAllCategories().map(c => `<option value="${c}">${getCategoryNameAR(c)}</option>`).join('')}
+            <select id="prop-category" style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 14px; font-size: 12px; outline: none; cursor: pointer; background: var(--color-bg-alt); color: var(--color-text);">
+                ${getAllCategories().map(c => `<option value="${c}" style="background: var(--color-surface); color: var(--color-text);">${getCategoryNameAR(c)}</option>`).join('')}
             </select>
             
-            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.order')}</label>
+            <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: var(--color-text-secondary);">${propertiesText('properties.order')}</label>
             <div style="display: flex; gap: 6px; align-items: center;">
-                <button id="prop-move-up" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">▲</button>
-                <input type="number" id="prop-order" min="1" style="width: 60px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
-                <button id="prop-move-down" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">▼</button>
+                <button id="prop-move-up" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: var(--radius-md);">▲</button>
+                <input type="number" id="prop-order" min="1" style="width: 60px; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); text-align: center; background: var(--color-bg-alt); color: var(--color-text);">
+                <button id="prop-move-down" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: var(--radius-md);">▼</button>
             </div>
 
-            <div id="prop-table-tools" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #cbd5e1;">
+            <div id="prop-table-tools" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--color-border);">
                 <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #d35400;">${propertiesText('properties.method')}</label>
-                <select id="table-extract-method" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 8px; font-size: 12px; outline: none;">
-                    <option value="auto">${propertiesText('properties.auto')}</option>
-                    <option value="native">${propertiesText('properties.native')}</option>
-                    <option value="coordinates">${propertiesText('properties.coordinates')}</option>
-                    <option value="smear">${propertiesText('properties.smear')}</option>
+                <select id="table-extract-method" style="width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 8px; font-size: 12px; outline: none; background: var(--color-bg-alt); color: var(--color-text);">
+                    <option value="auto" style="background: var(--color-surface); color: var(--color-text);">${propertiesText('properties.auto')}</option>
+                    <option value="native" style="background: var(--color-surface); color: var(--color-text);">${propertiesText('properties.native')}</option>
+                    <option value="coordinates" style="background: var(--color-surface); color: var(--color-text);">${propertiesText('properties.coordinates')}</option>
+                    <option value="smear" style="background: var(--color-surface); color: var(--color-text);">${propertiesText('properties.smear')}</option>
                 </select>
-                <button id="btn-auto-table" class="btn-secondary" style="width: 100%; padding: 8px; border-radius: 6px; border-color: #d35400; color: #d35400; font-weight: bold; margin-bottom: 6px;">${propertiesText('properties.tableLayout')}</button>
-                <div style="font-size: 11px; color: #7f8c8d; text-align: center;">${propertiesText('properties.tableHint')}</div>
+                <button id="btn-auto-table" class="btn-secondary" style="width: 100%; padding: 8px; border-radius: var(--radius-md); border-color: #d35400; color: #d35400; font-weight: bold; margin-bottom: 6px;">${propertiesText('properties.tableLayout')}</button>
+                <div style="font-size: 11px; color: var(--color-text-muted); text-align: center;">${propertiesText('properties.tableHint')}</div>
             </div>
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', panelHTML);
 
-    // --- منطق سحب وتحريك اللوحة ---
+    // --- Drag and Move logic with free positioning ---
     const panel = document.getElementById('block-props-panel');
     const header = document.getElementById('prop-panel-header');
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    let startX = 0, startY = 0, initialLeft = 0, initialTop = 0;
 
     header.onmousedown = dragMouseDown;
 
     function dragMouseDown(e) {
         e.preventDefault();
-        pos3 = e.clientX;
-        pos4 = e.clientY;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = panel.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        // Reset conflicting directional styles
+        panel.style.insetInlineStart = 'auto';
+        panel.style.insetInlineEnd = 'auto';
+        panel.style.right = 'auto';
+        panel.style.left = initialLeft + 'px';
+        panel.style.top = initialTop + 'px';
+
         document.onmouseup = closeDragElement;
         document.onmousemove = elementDrag;
         header.style.cursor = 'grabbing';
@@ -70,17 +80,16 @@ function injectPropertiesPanel() {
 
     function elementDrag(e) {
         e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
         
-        let newTop = panel.offsetTop - pos2;
-        let newLeft = panel.offsetLeft - pos1;
+        let newTop = initialTop + dy;
+        let newLeft = initialLeft + dx;
 
-        // منع اللوحة من الخروج خارج الشاشة
-        newTop = Math.max(0, Math.min(newTop, window.innerHeight - panel.offsetHeight));
-        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - panel.offsetWidth));
+        const maxTop = Math.max(0, window.innerHeight - panel.offsetHeight);
+        const maxLeft = Math.max(0, window.innerWidth - panel.offsetWidth);
+        newTop = Math.max(0, Math.min(newTop, maxTop));
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
 
         panel.style.top = newTop + "px";
         panel.style.left = newLeft + "px";
@@ -93,7 +102,7 @@ function injectPropertiesPanel() {
     }
     // --------------------------------
 
-    // تفعيل الأحداث الخاصة بالخصائص
+    // Event listeners
     document.querySelectorAll('.cat-quick-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             if (selectedBoxes.size === 0) return;
@@ -183,11 +192,11 @@ async function handleTableCategoryChangeInLayout(idx, newCat, oldCat) {
     const catNameAR = getCategoryNameAR(newCat);
     const i18n = (key, values) => window.AppI18n.t(key, values);
     const modalContent = `
-        <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 16px;">
+        <div style="font-size: 14px; color: var(--color-text); line-height: 1.6; margin-bottom: 16px;">
             ${i18n('review.autoTableMessage', { category: catNameAR })}
         </div>
-        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; cursor: pointer; user-select: none;">
-            <input type="checkbox" id="chk-remember-table-parse-layout" style="accent-color: #2563eb;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer; user-select: none;">
+            <input type="checkbox" id="chk-remember-table-parse-layout" style="accent-color: var(--color-primary);">
             <span>${i18n('review.rememberChoice')}</span>
         </label>
     `;
@@ -225,4 +234,3 @@ async function handleTableCategoryChangeInLayout(idx, newCat, oldCat) {
         autoSaveLayoutData();
     }
 }
-

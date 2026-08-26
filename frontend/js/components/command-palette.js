@@ -20,6 +20,8 @@
     const projId = params.get('id');
     const projQuery = projId ? `?id=${encodeURIComponent(projId)}` : '';
 
+    const isDark = global.ThemeManager ? global.ThemeManager.isDark() : (document.documentElement.classList.contains('night-mode') || document.body?.classList.contains('night-mode'));
+
     const cmds = [
       {
         id: 'nav-home',
@@ -48,16 +50,23 @@
       },
       {
         id: 'toggle-theme',
-        title: document.body.classList.contains('night-mode') ? 'تفعيل الوضع النهاري (Light Mode)' : 'تفعيل الوضع الليلي (Dark Mode)',
-        icon: document.body.classList.contains('night-mode') ? 'sun' : 'moon',
-        shortcut: 'Ctrl+Shift+T',
+        title: isDark ? (t('theme.toggleLight', 'تفعيل الوضع النهاري (Light Mode)')) : (t('theme.toggleDark', 'تفعيل الوضع الليلي (Dark Mode)')),
+        icon: isDark ? 'sun' : 'moon',
+        shortcut: 'Ctrl+Shift+D',
         category: 'view',
         action: () => {
-          const isNight = document.body.classList.toggle('night-mode');
-          try {
-            localStorage.setItem('themeMode', isNight ? 'night' : 'light');
-            if (global.AppNotify) global.AppNotify.show(isNight ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري', 'info');
-          } catch (e) {}
+          if (global.ThemeManager) {
+            const next = global.ThemeManager.toggle();
+            const nowDark = next === 'dark';
+            if (global.AppNotify) global.AppNotify.show(nowDark ? (t('theme.darkMode', 'تم تفعيل الوضع الليلي')) : (t('theme.lightMode', 'تم تفعيل الوضع النهاري')), 'info');
+          } else {
+            const nowDark = document.documentElement.classList.toggle('night-mode');
+            if (document.body) document.body.classList.toggle('night-mode', nowDark);
+            try {
+              localStorage.setItem('app_theme', nowDark ? 'dark' : 'light');
+              if (global.AppNotify) global.AppNotify.show(nowDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري', 'info');
+            } catch (e) {}
+          }
         }
       },
       {
@@ -228,18 +237,6 @@
       else openCommandPalette();
     }
   });
-
-  // Restore Theme on Page Init
-  function initTheme() {
-    try {
-      const theme = localStorage.getItem('themeMode');
-      if (theme === 'night') {
-        document.body.classList.add('night-mode');
-      }
-    } catch (e) {}
-  }
-  document.addEventListener('DOMContentLoaded', initTheme);
-  if (document.readyState === 'interactive' || document.readyState === 'complete') initTheme();
 
   global.CommandPalette = { open: openCommandPalette, close: closeCommandPalette };
 })(window);
