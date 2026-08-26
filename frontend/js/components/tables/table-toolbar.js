@@ -120,7 +120,7 @@ function doSplit(cell) {
     if (!cell) return;
     const table = cell.closest('table');
     window.AestheticDialog.show(
-        "${tableText('table.split')}",
+        tableText('table.split'),
         `<div class="aes-group"><label>${tableText('table.splitCols')}</label><input type="number" id="split-c" value="2" min="1"></div>
          <div class="aes-group"><label>${tableText('table.splitRows')}</label><input type="number" id="split-r" value="1" min="1"></div>`,
         (modal) => {
@@ -205,7 +205,7 @@ function doDeleteTable(cell) {
 
 function bordersDialog(cells) {
     window.AestheticDialog.show(
-        "${tableText('table.borders')}",
+        tableText('table.borders'),
         `<div class="aes-group"><label>${tableText('table.borderWidth')}</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
          <div class="aes-group"><label>${tableText('table.borderStyle')}</label>
             <select id="border-style">
@@ -423,7 +423,7 @@ const TableToolbar = {
 
             if (table) {
                 window.AestheticDialog.show(
-                    "${tableText('table.tableToText')}",
+                    tableText('table.tableToText'),
                     `<div class="aes-group">
                         <label>${tableText('table.separatorHint')}</label>
                         <input type="text" id="tbl-sep-to-text" value=" - ">

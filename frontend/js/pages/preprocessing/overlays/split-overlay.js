@@ -114,8 +114,8 @@
         ctx.lineWidth = 2;
 
         const badgeText = global.AppI18n
-          ? global.AppI18n.t('split.singlePageBadge') || '✓ صفحة مفردة (لا تحتاج تقسيم)'
-          : '✓ Single Page (No Split Needed)';
+          ? global.AppI18n.t('split.singlePageBadge') || 'صفحة مفردة (لا تحتاج تقسيم)'
+          : 'Single Page (No Split Needed)';
         
         ctx.font = 'bold 13px system-ui, sans-serif';
         const textW = ctx.measureText(badgeText).width + 24;

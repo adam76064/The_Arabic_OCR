@@ -326,7 +326,7 @@
                                         <label style="font-size: 12px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: block;" data-i18n="ps.ownerPassword">كلمة مرور المالك للدخول</label>
                                         <input type="password" id="member-lan-password" data-i18n-placeholder="ps.memberPlaceholder" placeholder="أدخل كلمة مرور الشبكة المحلية..." style="width: 100%; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; font-size: 13px;">
                                     </div>
-                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية 📡</button>
+                                    <button type="button" id="btn-link-lan" class="btn-secondary" style="width: 100%; font-size: 13px; padding: 8px; background: #e0f2fe; color: #0369a1; border-color: #bae6fd;" data-icon="lan" data-i18n="ps.linkLan">حفظ وربط بالشبكة المحلية</button>
                                 </div>
                             </div>
                         </div>
@@ -351,7 +351,7 @@
             </div>
 
             <div class="settings-card">
-                <h3 data-i18n="ps.notifications">🔔 إشعارات المشروع</h3>
+                <h3 data-icon-label="notif" data-i18n="ps.notifications">إشعارات المشروع</h3>
                 <div class="settings-row" style="gap: 24px;">
                     <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-join"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.memberJoin">دخول/خروج عضو</span></div>
                     <div class="setting-row"><label class="switch"><input type="checkbox" id="ps-notif-page"><span class="slider"></span></label><span class="setting-label" data-i18n="ps.pageReviewDone">إنهاء مراجعة صفحة</span></div>
@@ -368,14 +368,16 @@
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
-<script src="js/pages/settings.js"></script>
+    <script src="js/pages/settings.js"></script>
     <script src="js/i18n/locales/ar.js"></script>
     <script src="js/i18n/locales/en.js"></script>
     <script src="js/i18n/locales/de.js"></script>
     <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-settings.js"></script>
+    <script src="js/apply-icons.js"></script>
     
 </body>
 </html>

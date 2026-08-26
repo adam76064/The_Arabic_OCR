@@ -85,7 +85,7 @@
 
         <!-- Pages Scope Card -->
         <div class="export-card">
-            <h3 data-i18n="export.pages">📑 نطاق الصفحات المراد تصديرها</h3>
+            <h3 data-icon-label="pages" data-i18n="export.pages">نطاق الصفحات المراد تصديرها</h3>
             <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                 <label class="radio-item"><input type="radio" name="exp-pages" value="all" checked> <span data-i18n="export.allPages">جميع صفحات المشروع</span></label>
                 <label class="radio-item"><input type="radio" name="exp-pages" value="range"> <span data-i18n="export.range">نطاق صفحات محدد</span></label>
@@ -100,14 +100,14 @@
 
         <!-- Format Selection Card -->
         <div class="export-card">
-            <h3 data-i18n="export.formats">💾 صيغ التصدير المطلوبة</h3>
+            <h3 data-icon-label="export" data-i18n="export.formats">صيغ التصدير المطلوبة</h3>
             <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -8px; margin-bottom: 16px;" data-i18n="export.formatsHint">يمكنك اختيار صيغة واحدة أو عدة صيغ لتوليدها دفعة واحدة.</p>
             
             <div class="format-cards-grid">
                 <!-- DOCX -->
                 <div class="format-select-card selected" data-value="docx">
                     <input type="checkbox" name="exp-format" value="docx" checked style="display:none;">
-                    <div class="format-icon">📄</div>
+                    <div class="format-icon" data-icon="doc"></div>
                     <div class="format-info">
                         <div class="format-title">Microsoft Word (.docx)</div>
                         <div class="format-desc">منسق بالكامل مع الحواشي السفلية، الأبيات الشعرية، والجداول المنسقة.</div>
@@ -117,7 +117,7 @@
                 <!-- TXT -->
                 <div class="format-select-card" data-value="txt">
                     <input type="checkbox" name="exp-format" value="txt" style="display:none;">
-                    <div class="format-icon">📝</div>
+                    <div class="format-icon" data-icon="edit"></div>
                     <div class="format-info">
                         <div class="format-title">نص عادي (.txt)</div>
                         <div class="format-desc">نص تسلسلي نقي ومباشر مع فواصل الصفحات القياسية.</div>
@@ -127,7 +127,7 @@
                 <!-- JSON -->
                 <div class="format-select-card" data-value="json">
                     <input type="checkbox" name="exp-format" value="json" style="display:none;">
-                    <div class="format-icon">⚙️</div>
+                    <div class="format-icon" data-icon="settings"></div>
                     <div class="format-info">
                         <div class="format-title">بيانات خام (.json)</div>
                         <div class="format-desc">بيانات مهيكلة كاملة للكتل والإحداثيات لتدريب النماذج والبحث.</div>
@@ -137,7 +137,7 @@
                 <!-- HTML -->
                 <div class="format-select-card" data-value="html">
                     <input type="checkbox" name="exp-format" value="html" style="display:none;">
-                    <div class="format-icon">🌐</div>
+                    <div class="format-icon" data-icon="lan"></div>
                     <div class="format-info">
                         <div class="format-title">صفحة ويب (.html)</div>
                         <div class="format-desc">صفحة ويب مستقلة منسقة مع دعم خطوط الويب العربية الحديثة.</div>
@@ -147,7 +147,7 @@
                 <!-- EPUB3 -->
                 <div class="format-select-card" data-value="epub3">
                     <input type="checkbox" name="exp-format" value="epub3" style="display:none;">
-                    <div class="format-icon">📖</div>
+                    <div class="format-icon" data-icon="book"></div>
                     <div class="format-info">
                         <div class="format-title">كتاب إلكتروني (.epub)</div>
                         <div class="format-desc">متوافق مع المكتبة الشاملة وتطبيقات قارئات الكتب العربية.</div>
@@ -176,7 +176,7 @@
         </div>
 
         <div style="text-align: end; margin-top: 24px;">
-            <button id="execute-export-btn" class="btn-success" style="padding: 12px 32px; font-size: 15px;" data-i18n="export.execute">تصدير الملفات المحددة الآن ➔</button>
+            <button id="execute-export-btn" class="btn-success" style="padding: 12px 32px; font-size: 15px;" data-i18n="export.execute">تصدير الملفات المحددة الآن</button>
         </div>
     </main>
 
@@ -187,12 +187,14 @@
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
     <script src="js/i18n/locales/ar.js"></script>
     <script src="js/i18n/locales/en.js"></script>
     <script src="js/i18n/locales/de.js"></script>
     <script src="js/i18n/i18n.js"></script>
+    <script src="js/apply-icons.js"></script>
     <script>
         let currentProject = null;
         async function initExportPage() {

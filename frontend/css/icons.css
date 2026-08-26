@@ -14,7 +14,7 @@
 }
 [data-icon-applied] svg { flex-shrink: 0; }
 
-/* Card icons on the home page (previously emoji like ➕ 📂 ⚙) */
+/* Card icons on the home page (pure stroke SVG) */
 .card-icon[data-icon-applied] {
   display: inline-flex;
   width: 40px;

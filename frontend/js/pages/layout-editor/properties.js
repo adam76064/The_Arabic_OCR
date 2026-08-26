@@ -17,14 +17,14 @@ function injectPropertiesPanel() {
             
             <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.type')}</label>
             <div class="category-quick-chips" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 12px;">
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📝 نص</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">👑 عنوان</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📌 فرعي</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📖 قرآن</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📜 شعر</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📑 حاشية</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">📊 جدول</button>
-                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">🖼️ صورة</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Text" style="padding: 4px 6px; font-size: 11px; justify-content: start;">نص</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Title" style="padding: 4px 6px; font-size: 11px; justify-content: start;">عنوان</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Section-header" style="padding: 4px 6px; font-size: 11px; justify-content: start;">فرعي</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Quran" style="padding: 4px 6px; font-size: 11px; justify-content: start;">قرآن</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Poem" style="padding: 4px 6px; font-size: 11px; justify-content: start;">شعر</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Footnote" style="padding: 4px 6px; font-size: 11px; justify-content: start;">حاشية</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Table" style="padding: 4px 6px; font-size: 11px; justify-content: start;">جدول</button>
+                <button type="button" class="btn-secondary cat-quick-btn" data-cat="Picture" style="padding: 4px 6px; font-size: 11px; justify-content: start;">صورة</button>
             </div>
             <select id="prop-category" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 14px; font-size: 12px; outline: none; cursor: pointer;">
                 ${getAllCategories().map(c => `<option value="${c}">${getCategoryNameAR(c)}</option>`).join('')}
@@ -32,9 +32,9 @@ function injectPropertiesPanel() {
             
             <label style="font-size: 12px; display: block; margin-bottom: 6px; font-weight: bold; color: #64748b;">${propertiesText('properties.order')}</label>
             <div style="display: flex; gap: 6px; align-items: center;">
-                <button id="prop-move-up" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">⬆️</button>
+                <button id="prop-move-up" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">▲</button>
                 <input type="number" id="prop-order" min="1" style="width: 60px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
-                <button id="prop-move-down" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">⬇️</button>
+                <button id="prop-move-down" class="btn-secondary" style="padding: 6px; flex: 1; border-radius: 6px;">▼</button>
             </div>
 
             <div id="prop-table-tools" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #cbd5e1;">
@@ -134,7 +134,7 @@ function injectPropertiesPanel() {
         const btn = document.getElementById('btn-auto-table');
         const method = document.getElementById('table-extract-method').value;
         
-        btn.textContent = '⏳ جاري التحليل...'; btn.disabled = true;
+        btn.textContent = 'جاري التحليل...'; btn.disabled = true;
         try {
             await window.pywebview.api.update_page_ocr(currentProject.id, currentPageIndex, ocrData);
             const response = await window.pywebview.api.auto_layout_table_block(currentProject.id, currentPageIndex, idx, method);

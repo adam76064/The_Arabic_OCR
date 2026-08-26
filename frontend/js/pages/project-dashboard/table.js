@@ -610,7 +610,7 @@ function setupContextMenu() {
             await window.pywebview.api.update_project(currentProjectId, currentProject);
             renderPagesTable();
             renderDashboardStats();
-            if (window.showNotif) window.showNotif('تم تحديد الصفحات كـ "تمت المراجعة" ✓', 'success');
+            if (window.showNotif) window.showNotif('تم تحديد الصفحات كـ "تمت المراجعة"', 'success');
         });
 
         document.getElementById('ctx-action-mark-unreviewed')?.addEventListener('click', async () => {

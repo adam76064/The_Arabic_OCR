@@ -137,7 +137,7 @@
                         <div class="param-group">
                             <button id="btn-auto-split" class="btn-secondary" style="width: 100%;" data-i18n="split.autoDetectCutter">إعادة الكشف التلقائي لخط التقسيم</button>
                         </div>
-                        <p style="font-size: 11px; color: #64748b;" data-i18n="split.tipDragHandles">💡 يمكنك سحب المقابض العلوية والسفلية لخط التقسيم على الصورة لضبط ميله وموضعه بدقة.</p>
+                        <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 6px;" data-i18n="split.tipDragHandles">يمكنك سحب المقابض العلوية والسفلية لخط التقسيم على الصورة لضبط ميله وموضعه بدقة.</p>
                     </div>
 
                     <!-- Stage 3: Deskew Panel -->
@@ -153,7 +153,7 @@
                             <button id="btn-auto-deskew" class="btn-secondary" style="flex: 1;" data-i18n="deskew.autoDetect">كشف الميل تلقائياً</button>
                             <button id="btn-reset-deskew" class="btn-secondary" style="flex: 1;" data-i18n="deskew.reset">تصفير (0°)</button>
                         </div>
-                        <p style="font-size: 11px; color: #64748b;" data-i18n="deskew.tipGrid">💡 خطوط الشبكة الإرشادية الزرقاء تساعدك على محاذاة أسطر النص بدقة تامة.</p>
+                        <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 6px;" data-i18n="deskew.tipGrid">خطوط الشبكة الإرشادية الزرقاء تساعدك على محاذاة أسطر النص بدقة تامة.</p>
                     </div>
 
                     <!-- Stage 4: Content Selection Panel -->
@@ -164,7 +164,7 @@
                         <div class="param-group">
                             <button id="btn-reset-content" class="btn-secondary" style="width: 100%;" data-i18n="content.reset">تحديد كامل الصفحة</button>
                         </div>
-                        <p style="font-size: 11px; color: #64748b;" data-i18n="content.tipHandles">💡 اسحب المقابض الـ 8 لتكبير أو تصغير منطقة المحتوى، أو اسحب من الداخل لتحريك الصندوق بالكامل.</p>
+                        <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 6px;" data-i18n="content.tipHandles">اسحب المقابض الـ 8 لتكبير أو تصغير منطقة المحتوى، أو اسحب من الداخل لتحريك الصندوق بالكامل.</p>
                     </div>
 
                     <!-- Stage 5: Page Layout & Margins Panel -->
@@ -211,7 +211,7 @@
                                 <span data-i18n="layout.matchOtherPages">توحيد أبعاد كل الصفحات حسب أوسع صفحة (Match other pages)</span>
                             </label>
                         </div>
-                        <p style="font-size: 11px; color: #64748b;" data-i18n="layout.tipOutside">💡 تُضاف الهوامش بدقة حول صندوق المحتوى المختار دون اقتطاع أي حرف أو سطر من النص، وتوحّد أبعاد المستند بالكامل.</p>
+                        <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 6px;" data-i18n="layout.tipOutside">تُضاف الهوامش بدقة حول صندوق المحتوى المختار دون اقتطاع أي حرف أو سطر من النص، وتوحّد أبعاد المستند بالكامل.</p>
                     </div>
 
                     <!-- Stage 6: Output / Binarization Panel -->
@@ -228,7 +228,7 @@
                         </div>
 
                         <!-- ZigZag Dedicated Parameters -->
-                        <div id="zigzag-parameters" style="display: none; flex-direction: column; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px;">
+                        <div id="zigzag-parameters" style="display: none; flex-direction: column; gap: 12px; background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 8px; padding: 12px;">
                             <div class="param-group">
                                 <div class="param-label">
                                     <span data-i18n="output.zigzagDetail">التفاصيل (Detail / حجم النافذة):</span>
@@ -250,7 +250,7 @@
                                 </div>
                                 <input type="range" id="zigzag-weight-slider" class="range-slider" min="40" max="100" step="1" value="90">
                             </div>
-                            <p style="font-size: 11px; color: #15803d; margin: 0;" data-i18n="output.zigzagTip">💡 خوارزمية ZigZag تزيل الظلال والإضاءة غير المتساوية عبر مرشح ثنائي المراحل.</p>
+                            <p style="font-size: 11px; color: var(--color-success); margin: 0;" data-i18n="output.zigzagTip">خوارزمية ZigZag تزيل الظلال والإضاءة غير المتساوية عبر مرشح ثنائي المراحل.</p>
                         </div>
 
                         <div class="param-group" id="general-threshold-group">
@@ -277,7 +277,7 @@
                                 <span data-i18n="output.fillMargins">تعبئة الهوامش الخارجية بالأبيض</span>
                             </label>
                         </div>
-                        <p style="font-size: 11px; color: #64748b;" data-i18n="output.tipCurtain">💡 اسحب المقسم العمودي في وسط الصورة لمقارنة الأصل بالنتيجة المعالجة مباشرة.</p>
+                        <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 6px;" data-i18n="output.tipCurtain">اسحب المقسم العمودي في وسط الصورة لمقارنة الأصل بالنتيجة المعالجة مباشرة.</p>
                     </div>
                 </div>
 
@@ -397,6 +397,7 @@
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
     <script src="js/i18n/locales/ar.js"></script>

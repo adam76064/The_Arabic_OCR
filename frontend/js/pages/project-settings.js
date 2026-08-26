@@ -167,7 +167,7 @@ async function initSettings() {
         if (!pwd) { if (feedbackEl) feedbackEl.textContent = ''; return true; }
         const res = await window.pywebview.api.validate_password_strength(pwd);
         if (!res.valid) {
-            if (feedbackEl) feedbackEl.innerHTML = '⚠️ ' + res.errors.join(' | ');
+            if (feedbackEl) feedbackEl.innerHTML = res.errors.join(' | ');
             return false;
         }
         if (feedbackEl) feedbackEl.innerHTML = `<span style="color:#15803d;">${window.AppI18n.t('projectSettings.strongPassword')}</span>`;

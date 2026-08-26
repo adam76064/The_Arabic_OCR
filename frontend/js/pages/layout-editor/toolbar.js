@@ -32,7 +32,7 @@ function setupToolbar() {
         const originalText = btn.textContent;
         
         btn.disabled = true; 
-        btn.textContent = '⏳ جاري الحفظ...';
+        btn.textContent = 'جاري الحفظ...';
         
         try {
             if (window.pywebview?.api?.repopulate_page_text_from_raw) {
@@ -47,7 +47,7 @@ function setupToolbar() {
                 await window.pywebview.api.update_page_ocr(currentProject.id, currentPageIndex, ocrData);
             }
             
-            btn.textContent = '✔ تم الحفظ';
+            btn.textContent = 'تم الحفظ';
             setTimeout(() => { 
                 btn.textContent = originalText; 
                 btn.disabled = false; 

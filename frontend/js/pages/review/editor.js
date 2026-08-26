@@ -144,6 +144,7 @@ function renderBlocksList(ocrData) {
         const isActive = (index === selectedBlockIndex || multiSelectedBlocks.has(index));
         wrapper.className = 'text-block' + (element.reviewed ? ' block-reviewed' : '') + (isActive ? ' active-block' : '');
         wrapper.dataset.index = index;
+        wrapper.dataset.cat = element.category || 'Text';
         wrapper.draggable = false;
 
         const color = getCategoryColors()[element.category||'Text'] || '#3498db';
@@ -151,7 +152,7 @@ function renderBlocksList(ocrData) {
         const handle = document.createElement('span');
         handle.className = 'block-drag-handle';
         handle.title = editorText('editor.dragReorder');
-        handle.innerHTML = '⋮⋮';
+        handle.innerHTML = (window.AppIcons && window.AppIcons.get('drag')) || '⋮⋮';
         handle.dataset.handle = '1';
 
         const header = document.createElement('div');
@@ -169,7 +170,7 @@ function renderBlocksList(ocrData) {
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'block-delete-btn';
-        deleteBtn.textContent = '✕';
+        deleteBtn.innerHTML = (window.AppIcons && window.AppIcons.get('trash')) || '✕';
         deleteBtn.title = editorText('editor.deleteUndo');
 
         header.appendChild(handle);
@@ -200,8 +201,8 @@ function renderBlocksList(ocrData) {
             if (catFmt.underline) content.style.textDecoration = 'underline';
         }
 
-        // 👉 1. RENDER TABLE OR TEXT (Cleaned up - no duplicates)
-        // 👉 NEW: RENDER HTML TABLE IF APPLICABLE
+        // 1. RENDER TABLE OR TEXT
+        // NEW: RENDER HTML TABLE IF APPLICABLE
         if (isTableLike(element.category) && element.table_structure) {
             const table = document.createElement('table');
             table.className = 'review-table layout-table-overlay'; 
@@ -237,7 +238,7 @@ function renderBlocksList(ocrData) {
             catch { content.innerHTML = rawText; }
         }
 
-        // 👉 2. FOCUS & BLUR EVENTS (Cleaned up - no duplicates)
+        // 2. FOCUS & BLUR EVENTS
         let preEditSnapshot = null;
         content.addEventListener('focus', () => {
             activeEditingIndex = index;
