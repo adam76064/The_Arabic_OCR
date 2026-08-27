@@ -203,8 +203,16 @@ const AestheticDialog = {
 window.lastFocusedEditable = null;
 
 document.addEventListener('focusin', (e) => {
-    if (e.target && e.target.matches('.block-content, #text-preview-body, td')) {
-        window.lastFocusedEditable = e.target;
+    const ed = e.target.closest && e.target.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
+    if (ed) {
+        window.lastFocusedEditable = ed;
+    }
+});
+
+document.addEventListener('mousedown', (e) => {
+    const ed = e.target.closest && e.target.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
+    if (ed) {
+        window.lastFocusedEditable = ed;
     }
 });
 

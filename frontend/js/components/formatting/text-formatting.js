@@ -201,7 +201,6 @@ const TextFormatting = {
                 target.focus();
                 ensureWordSelectedIfCollapsed();
                 document.execCommand(sel.dataset.cmd, false, sel.value);
-                sel.selectedIndex = 0;
                 if (window.persistBrushEdit) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
@@ -324,8 +323,7 @@ function rgbToHex(rgbStr) {
     return `#${r}${g}${b}`;
 }
 
-function updateToolbarState(container) {
-    if (!container) container = document.getElementById('sticky-toolbar');
+function _syncSingleToolbar(container) {
     if (!container) return;
 
     const sel = window.getSelection();
@@ -337,26 +335,38 @@ function updateToolbarState(container) {
     const elem = node.nodeType === Node.TEXT_NODE ? node.parentNode : node;
     if (!elem) return;
 
-    const editable = elem.closest('.block-content, #text-preview-body');
+    const editable = elem.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
     if (!editable) return;
 
     // 1. Basic Formatting Commands
-    const isBold = document.queryCommandState('bold') || !!elem.closest('b, strong') || (window.getComputedStyle(elem).fontWeight >= 600) || window.getComputedStyle(elem).fontWeight === 'bold';
+    const isBold = document.queryCommandState('bold') || !!elem.closest('b, strong') || (parseInt(window.getComputedStyle(elem).fontWeight, 10) >= 600) || window.getComputedStyle(elem).fontWeight === 'bold';
     const isItalic = document.queryCommandState('italic') || !!elem.closest('i, em') || window.getComputedStyle(elem).fontStyle === 'italic';
-    const isUnderline = document.queryCommandState('underline') || !!elem.closest('u') || (window.getComputedStyle(elem).textDecorationLine || '').includes('underline');
-    const isStrike = document.queryCommandState('strikeThrough') || !!elem.closest('s, strike, del') || (window.getComputedStyle(elem).textDecorationLine || '').includes('line-through');
+    const isUnderline = document.queryCommandState('underline') || !!elem.closest('u') || (window.getComputedStyle(elem).textDecorationLine || '').includes('underline') || (window.getComputedStyle(elem).textDecoration || '').includes('underline');
+    const isStrike = document.queryCommandState('strikeThrough') || !!elem.closest('s, strike, del') || (window.getComputedStyle(elem).textDecorationLine || '').includes('line-through') || (window.getComputedStyle(elem).textDecoration || '').includes('line-through');
     const isSup = document.queryCommandState('superscript') || !!elem.closest('sup');
     const isSub = document.queryCommandState('subscript') || !!elem.closest('sub');
 
-    container.querySelector('button[data-cmd="bold"]')?.classList.toggle('active', isBold);
-    container.querySelector('button[data-cmd="italic"]')?.classList.toggle('active', isItalic);
-    container.querySelector('button[data-cmd="underline"]')?.classList.toggle('active', isUnderline);
-    container.querySelector('button[data-cmd="strikeThrough"]')?.classList.toggle('active', isStrike);
-    container.querySelector('button[data-cmd="superscript"]')?.classList.toggle('active', isSup);
-    container.querySelector('button[data-cmd="subscript"]')?.classList.toggle('active', isSub);
+    container.querySelector('button[data-cmd="bold"]')?.classList.toggle('active', !!isBold);
+    container.querySelector('button[data-cmd="italic"]')?.classList.toggle('active', !!isItalic);
+    container.querySelector('button[data-cmd="underline"]')?.classList.toggle('active', !!isUnderline);
+    container.querySelector('button[data-cmd="strikeThrough"]')?.classList.toggle('active', !!isStrike);
+    container.querySelector('button[data-cmd="superscript"]')?.classList.toggle('active', !!isSup);
+    container.querySelector('button[data-cmd="subscript"]')?.classList.toggle('active', !!isSub);
 
     // 2. Text Color
-    const fontColorHex = rgbToHex(window.getComputedStyle(elem).color);
+    let fontColorHex = null;
+    try {
+        const qColor = document.queryCommandValue('foreColor');
+        if (qColor) fontColorHex = rgbToHex(qColor);
+    } catch (e) {}
+    if (!fontColorHex) {
+        const colElem = elem.closest('font[color]') || elem.closest('[style*="color"]');
+        if (colElem) {
+            fontColorHex = rgbToHex(window.getComputedStyle(colElem).color);
+        } else {
+            fontColorHex = rgbToHex(window.getComputedStyle(elem).color);
+        }
+    }
     if (fontColorHex) {
         const bar = container.querySelector('#tf-fore-color-bar');
         const inp = container.querySelector('input[data-color-cmd="foreColor"]');
@@ -376,14 +386,96 @@ function updateToolbarState(container) {
         }
         bgNode = bgNode.parentNode;
     }
+    const hiliteBar = container.querySelector('#tf-hilite-color-bar');
+    const hiliteInp = container.querySelector('input[data-color-cmd="hiliteColor"]');
     if (bgColorHex) {
-        const bar = container.querySelector('#tf-hilite-color-bar');
-        const inp = container.querySelector('input[data-color-cmd="hiliteColor"]');
-        if (bar) bar.style.background = bgColorHex;
-        if (inp) inp.value = bgColorHex;
+        if (hiliteBar) hiliteBar.style.background = bgColorHex;
+        if (hiliteInp) hiliteInp.value = bgColorHex;
+    } else {
+        if (hiliteBar) hiliteBar.style.background = '#ffff00';
+        if (hiliteInp) hiliteInp.value = '#ffff00';
     }
 
-    // 4. Alignment
+    // 4. Font Family
+    const fontDropdown = container.querySelector('select[data-cmd="fontName"]');
+    if (fontDropdown) {
+        let currentFont = '';
+        try { currentFont = document.queryCommandValue('fontName') || ''; } catch (e) {}
+        if (!currentFont || currentFont === 'null' || currentFont === 'undefined') {
+            const fontElem = elem.closest('font[face]');
+            if (fontElem) currentFont = fontElem.getAttribute('face') || '';
+        }
+        if (!currentFont) {
+            const styledElem = elem.closest('[style*="font-family"]');
+            if (styledElem) currentFont = styledElem.style.fontFamily || '';
+        }
+        if (!currentFont) {
+            currentFont = window.getComputedStyle(elem).fontFamily || '';
+        }
+        const primaryFont = currentFont.split(',')[0].replace(/['"]/g, '').trim().toLowerCase();
+        let matchedIndex = 0;
+        if (primaryFont) {
+            for (let i = 1; i < fontDropdown.options.length; i++) {
+                const opt = fontDropdown.options[i];
+                if (opt.disabled) continue;
+                const optVal = opt.value.replace(/['"]/g, '').trim().toLowerCase();
+                const optText = opt.textContent.replace(/['"]/g, '').trim().toLowerCase();
+                if (optVal === primaryFont || optText === primaryFont || primaryFont.includes(optVal) || optVal.includes(primaryFont)) {
+                    matchedIndex = i;
+                    break;
+                }
+            }
+        }
+        fontDropdown.selectedIndex = matchedIndex;
+    }
+
+    // 5. Font Size
+    const fontSizeSel = container.querySelector('select[data-cmd="fontSize"]');
+    if (fontSizeSel) {
+        let currentSizeVal = '';
+        try { currentSizeVal = document.queryCommandValue('fontSize') || ''; } catch (e) {}
+        if (!currentSizeVal) {
+            const fontElem = elem.closest('font[size]');
+            if (fontElem) currentSizeVal = fontElem.getAttribute('size') || '';
+        }
+        let matchedSizeIndex = 0;
+        if (currentSizeVal && /^[1-7]$/.test(String(currentSizeVal).trim())) {
+            for (let i = 1; i < fontSizeSel.options.length; i++) {
+                if (fontSizeSel.options[i].value === String(currentSizeVal).trim()) {
+                    matchedSizeIndex = i;
+                    break;
+                }
+            }
+        } else {
+            const compSize = window.getComputedStyle(elem).fontSize;
+            const px = parseFloat(compSize);
+            if (!isNaN(px) && px > 0) {
+                const pt = px * 0.75;
+                const ptMap = [
+                    { idx: 1, pt: 10 },
+                    { idx: 2, pt: 13 },
+                    { idx: 3, pt: 16 },
+                    { idx: 4, pt: 18 },
+                    { idx: 5, pt: 24 },
+                    { idx: 6, pt: 32 },
+                    { idx: 7, pt: 48 }
+                ];
+                let closestIdx = 0;
+                let minDiff = 3.5;
+                ptMap.forEach(item => {
+                    const diff = Math.abs(item.pt - pt);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIdx = item.idx;
+                    }
+                });
+                matchedSizeIndex = closestIdx;
+            }
+        }
+        fontSizeSel.selectedIndex = matchedSizeIndex;
+    }
+
+    // 6. Alignment
     const pElem = elem.closest('p, div, li, td, th, h1, h2, h3, h4, h5, h6') || elem;
     const computedAlign = window.getComputedStyle(pElem).textAlign || 'right';
     let align = 'right';
@@ -396,14 +488,14 @@ function updateToolbarState(container) {
         btn.classList.toggle('active', btn.dataset.align === align);
     });
 
-    // 5. Direction
+    // 7. Direction
     const dir = pElem.dir || window.getComputedStyle(pElem).direction || 'rtl';
     const normDir = dir.toLowerCase().includes('ltr') ? 'ltr' : 'rtl';
     container.querySelectorAll('[data-dir]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.dir === normDir);
     });
 
-    // 6. Block Styles (Line Spacing, Paragraph Spacing)
+    // 8. Block Styles (Line Spacing, Paragraph Spacing)
     const lineHeightSel = container.querySelector('select[data-style-cmd="lineHeight"]');
     if (lineHeightSel) {
         const lh = pElem.style.lineHeight || pElem.style.getPropertyValue('--block-line-height') || '';
@@ -444,6 +536,15 @@ function updateToolbarState(container) {
             }
         }
         if (!foundMb) marginBotSel.selectedIndex = 0;
+    }
+}
+
+function updateToolbarState(container) {
+    if (container) {
+        _syncSingleToolbar(container);
+    } else {
+        const toolbars = document.querySelectorAll('#sticky-toolbar, #text-preview-toolbar, .formatting-toolbar-group');
+        toolbars.forEach(tb => _syncSingleToolbar(tb));
     }
 }
 
@@ -554,3 +655,5 @@ function setupGlobalBrushes() {
 
 window.TextFormatting = TextFormatting;
 window.TEXT_TOOLBAR_HTML = TEXT_TOOLBAR_HTML;
+window.updateToolbarState = updateToolbarState;
+window.updateFormattingToolbarState = updateToolbarState;

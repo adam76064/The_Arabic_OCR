@@ -88,7 +88,8 @@ def _generate_poetry_html(el, cat):
         parts.append("</table>")
     return '\n'.join(parts)
 
-def _generate_body_html(project, page_indices):
+def _generate_body_html(project, page_indices, opts=None):
+    opts = opts or {}
     html_parts = []
     for i in page_indices:
         page = project['pages'][i]
@@ -159,8 +160,17 @@ def _generate_body_html(project, page_indices):
             elif align == 'left': css_align = 'left'
             else: css_align = 'justify'
             styles = [f"text-align: {css_align};"]
-            if cat_fmt.get('fontFamily'): styles.append(f"font-family: {cat_fmt['fontFamily']};")
-            if cat_fmt.get('fontSize'): styles.append(f"font-size: {cat_fmt['fontSize']};")
+            font_fam = cat_fmt.get('fontFamily') or opts.get('font_name')
+            if font_fam: styles.append(f"font-family: {font_fam};")
+            
+            block_font_size = el.get('font_size') or el.get('fontSize') or el.get('size') or cat_fmt.get('fontSize')
+            if block_font_size:
+                sz_str = str(block_font_size)
+                if sz_str.isdigit(): sz_str += 'pt'
+                styles.append(f"font-size: {sz_str};")
+            elif opts.get('font_size'):
+                styles.append(f"font-size: {opts['font_size']}pt;")
+
             if cat_fmt.get('color'): styles.append(f"color: {cat_fmt['color']};")
             if cat_fmt.get('bgColor'): styles.append(f"background-color: {cat_fmt['bgColor']};")
             if cat_fmt.get('bold'): styles.append("font-weight: bold;")
@@ -172,80 +182,93 @@ def _generate_body_html(project, page_indices):
         html_parts.append("</div>")
     return "\n".join(html_parts)
 
-def get_arabic_css():
-    return """
-    body {
+def get_arabic_css(font_name=None, font_size=None, line_spacing=None):
+    font_fam = f"'{font_name}', 'Simplified Arabic', 'Amiri', serif" if font_name else "'Simplified Arabic', 'Amiri', 'Traditional Arabic', serif"
+    lh = str(line_spacing) if line_spacing else "2.0"
+    fs = f"{font_size}pt" if font_size else "14pt"
+    return f"""
+    body {{
         direction: rtl;
         unicode-bidi: embed;
-        font-family: 'Amiri', 'Traditional Arabic', serif;
-        line-height: 2.0;
+        font-family: {font_fam};
+        font-size: {fs};
+        line-height: {lh};
         margin: 5%;
-    }
-    p { margin-top: 0; margin-bottom: 1em; }
-    table.poetry-table {
+    }}
+    p {{ margin-top: 0; margin-bottom: 1em; }}
+    table.poetry-table {{
         width: 100%;
         margin: 1.5em auto;
         direction: rtl;
         border-collapse: collapse;
         border: none;
-    }
-    table.poetry-table td {
+    }}
+    table.poetry-table td {{
         border: none;
         padding: 0.2em 4px;
         vertical-align: bottom;
-    }
+    }}
     table.poetry-amudi .hemistich-right,
-    table.poetry-amudi .hemistich-left {
+    table.poetry-amudi .hemistich-left {{
         width: 45%;
         text-align: justify;
         text-align-last: justify;
         text-justify: kashida;
-    }
-    table.poetry-amudi .poetry-sep {
+    }}
+    table.poetry-amudi .poetry-sep {{
         width: 10%;
         text-align: center;
         color: #888;
         font-weight: 300;
-    }
+    }}
     table.poetry-mutadarij .hemistich-right,
-    table.poetry-mutadarij .hemistich-left {
+    table.poetry-mutadarij .hemistich-left {{
         width: 48%;
         text-align: justify;
         text-align-last: justify;
         text-justify: kashida;
-    }
-    table.poetry-mutadarij .hemistich-placeholder { width: 48%; }
-    table.poetry-mutadarij .poetry-sep { width: 4%; }
-    .arab-table { 
+    }}
+    table.poetry-mutadarij .hemistich-placeholder {{ width: 48%; }}
+    table.poetry-mutadarij .poetry-sep {{ width: 4%; }}
+    .arab-table {{ 
         width: 100%; 
         border-collapse: collapse; 
         margin: 1.5em 0; 
         page-break-inside: avoid;
-    }
-    .arab-table td, .arab-table th { 
+    }}
+    .arab-table td, .arab-table th {{ 
         border: 1px solid #666; 
         padding: 8px; 
         text-align: center; 
-    }
-    .page-break { page-break-after: always; }
+    }}
+    .page-break {{ page-break-after: always; }}
     """
 
 def export_html(project, page_indices, output_path, opts=None):
+    opts = opts or {}
+    font_name = opts.get('font_name')
+    font_size = opts.get('font_size')
+    line_spacing = opts.get('line_spacing')
     title = project['metadata'].get('title', 'Export')
-    body_content = _generate_body_html(project, page_indices)
+    body_content = _generate_body_html(project, page_indices, opts=opts)
     html_content = get_xhtml_template(title, body_content)
+    css_content = get_arabic_css(font_name=font_name, font_size=font_size, line_spacing=line_spacing)
     html_content = html_content.replace(
         '<link rel="stylesheet" type="text/css" href="css/styles.css" />', 
-        f"<style>\n{get_arabic_css()}\n</style>"
+        f"<style>\n{css_content}\n</style>"
     )
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
     return output_path
 
 def export_epub3(project, page_indices, output_path, opts=None):
+    opts = opts or {}
+    font_name = opts.get('font_name')
+    font_size = opts.get('font_size')
+    line_spacing = opts.get('line_spacing')
     title = project['metadata'].get('title', 'Export')
-    body_content = _generate_body_html(project, page_indices)
-    css_content = get_arabic_css()
+    body_content = _generate_body_html(project, page_indices, opts=opts)
+    css_content = get_arabic_css(font_name=font_name, font_size=font_size, line_spacing=line_spacing)
     html_content = get_xhtml_template(title, body_content)
     manifest = """<item id="style" href="css/styles.css" media-type="text/css"/>\n                  <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>"""
     spine = """<itemref idref="chapter1"/>"""

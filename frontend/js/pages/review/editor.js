@@ -254,12 +254,17 @@ function renderBlocksList(ocrData) {
         content.addEventListener('focus', () => {
             activeEditingIndex = index;
             selectBlock(index); 
+            window.lastFocusedEditable = content;
             document.getElementById('sticky-toolbar').classList.remove('disabled');
             
-            document.querySelectorAll('#sticky-toolbar button[data-align]').forEach(b =>
-                b.classList.toggle('active', b.dataset.align === (element.align || '')));
-            document.querySelectorAll('#sticky-toolbar button[data-dir]').forEach(b =>
-                b.classList.toggle('active', b.dataset.dir === (element.dir || 'rtl')));
+            if (typeof window.updateToolbarState === 'function') {
+                window.updateToolbarState(document.getElementById('sticky-toolbar'));
+            } else {
+                document.querySelectorAll('#sticky-toolbar button[data-align]').forEach(b =>
+                    b.classList.toggle('active', b.dataset.align === (element.align || '')));
+                document.querySelectorAll('#sticky-toolbar button[data-dir]').forEach(b =>
+                    b.classList.toggle('active', b.dataset.dir === (element.dir || 'rtl')));
+            }
                 
             preEditSnapshot = JSON.parse(JSON.stringify(currentProject.pages[currentPageIndex].ocr_data));
             if (typeof window.updateTrackingHighlight === 'function') window.updateTrackingHighlight(content, element); else if (typeof updateTrackingHighlight === 'function') updateTrackingHighlight(content, element);
