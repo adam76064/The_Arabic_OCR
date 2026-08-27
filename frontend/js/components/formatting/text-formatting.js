@@ -2,6 +2,7 @@
 // ══════════════════════════════════════════════════════════════════════
 // TEXT FORMATTING TAB + GLOBAL BRUSHES
 // ══════════════════════════════════════════════════════════════════════
+(function (global) {
 
 const TEXT_ICONS = {
     bold: `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"/></svg>`,
@@ -22,16 +23,16 @@ const TEXT_ICONS = {
     dirLtr: `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="display:inline-block;visibility:visible;opacity:1;"><path d="M3 6h12M3 12h8M3 18h12"/><path d="M17 9l4 3l-4 3"/><path d="M21 12h-6"/></svg>`,
 };
 
-const textToolText = (key) => window.AppI18n?.t(key) || key;
+const textToolText = (key) => global.AppI18n?.t(key) || key;
 
 function getTextToolbarHTML() {
     return `
-    <button class="toolbar-icon-btn" data-cmd="bold" title="${textToolText('format.bold')}">${TEXT_ICONS.bold}</button>
-    <button class="toolbar-icon-btn" data-cmd="italic" title="${textToolText('format.italic')}">${TEXT_ICONS.italic}</button>
-    <button class="toolbar-icon-btn" data-cmd="underline" title="${textToolText('format.underline')}">${TEXT_ICONS.underline}</button>
-    <button class="toolbar-icon-btn" data-cmd="strikeThrough" title="${textToolText('format.strike')}">${TEXT_ICONS.strikeThrough}</button>
-    <button class="toolbar-icon-btn" data-cmd="superscript" title="${textToolText('format.superscript')}">${TEXT_ICONS.superscript}</button>
-    <button class="toolbar-icon-btn" data-cmd="subscript" title="${textToolText('format.subscript')}">${TEXT_ICONS.subscript}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="bold" title="${textToolText('format.bold')}">${TEXT_ICONS.bold}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="italic" title="${textToolText('format.italic')}">${TEXT_ICONS.italic}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="underline" title="${textToolText('format.underline')}">${TEXT_ICONS.underline}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="strikeThrough" title="${textToolText('format.strike')}">${TEXT_ICONS.strikeThrough}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="superscript" title="${textToolText('format.superscript')}">${TEXT_ICONS.superscript}</button>
+    <button type="button" class="toolbar-icon-btn" data-cmd="subscript" title="${textToolText('format.subscript')}">${TEXT_ICONS.subscript}</button>
     <span class="toolbar-icon-sep"></span>
 
     <label class="toolbar-icon-color-label" title="${textToolText('format.textColor')}">
@@ -49,7 +50,10 @@ function getTextToolbarHTML() {
     <select class="toolbar-select dynamic-font-dropdown" data-cmd="fontName" style="max-width: 130px;">
         <option value="">${textToolText('format.font')}</option>
         <option value="Arial">Arial</option>
-        <option value="'Simplified Arabic'">Simplified Arabic</option>
+        <option value="Simplified Arabic">Simplified Arabic</option>
+        <option value="Traditional Arabic">Traditional Arabic</option>
+        <option value="Amiri">Amiri</option>
+        <option value="Cairo">Cairo</option>
     </select>
     <select class="toolbar-select" data-cmd="fontSize">
         <option value="">${textToolText('format.size')}</option>
@@ -83,18 +87,18 @@ function getTextToolbarHTML() {
     </select>
     <span class="toolbar-icon-sep"></span>
 
-    <button class="toolbar-icon-btn brush-btn" data-brush="tashkeel" title="${textToolText('format.removeTashkeel')}">${TEXT_ICONS.tashkeel}</button>
-    <button class="toolbar-icon-btn brush-btn" data-brush="format" title="${textToolText('format.copyFormatting')}">${TEXT_ICONS.formatPainter}</button>
-    <button class="toolbar-icon-btn brush-btn" data-brush="removeFormat" title="${textToolText('format.removeFormatting')}">${TEXT_ICONS.removeFormat}</button>
+    <button type="button" class="toolbar-icon-btn brush-btn" data-brush="tashkeel" title="${textToolText('format.removeTashkeel')}">${TEXT_ICONS.tashkeel}</button>
+    <button type="button" class="toolbar-icon-btn brush-btn" data-brush="format" title="${textToolText('format.copyFormatting')}">${TEXT_ICONS.formatPainter}</button>
+    <button type="button" class="toolbar-icon-btn brush-btn" data-brush="removeFormat" title="${textToolText('format.removeFormatting')}">${TEXT_ICONS.removeFormat}</button>
 
     <span class="toolbar-icon-sep block-only-tool"></span>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="right" title="${textToolText('format.alignRight')}">${TEXT_ICONS.alignRight}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="center" title="${textToolText('format.alignCenter')}">${TEXT_ICONS.alignCenter}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="left" title="${textToolText('format.alignLeft')}">${TEXT_ICONS.alignLeft}</button>
-    <button class="toolbar-icon-btn block-only-tool align-btn" data-align="justify" title="${textToolText('format.justify')}">${TEXT_ICONS.alignJustify}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool align-btn" data-align="right" title="${textToolText('format.alignRight')}">${TEXT_ICONS.alignRight}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool align-btn" data-align="center" title="${textToolText('format.alignCenter')}">${TEXT_ICONS.alignCenter}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool align-btn" data-align="left" title="${textToolText('format.alignLeft')}">${TEXT_ICONS.alignLeft}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool align-btn" data-align="justify" title="${textToolText('format.justify')}">${TEXT_ICONS.alignJustify}</button>
     <span class="toolbar-icon-sep block-only-tool"></span>
-    <button class="toolbar-icon-btn block-only-tool" data-dir="rtl" title="${textToolText('format.rtl')}">${TEXT_ICONS.dirRtl}</button>
-    <button class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="${textToolText('format.ltr')}">${TEXT_ICONS.dirLtr}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool" data-dir="rtl" title="${textToolText('format.rtl')}">${TEXT_ICONS.dirRtl}</button>
+    <button type="button" class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="${textToolText('format.ltr')}">${TEXT_ICONS.dirLtr}</button>
     `;
 }
 
@@ -109,18 +113,19 @@ function saveCurrentSelection() {
     const range = sel.getRangeAt(0);
     const node = range.startContainer;
     const elem = node.nodeType === Node.TEXT_NODE ? node.parentNode : node;
-    const editable = elem.closest && elem.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
+    const editable = elem.closest && elem.closest('.block-content, #text-preview-body, [contenteditable="true"], td, th');
     if (editable) {
         savedSelectionRange = range.cloneRange();
         savedEditable = editable;
-        window.lastFocusedEditable = editable;
+        global.lastFocusedEditable = editable.closest('.block-content, #text-preview-body, [contenteditable="true"]') || editable;
     }
 }
 
 function restoreSelection() {
-    if (savedSelectionRange && savedEditable) {
-        if (document.activeElement !== savedEditable) {
-            savedEditable.focus();
+    const target = savedEditable || global.lastFocusedEditable;
+    if (savedSelectionRange && target) {
+        if (document.activeElement !== target && !target.contains(document.activeElement)) {
+            target.focus();
         }
         const sel = window.getSelection();
         if (sel) {
@@ -129,7 +134,6 @@ function restoreSelection() {
         }
         return true;
     }
-    const target = window.lastFocusedEditable;
     if (target) {
         target.focus();
         return true;
@@ -187,7 +191,9 @@ function ensureWordSelectedIfCollapsed() {
 let cachedSystemFonts = null;
 
 const TextFormatting = {
-    async init(container) {
+    init(container) {
+        if (!container) return;
+
         // Prevent toolbar buttons from stealing focus / collapsing selection on mousedown
         container.querySelectorAll('button, label.toolbar-icon-color-label').forEach(btn => {
             btn.addEventListener('mousedown', (e) => {
@@ -203,41 +209,50 @@ const TextFormatting = {
             el.addEventListener('focus', () => saveCurrentSelection());
         });
 
-        // Font population
+        // Asynchronous font population
         const fontDropdown = container.querySelector('.dynamic-font-dropdown');
         if (fontDropdown) {
-            if (!cachedSystemFonts) {
-                try {
-                    const response = await window.pywebview.api.get_system_fonts();
-                    if (response && response.ok) cachedSystemFonts = response.fonts;
-                } catch (err) { console.error("Could not load system fonts"); }
-            }
-            if (cachedSystemFonts && cachedSystemFonts.length > 0) {
+            const populateFonts = (fonts) => {
+                if (!fonts || fonts.length === 0) return;
+                if (fontDropdown.dataset.fontsLoaded === '1') return;
+                fontDropdown.dataset.fontsLoaded = '1';
                 fontDropdown.innerHTML += `<option disabled>──────────</option>`;
-                cachedSystemFonts.forEach(font => {
-                    const fontValue = font.includes(' ') ? "'" + font + "'" : font;
+                fonts.forEach(font => {
+                    const fontValue = font.includes(' ') ? font : font;
                     const displayName = font.length > 22 ? font.substring(0, 22) + '...' : font;
                     fontDropdown.innerHTML += `<option value="${fontValue}" title="${font}">${displayName}</option>`;
                 });
+            };
+
+            if (cachedSystemFonts) {
+                populateFonts(cachedSystemFonts);
+            } else if (global.pywebview?.api?.get_system_fonts) {
+                global.pywebview.api.get_system_fonts().then(response => {
+                    if (response && response.ok && response.fonts) {
+                        cachedSystemFonts = response.fonts;
+                        populateFonts(cachedSystemFonts);
+                    }
+                }).catch(err => console.warn("Could not load system fonts:", err));
             }
         }
 
         // Basic Formatting (auto-selects word if selection is collapsed)
         container.querySelectorAll('button[data-cmd]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 restoreSelection();
                 ensureWordSelectedIfCollapsed();
                 const cmd = btn.dataset.cmd;
                 document.execCommand(cmd, false, null);
                 saveCurrentSelection();
-                const target = window.lastFocusedEditable;
-                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
+                const target = global.lastFocusedEditable || savedEditable;
+                if (global.persistBrushEdit && target) global.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         container.querySelectorAll('input[data-color-cmd]').forEach(inp => {
-            inp.addEventListener('input', () => {
+            const applyColor = () => {
                 restoreSelection();
                 ensureWordSelectedIfCollapsed();
                 const cmd = inp.dataset.colorCmd;
@@ -247,10 +262,12 @@ const TextFormatting = {
                     : container.querySelector('#tf-hilite-color-bar');
                 if (bar) bar.style.background = inp.value;
                 saveCurrentSelection();
-                const target = window.lastFocusedEditable;
-                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
+                const target = global.lastFocusedEditable || savedEditable;
+                if (global.persistBrushEdit && target) global.persistBrushEdit(target);
                 updateToolbarState(container);
-            });
+            };
+            inp.addEventListener('input', applyColor);
+            inp.addEventListener('change', applyColor);
         });
 
         container.querySelectorAll('select[data-cmd]').forEach(sel => {
@@ -258,22 +275,26 @@ const TextFormatting = {
                 restoreSelection();
                 ensureWordSelectedIfCollapsed();
                 const cmd = sel.dataset.cmd;
-                const val = sel.value;
+                let val = sel.value;
                 if (val) {
+                    if (cmd === 'fontName') {
+                        val = val.replace(/^['"]|['"]$/g, '');
+                    }
                     document.execCommand(cmd, false, val);
                 }
                 saveCurrentSelection();
-                const target = window.lastFocusedEditable;
-                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
+                const target = global.lastFocusedEditable || savedEditable;
+                if (global.persistBrushEdit && target) global.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         // Paragraph-level Alignment Logic
         container.querySelectorAll('.align-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 restoreSelection();
-                const target = window.lastFocusedEditable;
+                const target = global.lastFocusedEditable || savedEditable;
                 if (!target) return;
 
                 const alignVal = btn.dataset.align;
@@ -283,7 +304,7 @@ const TextFormatting = {
 
                 // 1. Table Cells Alignment
                 const td = currElem ? currElem.closest('td, th') : null;
-                const multi = window.TableSelection ? window.TableSelection.getSelectedCells(td) : (td ? [td] : []);
+                const multi = global.TableSelection ? global.TableSelection.getSelectedCells(td) : (td ? [td] : []);
 
                 if (multi.length > 1) {
                     multi.forEach(c => { c.style.textAlign = alignVal; });
@@ -302,16 +323,17 @@ const TextFormatting = {
                     }
                 }
                 saveCurrentSelection();
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                if (global.persistBrushEdit) global.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         // Paragraph-level Direction Logic
         container.querySelectorAll('[data-dir]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 restoreSelection();
-                const target = window.lastFocusedEditable;
+                const target = global.lastFocusedEditable || savedEditable;
                 if (!target) return;
 
                 const dirVal = btn.dataset.dir;
@@ -334,7 +356,7 @@ const TextFormatting = {
                     }
                 }
                 saveCurrentSelection();
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                if (global.persistBrushEdit) global.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
@@ -343,7 +365,7 @@ const TextFormatting = {
         container.querySelectorAll('select[data-style-cmd]').forEach(sel => {
             sel.addEventListener('change', () => {
                 restoreSelection();
-                const target = window.lastFocusedEditable;
+                const target = global.lastFocusedEditable || savedEditable;
                 if (!target) return;
 
                 const cmd = sel.dataset.styleCmd;
@@ -371,7 +393,7 @@ const TextFormatting = {
                 }
 
                 saveCurrentSelection();
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                if (global.persistBrushEdit) global.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
@@ -412,7 +434,7 @@ function _syncSingleToolbar(container) {
     const elem = node.nodeType === Node.TEXT_NODE ? node.parentNode : node;
     if (!elem) return;
 
-    const editable = elem.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
+    const editable = elem.closest && elem.closest('.block-content, #text-preview-body, [contenteditable="true"], td, th');
     if (!editable) return;
 
     // 1. Basic Formatting Commands
@@ -693,7 +715,7 @@ function updateToolbarState(container) {
 // ══════════════════════════════════════════════════════════════════════
 let _brushesBound = false;
 function setupGlobalBrushes() {
-    if (_brushesBound) return; // avoid double-binding if init() runs more than once
+    if (_brushesBound) return;
     _brushesBound = true;
 
     const TASHKEEL_RE = /[\u064B-\u0652\u0670\u0653-\u0655]/g;
@@ -749,7 +771,7 @@ function setupGlobalBrushes() {
         const name = btn.dataset.brush;
 
         if (name === 'format' && activeBrush !== 'format') {
-            if (!window.lastFocusedEditable) return;
+            if (!global.lastFocusedEditable) return;
             copiedStyle = {
                 bold: document.queryCommandState('bold'), italic: document.queryCommandState('italic'),
                 underline: document.queryCommandState('underline'), strikeThrough: document.queryCommandState('strikeThrough'),
@@ -774,18 +796,18 @@ function setupGlobalBrushes() {
         if (activeBrush === 'tashkeel') {
             const range = sel.getRangeAt(0);
             removeTashkeelFromRange(range);
-            if (window.persistBrushEdit) window.persistBrushEdit(contentEl);
+            if (global.persistBrushEdit) global.persistBrushEdit(contentEl);
             sel.removeAllRanges();
         } else if (activeBrush === 'format' && copiedStyle) {
             if (copiedStyle.bold) document.execCommand('bold', false, null);
             if (copiedStyle.italic) document.execCommand('italic', false, null);
             if (copiedStyle.underline) document.execCommand('underline', false, null);
             if (copiedStyle.strikeThrough) document.execCommand('strikeThrough', false, null);
-            if (window.persistBrushEdit) window.persistBrushEdit(contentEl);
+            if (global.persistBrushEdit) global.persistBrushEdit(contentEl);
             deactivateBrushes();
         } else if (activeBrush === 'removeFormat') {
             document.execCommand('removeFormat', false, null);
-            if (window.persistBrushEdit) window.persistBrushEdit(contentEl);
+            if (global.persistBrushEdit) global.persistBrushEdit(contentEl);
             deactivateBrushes();
         }
     });
@@ -793,8 +815,11 @@ function setupGlobalBrushes() {
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && activeBrush) deactivateBrushes(); });
 }
 
-window.TextFormatting = TextFormatting;
-window.TEXT_TOOLBAR_HTML = TEXT_TOOLBAR_HTML;
-window.getTextToolbarHTML = getTextToolbarHTML;
-window.updateToolbarState = updateToolbarState;
-window.updateFormattingToolbarState = updateToolbarState;
+global.TextFormatting = TextFormatting;
+global.TEXT_TOOLBAR_HTML = TEXT_TOOLBAR_HTML;
+global.getTextToolbarHTML = getTextToolbarHTML;
+global.updateToolbarState = updateToolbarState;
+global.updateFormattingToolbarState = updateToolbarState;
+
+})(window);
+
