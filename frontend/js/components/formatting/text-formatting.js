@@ -135,8 +135,12 @@ function restoreSelection() {
         if (savedSelectionRange) {
             const sel = window.getSelection();
             if (sel) {
-                sel.removeAllRanges();
-                sel.addRange(savedSelectionRange);
+                try {
+                    sel.removeAllRanges();
+                    sel.addRange(savedSelectionRange);
+                } catch (e) {
+                    console.warn('[TextFormatting] restoreSelection error:', e);
+                }
             }
             return true;
         }
@@ -192,103 +196,101 @@ function ensureWordSelectedIfCollapsed() {
     }
 }
 
+function getActiveTarget() {
+    return global.lastFocusedEditable || savedEditable || document.querySelector('.text-block.active-block .block-content, .text-block .block-content:focus, #text-preview-body');
+}
+
 function applyFontSize(val, target) {
+    target = target || getActiveTarget();
     if (!val || !target) return;
+    restoreSelection();
     const sel = window.getSelection();
-    const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed;
+    const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed && target.contains(sel.anchorNode);
 
     if (hasSelection) {
         try { document.execCommand('styleWithCSS', false, true); } catch (e) {}
         document.execCommand('fontSize', false, '7');
-        const styled = target.querySelectorAll('font[size="7"], span[style*="xxx-large"], span[style*="48px"], font[size]');
+        const styled = target.querySelectorAll('font[size], span[style*="xxx-large"], span[style*="xx-large"], span[style*="48px"], span[style*="font-size: 7"], font[size="7"]');
         styled.forEach(el => {
             el.removeAttribute('size');
             el.style.fontSize = val;
         });
     } else {
-        ensureWordSelectedIfCollapsed();
-        const updatedSel = window.getSelection();
-        if (updatedSel && updatedSel.rangeCount > 0 && !updatedSel.isCollapsed) {
-            try { document.execCommand('styleWithCSS', false, true); } catch (e) {}
-            document.execCommand('fontSize', false, '7');
-            const styled = target.querySelectorAll('font[size="7"], span[style*="xxx-large"], span[style*="48px"], font[size]');
-            styled.forEach(el => {
-                el.removeAttribute('size');
-                el.style.fontSize = val;
-            });
-        } else {
-            target.style.fontSize = val;
-            target.style.setProperty('--block-font-size', val);
-        }
+        target.style.fontSize = val;
+        target.style.setProperty('--block-font-size', val);
+        target.querySelectorAll('p').forEach(p => {
+            p.style.fontSize = val;
+        });
     }
 }
 
 function applyFontName(val, target) {
+    target = target || getActiveTarget();
     if (!val || !target) return;
+    restoreSelection();
     const fontName = val.replace(/^['"]|['"]$/g, '');
     const sel = window.getSelection();
-    const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed;
+    const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed && target.contains(sel.anchorNode);
 
     if (hasSelection) {
         try { document.execCommand('styleWithCSS', false, true); } catch (e) {}
         document.execCommand('fontName', false, fontName);
-        const styled = target.querySelectorAll(`font[face="${fontName}"], font[face]`);
+        const styled = target.querySelectorAll(`font[face], span[style*="font-family"]`);
         styled.forEach(el => {
-            el.removeAttribute('face');
-            el.style.fontFamily = fontName;
-        });
-    } else {
-        ensureWordSelectedIfCollapsed();
-        const updatedSel = window.getSelection();
-        if (updatedSel && updatedSel.rangeCount > 0 && !updatedSel.isCollapsed) {
-            try { document.execCommand('styleWithCSS', false, true); } catch (e) {}
-            document.execCommand('fontName', false, fontName);
-            const styled = target.querySelectorAll(`font[face="${fontName}"], font[face]`);
-            styled.forEach(el => {
+            if (el.hasAttribute('face') || el.style.fontFamily.toLowerCase().includes(fontName.toLowerCase())) {
                 el.removeAttribute('face');
                 el.style.fontFamily = fontName;
-            });
-        } else {
-            target.style.fontFamily = fontName;
-        }
+            }
+        });
+    } else {
+        target.style.fontFamily = fontName;
+        target.querySelectorAll('p').forEach(p => {
+            p.style.fontFamily = fontName;
+        });
     }
 }
 
 function applyStyleCmd(cmd, val, target) {
+    target = target || getActiveTarget();
     if (!target) return;
-    const selection = window.getSelection();
-    const node = selection && selection.rangeCount ? selection.anchorNode : null;
-    const currElem = node ? (node.nodeType === Node.TEXT_NODE ? node.parentNode : node) : target;
-    const pElem = currElem ? currElem.closest('p, div, li, td, th, h1, h2, h3, h4, h5, h6') : null;
 
     if (cmd === 'lineHeight') {
         target.style.lineHeight = val;
         target.style.setProperty('--block-line-height', val);
-        if (pElem && target.contains(pElem) && pElem !== target) {
-            pElem.style.lineHeight = val;
-            pElem.style.setProperty('--block-line-height', val);
-        }
         target.querySelectorAll('p').forEach(p => {
             p.style.lineHeight = val;
         });
     } else if (cmd === 'marginTop') {
         target.style.marginTop = val;
         target.style.setProperty('--block-space-before', val);
-        if (pElem && target.contains(pElem) && pElem !== target) {
-            pElem.style.marginTop = val;
-            pElem.style.setProperty('--p-space-before', val);
-        }
+        target.style.setProperty('--p-space-before', val);
+        target.querySelectorAll('p').forEach(p => {
+            p.style.marginTop = val;
+            p.style.setProperty('--p-space-before', val);
+        });
     } else if (cmd === 'marginBottom') {
         target.style.marginBottom = val;
         target.style.setProperty('--block-space-after', val);
-        if (pElem && target.contains(pElem) && pElem !== target) {
-            pElem.style.marginBottom = val;
-            pElem.style.setProperty('--p-space-after', val);
-        }
+        target.style.setProperty('--p-space-after', val);
+        target.querySelectorAll('p').forEach(p => {
+            p.style.marginBottom = val;
+            p.style.setProperty('--p-space-after', val);
+        });
     }
 }
 
 let cachedSystemFonts = null;
+let _syncListenersAttached = false;
+let _syncPending = false;
+
+function scheduleToolbarSync(container) {
+    if (_syncPending) return;
+    _syncPending = true;
+    requestAnimationFrame(() => {
+        _syncPending = false;
+        updateToolbarState(container);
+    });
+}
 
 const TextFormatting = {
     init(container) {
@@ -345,9 +347,9 @@ const TextFormatting = {
                 const cmd = btn.dataset.cmd;
                 document.execCommand(cmd, false, null);
                 saveCurrentSelection();
-                const target = global.lastFocusedEditable || savedEditable;
+                const target = getActiveTarget();
                 if (global.persistBrushEdit && target) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                scheduleToolbarSync(container);
             });
         });
 
@@ -364,9 +366,9 @@ const TextFormatting = {
                     : container.querySelector('#tf-hilite-color-bar');
                 if (bar) bar.style.background = inp.value;
                 saveCurrentSelection();
-                const target = global.lastFocusedEditable || savedEditable;
+                const target = getActiveTarget();
                 if (global.persistBrushEdit && target) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                scheduleToolbarSync(container);
             };
             inp.addEventListener('input', applyColor);
             inp.addEventListener('change', applyColor);
@@ -375,10 +377,9 @@ const TextFormatting = {
         // Font Family & Font Size Dropdowns
         container.querySelectorAll('select[data-cmd]').forEach(sel => {
             sel.addEventListener('change', () => {
-                restoreSelection();
+                const target = getActiveTarget();
                 const cmd = sel.dataset.cmd;
                 const val = sel.value;
-                const target = global.lastFocusedEditable || savedEditable;
 
                 if (val && target) {
                     if (cmd === 'fontSize') {
@@ -386,13 +387,14 @@ const TextFormatting = {
                     } else if (cmd === 'fontName') {
                         applyFontName(val, target);
                     } else {
+                        restoreSelection();
                         document.execCommand(cmd, false, val);
                     }
                 }
 
                 saveCurrentSelection();
                 if (global.persistBrushEdit && target) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                scheduleToolbarSync(container);
             });
         });
 
@@ -401,7 +403,7 @@ const TextFormatting = {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 restoreSelection();
-                const target = global.lastFocusedEditable || savedEditable;
+                const target = getActiveTarget();
                 if (!target) return;
 
                 const alignVal = btn.dataset.align;
@@ -409,38 +411,32 @@ const TextFormatting = {
                 const node = selection && selection.rangeCount ? selection.anchorNode : null;
                 const currElem = node ? (node.nodeType === 3 ? node.parentNode : node) : target;
 
-                // 1. Table Cells Alignment
-                const td = currElem ? currElem.closest('td, th') : null;
-                const multi = global.TableSelection ? global.TableSelection.getSelectedCells(td) : (td ? [td] : []);
-
-                if (multi.length > 1) {
-                    multi.forEach(c => { c.style.textAlign = alignVal; });
-                } else if (td && target.contains(td)) {
+                if (currElem && currElem.closest && currElem.closest('td, th')) {
+                    const td = currElem.closest('td, th');
                     td.style.textAlign = alignVal;
                 } else {
-                    // 2. Paragraph-level Alignment
                     const pElem = currElem ? currElem.closest('p, div, li, h1, h2, h3, h4, h5, h6') : null;
                     if (pElem && target.contains(pElem) && pElem !== target) {
                         pElem.style.textAlign = alignVal;
-                    } else {
-                        let cmd = 'justify' + alignVal.charAt(0).toUpperCase() + alignVal.slice(1);
-                        if (alignVal === 'justify') cmd = 'justifyFull';
-                        try { document.execCommand(cmd, false, null); } catch (e) {}
-                        target.style.textAlign = alignVal;
                     }
+                    target.style.textAlign = alignVal;
+                    target.querySelectorAll('p').forEach(p => {
+                        p.style.textAlign = alignVal;
+                    });
                 }
+
                 saveCurrentSelection();
-                if (global.persistBrushEdit) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                if (global.persistBrushEdit && target) global.persistBrushEdit(target);
+                scheduleToolbarSync(container);
             });
         });
 
-        // Paragraph-level Direction Logic
+        // Direction Logic
         container.querySelectorAll('[data-dir]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 restoreSelection();
-                const target = global.lastFocusedEditable || savedEditable;
+                const target = getActiveTarget();
                 if (!target) return;
 
                 const dirVal = btn.dataset.dir;
@@ -448,8 +444,8 @@ const TextFormatting = {
                 const node = selection && selection.rangeCount ? selection.anchorNode : null;
                 const currElem = node ? (node.nodeType === 3 ? node.parentNode : node) : target;
 
-                const td = currElem ? currElem.closest('td, th') : null;
-                if (td && target.contains(td)) {
+                if (currElem && currElem.closest && currElem.closest('td, th')) {
+                    const td = currElem.closest('td, th');
                     td.dir = dirVal;
                     td.style.direction = dirVal;
                 } else {
@@ -457,45 +453,50 @@ const TextFormatting = {
                     if (pElem && target.contains(pElem) && pElem !== target) {
                         pElem.dir = dirVal;
                         pElem.style.direction = dirVal;
-                    } else {
-                        target.dir = dirVal;
-                        target.style.direction = dirVal;
                     }
+                    target.dir = dirVal;
+                    target.style.direction = dirVal;
+                    target.querySelectorAll('p').forEach(p => {
+                        p.dir = dirVal;
+                        p.style.direction = dirVal;
+                    });
                 }
+
                 saveCurrentSelection();
-                if (global.persistBrushEdit) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                if (global.persistBrushEdit && target) global.persistBrushEdit(target);
+                scheduleToolbarSync(container);
             });
         });
 
-        // Line Spacing & Paragraph Spacing Dropdowns
+        // Block-Level Style Properties (Line Height, Spacing Before, Spacing After)
         container.querySelectorAll('select[data-style-cmd]').forEach(sel => {
             sel.addEventListener('change', () => {
-                restoreSelection();
-                const target = global.lastFocusedEditable || savedEditable;
-                if (!target) return;
-
+                const target = getActiveTarget();
                 const cmd = sel.dataset.styleCmd;
                 const val = sel.value;
-                if (val) {
+
+                if (val && target) {
                     applyStyleCmd(cmd, val, target);
                 }
 
                 saveCurrentSelection();
                 if (global.persistBrushEdit && target) global.persistBrushEdit(target);
-                updateToolbarState(container);
+                scheduleToolbarSync(container);
             });
         });
 
-        // Dynamic Toolbar State Synchronizer
-        const syncToolbar = () => {
-            saveCurrentSelection();
-            updateToolbarState(container);
-        };
-        document.addEventListener('selectionchange', syncToolbar);
-        document.addEventListener('keyup', syncToolbar);
-        document.addEventListener('mouseup', syncToolbar);
-        document.addEventListener('focusin', syncToolbar);
+        // Attach global debounced synchronizer ONCE
+        if (!_syncListenersAttached) {
+            _syncListenersAttached = true;
+            const syncToolbar = () => {
+                saveCurrentSelection();
+                scheduleToolbarSync();
+            };
+            document.addEventListener('selectionchange', syncToolbar);
+            document.addEventListener('keyup', syncToolbar);
+            document.addEventListener('mouseup', syncToolbar);
+            document.addEventListener('focusin', syncToolbar);
+        }
 
         setupGlobalBrushes();
     }
@@ -520,22 +521,24 @@ function _syncSingleToolbar(container) {
     }
 
     const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) return;
+    let node = sel && sel.rangeCount > 0 ? sel.anchorNode : null;
+    let elem = node ? (node.nodeType === Node.TEXT_NODE ? node.parentNode : node) : null;
 
-    const node = sel.anchorNode;
-    if (!node) return;
-
-    const elem = node.nodeType === Node.TEXT_NODE ? node.parentNode : node;
+    if (!elem || !elem.closest('.block-content, #text-preview-body, [contenteditable="true"], td, th')) {
+        elem = savedEditable || global.lastFocusedEditable;
+    }
     if (!elem) return;
 
-    const editable = elem.closest && elem.closest('.block-content, #text-preview-body, [contenteditable="true"], td, th');
+    const editable = elem.closest ? elem.closest('.block-content, #text-preview-body, [contenteditable="true"], td, th') : elem;
     if (!editable) return;
 
+    const csElem = window.getComputedStyle(elem);
+
     // 1. Basic Formatting Commands
-    const isBold = document.queryCommandState('bold') || !!elem.closest('b, strong') || (parseInt(window.getComputedStyle(elem).fontWeight, 10) >= 600) || window.getComputedStyle(elem).fontWeight === 'bold';
-    const isItalic = document.queryCommandState('italic') || !!elem.closest('i, em') || window.getComputedStyle(elem).fontStyle === 'italic';
-    const isUnderline = document.queryCommandState('underline') || !!elem.closest('u') || (window.getComputedStyle(elem).textDecorationLine || '').includes('underline') || (window.getComputedStyle(elem).textDecoration || '').includes('underline');
-    const isStrike = document.queryCommandState('strikeThrough') || !!elem.closest('s, strike, del') || (window.getComputedStyle(elem).textDecorationLine || '').includes('line-through') || (window.getComputedStyle(elem).textDecoration || '').includes('line-through');
+    const isBold = document.queryCommandState('bold') || !!elem.closest('b, strong') || (parseInt(csElem.fontWeight, 10) >= 600) || csElem.fontWeight === 'bold';
+    const isItalic = document.queryCommandState('italic') || !!elem.closest('i, em') || csElem.fontStyle === 'italic';
+    const isUnderline = document.queryCommandState('underline') || !!elem.closest('u') || (csElem.textDecorationLine || '').includes('underline') || (csElem.textDecoration || '').includes('underline');
+    const isStrike = document.queryCommandState('strikeThrough') || !!elem.closest('s, strike, del') || (csElem.textDecorationLine || '').includes('line-through') || (csElem.textDecoration || '').includes('line-through');
     const isSup = document.queryCommandState('superscript') || !!elem.closest('sup');
     const isSub = document.queryCommandState('subscript') || !!elem.closest('sub');
 
@@ -554,44 +557,35 @@ function _syncSingleToolbar(container) {
     } catch (e) {}
     if (!fontColorHex) {
         const colElem = elem.closest('font[color]') || elem.closest('[style*="color"]');
-        if (colElem) {
-            fontColorHex = rgbToHex(window.getComputedStyle(colElem).color);
-        } else {
-            fontColorHex = rgbToHex(window.getComputedStyle(elem).color);
-        }
+        if (colElem) fontColorHex = rgbToHex(colElem.style.color || window.getComputedStyle(colElem).color);
+        else fontColorHex = rgbToHex(csElem.color);
     }
     if (fontColorHex) {
         const bar = container.querySelector('#tf-fore-color-bar');
         const inp = container.querySelector('input[data-color-cmd="foreColor"]');
         if (bar) bar.style.background = fontColorHex;
-        if (inp) inp.value = fontColorHex;
+        if (inp && document.activeElement !== inp) inp.value = fontColorHex;
     }
 
     // 3. Highlight Color
-    let bgNode = elem;
     let bgColorHex = null;
-    while (bgNode && bgNode !== editable && bgNode.parentNode) {
-        const bg = window.getComputedStyle(bgNode).backgroundColor;
-        const hex = rgbToHex(bg);
-        if (hex) {
-            bgColorHex = hex;
-            break;
-        }
-        bgNode = bgNode.parentNode;
+    const bgElem = elem.closest('[style*="background"]');
+    if (bgElem) {
+        bgColorHex = rgbToHex(bgElem.style.backgroundColor || window.getComputedStyle(bgElem).backgroundColor);
     }
     const hiliteBar = container.querySelector('#tf-hilite-color-bar');
     const hiliteInp = container.querySelector('input[data-color-cmd="hiliteColor"]');
     if (bgColorHex) {
         if (hiliteBar) hiliteBar.style.background = bgColorHex;
-        if (hiliteInp) hiliteInp.value = bgColorHex;
+        if (hiliteInp && document.activeElement !== hiliteInp) hiliteInp.value = bgColorHex;
     } else {
         if (hiliteBar) hiliteBar.style.background = '#ffff00';
-        if (hiliteInp) hiliteInp.value = '#ffff00';
+        if (hiliteInp && document.activeElement !== hiliteInp) hiliteInp.value = '#ffff00';
     }
 
     // 4. Font Family
     const fontDropdown = container.querySelector('select[data-cmd="fontName"]');
-    if (fontDropdown) {
+    if (fontDropdown && document.activeElement !== fontDropdown) {
         let currentFont = '';
         const styledEl = elem.closest('[style*="font-family"]');
         if (styledEl) currentFont = styledEl.style.fontFamily;
@@ -606,7 +600,7 @@ function _syncSingleToolbar(container) {
             try { currentFont = document.queryCommandValue('fontName') || ''; } catch (e) {}
         }
         if (!currentFont) {
-            currentFont = window.getComputedStyle(elem).fontFamily || '';
+            currentFont = csElem.fontFamily || '';
         }
         const cleanFont = currentFont.split(',')[0].replace(/['"]/g, '').trim().toLowerCase();
         let matchedIndex = 0;
@@ -627,7 +621,7 @@ function _syncSingleToolbar(container) {
 
     // 5. Font Size
     const fontSizeSel = container.querySelector('select[data-cmd="fontSize"]');
-    if (fontSizeSel) {
+    if (fontSizeSel && document.activeElement !== fontSizeSel) {
         let matchedIdx = 0;
         let fontSizeStr = '';
         const styledEl = elem.closest('[style*="font-size"]');
@@ -644,8 +638,7 @@ function _syncSingleToolbar(container) {
             fontSizeStr = editable.style.fontSize || editable.style.getPropertyValue('--block-font-size') || '';
         }
         if (!fontSizeStr) {
-            const cs = window.getComputedStyle(elem);
-            const px = parseFloat(cs.fontSize);
+            const px = parseFloat(csElem.fontSize);
             if (!isNaN(px) && px > 0) {
                 fontSizeStr = Math.round(px * 0.75) + 'pt';
             }
@@ -670,29 +663,33 @@ function _syncSingleToolbar(container) {
         fontSizeSel.selectedIndex = matchedIdx;
     }
 
-    // 6. Alignment
+    // 6. Alignment & Direction
     const pElem = elem.closest('p, div, li, td, th, h1, h2, h3, h4, h5, h6') || elem;
-    const computedAlign = window.getComputedStyle(pElem).textAlign || 'right';
+    const csP = pElem === elem ? csElem : window.getComputedStyle(pElem);
+    const dir = pElem.dir || csP.direction || 'rtl';
+    const normDir = dir.toLowerCase().includes('ltr') ? 'ltr' : 'rtl';
+    const isRtl = normDir === 'rtl';
+
+    const computedAlign = (csP.textAlign || 'right').toLowerCase();
     let align = 'right';
     if (computedAlign.includes('center')) align = 'center';
-    else if (computedAlign.includes('left')) align = 'left';
     else if (computedAlign.includes('justify')) align = 'justify';
+    else if (computedAlign === 'start') align = isRtl ? 'right' : 'left';
+    else if (computedAlign === 'end') align = isRtl ? 'left' : 'right';
+    else if (computedAlign.includes('left')) align = 'left';
     else if (computedAlign.includes('right')) align = 'right';
 
     container.querySelectorAll('.align-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.align === align);
     });
 
-    // 7. Direction
-    const dir = pElem.dir || window.getComputedStyle(pElem).direction || 'rtl';
-    const normDir = dir.toLowerCase().includes('ltr') ? 'ltr' : 'rtl';
     container.querySelectorAll('[data-dir]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.dir === normDir);
     });
 
     // 8. Line Spacing
     const lineHeightSel = container.querySelector('select[data-style-cmd="lineHeight"]');
-    if (lineHeightSel) {
+    if (lineHeightSel && document.activeElement !== lineHeightSel) {
         let lhRaw = pElem.style.lineHeight ||
                     pElem.style.getPropertyValue('--block-line-height') ||
                     editable.style.getPropertyValue('--block-line-height') ||
@@ -701,9 +698,8 @@ function _syncSingleToolbar(container) {
         let matchedLhIdx = 0;
         let numLh = parseFloat(lhRaw);
         if (isNaN(numLh) || numLh <= 0) {
-            const cs = window.getComputedStyle(pElem);
-            const lhPx = parseFloat(cs.lineHeight);
-            const fsPx = parseFloat(cs.fontSize);
+            const lhPx = parseFloat(csP.lineHeight);
+            const fsPx = parseFloat(csP.fontSize);
             if (!isNaN(lhPx) && !isNaN(fsPx) && fsPx > 0) {
                 numLh = Math.round((lhPx / fsPx) * 100) / 100;
             }
@@ -725,7 +721,7 @@ function _syncSingleToolbar(container) {
     }
 
     function matchMarginSelect(sel, rawVal, computedPx) {
-        if (!sel) return;
+        if (!sel || document.activeElement === sel) return;
         let matchedIdx = 0;
         if (rawVal) {
             const mPt = rawVal.match(/(\d+(?:\.\d+)?)/);
@@ -772,7 +768,7 @@ function _syncSingleToolbar(container) {
                       pElem.style.getPropertyValue('--p-space-before') ||
                       editable.style.getPropertyValue('--block-space-before') ||
                       editable.style.marginTop || '';
-        const csMt = window.getComputedStyle(pElem).marginTop;
+        const csMt = csP.marginTop;
         matchMarginSelect(marginTopSel, mtRaw, csMt);
     }
 
@@ -782,7 +778,7 @@ function _syncSingleToolbar(container) {
                       pElem.style.getPropertyValue('--p-space-after') ||
                       editable.style.getPropertyValue('--block-space-after') ||
                       editable.style.marginBottom || '';
-        const csMb = window.getComputedStyle(pElem).marginBottom;
+        const csMb = csP.marginBottom;
         matchMarginSelect(marginBotSel, mbRaw, csMb);
     }
 }

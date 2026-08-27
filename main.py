@@ -64,7 +64,7 @@ def _safe_js_bridge_call(window, func_name, param, value_id):
                     f'}}'
                 )
                 window.evaluate_js(safe_code)
-            except Exception:
+            except BaseException:
                 pass
 
         Thread(target=_call).start()

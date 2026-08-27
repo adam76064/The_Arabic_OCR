@@ -14,9 +14,13 @@ async function saveBlockSilently() {
     }
 }
 
+let _autoSaveTimer = null;
 async function autoSaveBlock() {
     if (window.__appSettings?.autoSaveReview) {
-        await saveBlockSilently(); 
+        clearTimeout(_autoSaveTimer);
+        _autoSaveTimer = setTimeout(async () => {
+            await saveBlockSilently();
+        }, 400);
     }
 }
 

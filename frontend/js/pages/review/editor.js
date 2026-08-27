@@ -292,8 +292,10 @@ function renderBlocksList(ocrData) {
         // 2. FOCUS & BLUR EVENTS
         let preEditSnapshot = null;
         content.addEventListener('focus', () => {
-            activeEditingIndex = index;
-            selectBlock(index); 
+            if (activeEditingIndex !== index || selectedBlockIndex !== index) {
+                activeEditingIndex = index;
+                selectBlock(index); 
+            }
             window.lastFocusedEditable = content;
             document.getElementById('sticky-toolbar').classList.remove('disabled');
             
