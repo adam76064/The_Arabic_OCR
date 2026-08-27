@@ -63,10 +63,12 @@ class Api:
         self.username = getpass.getuser()
         self.table_handler = TableHandler(self.project_manager)
 
-        quran_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'Quran.json')
-        # fallback to relative if not found
-        if not os.path.exists(quran_path):
-            quran_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'data', 'Quran.json')
+        if hasattr(sys, '_MEIPASS'):
+            quran_path = os.path.join(sys._MEIPASS, 'data', 'Quran.json')
+        else:
+            quran_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'Quran.json')
+            if not os.path.exists(quran_path):
+                quran_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'data', 'Quran.json')
         self.quran_handler = QuranHandler(json_path=quran_path)
         self.preprocessing_engine = PreprocessingEngine(self.project_manager)
         self.preprocessing_worker = None

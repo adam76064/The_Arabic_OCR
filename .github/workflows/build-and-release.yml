@@ -1,0 +1,92 @@
+name: Build and Release (Windows)
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag Name (e.g. v0.1.0-exp)'
+        required: true
+        default: 'v0.1.0-exp'
+      is_prerelease:
+        description: 'Mark as experimental / pre-release'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows x64 Executable
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Compile application with PyInstaller
+        run: |
+          pyinstaller TheArabicOCR.spec --noconfirm
+
+      - name: Package release ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/TheArabicOCR/* -DestinationPath dist/TheArabicOCR-Windows-x64.zip -Force
+
+      - name: Determine Release Tag
+        id: release_info
+        shell: pwsh
+        run: |
+          if ('${{ github.ref_type }}' -eq 'tag') {
+            $tag = '${{ github.ref_name }}'
+          } elseif ('${{ github.event.inputs.tag_name }}') {
+            $tag = '${{ github.event.inputs.tag_name }}'
+          } else {
+            $tag = 'v0.1.0-exp'
+          }
+          echo "TAG_NAME=$tag" >> $env:GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_info.outputs.TAG_NAME }}
+          name: The Arabic OCR ${{ steps.release_info.outputs.TAG_NAME }} (Experimental)
+          draft: false
+          prerelease: ${{ github.event.inputs.is_prerelease != false }}
+          files: dist/TheArabicOCR-Windows-x64.zip
+          body: |
+            # 📖 The Arabic OCR - Experimental Release (${{ steps.release_info.outputs.TAG_NAME }})
+
+            First experimental release of **The Arabic OCR** for Windows (64-bit).
+
+            ### ✨ Features Included:
+            - **ScanTailor Advanced Pre-Processing Studio:** Orientation correction, page splitting, deskewing, content selection, margins, and binarization.
+            - **Multi-Engine OCR:** PaddleOCR, Google Lens, Locro Offline (ScreenAI), and LLM Vision (Gemini, Claude, GPT-4o).
+            - **Review Studio:** Side-by-side text block editing, table extraction, classical and modern poetry formatting, and Uthmani Quran verification.
+            - **Post-Processing:** Arabic reading order auto-sorting and pagination detection.
+            - **Multi-Format Export:** Word (DOCX), EPUB3, HTML, TXT, and JSON.
+            - **Modern Multilingual UI:** Full light/dark themes with customizable color palettes (Arabic, English, German).
+
+            ### 📦 Installation & Running:
+            1. Download `TheArabicOCR-Windows-x64.zip` below.
+            2. Extract the ZIP archive to any folder on your PC.
+            3. Run `TheArabicOCR.exe` inside the extracted folder.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
