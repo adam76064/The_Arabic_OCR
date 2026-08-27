@@ -245,18 +245,18 @@ window.TableEditor = {
         menu.id = 'canvas-context-menu';
         menu.style.cssText = `
             position: fixed; top: ${e.clientY}px; left: ${e.clientX}px;
-            background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
-            z-index: 10000; font-family: system-ui, sans-serif; font-size: 13px; color: #374151;
+            background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000; font-family: inherit; font-size: 13px; color: var(--color-text);
             min-width: 200px; overflow: hidden; direction: inherit; display: flex; flex-direction: column;
             padding: 6px 0;
         `;
 
         const createItem = (text, icon, onClick, danger=false) => {
             const div = document.createElement('div');
-            div.innerHTML = `<span style="margin-inline-end: 10px; font-size: 15px;">${icon}</span> <span>${text}</span>`;
-            div.style.cssText = `padding: 8px 16px; cursor: pointer; display: flex; align-items: center; transition: background 0.15s; ${danger ? 'color: #dc2626;' : 'color: #1f2937;'}`;
-            div.onmouseover = () => div.style.background = danger ? '#fef2f2' : '#f3f4f6';
+            div.innerHTML = `<span style="margin-inline-end: 10px; font-size: 15px; display:inline-flex; align-items:center;">${icon}</span> <span>${text}</span>`;
+            div.style.cssText = `padding: 8px 16px; cursor: pointer; display: flex; align-items: center; transition: background 0.15s; ${danger ? 'color: var(--color-danger);' : 'color: var(--color-text);'}`;
+            div.onmouseover = () => div.style.background = danger ? 'var(--color-danger-light)' : 'var(--color-surface-hover)';
             div.onmouseout = () => div.style.background = 'transparent';
             div.onclick = () => { onClick(); this.hideContextMenu(); drawCallback(); };
             return div;
@@ -264,7 +264,7 @@ window.TableEditor = {
 
         const divider = () => {
             const div = document.createElement('div');
-            div.style.cssText = 'height: 1px; background: #e5e7eb; margin: 4px 0;';
+            div.style.cssText = 'height: 1px; background: var(--color-border); margin: 4px 0;';
             return div;
         };
 

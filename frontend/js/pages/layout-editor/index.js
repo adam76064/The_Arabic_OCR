@@ -25,11 +25,21 @@ async function initLayoutEditor() {
     setupToolbar();
     loadImageAndCanvas(page);
     setupKeyboardShortcuts();
+
+    window.addEventListener('languageChanged', () => {
+        injectPropertiesPanel();
+        if (typeof updateSelectionUI === 'function') updateSelectionUI();
+    });
 }
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview) initLayoutEditor();
-    else window.addEventListener('pywebviewready', initLayoutEditor);
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initLayoutEditor);
+    } else if (window.pywebview && window.pywebview.api) {
+        initLayoutEditor();
+    } else {
+        window.addEventListener('pywebviewready', initLayoutEditor);
+    }
 });

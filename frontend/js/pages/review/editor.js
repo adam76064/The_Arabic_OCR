@@ -7,40 +7,51 @@ const editorText = (key) => window.AppI18n?.t(key) || key;
 
 function updateReviewPanel() {
     if (!currentProject?.pages?.length) return;
-    document.getElementById('total-pages').textContent = currentProject.pages.length;
-    document.getElementById('current-page-num').value = currentPageIndex + 1;
+    const totalPagesEl = document.getElementById('total-pages');
+    if (totalPagesEl) totalPagesEl.textContent = currentProject.pages.length;
+    const currentPgNumEl = document.getElementById('current-page-num');
+    if (currentPgNumEl) currentPgNumEl.value = currentPageIndex + 1;
 
     const page = currentProject.pages[currentPageIndex];
     if (!page) return;
 
     const logicalStart = currentProject.metadata?.logical_start || 1;
-    document.getElementById('logical-page-display').textContent = currentPageIndex + logicalStart;
+    const logicalPageEl = document.getElementById('logical-page-display');
+    if (logicalPageEl) logicalPageEl.textContent = currentPageIndex + logicalStart;
 
     const imgPath = `file:///${window.__appDataPath}/projects/${currentProject.id}/images/${page.image_path}`;
-    const img = document.getElementById('page-image');
+    const pageImg = document.getElementById('page-image');
     const thumbImg = document.getElementById('thumb-image');
     const thumbPopup = document.getElementById('thumb-popup-image');
     const fullImg = document.getElementById('fullpage-image');
 
-    [thumbImg, thumbPopup, fullImg].forEach(el => el.src = imgPath);
-    img.src = imgPath;
+    [pageImg, thumbImg, thumbPopup, fullImg].forEach(el => {
+        if (el) el.src = imgPath;
+    });
 
-    img.onload = () => {
-        const canvas = document.getElementById('bbox-canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
+    const triggerImg = thumbImg || thumbPopup || pageImg || fullImg;
+    if (triggerImg) {
+        const onImgReady = () => {
+            const nativeW = page.native_width || (triggerImg.naturalWidth / 200 * 72);
+            const nativeH = page.native_height || (triggerImg.naturalHeight / 200 * 72);
+            scaleRatioX = triggerImg.naturalWidth / (nativeW || 1);
+            scaleRatioY = triggerImg.naturalHeight / (nativeH || 1);
 
-        // حساب معدل التكبير بناءً على حجم المستند الأصلي بدلاً من الـ 200 DPI الثابتة
-        // (تم إضافة fallback في حال كانت الأبعاد القديمة غير متوفرة)
-        const nativeW = page.native_width || (img.naturalWidth / 200 * 72);
-        const nativeH = page.native_height || (img.naturalHeight / 200 * 72);
-        scaleRatioX = img.naturalWidth / nativeW;
-        scaleRatioY = img.naturalHeight / nativeH;
+            const ocrData = page.ocr_data || [];
+            if (typeof renderBboxes === 'function') renderBboxes(ocrData, selectedBlockIndex);
+            if (typeof renderThumbCanvas === 'function') {
+                renderThumbCanvas('thumb-canvas', 'thumb-image', ocrData, selectedBlockIndex);
+                renderThumbCanvas('thumb-popup-canvas', 'thumb-popup-image', ocrData, selectedBlockIndex);
+                renderThumbCanvas('fullpage-canvas', 'fullpage-image', ocrData, selectedBlockIndex);
+            }
+        };
 
-        renderBboxes(page.ocr_data || [], selectedBlockIndex);
-        renderThumbCanvas('thumb-canvas', 'thumb-image', page.ocr_data || [], selectedBlockIndex);
-        renderThumbCanvas('thumb-popup-canvas', 'thumb-popup-image', page.ocr_data || [], selectedBlockIndex);
-    };
+        if (triggerImg.complete && triggerImg.naturalWidth > 0) {
+            onImgReady();
+        } else {
+            triggerImg.onload = onImgReady;
+        }
+    }
 
     renderBlocksList(page.ocr_data || []);
     showCroppedView(null);
@@ -118,8 +129,17 @@ function syncElementFromContent(el, contentEl) {
         return changed;
     }
     const newHtml = contentEl.innerHTML;
-    const changed = newHtml !== el.text;
+    let changed = newHtml !== el.text;
     el.text = newHtml;
+
+    if (contentEl.style.lineHeight) el.line_height = contentEl.style.lineHeight;
+    if (contentEl.style.marginTop) el.margin_top = contentEl.style.marginTop;
+    if (contentEl.style.marginBottom) el.margin_bottom = contentEl.style.marginBottom;
+    if (contentEl.style.fontFamily) el.font_family = contentEl.style.fontFamily;
+    if (contentEl.style.fontSize) el.font_size = contentEl.style.fontSize;
+    if (contentEl.style.textAlign) el.align = contentEl.style.textAlign;
+    if (contentEl.dir) el.dir = contentEl.dir;
+
     return changed;
 }
 
@@ -144,6 +164,7 @@ function renderBlocksList(ocrData) {
         const isActive = (index === selectedBlockIndex || multiSelectedBlocks.has(index));
         wrapper.className = 'text-block' + (element.reviewed ? ' block-reviewed' : '') + (isActive ? ' active-block' : '');
         wrapper.dataset.index = index;
+        wrapper.dataset.cat = element.category || 'Text';
         wrapper.draggable = false;
 
         const color = getCategoryColors()[element.category||'Text'] || '#3498db';
@@ -151,7 +172,7 @@ function renderBlocksList(ocrData) {
         const handle = document.createElement('span');
         handle.className = 'block-drag-handle';
         handle.title = editorText('editor.dragReorder');
-        handle.innerHTML = '⋮⋮';
+        handle.innerHTML = (window.AppIcons && window.AppIcons.get('drag')) || '⋮⋮';
         handle.dataset.handle = '1';
 
         const header = document.createElement('div');
@@ -169,7 +190,7 @@ function renderBlocksList(ocrData) {
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'block-delete-btn';
-        deleteBtn.textContent = '✕';
+        deleteBtn.innerHTML = (window.AppIcons && window.AppIcons.get('trash')) || '✕';
         deleteBtn.title = editorText('editor.deleteUndo');
 
         header.appendChild(handle);
@@ -189,10 +210,22 @@ function renderBlocksList(ocrData) {
             if (catFmt.dir) content.dir = catFmt.dir;
             if (catFmt.align) content.style.textAlign = catFmt.align;
             if (catFmt.fontFamily) content.style.fontFamily = catFmt.fontFamily;
-            if (catFmt.fontSize) content.style.fontSize = catFmt.fontSize;
-            if (catFmt.lineSpacing) content.style.setProperty('--block-line-height', catFmt.lineSpacing);
-            if (catFmt.spaceBefore) content.style.setProperty('--block-space-before', catFmt.spaceBefore);
-            if (catFmt.spaceAfter) content.style.setProperty('--block-space-after', catFmt.spaceAfter);
+            if (catFmt.fontSize) {
+                content.style.fontSize = catFmt.fontSize;
+                content.style.setProperty('--block-font-size', catFmt.fontSize);
+            }
+            if (catFmt.lineSpacing) {
+                content.style.lineHeight = catFmt.lineSpacing;
+                content.style.setProperty('--block-line-height', catFmt.lineSpacing);
+            }
+            if (catFmt.spaceBefore) {
+                content.style.marginTop = catFmt.spaceBefore;
+                content.style.setProperty('--block-space-before', catFmt.spaceBefore);
+            }
+            if (catFmt.spaceAfter) {
+                content.style.marginBottom = catFmt.spaceAfter;
+                content.style.setProperty('--block-space-after', catFmt.spaceAfter);
+            }
             if (catFmt.color) content.style.color = catFmt.color;
             if (catFmt.bgColor) content.style.backgroundColor = catFmt.bgColor;
             if (catFmt.bold) content.style.fontWeight = 'bold';
@@ -200,8 +233,27 @@ function renderBlocksList(ocrData) {
             if (catFmt.underline) content.style.textDecoration = 'underline';
         }
 
-        // 👉 1. RENDER TABLE OR TEXT (Cleaned up - no duplicates)
-        // 👉 NEW: RENDER HTML TABLE IF APPLICABLE
+        // Element-level overrides if present
+        if (element.line_height) {
+            content.style.lineHeight = element.line_height;
+            content.style.setProperty('--block-line-height', element.line_height);
+        }
+        if (element.margin_top) {
+            content.style.marginTop = element.margin_top;
+            content.style.setProperty('--block-space-before', element.margin_top);
+        }
+        if (element.margin_bottom) {
+            content.style.marginBottom = element.margin_bottom;
+            content.style.setProperty('--block-space-after', element.margin_bottom);
+        }
+        if (element.font_family) content.style.fontFamily = element.font_family;
+        if (element.font_size) {
+            content.style.fontSize = element.font_size;
+            content.style.setProperty('--block-font-size', element.font_size);
+        }
+
+        // 1. RENDER TABLE OR TEXT
+        // NEW: RENDER HTML TABLE IF APPLICABLE
         if (isTableLike(element.category) && element.table_structure) {
             const table = document.createElement('table');
             table.className = 'review-table layout-table-overlay'; 
@@ -237,17 +289,22 @@ function renderBlocksList(ocrData) {
             catch { content.innerHTML = rawText; }
         }
 
-        // 👉 2. FOCUS & BLUR EVENTS (Cleaned up - no duplicates)
+        // 2. FOCUS & BLUR EVENTS
         let preEditSnapshot = null;
         content.addEventListener('focus', () => {
             activeEditingIndex = index;
             selectBlock(index); 
+            window.lastFocusedEditable = content;
             document.getElementById('sticky-toolbar').classList.remove('disabled');
             
-            document.querySelectorAll('#sticky-toolbar button[data-align]').forEach(b =>
-                b.classList.toggle('active', b.dataset.align === (element.align || '')));
-            document.querySelectorAll('#sticky-toolbar button[data-dir]').forEach(b =>
-                b.classList.toggle('active', b.dataset.dir === (element.dir || 'rtl')));
+            if (typeof window.updateToolbarState === 'function') {
+                window.updateToolbarState(document.getElementById('sticky-toolbar'));
+            } else {
+                document.querySelectorAll('#sticky-toolbar button[data-align]').forEach(b =>
+                    b.classList.toggle('active', b.dataset.align === (element.align || '')));
+                document.querySelectorAll('#sticky-toolbar button[data-dir]').forEach(b =>
+                    b.classList.toggle('active', b.dataset.dir === (element.dir || 'rtl')));
+            }
                 
             preEditSnapshot = JSON.parse(JSON.stringify(currentProject.pages[currentPageIndex].ocr_data));
             if (typeof window.updateTrackingHighlight === 'function') window.updateTrackingHighlight(content, element); else if (typeof updateTrackingHighlight === 'function') updateTrackingHighlight(content, element);

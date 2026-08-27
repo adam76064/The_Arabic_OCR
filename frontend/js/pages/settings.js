@@ -37,6 +37,7 @@ This is the required structure:
 }`;
 
 window.__appSettings = window.__appSettings || {
+    theme: 'auto',
     autoMarkReviewed: true,
     autoSaveReview: false, 
     autoSaveLayout: false, 
@@ -196,7 +197,9 @@ function getShortcutFor(commandId) {
     return cmd ? cmd.defaultKey : '';
 }
 
-if (window.pywebview) {
+if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(loadPersistedAppSettings);
+} else if (window.pywebview && window.pywebview.api) {
     loadPersistedAppSettings();
 } else {
     window.addEventListener('pywebviewready', loadPersistedAppSettings);

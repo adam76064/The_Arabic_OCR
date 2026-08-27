@@ -7,11 +7,11 @@ from .shared import (
     _extract_html_line_spacing, _extract_html_margin_bottom, _extract_html_margin_top,
     _css_color_to_hex, _extract_css_colors, _style_from_tag,
     _set_paragraph_spacing, _set_line_spacing, _add_page_break, _add_page_number_label,
-    _set_section_rtl, _set_style_rtl, _set_run_font_and_bidi,
+    _set_section_rtl, _set_style_rtl, _set_run_font_and_bidi, _apply_run_formatting,
     _set_table_no_borders, _set_row_height, _set_cell_width, _set_cell_valign,
     _apply_poetry_paragraph_layout_v169, _fill_poetry_cell,
     _parse_poetry_lines, _add_poetry_docx,
-    _set_run_highlight_hex, _reorder_pPr, _apply_paragraph_layout, _add_formatted_paragraph,
+    _set_run_highlight_hex, _reorder_pPr, _reorder_rPr, _apply_paragraph_layout, _add_formatted_paragraph,
 )
 # Also bring in constants that import * would normally bring but start without underscore
 from .shared import (
@@ -201,20 +201,7 @@ def export_docx(project, page_indices, output_path, opts=None):
                                         r_dir = style.get('dir')
                                         is_r_rtl = (r_dir == 'rtl') if r_dir else cell_is_rtl
 
-                                        _set_run_font_and_bidi(run, cell_r_font, cell_r_sz, is_rtl=is_r_rtl)
-
-                                        if style.get('bold'): run.bold = True
-                                        if style.get('italic'): run.italic = True
-                                        if style.get('underline'): run.underline = True
-                                        if style.get('strike'): run.font.strike = True
-                                        if style.get('superscript'): run.font.superscript = True
-                                        if style.get('subscript'): run.font.subscript = True
-                                        if style.get('color'):
-                                            try: run.font.color.rgb = RGBColor.from_string(style['color'])
-                                            except Exception: pass
-                                        if style.get('highlight'):
-                                            try: _set_run_highlight_hex(run, style['highlight'])
-                                            except Exception: pass
+                                        _apply_run_formatting(run, style, cell_r_font, cell_r_sz, is_r_rtl=is_r_rtl, cat_fmt=cat_fmt)
                                     _apply_paragraph_layout(para, cell_align, cell_is_rtl)
                             else:
                                 top_left_cell.text = c_info.get('text', '')
@@ -249,9 +236,8 @@ def export_docx(project, page_indices, output_path, opts=None):
             para = doc.add_paragraph()
             _apply_paragraph_layout(para, el_align, effective_rtl)
             run = para.add_run(text)
-            _set_run_font_and_bidi(run, font_name, block_font_size or font_size, is_rtl=effective_rtl)
-            if cat in ('Title', 'Section-header'):
-                run.bold = True
+            raw_style = {'bold': True} if cat in ('Title', 'Section-header') else {}
+            _apply_run_formatting(run, raw_style, font_name, block_font_size or font_size, is_r_rtl=effective_rtl, cat_fmt=cat_fmt)
             _set_line_spacing(para, line_spacing)
             fmt = para.paragraph_format
             fmt.first_line_indent = Cm(para_indent) if cat == 'Text' else Cm(0)

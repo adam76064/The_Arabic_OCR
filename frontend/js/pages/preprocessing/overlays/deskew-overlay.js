@@ -44,7 +44,7 @@
       ctx.font = 'bold 13px monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`📐 ${Number(angle).toFixed(2)}°`, width - 20 - badgeW / 2, 20 + badgeH / 2);
+      ctx.fillText(`${Number(angle).toFixed(2)}°`, width - 20 - badgeW / 2, 20 + badgeH / 2);
 
       ctx.restore();
     }

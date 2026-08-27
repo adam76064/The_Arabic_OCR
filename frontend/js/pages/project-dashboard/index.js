@@ -137,6 +137,10 @@ function setupEventBindings() {
                 }
 
             } else if (tool === 'llm') {
+                const provider = document.getElementById('llm-provider').value;
+                const apiKey = document.getElementById('llm-api-key').value.trim();
+                const baseUrl = document.getElementById('llm-base-url').value.trim();
+                const customModel = document.getElementById('llm-model-name').value.trim();
                 const customPrompt = document.getElementById('ocr-modal-llm-prompt')?.value.trim() || window.__appSettings?.llmSystemPrompt || window.DEFAULT_LLM_PROMPT;
                 const rememberForProj = document.getElementById('remember-prompt-for-project')?.checked || false;
 
@@ -190,7 +194,7 @@ function setupEventBindings() {
             }
         } catch (err) {
             console.error("Critical Frontend Error:", err);
-            alert("حدث خطأ حرج:\n" + err.message);
+            alert((window.AppI18n ? window.AppI18n.t('error.critical') : "حدث خطأ حرج:\n") + err.message);
             progressModal.classList.add('hidden');
         }
     });
@@ -199,11 +203,11 @@ function setupEventBindings() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // التحقق الصارم من وجود الـ api والدالة المطلوبة تحديداً
-    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.load_project === 'function') {
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initDashboard);
+    } else if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.load_project === 'function') {
         initDashboard();
     } else {
-        // الانتظار حتى يكتمل حقن جميع الدوال
         window.addEventListener('pywebviewready', initDashboard);
     }
 });

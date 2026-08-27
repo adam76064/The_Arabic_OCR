@@ -1,25 +1,26 @@
-/* style.css - main entry importing design system */
+/* style.css - Main Stylesheet importing Design System */
 @import url('tokens.css');
 @import url('base.css');
 @import url('components.css');
 @import url('layout.css');
 @import url('icons.css');
 
-/* Legacy small tweaks that remain global */
-
-/* Settings card */
+/* Settings cards */
 .settings-card {
   background: var(--color-surface);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  padding: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--trans-fast);
 }
+
 .settings-section-title {
-  font-size: 12px;
+  font-size: var(--text-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #888;
+  color: var(--color-text-muted);
   margin-bottom: 14px;
 }
 
@@ -29,44 +30,56 @@
   pointer-events: none;
   filter: grayscale(100%);
 }
-.tool-option.disabled .section-hint { color: var(--color-danger); font-weight:600; }
-
-/* Table editor extras */
-.block-content table, #text-preview-body table {
-  width:100%; border-collapse:collapse; margin:10px 0; table-layout:fixed;
-}
-.block-content table td, .block-content table th,
-#text-preview-body table td, #text-preview-body table th {
-  border:1px solid #34495e; padding:6px; min-width:50px; word-break:break-word; vertical-align:top;
-}
-.block-content table td:focus, #text-preview-body table td:focus {
-  outline:2px solid var(--color-primary); outline-offset:-2px; background-color:#f4faff;
+.tool-option.disabled .section-hint {
+  color: var(--color-danger);
+  font-weight: 600;
 }
 
-/* Night extensions */
-body.night-mode .settings-card { background: var(--color-surface-night); border-color: var(--color-border-night); }
-body.night-mode .settings-section-title { color:#999; }
-body.night-mode .path-display { background:#0f3460; color:#ccc; }
-body.night-mode .section-hint { color:#999; }
-body.night-mode .form-group label { color: var(--color-text-night); }
-body.night-mode .form-group input[type=text],
-body.night-mode .form-group input[type=number],
-body.night-mode input[type=text],
-body.night-mode input[type=number],
-body.night-mode input[type=password],
-body.night-mode select {
-  background:#0f3460; border-color: var(--color-border-night); color: var(--color-text-night);
+/* Table editor global styling */
+.block-content table,
+#text-preview-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  table-layout: fixed;
+  background: var(--color-surface);
 }
-body.night-mode .form-section { border-color: var(--color-border-night); }
-body.night-mode .form-section legend { color:#ccc; }
-body.night-mode .option-check { border-color:#444; }
-body.night-mode .dashboard-table { background: var(--color-surface-night); }
-body.night-mode .dashboard-table th { background:#0f3460; color:#ccc; border-bottom:1px solid var(--color-border-night); }
-body.night-mode .dashboard-table td { border-bottom:1px solid var(--color-border-night); color: var(--color-text-night); }
-body.night-mode .dashboard-table tr:hover { background:#1a1a2e; }
-body.night-mode .status-badge.parsed { background: rgba(39,174,96,0.2); color:#2ecc71; }
-body.night-mode .status-badge.unparsed { background: rgba(231,76,60,0.2); color:#e74c3c; }
 
-.language-setting-row { justify-content: space-between; align-items: center; gap: 20px; }
-.language-setting-row > div { flex: 1; }
-.language-setting-row select { min-width: 170px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); }
+.block-content table td,
+.block-content table th,
+#text-preview-body table td,
+#text-preview-body table th {
+  border: 1px solid var(--color-border-strong);
+  padding: 8px;
+  min-width: 50px;
+  word-break: break-word;
+  vertical-align: top;
+  color: var(--color-text);
+}
+
+.block-content table td:focus,
+#text-preview-body table td:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  background-color: var(--color-primary-light);
+}
+
+.language-setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.language-setting-row > div {
+  flex: 1;
+}
+
+.language-setting-row select {
+  min-width: 170px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+}

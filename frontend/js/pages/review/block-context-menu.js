@@ -11,30 +11,42 @@
 const blockContextText = (key) => window.AppI18n?.t(key) || key;
 
 const BLOCK_CONTEXT_MODALS_HTML = `
-<div id="block-context-menu" class="hidden table-ctx-menu" style="position: absolute; z-index: 5000; min-width: 220px;">
-    <div id="ctx-search-quran-unified" class="ctx-item">${blockContextText('block.quran')}</div>
-    <div id="ctx-merge-blocks" class="ctx-item">${blockContextText('block.merge')}</div>
-    <div id="ctx-split-block" class="ctx-item">${blockContextText('block.split')}</div>
+<div id="block-context-menu" class="hidden table-ctx-menu" style="position: absolute; z-index: 5000; min-width: 220px; background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong); box-shadow: var(--shadow-xl); border-radius: var(--radius-md); padding: 6px 0; color: var(--color-text);">
+    <div id="ctx-search-quran-unified" class="ctx-item" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; cursor: pointer;">
+        ${window.AppIcons ? window.AppIcons.get('quran', 'width:16px;height:16px;') : ''}
+        <span>${blockContextText('block.quran')}</span>
+    </div>
+    <div id="ctx-merge-blocks" class="ctx-item" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; cursor: pointer;">
+        ${window.AppIcons ? window.AppIcons.get('merge', 'width:16px;height:16px;') : ''}
+        <span>${blockContextText('block.merge')}</span>
+    </div>
+    <div id="ctx-split-block" class="ctx-item" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; cursor: pointer;">
+        ${window.AppIcons ? window.AppIcons.get('split', 'width:16px;height:16px;') : ''}
+        <span>${blockContextText('block.split')}</span>
+    </div>
 </div>
 
 <div id="split-block-modal" class="modal hidden" style="z-index: 6000;">
    <div class="modal-overlay"></div>
-   <div class="modal-box" style="width: 500px; max-width: 95vw; padding: 0;">
-       <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid #eee;">
-           <h3 style="margin:0; font-size:16px;">${blockContextText('block.splitTitle')}</h3>
+   <div class="modal-box" style="width: 500px; max-width: 95vw; padding: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-2xl);">
+       <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); display: flex; justify-content: space-between; align-items: center;">
+           <h3 style="margin:0; font-size:16px; color: var(--color-text); display: flex; align-items: center; gap: 8px;">
+               ${window.AppIcons ? window.AppIcons.get('split', 'width:18px;height:18px;') : ''}
+               <span>${blockContextText('block.splitTitle')}</span>
+           </h3>
            <button class="modal-close" id="split-close">✕</button>
        </div>
-       <div class="modal-body" style="padding: 20px; text-align:center;">
-           <p style="font-size:13px; color:#666; margin-top:0; margin-bottom:16px;">${blockContextText('block.splitHint')}</p>
+       <div class="modal-body" style="padding: 20px; text-align:center; color: var(--color-text);">
+           <p style="font-size:13px; color: var(--color-text-muted); margin-top:0; margin-bottom:16px;">${blockContextText('block.splitHint')}</p>
            
-           <div id="split-img-container" style="position:relative; display:inline-block; border:2px dashed #cbd5e1; border-radius:6px; cursor:crosshair; max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow:hidden;">
+           <div id="split-img-container" style="position:relative; display:inline-block; border:2px dashed var(--color-border-strong); border-radius:6px; cursor:crosshair; max-width: 100%; box-shadow: var(--shadow-sm); overflow:hidden; background: var(--color-canvas);">
                <img id="split-target-img" src="" style="display:block; max-width:100%; pointer-events:none;">
                <div id="split-line" style="position:absolute; left:0; right:0; height:2px; background:#e74c3c; top:50%; pointer-events:none; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>
            </div>
            
-           <div style="margin-top:20px; display:flex; justify-content:center; gap:24px; font-size:14px; background: #f8fafc; padding: 10px; border-radius: 6px;">
-                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="y" checked> ${blockContextText('block.horizontal')}</label>
-                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="x"> ${blockContextText('block.vertical')}</label>
+           <div style="margin-top:20px; display:flex; justify-content:center; gap:24px; font-size:14px; background: var(--color-bg-alt); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border); color: var(--color-text);">
+                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="y" checked style="accent-color: var(--color-primary);"> ${blockContextText('block.horizontal')}</label>
+                <label style="cursor:pointer; display:flex; align-items:center; gap:6px;"><input type="radio" name="split_axis" value="x" style="accent-color: var(--color-primary);"> ${blockContextText('block.vertical')}</label>
            </div>
            
            <div class="form-actions" style="margin-top:24px;">
@@ -53,9 +65,10 @@ let splitBlockData = null;
 function setupBlockContextMenu() {
     const menu = document.getElementById('block-context-menu');
     const splitModal = document.getElementById('split-block-modal');
+    if (!menu || !splitModal) return;
     
-    document.getElementById('split-close').addEventListener('click', () => splitModal.classList.add('hidden'));
-    splitModal.querySelector('.modal-overlay').addEventListener('click', () => splitModal.classList.add('hidden'));
+    document.getElementById('split-close')?.addEventListener('click', () => splitModal.classList.add('hidden'));
+    splitModal.querySelector('.modal-overlay')?.addEventListener('click', () => splitModal.classList.add('hidden'));
 
     const splitContainer = document.getElementById('split-img-container');
     const splitLine = document.getElementById('split-line');
@@ -81,7 +94,7 @@ function setupBlockContextMenu() {
     });
 
     // Click to Lock/Unlock the line
-    splitContainer.addEventListener('click', () => {
+    splitContainer?.addEventListener('click', () => {
         if (!splitBlockData) return;
         lineLocked = !lineLocked;
         // Turn green when locked, back to red when unlocked
@@ -90,10 +103,10 @@ function setupBlockContextMenu() {
     });
 
     // Interactive splitting line
-    splitContainer.addEventListener('mousemove', (e) => {
+    splitContainer?.addEventListener('mousemove', (e) => {
         if (!splitBlockData || lineLocked) return;
         const rect = splitContainer.getBoundingClientRect();
-        const isHorizontal = document.querySelector('input[name="split_axis"]:checked').value === 'y';
+        const isHorizontal = document.querySelector('input[name="split_axis"]:checked')?.value === 'y';
         
         if (isHorizontal) {
             const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
@@ -107,7 +120,7 @@ function setupBlockContextMenu() {
             const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
             splitLine.style.left = x + 'px';
             splitLine.style.top = '0px';
-            splitLine.style.right = 'auto'; // FIX: Free the right anchor so it moves!
+            splitLine.style.right = 'auto';
             splitLine.style.width = '2px';
             splitLine.style.height = '100%';
             splitBlockData.splitRatio = x / rect.width;
@@ -115,13 +128,15 @@ function setupBlockContextMenu() {
     });
 
     // Confirm Split
-    document.getElementById('split-confirm').addEventListener('click', async () => {
+    document.getElementById('split-confirm')?.addEventListener('click', async () => {
         if (!splitBlockData) return;
-        const page = currentProject.pages[currentPageIndex];
+        const page = currentProject?.pages?.[currentPageIndex];
+        if (!page || !page.ocr_data) return;
         const block = page.ocr_data[splitBlockData.index];
-        const isHorizontal = document.querySelector('input[name="split_axis"]:checked').value === 'y';
+        if (!block) return;
+        const isHorizontal = document.querySelector('input[name="split_axis"]:checked')?.value === 'y';
         
-        const r = splitBlockData.splitRatio;
+        const r = splitBlockData.splitRatio || 0.5;
         const [x1, y1, x2, y2] = block.bbox;
         
         let bbox1, bbox2;
@@ -216,9 +231,13 @@ function setupBlockContextMenu() {
         const selText = window.getSelection().toString().trim();
         const canSearchQuran = selText.length > 0;
         
-        document.getElementById('ctx-search-quran-unified').style.display = canSearchQuran ? 'flex' : 'none';
-        document.getElementById('ctx-merge-blocks').style.display = multiSelectedBlocks.size > 1 ? 'flex' : 'none';
-        document.getElementById('ctx-split-block').style.display = canSplit ? 'flex' : 'none';
+        const quranEl = document.getElementById('ctx-search-quran-unified');
+        const mergeEl = document.getElementById('ctx-merge-blocks');
+        const splitEl = document.getElementById('ctx-split-block');
+        
+        if (quranEl) quranEl.style.display = canSearchQuran ? 'flex' : 'none';
+        if (mergeEl) mergeEl.style.display = multiSelectedBlocks.size > 1 ? 'flex' : 'none';
+        if (splitEl) splitEl.style.display = canSplit ? 'flex' : 'none';
     });
 
     document.getElementById('ctx-search-quran-unified')?.addEventListener('click', () => {
@@ -243,38 +262,70 @@ function setupBlockContextMenu() {
         menu.classList.add('hidden');
         if (!splitBlockData) return;
         
-        const page = currentProject.pages[currentPageIndex];
+        const page = currentProject?.pages?.[currentPageIndex];
+        if (!page || !page.ocr_data) return;
         const block = page.ocr_data[splitBlockData.index];
-        const img = document.getElementById('page-image');
+        if (!block) return;
         
-        // Exact tight crop for the split modal
-        const canvas = document.createElement('canvas');
         const [x1, y1, x2, y2] = block.bbox;
-        const px = x1 * scaleRatioX, py = y1 * scaleRatioY;
-        const pw = (x2 - x1) * scaleRatioX, ph = (y2 - y1) * scaleRatioY;
-        
-        const drawW = Math.max(pw, 1);
-        const drawH = Math.max(ph, 1);
-        
-        canvas.width = drawW; canvas.height = drawH;
-        canvas.getContext('2d').drawImage(img, px, py, drawW, drawH, 0, 0, drawW, drawH);
-        
-        document.getElementById('split-target-img').src = canvas.toDataURL();
-        splitModal.classList.remove('hidden');
-        splitBlockData.splitRatio = 0.5; 
-        
-        // Reset red line UI
-        document.getElementById('split-line').style.top = '50%';
-        document.getElementById('split-line').style.height = '2px';
-        document.getElementById('split-line').style.width = '100%';
-        document.getElementById('split-line').style.left = '0';
-        document.querySelector('input[name="split_axis"][value="y"]').checked = true;
+
+        const renderSplitCanvas = (imgEl) => {
+            if (!imgEl || !imgEl.naturalWidth) return;
+            const naturalW = imgEl.naturalWidth;
+            const naturalH = imgEl.naturalHeight;
+            const nativeW = page.native_width || (naturalW / 200 * 72);
+            const nativeH = page.native_height || (naturalH / 200 * 72);
+            const ratioX = naturalW / (nativeW || 1);
+            const ratioY = naturalH / (nativeH || 1);
+
+            const px = x1 * ratioX;
+            const py = y1 * ratioY;
+            const pw = Math.max(1, (x2 - x1) * ratioX);
+            const ph = Math.max(1, (y2 - y1) * ratioY);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(pw);
+            canvas.height = Math.round(ph);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imgEl, px, py, pw, ph, 0, 0, Math.round(pw), Math.round(ph));
+
+            const targetImg = document.getElementById('split-target-img');
+            if (targetImg) targetImg.src = canvas.toDataURL();
+            splitModal.classList.remove('hidden');
+            splitBlockData.splitRatio = 0.5;
+
+            // Reset red line UI
+            const splitLineEl = document.getElementById('split-line');
+            if (splitLineEl) {
+                splitLineEl.style.top = '50%';
+                splitLineEl.style.height = '2px';
+                splitLineEl.style.width = '100%';
+                splitLineEl.style.left = '0';
+                splitLineEl.style.background = '#e74c3c';
+            }
+            const radioY = document.querySelector('input[name="split_axis"][value="y"]');
+            if (radioY) radioY.checked = true;
+        };
+
+        const existingImg = document.getElementById('fullpage-image') || document.getElementById('thumb-image');
+        const imageSrc = (window.getPageImageSrc ? window.getPageImageSrc().src : '') || 
+                         (window.__appDataPath ? `file:///${window.__appDataPath}/projects/${currentProject.id}/images/${page.image_path}` : `projects/${currentProject.id}/images/${page.image_path}`);
+
+        if (existingImg && existingImg.complete && existingImg.naturalWidth > 0 && existingImg.src === imageSrc) {
+            renderSplitCanvas(existingImg);
+        } else {
+            const offscreen = new Image();
+            offscreen.crossOrigin = 'anonymous';
+            offscreen.onload = () => renderSplitCanvas(offscreen);
+            offscreen.src = imageSrc;
+        }
     });
 }
 
 function mergeSelectedBlocks() {
     if (multiSelectedBlocks.size < 2) return;
-    const page = currentProject.pages[currentPageIndex];
+    const page = currentProject?.pages?.[currentPageIndex];
+    if (!page || !page.ocr_data) return;
     pushHistory(currentPageIndex);
     
     // Sort so we merge them visually top-to-bottom
@@ -285,6 +336,7 @@ function mergeSelectedBlocks() {
     
     indices.forEach(idx => {
         const b = page.ocr_data[idx];
+        if (!b) return;
         const [x1, y1, x2, y2] = b.bbox;
         minX = Math.min(minX, x1); minY = Math.min(minY, y1);
         maxX = Math.max(maxX, x2); maxY = Math.max(maxY, y2);
@@ -327,3 +379,5 @@ function mergeSelectedBlocks() {
     saveBlockSilently();
 }
 
+window.setupBlockContextMenu = setupBlockContextMenu;
+window.BLOCK_CONTEXT_MODALS_HTML = BLOCK_CONTEXT_MODALS_HTML;

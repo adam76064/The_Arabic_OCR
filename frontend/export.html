@@ -85,72 +85,72 @@
 
         <!-- Pages Scope Card -->
         <div class="export-card">
-            <h3 data-i18n="export.pages">📑 نطاق الصفحات المراد تصديرها</h3>
+            <h3 data-icon-label="pages" data-i18n="export.pages">نطاق الصفحات المراد تصديرها</h3>
             <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                 <label class="radio-item"><input type="radio" name="exp-pages" value="all" checked> <span data-i18n="export.allPages">جميع صفحات المشروع</span></label>
                 <label class="radio-item"><input type="radio" name="exp-pages" value="range"> <span data-i18n="export.range">نطاق صفحات محدد</span></label>
             </div>
             <div id="exp-range-inputs" class="hidden" style="display: flex; gap: 10px; align-items: center; margin-top: 14px; background: var(--color-bg); padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-                <span>من صفحة:</span>
+                <span data-i18n="export.fromPage">من صفحة:</span>
                 <input type="number" id="exp-from" value="1" min="1" style="width: 70px; padding: 6px; border-radius: 4px; border: 1px solid var(--color-border-strong); text-align: center;">
-                <span>إلى صفحة:</span>
+                <span data-i18n="export.toPage">إلى صفحة:</span>
                 <input type="number" id="exp-to" value="1" min="1" style="width: 70px; padding: 6px; border-radius: 4px; border: 1px solid var(--color-border-strong); text-align: center;">
             </div>
         </div>
 
         <!-- Format Selection Card -->
         <div class="export-card">
-            <h3 data-i18n="export.formats">💾 صيغ التصدير المطلوبة</h3>
+            <h3 data-icon-label="export" data-i18n="export.formats">صيغ التصدير المطلوبة</h3>
             <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -8px; margin-bottom: 16px;" data-i18n="export.formatsHint">يمكنك اختيار صيغة واحدة أو عدة صيغ لتوليدها دفعة واحدة.</p>
             
             <div class="format-cards-grid">
                 <!-- DOCX -->
                 <div class="format-select-card selected" data-value="docx">
                     <input type="checkbox" name="exp-format" value="docx" checked style="display:none;">
-                    <div class="format-icon">📄</div>
+                    <div class="format-icon" data-icon="doc"></div>
                     <div class="format-info">
-                        <div class="format-title">Microsoft Word (.docx)</div>
-                        <div class="format-desc">منسق بالكامل مع الحواشي السفلية، الأبيات الشعرية، والجداول المنسقة.</div>
+                        <div class="format-title" data-i18n="export.docxTitle">Microsoft Word (.docx)</div>
+                        <div class="format-desc" data-i18n="export.docxDesc">منسق بالكامل مع الحواشي السفلية، الأبيات الشعرية، والجداول المنسقة.</div>
                     </div>
                 </div>
 
                 <!-- TXT -->
                 <div class="format-select-card" data-value="txt">
                     <input type="checkbox" name="exp-format" value="txt" style="display:none;">
-                    <div class="format-icon">📝</div>
+                    <div class="format-icon" data-icon="edit"></div>
                     <div class="format-info">
-                        <div class="format-title">نص عادي (.txt)</div>
-                        <div class="format-desc">نص تسلسلي نقي ومباشر مع فواصل الصفحات القياسية.</div>
+                        <div class="format-title" data-i18n="export.txtTitle">نص عادي (.txt)</div>
+                        <div class="format-desc" data-i18n="export.txtDesc">نص تسلسلي نقي ومباشر مع فواصل الصفحات القياسية.</div>
                     </div>
                 </div>
 
                 <!-- JSON -->
                 <div class="format-select-card" data-value="json">
                     <input type="checkbox" name="exp-format" value="json" style="display:none;">
-                    <div class="format-icon">⚙️</div>
+                    <div class="format-icon" data-icon="settings"></div>
                     <div class="format-info">
-                        <div class="format-title">بيانات خام (.json)</div>
-                        <div class="format-desc">بيانات مهيكلة كاملة للكتل والإحداثيات لتدريب النماذج والبحث.</div>
+                        <div class="format-title" data-i18n="export.jsonTitle">بيانات خام (.json)</div>
+                        <div class="format-desc" data-i18n="export.jsonDesc">بيانات مهيكلة كاملة للكتل والإحداثيات لتدريب النماذج والبحث.</div>
                     </div>
                 </div>
 
                 <!-- HTML -->
                 <div class="format-select-card" data-value="html">
                     <input type="checkbox" name="exp-format" value="html" style="display:none;">
-                    <div class="format-icon">🌐</div>
+                    <div class="format-icon" data-icon="lan"></div>
                     <div class="format-info">
-                        <div class="format-title">صفحة ويب (.html)</div>
-                        <div class="format-desc">صفحة ويب مستقلة منسقة مع دعم خطوط الويب العربية الحديثة.</div>
+                        <div class="format-title" data-i18n="export.htmlTitle">صفحة ويب (.html)</div>
+                        <div class="format-desc" data-i18n="export.htmlDesc">صفحة ويب مستقلة منسقة مع دعم خطوط الويب العربية الحديثة.</div>
                     </div>
                 </div>
 
                 <!-- EPUB3 -->
                 <div class="format-select-card" data-value="epub3">
                     <input type="checkbox" name="exp-format" value="epub3" style="display:none;">
-                    <div class="format-icon">📖</div>
+                    <div class="format-icon" data-icon="book"></div>
                     <div class="format-info">
-                        <div class="format-title">كتاب إلكتروني (.epub)</div>
-                        <div class="format-desc">متوافق مع المكتبة الشاملة وتطبيقات قارئات الكتب العربية.</div>
+                        <div class="format-title" data-i18n="export.epubTitle">كتاب إلكتروني (.epub)</div>
+                        <div class="format-desc" data-i18n="export.epubDesc">متوافق مع المكتبة الشاملة وتطبيقات قارئات الكتب العربية.</div>
                     </div>
                 </div>
             </div>
@@ -176,23 +176,26 @@
         </div>
 
         <div style="text-align: end; margin-top: 24px;">
-            <button id="execute-export-btn" class="btn-success" style="padding: 12px 32px; font-size: 15px;" data-i18n="export.execute">تصدير الملفات المحددة الآن ➔</button>
+            <button id="execute-export-btn" class="btn-success" style="padding: 12px 32px; font-size: 15px;" data-i18n="export.execute">تصدير الملفات المحددة الآن</button>
         </div>
     </main>
 
     <script src="js/icons.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
-    <script src="js/i18n/locales/ar.js"></script>
-    <script src="js/i18n/locales/en.js"></script>
-    <script src="js/i18n/locales/de.js"></script>
-    <script src="js/i18n/i18n.js"></script>
+    <script src="js/apply-icons.js"></script>
     <script>
         let currentProject = null;
         async function initExportPage() {
@@ -244,7 +247,7 @@
                 }
                 const btn = document.getElementById('execute-export-btn');
                 btn.disabled = true;
-                btn.textContent = '⏳ جاري التصدير...';
+                btn.textContent = window.AppI18n ? window.AppI18n.t('export.exporting') : '⏳ جاري التصدير...';
 
                 try {
                     const options = {
@@ -261,7 +264,7 @@
                         alert((window.AppI18n ? window.AppI18n.t('export.failed') : 'فشل التصدير:') + ' ' + (res?.error || ''));
                     }
                 } catch (e) {
-                    alert('خطأ أثناء التصدير: ' + e);
+                    alert((window.AppI18n ? window.AppI18n.t('export.error') : 'خطأ أثناء التصدير: ') + e);
                 } finally {
                     btn.disabled = false;
                     btn.textContent = window.AppI18n ? window.AppI18n.t('export.execute') : 'تصدير الملفات المحددة الآن ➔';
@@ -270,8 +273,13 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.pywebview && window.pywebview.api && window.pywebview.api.load_project) initExportPage();
-            else window.addEventListener('pywebviewready', initExportPage);
+            if (window.AppApi && typeof window.AppApi.ready === 'function') {
+                window.AppApi.ready().then(initExportPage);
+            } else if (window.pywebview && window.pywebview.api && window.pywebview.api.load_project) {
+                initExportPage();
+            } else {
+                window.addEventListener('pywebviewready', initExportPage);
+            }
         });
     </script>
 </body>

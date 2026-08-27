@@ -114,8 +114,8 @@
         ctx.lineWidth = 2;
 
         const badgeText = global.AppI18n
-          ? global.AppI18n.t('split.singlePageBadge') || '✓ صفحة مفردة (لا تحتاج تقسيم)'
-          : '✓ Single Page (No Split Needed)';
+          ? global.AppI18n.t('split.singlePageBadge') || 'صفحة مفردة (لا تحتاج تقسيم)'
+          : 'Single Page (No Split Needed)';
         
         ctx.font = 'bold 13px system-ui, sans-serif';
         const textW = ctx.measureText(badgeText).width + 24;
@@ -149,8 +149,8 @@
       ctx.fillRect(midX, 0, width - midX, height);
 
       // Subpage Labels
-      const tagRTL_1 = isRTL ? 'صفحة 1 (يمين)' : 'Page 2 (Right)';
-      const tagRTL_2 = isRTL ? 'صفحة 2 (يسار)' : 'Page 1 (Left)';
+      const tagRTL_1 = window.AppI18n ? window.AppI18n.t('split.page1') : (isRTL ? 'صفحة 1 (يمين)' : 'Page 2 (Right)');
+      const tagRTL_2 = window.AppI18n ? window.AppI18n.t('split.page2') : (isRTL ? 'صفحة 2 (يسار)' : 'Page 1 (Left)');
 
       ctx.font = 'bold 13px system-ui, sans-serif';
       ctx.textAlign = 'center';

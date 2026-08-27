@@ -1,10 +1,7 @@
 /**
- * components/sidebar.js - collapsible sidebar with injection
- * Fixed: ensures has-sidebar, robust collapse, debug logs when debug=True
+ * components/sidebar.js - Collapsible Sidebar with SVG Icons & Non-blocking Exit
  */
 (function () {
-  console.log('[Sidebar] component loading...');
-
   function readCollapsedState() {
     try {
       const v = localStorage.getItem('sidebarCollapsed');
@@ -15,19 +12,13 @@
   function injectSidebarIfNeeded() {
     let sidebar = document.getElementById('sidebar');
     if (sidebar) {
-      console.log('[Sidebar] already exists, ensuring has-sidebar class');
       document.body.classList.add('has-sidebar');
       return sidebar;
     }
 
-    console.log('[Sidebar] injecting sidebar HTML');
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const isCollapsed = readCollapsedState();
 
-    // Icon names map to entries in AppIcons (js/icons.js), keeping this
-    // sidebar visually consistent with the review page's SVG toolbars
-    // instead of emoji. Falls back to plain text if icons.js hasn't
-    // loaded yet for some reason.
     const icon = (name) => (window.AppIcons ? window.AppIcons.get(name) : '');
 
     const sidebarHTML = `
@@ -41,6 +32,9 @@
                     <a href="projects.html" class="sidebar-link ${currentPath === 'projects.html' ? 'active' : ''}">${icon('projects')}<span data-i18n="nav.projects">المشاريع</span></a>
                     <a href="#" class="sidebar-link sidebar-link-accent trigger-new-project">${icon('plus')}<span data-i18n="nav.newProject">مشروع جديد</span></a>
                     <a href="settings.html" class="sidebar-link ${currentPath === 'settings.html' ? 'active' : ''}">${icon('settings')}<span data-i18n="nav.settings">الإعدادات</span></a>
+                    <button type="button" id="sidebar-theme-toggle" class="sidebar-link theme-toggle-btn" style="background:none; border:none; width:100%; text-align:inherit; cursor:pointer;">
+                        ${icon('moon')}<span class="theme-label" data-i18n="nav.theme">الوضع الليلي</span>
+                    </button>
                     <a href="#" id="sidebar-exit-btn" class="sidebar-link sidebar-link-danger">${icon('exit')}<span data-i18n="nav.exit">خروج</span></a>
                 </nav>
                 <div class="sidebar-project-info" id="sidebar-project-info" style="${currentPath.includes('review') ? '' : 'display:none;'}">
@@ -63,30 +57,29 @@
     const toggleBtn = document.getElementById('toggle-sidebar');
     const tabBtn = document.getElementById('sidebar-collapsed-tab');
     const exitBtn = document.getElementById('sidebar-exit-btn');
+    const themeBtn = document.getElementById('sidebar-theme-toggle');
 
-    if (!sidebar) {
-      console.warn('[Sidebar] bind failed - no sidebar element');
-      return;
+    if (!sidebar) return;
+
+    if (themeBtn && !themeBtn._themeBound) {
+      themeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.ThemeManager) window.ThemeManager.toggle();
+      });
+      themeBtn._themeBound = true;
     }
 
-    console.log('[Sidebar] binding events, sidebar found');
-
     function setCollapsed(collapsed) {
-      console.log('[Sidebar] setCollapsed', collapsed);
       sidebar.classList.toggle('collapsed', collapsed);
       if (tabBtn) tabBtn.classList.toggle('hidden', !collapsed);
       try { localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0'); } catch (e) {}
-      // Also ensure body has class
       document.body.classList.add('has-sidebar');
     }
 
-    // Apply stored state on bind
     setCollapsed(readCollapsedState());
 
-    // Remove any old listeners by cloning? Use once flag to avoid duplicate binds
     if (toggleBtn && !toggleBtn._sidebarBound) {
       toggleBtn.addEventListener('click', () => {
-        console.log('[Sidebar] toggle clicked');
         const isCollapsed = sidebar.classList.contains('collapsed');
         setCollapsed(!isCollapsed);
       });
@@ -95,7 +88,6 @@
 
     if (tabBtn && !tabBtn._sidebarBound) {
       tabBtn.addEventListener('click', () => {
-        console.log('[Sidebar] tab clicked - expand');
         setCollapsed(false);
       });
       tabBtn._sidebarBound = true;
@@ -104,18 +96,31 @@
     if (exitBtn && !exitBtn._sidebarBound) {
       exitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (confirm(window.AppI18n.t('sidebar.exitConfirm'))) {
+        const confirmExit = () => {
           if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.close_app === 'function') {
             window.pywebview.api.close_app();
           } else {
             window.close();
+          }
+        };
+
+        if (window.AestheticDialog) {
+          window.AestheticDialog.confirm({
+            title: window.AppI18n ? window.AppI18n.t('nav.exit') : 'خروج',
+            message: window.AppI18n ? window.AppI18n.t('sidebar.exitConfirm') : 'هل أنت متأكد من رغبتك في إغلاق التطبيق؟',
+            confirmText: window.AppI18n ? window.AppI18n.t('nav.exit') : 'خروج',
+            onConfirm: confirmExit
+          });
+        } else {
+          if (confirm(window.AppI18n ? window.AppI18n.t('sidebar.exitConfirm') : 'هل تريد الخروج؟')) {
+            confirmExit();
           }
         }
       });
       exitBtn._sidebarBound = true;
     }
 
-    // Active link
+    // Active link highlighting
     const current = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.sidebar-link').forEach(link => {
       const href = link.getAttribute('href');
@@ -126,17 +131,13 @@
   }
 
   function initSidebar() {
-    console.log('[Sidebar] initSidebar called, readyState', document.readyState);
     injectSidebarIfNeeded();
-    // Give DOM a tick before binding in case injection is async
     setTimeout(bindSidebarEvents, 0);
     setTimeout(bindSidebarEvents, 100);
   }
 
-  // Try multiple entry points
   document.addEventListener('DOMContentLoaded', initSidebar);
   window.addEventListener('pywebviewready', initSidebar);
-  // Also try immediately if DOM already loaded
   if (document.readyState === 'interactive' || document.readyState === 'complete') {
     setTimeout(initSidebar, 0);
   }

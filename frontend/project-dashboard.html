@@ -22,43 +22,43 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
             <div>
                 <h1 style="font-size: 22px; color: var(--color-text); margin: 0; font-weight: 800;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
-                <p id="dashboard-proj-subtitle" style="color: var(--color-text-muted); margin-top: 4px; font-size: 13px;">استعراض الصفحات واستخراج النصوص والتخطيط</p>
+                <p id="dashboard-proj-subtitle" style="color: var(--color-text-muted); margin-top: 4px; font-size: 13px;" data-i18n="dash.subtitle">استعراض الصفحات واستخراج النصوص والتخطيط</p>
             </div>
             
             <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                <button id="dashboard-global-ocr-btn" class="btn-primary" data-icon="ocr" title="بدء التعرف الضوئي (OCR)"><span data-i18n="dash.ocr">OCR</span></button>
+                <button id="dashboard-global-ocr-btn" class="btn-primary" data-icon="ocr" title="بدء التعرف الضوئي (OCR)" data-i18n-title="dash.ocr"><span data-i18n="dash.ocr">OCR</span></button>
                 <button id="dashboard-preprocess-btn" class="btn-secondary" data-icon="preprocess" data-i18n="dash.preprocessing">معالجة أولية</button>
                 <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
                 <button id="back-to-review-btn" class="btn-primary" data-icon="edit" data-i18n="dash.review">تدقيق</button>
-                <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-icon="export" data-i18n="dash.export">تصدير</button>
+                <button id="export-btn" class="btn-secondary" title="تصدير المشروع إلى JSON أو TXT أو DOCX" data-i18n-title="dash.export" data-icon="export" data-i18n="dash.export">تصدير</button>
             </div>
         </div>
 
         <!-- Interactive Pipeline Stepper -->
         <div class="pipeline-stepper">
-            <div class="pipeline-step" id="step-preprocess" title="ضبط استقامة الصفحات، القص، والهوامش">
+            <div class="pipeline-step" id="step-preprocess" data-i18n-title="dash.stepPreprocessDesc" title="ضبط استقامة الصفحات، القص، والهوامش">
                 <span class="step-num">1</span>
-                <span>المعالجة الأولية (ScanTailor)</span>
+                <span data-i18n="dash.stepPreprocess">المعالجة الأولية (ScanTailor)</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step" id="step-ocr" title="استخراج النصوص بـ PaddleOCR أو Google Lens أو LLM">
+            <div class="pipeline-step" id="step-ocr" data-i18n-title="dash.stepOcrDesc" title="استخراج النصوص بـ PaddleOCR أو Google Lens أو LLM">
                 <span class="step-num">2</span>
-                <span>استخراج النصوص (OCR)</span>
+                <span data-i18n="dash.stepOcr">استخراج النصوص (OCR)</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step" id="step-layout" title="تعديل الكتل والفقرات والجداول">
+            <div class="pipeline-step" id="step-layout" data-i18n-title="dash.stepLayoutDesc" title="تعديل الكتل والفقرات والجداول">
                 <span class="step-num">3</span>
-                <span>محرر التخطيط (Layout)</span>
+                <span data-i18n="dash.stepLayout">محرر التخطيط (Layout)</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step active" id="step-review" title="مراجعة وتدقيق وتنسيق النص">
+            <div class="pipeline-step active" id="step-review" data-i18n-title="dash.stepReviewDesc" title="مراجعة وتدقيق وتنسيق النص">
                 <span class="step-num">4</span>
-                <span>محرر التدقيق (Review)</span>
+                <span data-i18n="dash.stepReview">محرر التدقيق (Review)</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step" id="step-export" title="تصدير DOCX / PDF / ePub">
+            <div class="pipeline-step" id="step-export" data-i18n-title="dash.stepExportDesc" title="تصدير DOCX / PDF / ePub">
                 <span class="step-num">5</span>
-                <span>التصدير النهائي (Export)</span>
+                <span data-i18n="dash.stepExport">التصدير النهائي (Export)</span>
             </div>
         </div>
 
@@ -80,14 +80,14 @@
             <div style="display: flex; align-items: center; gap: 12px;">
                 <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--color-text);">
                     <input type="checkbox" id="dash-select-all-cb" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
-                    <span>تحديد جميع الصفحات</span>
+                    <span data-i18n="dash.selectAllPages">تحديد جميع الصفحات</span>
                 </label>
             </div>
 
             <!-- View Switcher -->
             <div style="display: flex; gap: 4px; background: var(--color-bg-muted); padding: 3px; border-radius: var(--radius-md);">
-                <button id="view-mode-grid" class="btn-icon active" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض المصغرات الشبكي" data-icon="layout"></button>
-                <button id="view-mode-table" class="btn-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض الجدول" data-icon="order"></button>
+                <button id="view-mode-grid" class="btn-icon active" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض المصغرات الشبكي" data-i18n-title="dash.viewGrid" data-icon="layout"></button>
+                <button id="view-mode-table" class="btn-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض الجدول" data-i18n-title="dash.viewTable" data-icon="order"></button>
             </div>
         </div>
 
@@ -114,27 +114,27 @@
 
     <!-- Context Menu for Pages -->
     <div id="page-context-menu" class="custom-context-menu hidden">
-        <div class="menu-header" id="ctx-page-title">إجراءات الصفحة</div>
-        <button type="button" class="ctx-item" id="ctx-action-ocr"><span>بدء التعرف الضوئي (OCR)</span></button>
-        <button type="button" class="ctx-item" id="ctx-action-layout"><span>فتح محرر التخطيط</span></button>
-        <button type="button" class="ctx-item" id="ctx-action-preprocess"><span>المعالجة الأولية (ScanTailor)</span></button>
-        <button type="button" class="ctx-item" id="ctx-action-review"><span>فتح المراجعة والتدقيق</span></button>
+        <div class="menu-header" id="ctx-page-title" data-i18n="dash.ctxPageTitle">إجراءات الصفحة</div>
+        <button type="button" class="ctx-item" id="ctx-action-ocr"><span data-i18n="dash.ctxOcr">بدء التعرف الضوئي (OCR)</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-layout"><span data-i18n="dash.ctxLayout">فتح محرر التخطيط</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-preprocess"><span data-i18n="dash.ctxPreprocess">المعالجة الأولية (ScanTailor)</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-review"><span data-i18n="dash.ctxReview">فتح المراجعة والتدقيق</span></button>
         <div class="ctx-divider"></div>
-        <button type="button" class="ctx-item" id="ctx-action-mark-reviewed"><span>تحديد كـ "تمت المراجعة"</span></button>
-        <button type="button" class="ctx-item" id="ctx-action-mark-unreviewed"><span>إلغاء حالة المراجعة</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-mark-reviewed"><span data-i18n="dash.ctxMarkReviewed">تحديد كـ "تمت المراجعة"</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-mark-unreviewed"><span data-i18n="dash.ctxMarkUnreviewed">إلغاء حالة المراجعة</span></button>
         <div class="ctx-divider"></div>
-        <button type="button" class="ctx-item danger" id="ctx-action-delete"><span>حذف الصفحة</span></button>
+        <button type="button" class="ctx-item danger" id="ctx-action-delete"><span data-i18n="dash.ctxDelete">حذف الصفحة</span></button>
     </div>
 
     <!-- Floating Batch Action Bar -->
     <div id="floating-batch-bar" class="floating-batch-bar">
         <span class="batch-count-badge" id="batch-selected-count">0</span>
-        <span style="font-size: 13px; font-weight: 600;">صفحة محددة</span>
+        <span style="font-size: 13px; font-weight: 600;" data-i18n="dash.pagesSelected">صفحة محددة</span>
         <div style="display: flex; gap: 8px;">
-            <button id="btn-batch-ocr" class="btn-primary" style="padding: 5px 14px; font-size: 12px;" data-icon="ocr">OCR</button>
-            <button id="btn-batch-preprocess" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="preprocess">معالجة أولية</button>
-            <button id="btn-batch-layout" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="layout">تخطيط</button>
-            <button id="btn-batch-clear" class="btn-plain" style="color: #94a3b8; font-size: 12px; margin-inline-start: 8px;">إلغاء التحديد</button>
+            <button id="btn-batch-ocr" class="btn-primary" style="padding: 5px 14px; font-size: 12px;" data-icon="ocr" data-i18n="dash.batchOcr">OCR</button>
+            <button id="btn-batch-preprocess" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="preprocess" data-i18n="dash.batchPreprocess">معالجة أولية</button>
+            <button id="btn-batch-layout" class="btn-secondary" style="padding: 5px 14px; font-size: 12px; background: transparent; border-color: #64748b; color: white;" data-icon="layout" data-i18n="dash.batchLayout">تخطيط</button>
+            <button id="btn-batch-clear" class="btn-plain" style="color: #94a3b8; font-size: 12px; margin-inline-start: 8px;" data-i18n="dash.batchClear">إلغاء التحديد</button>
         </div>
     </div>
 
@@ -156,7 +156,7 @@
                                 PaddleOCR (Online Demo)
                             </label>
                             <div class="section-hint" id="paddle-limit-hint" style="margin-inline-start: 24px; margin-top: 4px;">
-                                متاح 3 ملفات مجانية يومياً. (المتبقي: <span id="paddle-files-left">3</span>)
+                                <span data-i18n="dash.paddleFreeLimit">متاح 3 ملفات مجانية يومياً.</span> (<span data-i18n="dash.remaining">المتبقي:</span> <span id="paddle-files-left">3</span>)
                             </div>
                         </div>
 
@@ -166,19 +166,19 @@
                                 Locro Offline (ScreenAI)
                             </label>
                             
-                            <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;" data-i18n="dash.scanMode" data-i18n="dash.scanMode"> <span data-i18n="dash.scanMode" data-i18n="ocr.scanMode">طريقة المسح (Scan Mode):</span></div>
+                            <div id="locro-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;"><span data-i18n="dash.scanMode">طريقة المسح (Scan Mode):</span></div>
                                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                                     <label class="radio-item">
                                         <input type="radio" name="locro-mode" value="full_page" checked> 
-                                        مسح الصفحة كاملة
+                                        <span data-i18n="dash.fullPage">مسح الصفحة كاملة</span>
                                     </label>
                                     <label class="radio-item">
                                         <input type="radio" name="locro-mode" value="bboxes"> 
-                                        مسح بناءً على الكتل الحالية (BBoxes)
+                                        <span data-i18n="dash.bboxes">مسح بناءً على الكتل الحالية (BBoxes)</span>
                                     </label>
                                 </div>
-                                <div class="section-hint" style="margin-top: 8px;" id="locro-mode-hint">
+                                <div class="section-hint" style="margin-top: 8px;" id="locro-mode-hint" data-i18n="dash.locroHint">
                                     أداة محلية تعتمد على تقنية ScreenAI المدمجة مع متصفح كروم. تدعم معالجة النصوص بدقة فائقة مع إمكانية استخراج درجات الثقة (Confidence) للكلمات. سيتم تنزيل المحرك تلقائياً إذا لم يكن متوفراً.
                                 </div>
                             </div>
@@ -190,19 +190,19 @@
                                 Google Lens OCR
                             </label>
                             
-                            <div id="glens-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #ddd;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;"> <span data-i18n="dash.scanMode">طريقة المسح (Scan Mode):</span></div>
+                            <div id="glens-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;"><span data-i18n="dash.scanMode">طريقة المسح (Scan Mode):</span></div>
                                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                                     <label class="radio-item">
                                         <input type="radio" name="glens-mode" value="full_page" checked> 
-                                        مسح الصفحة كاملة
+                                        <span data-i18n="dash.fullPage">مسح الصفحة كاملة</span>
                                     </label>
                                     <label class="radio-item">
                                         <input type="radio" name="glens-mode" value="bboxes"> 
-                                        مسح بناءً على الكتل الحالية (BBoxes)
+                                        <span data-i18n="dash.bboxes">مسح بناءً على الكتل الحالية (BBoxes)</span>
                                     </label>
                                 </div>
-                                <div class="section-hint" style="margin-top: 8px;" id="glens-mode-hint">
+                                <div class="section-hint" style="margin-top: 8px;" id="glens-mode-hint" data-i18n="dash.lensHint">
                                     سيتم إرسال الصفحة لـ Google Lens واستخراج النصوص مع بناء مربعات التحديد (BBoxes) تلقائياً.
                                 </div>
                             </div>
@@ -214,12 +214,12 @@
                                 LLM Vision API (Gemini, GPT, Custom)
                             </label>
                             
-                            <div id="llm-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 16px; background: #fdfaf6; border-radius: 6px; border: 1px solid #e2d9c8;">
+                            <div id="llm-sub-options" class="hidden" style="margin-top: 12px; margin-inline-start: 24px; padding: 16px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
                                 
                                 <div class="form-group" style="margin-bottom: 12px;">
                                     <label style="font-size: 13px; font-weight: 600;" data-i18n="ocr.provider">مزود الخدمة (Provider / Model):</label>
                                   
-                                  <select id="llm-provider" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
+                                  <select id="llm-provider" style="width: 100%; padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); margin-top: 4px; background: var(--color-surface); color: var(--color-text);" dir="ltr">
                                         <optgroup label="Google Gemini">
                                             <option value="gemini/gemini-3.5-pro">Gemini 3.5 Pro</option>
                                             <option value="gemini/gemini-3.5-flash">Gemini 3.5 Flash</option>
@@ -266,36 +266,36 @@
 
                                 </div>
 
-                                <div id="llm-custom-fields" class="hidden" style="margin-bottom: 12px; padding: 10px; background: #fff; border: 1px dashed #ccc; border-radius: 4px;">
+                                <div id="llm-custom-fields" class="hidden" style="margin-bottom: 12px; padding: 10px; background: var(--color-surface); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-md);">
                                     <div class="form-group" style="margin-bottom: 8px;">
                                         <label style="font-size: 12px;" data-i18n="ocr.baseUrl">رابط الخادم (Base URL):</label>
-                                        <input type="text" id="llm-base-url" placeholder="مثال: https://inference.dahl.global/v1" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
+                                        <input type="text" id="llm-base-url" data-i18n-placeholder="ocr.baseUrlPlaceholder" placeholder="مثال: https://inference.dahl.global/v1" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface); color: var(--color-text);" dir="ltr">
                                     </div>
                                     <div class="form-group">
                                         <label style="font-size: 12px;" data-i18n="ocr.modelName">اسم النموذج (Model Name):</label>
-                                        <input type="text" id="llm-model-name" placeholder="مثال: MiniMaxAI/MiniMax-M2.7" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" dir="ltr">
+                                        <input type="text" id="llm-model-name" data-i18n-placeholder="ocr.modelNamePlaceholder" placeholder="مثال: MiniMaxAI/MiniMax-M2.7" style="width: 100%; padding: 6px; font-size: 13px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface); color: var(--color-text);" dir="ltr">
                                     </div>
                                 </div>
 
                                 <div class="form-group" style="margin-bottom: 12px;">
                                     <label style="font-size: 13px; font-weight: 600;" data-i18n="ocr.apiKey">مفتاح الـ API (API Key):</label>
-                                    <input type="password" id="llm-api-key" data-i18n-placeholder="ocr.apiPlaceholder" placeholder="ادخل مفتاح API هنا..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px;" dir="ltr">
+                                    <input type="password" id="llm-api-key" data-i18n-placeholder="ocr.apiPlaceholder" placeholder="ادخل مفتاح API هنا..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--color-border-strong); margin-top: 4px; background: var(--color-surface); color: var(--color-text);" dir="ltr">
                                 </div>
 
                                 <label class="radio-item" style="font-size: 13px;">
                                     <input type="checkbox" id="llm-remember-api" checked>
-                                    تذكر بيانات الـ API على هذا الجهاز
+                                    <span data-i18n="dash.rememberApi">تذكر بيانات الـ API على هذا الجهاز</span>
                                 </label>
 
-                                <div id="llm-prompt-container" style="margin-top:14px; border-top:1px solid #cbd5e1; padding-top:12px;">
+                                <div id="llm-prompt-container" style="margin-top:14px; border-top:1px solid var(--color-border); padding-top:12px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                        <label style="font-size:13px; font-weight:bold; color:#334155;" data-i18n="ocr.prompt">تعليمة التوجيه للنموذج (LLM Prompt):</label>
-                                        <button type="button" id="reset-ocr-modal-prompt" style="background:none; border:none; color:#2563eb; font-size:12px; cursor:pointer; text-decoration:underline;" data-i18n="ocr.restorePrompt">استعادة التعليمة العامة</button>
+                                        <label style="font-size:13px; font-weight:bold; color:var(--color-text);" data-i18n="ocr.prompt">تعليمة التوجيه للنموذج (LLM Prompt):</label>
+                                        <button type="button" id="reset-ocr-modal-prompt" style="background:none; border:none; color:var(--color-primary); font-size:12px; cursor:pointer; text-decoration:underline;" data-i18n="ocr.restorePrompt">استعادة التعليمة العامة</button>
                                     </div>
-                                    <textarea id="ocr-modal-llm-prompt" rows="5" style="width:100%; font-family:monospace, inherit; font-size:12px; line-height:1.4; padding:8px; border-radius:6px; border:1px solid #cbd5e1; direction:ltr; text-align:left;" data-i18n-placeholder="ocr.promptPlaceholder" placeholder="ادخل تعليمات الـ System Prompt هنا..."></textarea>
+                                    <textarea id="ocr-modal-llm-prompt" rows="5" style="width:100%; font-family:monospace, inherit; font-size:12px; line-height:1.4; padding:8px; border-radius:6px; border:1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); direction:ltr; text-align:left;" data-i18n-placeholder="ocr.promptPlaceholder" placeholder="ادخل تعليمات الـ System Prompt هنا..."></textarea>
                                     
                                     <label class="radio-item" style="font-size:12.5px; margin-top:8px; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                                        <input type="checkbox" id="remember-prompt-for-project" style="width:15px; height:15px; cursor:pointer; accent-color:#2563eb;">
+                                        <input type="checkbox" id="remember-prompt-for-project" style="width:15px; height:15px; cursor:pointer; accent-color:var(--color-primary);">
                                         <span data-i18n="ocr.rememberPrompt">تذكر هذه التعليمة لهذا المشروع فقط (حفظ في إعدادات المشروع)</span>
                                     </label>
                                 </div>
@@ -307,30 +307,30 @@
                 </div>
 
                 <div class="form-group">
-                    <label data-i18n="dash.pageRange" data-i18n="ocr.range">نطاق الصفحات</label>
+                    <label data-i18n="dash.pageRange">نطاق الصفحات</label>
                     <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
                         <label class="radio-item">
-                            <input type="radio" name="ocr-range" value="all"> كامل الملف
+                            <input type="radio" name="ocr-range" value="all"> <span data-i18n="dash.fullFile">كامل الملف</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="ocr-range" value="selected" checked> نطاق محدد
+                            <input type="radio" name="ocr-range" value="selected" checked> <span data-i18n="dash.selectedRange">نطاق محدد</span>
                         </label>
                     </div>
                     
-                    <div id="ocr-range-inputs" style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #ddd;">
-                        من صفحة 
-                        <input type="number" id="ocr-start-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
-                        إلى 
-                        <input type="number" id="ocr-end-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                    <div id="ocr-range-inputs" style="display: flex; gap: 10px; align-items: center; background: var(--color-bg); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                        <span data-i18n="dash.from">من صفحة</span> 
+                        <input type="number" id="ocr-start-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface); color: var(--color-text);">
+                        <span data-i18n="dash.to">إلى</span> 
+                        <input type="number" id="ocr-end-page" value="1" min="1" style="width: 80px; padding: 6px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface); color: var(--color-text);">
                     </div>
-                    <div class="section-hint" style="margin-top: 8px;" id="range-hint-text">
+                    <div class="section-hint" style="margin-top: 8px;" id="range-hint-text" data-i18n="dash.startRangeHint">
                         تم تعيين النطاق الافتراضي ليبدأ من أول صفحة غير معالجة.
                     </div>
                 </div>
 
-                <div class="section-hint" style="background: #eaf2f8; padding: 10px; border-radius: 6px; color: #2980b9; display: flex; gap: 8px; align-items: flex-start;">
-                    <span style="font-size: 16px;">ℹ</span>
-                    <div>
+                <div class="section-hint" style="background: var(--color-bg-alt); padding: 10px; border-radius: 6px; color: var(--color-primary); display: flex; gap: 8px; align-items: flex-start; border: 1px solid var(--color-border);">
+                    <span data-icon="info" style="display: flex; align-items: center;"></span>
+                    <div data-i18n="dash.smartChunking">
                         التقطيع الذكي مفعّل: سيقوم النظام تلقائياً بتجزئة الملفات التي تتجاوز 1000 صفحة، أو 200 ميجابايت، أو 200 صفحة كحد أقصى للدفعة الواحدة لضمان استقرار المعالجة.
                     </div>
                 </div>
@@ -343,18 +343,20 @@
     </div>
 
     <script src="js/icons.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
-    <script src="js/i18n/locales/ar.js"></script>
-    <script src="js/i18n/locales/en.js"></script>
-    <script src="js/i18n/locales/de.js"></script>
-    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <!-- Dashboard modular -->
     <script src="js/pages/project-dashboard/state.js"></script>
@@ -372,12 +374,12 @@
         <div class="modal-overlay"></div>
         <div class="modal-box" style="width: 400px; text-align: center;">
             <div class="modal-body" style="padding: 30px 20px;">
-                <h3 style="margin-bottom: 12px; color: #2c3e50;" data-i18n="ocr.progressTitle"> <span data-i18n="ocr.progressTitle">جاري المعالجة...</span></h3>
-                <p id="ocr-progress-message" style="font-size: 14px; color: #555; margin-bottom: 16px;" data-i18n="ocr.wait"> <span data-i18n="ocr.wait">يرجى الانتظار</span></p>
-                <div class="progress-bar" style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden; width: 100%;">
-                    <div id="ocr-progress-fill" style="width: 0%; height: 100%; background: #3498db; transition: width 0.4s ease, background 0.4s;"></div>
+                <h3 style="margin-bottom: 12px; color: var(--color-text);"><span data-i18n="ocr.progressTitle">جاري المعالجة...</span></h3>
+                <p id="ocr-progress-message" style="font-size: 14px; color: var(--color-text-muted); margin-bottom: 16px;"><span data-i18n="ocr.wait">يرجى الانتظار</span></p>
+                <div class="progress-bar" style="height: 10px; background: var(--color-bg-muted); border-radius: 5px; overflow: hidden; width: 100%;">
+                    <div id="ocr-progress-fill" style="width: 0%; height: 100%; background: var(--color-primary); transition: width 0.4s ease, background 0.4s;"></div>
                 </div>
-                <div class="section-hint" style="margin-top: 14px;" data-i18n="ocr.progressHint"> <span data-i18n="ocr.progressHint">قد تستغرق هذه العملية بعض الوقت اعتماداً على حجم الملف وسرعة الإنترنت.</span></div>
+                <div class="section-hint" style="margin-top: 14px;"><span data-i18n="ocr.progressHint">قد تستغرق هذه العملية بعض الوقت اعتماداً على حجم الملف وسرعة الإنترنت.</span></div>
             </div>
         </div>
     </div>

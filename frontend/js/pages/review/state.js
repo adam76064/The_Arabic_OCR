@@ -43,7 +43,7 @@ function getAllCategories() {
 }
 
 function isTableLike(category) {
-    return category === 'Table' || category === 'Vertical-poetry';
+    return category === 'Table' || category === 'Vertical-poetry' || category === 'Poem';
 }
 
 // ===== STRUCTURED STORE for new code =====

@@ -25,8 +25,9 @@ const TABLE_ICONS = {
 
 const tableText = (key) => window.AppI18n?.t(key) || key;
 
-const TABLE_TOOLBAR_HTML = `
-    <button class="toolbar-icon-btn" id="tb-insert-table" title=tableText('table.insert')>${TABLE_ICONS.insertTable}</button>
+function getTableToolbarHTML() {
+    return `
+    <button class="toolbar-icon-btn" id="tb-insert-table" title="${tableText('table.insert')}">${TABLE_ICONS.insertTable}</button>
     <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
     <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
     <span class="toolbar-icon-sep"></span>
@@ -58,6 +59,9 @@ const TABLE_TOOLBAR_HTML = `
     <button class="toolbar-icon-btn" id="tb-delete-col" title="${tableText('table.deleteCol')}" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
     <button class="toolbar-icon-btn" id="tb-delete-table" title="${tableText('table.delete')}" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
 `;
+}
+
+const TABLE_TOOLBAR_HTML = getTableToolbarHTML();
 
 // ── Helpers shared between the toolbar buttons and the context menu ─────
 function currentTableTarget() {
@@ -120,7 +124,7 @@ function doSplit(cell) {
     if (!cell) return;
     const table = cell.closest('table');
     window.AestheticDialog.show(
-        "${tableText('table.split')}",
+        tableText('table.split'),
         `<div class="aes-group"><label>${tableText('table.splitCols')}</label><input type="number" id="split-c" value="2" min="1"></div>
          <div class="aes-group"><label>${tableText('table.splitRows')}</label><input type="number" id="split-r" value="1" min="1"></div>`,
         (modal) => {
@@ -205,7 +209,7 @@ function doDeleteTable(cell) {
 
 function bordersDialog(cells) {
     window.AestheticDialog.show(
-        "${tableText('table.borders')}",
+        tableText('table.borders'),
         `<div class="aes-group"><label>${tableText('table.borderWidth')}</label><input type="number" id="border-width" value="1" min="0" max="10"></div>
          <div class="aes-group"><label>${tableText('table.borderStyle')}</label>
             <select id="border-style">
@@ -423,7 +427,7 @@ const TableToolbar = {
 
             if (table) {
                 window.AestheticDialog.show(
-                    "${tableText('table.tableToText')}",
+                    tableText('table.tableToText'),
                     `<div class="aes-group">
                         <label>${tableText('table.separatorHint')}</label>
                         <input type="text" id="tbl-sep-to-text" value=" - ">
@@ -524,6 +528,7 @@ const TableToolbar = {
 window.TableToolbar = TableToolbar;
 window.TableContextMenu = TableContextMenu;
 window.TABLE_TOOLBAR_HTML = TABLE_TOOLBAR_HTML;
+window.getTableToolbarHTML = getTableToolbarHTML;
 window.applyFill = applyFill;
 window.applyBorders = applyBorders;
 window.applyValign = applyValign;

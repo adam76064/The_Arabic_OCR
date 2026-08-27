@@ -15,7 +15,7 @@
             <h1 data-i18n="lan.title">مشاريع الشبكة المحلية</h1>
             <button id="rescan-btn" class="btn-primary" data-icon="scan" data-i18n="lan.rescan">إعادة البحث</button>
         </div>
-        <div id="lan-status" style="margin-bottom:16px; color:#888; font-size:14px;">جارٍ البحث عن مشاريع على الشبكة...</div>
+        <div id="lan-status" style="margin-bottom:16px; color:var(--color-text-muted); font-size:14px;" data-i18n="lan.searching">جارٍ البحث عن مشاريع على الشبكة...</div>
         <div id="lan-results" class="home-cards"></div>
     </main>
 
@@ -36,18 +36,20 @@
     </div>
 
     <script src="js/icons.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
     <script src="js/pages/settings.js"></script>
-    <script src="js/i18n/locales/ar.js"></script>
-    <script src="js/i18n/locales/en.js"></script>
-    <script src="js/i18n/locales/de.js"></script>
-    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/lan.js"></script>
     <script src="js/apply-icons.js"></script>
 </body>

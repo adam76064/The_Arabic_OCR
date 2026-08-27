@@ -1,11 +1,12 @@
-/* tokens.css - Modern, Clean & Lightweight Design System Tokens */
+/* tokens.css - Modern, Calm & Professional Design Tokens */
 :root {
-  /* Brand & Core Color Palette */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-active: #1e40af;
-  --color-primary-light: #eff6ff;
-  --color-primary-subtle: #dbeafe;
+  /* Brand & Core Color Palette (Calm Emerald Teal & Slate) */
+  --color-primary: #0f766e;
+  --color-primary-hover: #115e59;
+  --color-primary-active: #134e4a;
+  --color-primary-light: #f0fdfa;
+  --color-primary-subtle: #ccfbf1;
+  --color-primary-border: #99f6e4;
 
   --color-secondary: #475569;
   --color-secondary-hover: #334155;
@@ -29,11 +30,13 @@
   --color-info: #0284c7;
   --color-info-hover: #0369a1;
   --color-info-light: #f0f9ff;
+  --color-info-border: #bae6fd;
 
   /* Surfaces, Backgrounds & Neutral Scale */
-  --color-bg: #f8fafc;
+  --color-bg: #f8fafb;
   --color-bg-alt: #f1f5f9;
   --color-bg-muted: #e2e8f0;
+  --color-canvas: #eef2f6;
   --color-surface: #ffffff;
   --color-surface-hover: #f8fafc;
   --color-surface-elevated: #ffffff;
@@ -48,43 +51,63 @@
   --color-text-faint: #94a3b8;
   --color-text-inverse: #ffffff;
 
-  /* Category Semantic Colors */
+  /* Category Semantic Colors & 3px Accent Indicator Tokens */
   --cat-text: #0284c7;
   --cat-text-bg: #f0f9ff;
+  --cat-text-accent: #0284c7;
+
   --cat-title: #7c3aed;
   --cat-title-bg: #f5f3ff;
-  --cat-header: #8b5cf6;
-  --cat-header-bg: #faf5ff;
+  --cat-title-accent: #7c3aed;
+
+  --cat-header: #6366f1;
+  --cat-header-bg: #eef2ff;
+  --cat-header-accent: #6366f1;
+
   --cat-footnote: #475569;
   --cat-footnote-bg: #f8fafc;
+  --cat-footnote-accent: #64748b;
+
   --cat-quran: #059669;
   --cat-quran-bg: #ecfdf5;
+  --cat-quran-accent: #059669;
+
   --cat-poem: #d97706;
   --cat-poem-bg: #fffbeb;
-  --cat-table: #4f46e5;
-  --cat-table-bg: #eef2ff;
+  --cat-poem-accent: #d97706;
+
+  --cat-table: #2563eb;
+  --cat-table-bg: #eff6ff;
+  --cat-table-accent: #2563eb;
+
   --cat-image: #db2777;
   --cat-image-bg: #fdf2f8;
+  --cat-image-accent: #db2777;
+
   --cat-page-num: #0d9488;
   --cat-page-num-bg: #f0fdfa;
+  --cat-page-num-accent: #0d9488;
 
   /* Sidebar Theme */
-  --color-sidebar: #0f172a;
-  --color-sidebar-hover: #1e293b;
-  --color-sidebar-active: #334155;
-  --color-sidebar-text: #f8fafc;
-  --color-sidebar-muted: #94a3b8;
+  --color-sidebar: #ffffff;
+  --color-sidebar-hover: #f1f5f9;
+  --color-sidebar-active: #e2e8f0;
+  --color-sidebar-text: #0f172a;
+  --color-sidebar-muted: #64748b;
+  --color-sidebar-border: #e2e8f0;
 
   /* Typography */
-  --font-ar: 'Cairo', 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, 'Simplified Arabic', 'Traditional Arabic', sans-serif;
-  --font-content: 'Amiri', 'Traditional Arabic', 'Scheherazade New', 'Simplified Arabic', serif;
+  --font-ui: 'IBM Plex Sans Arabic', 'Cairo', 'Segoe UI', Tahoma, system-ui, sans-serif;
+  --font-ar: var(--font-ui);
+  --font-doc: 'Amiri', 'Traditional Arabic', 'Scheherazade New', 'Simplified Arabic', serif;
+  --font-content: var(--font-doc);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   
-  --text-2xs: 10px;
-  --text-xs: 11.5px;
-  --text-sm: 13px;
-  --text-base: 14px;
-  --text-md: 15px;
+  --text-2xs: 10.5px;
+  --text-xs: 12px;
+  --text-sm: 13.5px;
+  --text-base: 14.5px;
+  --text-md: 16px;
   --text-lg: 18px;
   --text-xl: 22px;
   --text-2xl: 26px;
@@ -126,35 +149,218 @@
 
   /* Layout dimensions */
   --sidebar-width: 240px;
-  --toolbar-height: 52px;
+  --sidebar-rail-width: 52px;
+  --topbar-height: 46px;
+  --toolbar-height: 48px;
   --block-font-default: 15px;
 }
 
-/* Comprehensive Dark / Night Mode Overrides */
-body.night-mode {
-  --color-bg: #0b0f19;
-  --color-bg-alt: #111827;
-  --color-bg-muted: #1e293b;
-  --color-surface: #151e32;
-  --color-surface-hover: #1e293b;
-  --color-surface-elevated: #1a243d;
+/* ── Comprehensive Dark / Deep Charcoal Studio Night Mode ──────────────── */
+:root[data-theme="dark"],
+html[data-theme="dark"],
+html.night-mode,
+html.dark-mode,
+body.night-mode,
+[data-theme="dark"] body,
+body.dark-mode {
+  --color-bg: #0e1117;
+  --color-bg-alt: #161b22;
+  --color-bg-muted: #1f242d;
+  --color-canvas: #090d14;
+  --color-surface: #161b22;
+  --color-surface-hover: #1f242d;
+  --color-surface-elevated: #1c2129;
 
-  --color-border: #1e293b;
-  --color-border-subtle: #111827;
-  --color-border-strong: #334155;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-subtle: rgba(255, 255, 255, 0.04);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
 
   --color-text: #f1f5f9;
   --color-text-secondary: #cbd5e1;
-  --color-text-muted: #94a3b8;
+  --color-text-muted: #8b949e;
   --color-text-faint: #64748b;
 
-  --color-primary-light: #172554;
-  --color-primary-subtle: #1e3a8a;
-  --color-success-light: #052e16;
-  --color-danger-light: #450a0a;
-  --color-warning-light: #451a03;
+  --color-primary: #14b8a6;
+  --color-primary-hover: #2dd4bf;
+  --color-primary-active: #0d9488;
+  --color-primary-light: rgba(20, 184, 166, 0.12);
+  --color-primary-subtle: rgba(20, 184, 166, 0.22);
+  --color-primary-border: rgba(20, 184, 166, 0.35);
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.5);
+  --color-secondary: #94a3b8;
+  --color-secondary-hover: #cbd5e1;
+  --color-secondary-light: #161b22;
+
+  --color-success-light: rgba(22, 163, 74, 0.15);
+  --color-danger-light: rgba(220, 38, 38, 0.15);
+  --color-warning-light: rgba(217, 119, 6, 0.15);
+  --color-info-light: rgba(2, 132, 199, 0.15);
+
+  /* Sidebar Theme (Dark Mode) */
+  --color-sidebar: #161b22;
+  --color-sidebar-hover: #1f242d;
+  --color-sidebar-active: #2d333b;
+  --color-sidebar-text: #f1f5f9;
+  --color-sidebar-muted: #8b949e;
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
+
+  /* Category backgrounds for night mode */
+  --cat-text-bg: rgba(2, 132, 199, 0.12);
+  --cat-title-bg: rgba(124, 58, 237, 0.12);
+  --cat-header-bg: rgba(99, 102, 241, 0.12);
+  --cat-footnote-bg: rgba(100, 116, 139, 0.12);
+  --cat-quran-bg: rgba(5, 150, 105, 0.15);
+  --cat-poem-bg: rgba(217, 119, 6, 0.12);
+  --cat-table-bg: rgba(37, 99, 235, 0.12);
+  --cat-image-bg: rgba(219, 39, 119, 0.12);
+  --cat-page-num-bg: rgba(13, 148, 136, 0.12);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THEME COLOR PALETTES (Emerald, Ocean/Indigo, Sepia Manuscript, Amethyst, Crimson, Slate)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Ocean Indigo Palette ── */
+[data-palette="ocean"],
+:root[data-palette="ocean"] {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-active: #1e40af;
+  --color-primary-light: #eff6ff;
+  --color-primary-subtle: #dbeafe;
+  --color-primary-border: #bfdbfe;
+}
+:root[data-palette="ocean"][data-theme="dark"],
+html[data-palette="ocean"][data-theme="dark"],
+html[data-palette="ocean"].night-mode,
+[data-palette="ocean"] body.night-mode {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-primary-active: #2563eb;
+  --color-primary-light: rgba(59, 130, 246, 0.15);
+  --color-primary-subtle: rgba(59, 130, 246, 0.25);
+  --color-primary-border: rgba(59, 130, 246, 0.4);
+}
+
+/* ── 2. Warm Sepia / Manuscript Palette ── */
+[data-palette="sepia"],
+:root[data-palette="sepia"] {
+  --color-bg: #fbf7ee;
+  --color-bg-alt: #f4ede0;
+  --color-bg-muted: #e8dcce;
+  --color-canvas: #ede4d3;
+  --color-surface: #fffdfa;
+  --color-surface-hover: #f7f0e4;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e4d7c5;
+  --color-border-subtle: #eee5d8;
+  --color-border-strong: #cfbeaa;
+  --color-text: #2a2118;
+  --color-text-secondary: #4a3b2c;
+  --color-text-muted: #786552;
+  --color-sidebar: #221c16;
+  --color-sidebar-hover: #322921;
+  --color-primary: #b45309;
+  --color-primary-hover: #92400e;
+  --color-primary-active: #78350f;
+  --color-primary-light: #fef3c7;
+  --color-primary-subtle: #fde68a;
+  --color-primary-border: #fcd34d;
+}
+:root[data-palette="sepia"][data-theme="dark"],
+html[data-palette="sepia"][data-theme="dark"],
+html[data-palette="sepia"].night-mode,
+[data-palette="sepia"] body.night-mode {
+  --color-bg: #1c1713;
+  --color-bg-alt: #26201a;
+  --color-bg-muted: #332b23;
+  --color-canvas: #14100c;
+  --color-surface: #26201a;
+  --color-surface-hover: #332b23;
+  --color-surface-elevated: #2f2720;
+  --color-border: rgba(230, 218, 200, 0.1);
+  --color-border-subtle: rgba(230, 218, 200, 0.05);
+  --color-border-strong: rgba(230, 218, 200, 0.2);
+  --color-text: #f5eedf;
+  --color-text-secondary: #dcd0bd;
+  --color-text-muted: #a69884;
+  --color-sidebar: #14100c;
+  --color-sidebar-hover: #1f1913;
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-primary-active: #d97706;
+  --color-primary-light: rgba(245, 158, 11, 0.18);
+  --color-primary-subtle: rgba(245, 158, 11, 0.28);
+  --color-primary-border: rgba(245, 158, 11, 0.45);
+}
+
+/* ── 3. Royal Amethyst Palette ── */
+[data-palette="amethyst"],
+:root[data-palette="amethyst"] {
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-active: #5b21b6;
+  --color-primary-light: #f5f3ff;
+  --color-primary-subtle: #ede9fe;
+  --color-primary-border: #ddd6fe;
+}
+:root[data-palette="amethyst"][data-theme="dark"],
+html[data-palette="amethyst"][data-theme="dark"],
+html[data-palette="amethyst"].night-mode,
+[data-palette="amethyst"] body.night-mode {
+  --color-primary: #a78bfa;
+  --color-primary-hover: #c4b5fd;
+  --color-primary-active: #8b5cf6;
+  --color-primary-light: rgba(167, 139, 250, 0.15);
+  --color-primary-subtle: rgba(167, 139, 250, 0.25);
+  --color-primary-border: rgba(167, 139, 250, 0.4);
+}
+
+/* ── 4. Crimson Ruby Palette ── */
+[data-palette="crimson"],
+:root[data-palette="crimson"] {
+  --color-primary: #be123c;
+  --color-primary-hover: #9f1239;
+  --color-primary-active: #881337;
+  --color-primary-light: #fff1f2;
+  --color-primary-subtle: #ffe4e6;
+  --color-primary-border: #fecdd3;
+}
+:root[data-palette="crimson"][data-theme="dark"],
+html[data-palette="crimson"][data-theme="dark"],
+html[data-palette="crimson"].night-mode,
+[data-palette="crimson"] body.night-mode {
+  --color-primary: #fb7185;
+  --color-primary-hover: #fda4af;
+  --color-primary-active: #f43f5e;
+  --color-primary-light: rgba(251, 113, 133, 0.15);
+  --color-primary-subtle: rgba(251, 113, 133, 0.25);
+  --color-primary-border: rgba(251, 113, 133, 0.4);
+}
+
+/* ── 5. Classic Slate / Charcoal Palette ── */
+[data-palette="slate"],
+:root[data-palette="slate"] {
+  --color-primary: #475569;
+  --color-primary-hover: #334155;
+  --color-primary-active: #1e293b;
+  --color-primary-light: #f1f5f9;
+  --color-primary-subtle: #e2e8f0;
+  --color-primary-border: #cbd5e1;
+}
+:root[data-palette="slate"][data-theme="dark"],
+html[data-palette="slate"][data-theme="dark"],
+html[data-palette="slate"].night-mode,
+[data-palette="slate"] body.night-mode {
+  --color-primary: #94a3b8;
+  --color-primary-hover: #cbd5e1;
+  --color-primary-active: #64748b;
+  --color-primary-light: rgba(148, 163, 184, 0.15);
+  --color-primary-subtle: rgba(148, 163, 184, 0.25);
+  --color-primary-border: rgba(148, 163, 184, 0.4);
 }

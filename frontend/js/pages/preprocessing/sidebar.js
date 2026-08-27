@@ -84,7 +84,7 @@
         autoContentBtn.addEventListener('click', () => {
           state.updateStageParams('content', { content_rect: null, auto_detect: true });
           this.triggerLivePreview();
-          if (global.showNotif) global.showNotif('جاري كشف صندوق المحتوى تلقائياً...', 'info');
+          if (global.showNotif) global.showNotif(global.AppI18n ? global.AppI18n.t('content.detecting') : 'جاري كشف صندوق المحتوى تلقائياً...', 'info');
         });
       }
 
@@ -95,7 +95,7 @@
             content_rect: { x: 0, y: 0, width: state.imageWidth, height: state.imageHeight }
           });
           global.PreprocessingStudio?.renderCanvas();
-          if (global.showNotif) global.showNotif('تم تحديد كامل مساحة الصفحة', 'info');
+          if (global.showNotif) global.showNotif(global.AppI18n ? global.AppI18n.t('content.fullPageSelected') : 'تم تحديد كامل مساحة الصفحة', 'info');
         });
       }
 

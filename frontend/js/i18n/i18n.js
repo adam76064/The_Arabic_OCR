@@ -10,9 +10,9 @@
   function supportedLanguages() {
     return Object.entries(global.AppLocales || {}).map(([code, locale]) => ({
       code,
-      name: locale.meta.name,
-      nativeName: locale.meta.nativeName,
-      direction: locale.meta.direction
+      name: (locale && locale.meta && locale.meta.name) || code,
+      nativeName: (locale && locale.meta && locale.meta.nativeName) || code,
+      direction: (locale && locale.meta && locale.meta.direction) || (code === 'ar' ? 'rtl' : 'ltr')
     }));
   }
 
@@ -32,37 +32,81 @@
   }
 
   function t(key, replacements = {}) {
-    const locale = global.AppLocales[getLanguage()] || global.AppLocales[FALLBACK_LANGUAGE];
-    const fallback = global.AppLocales[FALLBACK_LANGUAGE];
-    let value = locale.messages[key] || fallback.messages[key] || key;
-    Object.entries(replacements).forEach(([name, replacement]) => {
-      value = value.replaceAll(`{${name}}`, String(replacement));
-    });
+    if (!key) return '';
+    const currentLang = getLanguage();
+    const locales = global.AppLocales || {};
+    const locale = locales[currentLang] || locales[FALLBACK_LANGUAGE];
+    const fallback = locales[FALLBACK_LANGUAGE];
+
+    const getMsg = (loc, k) => {
+      if (!loc) return null;
+      if (loc.messages && typeof loc.messages[k] !== 'undefined') return loc.messages[k];
+      if (typeof loc[k] !== 'undefined') return loc[k];
+      return null;
+    };
+
+    let value = getMsg(locale, key);
+    if (value === null || typeof value === 'undefined') {
+      value = getMsg(fallback, key);
+    }
+    if (value === null || typeof value === 'undefined') {
+      value = key;
+    }
+
+    if (typeof value === 'string') {
+      Object.entries(replacements).forEach(([name, replacement]) => {
+        value = value.replaceAll(`{${name}}`, String(replacement));
+      });
+    }
     return value;
   }
 
   function applyDocumentLanguage() {
     const language = getLanguage();
-    const locale = global.AppLocales[language];
+    const locales = global.AppLocales || {};
+    const locale = locales[language] || locales[FALLBACK_LANGUAGE];
+    const direction = (locale && locale.meta && locale.meta.direction) || (language === 'ar' ? 'rtl' : 'ltr');
+
     document.documentElement.lang = language;
-    document.documentElement.dir = locale.meta.direction;
-    document.body?.setAttribute('dir', locale.meta.direction);
+    document.documentElement.dir = direction;
+    document.body?.setAttribute('dir', direction);
     document.documentElement.dataset.interfaceLanguage = language;
-    document.documentElement.dataset.interfaceDirection = locale.meta.direction;
+    document.documentElement.dataset.interfaceDirection = direction;
+
     document.querySelectorAll('[data-i18n]').forEach((element) => {
-      element.textContent = t(element.dataset.i18n);
+      const key = element.dataset.i18n;
+      if (key) {
+        element.textContent = t(key);
+        if (element.hasAttribute('data-icon') || element.hasAttribute('data-icon-label')) {
+          element.removeAttribute('data-icon-applied');
+        }
+      }
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
-      element.placeholder = t(element.dataset.i18nPlaceholder);
+      const key = element.dataset.i18nPlaceholder;
+      if (key) element.placeholder = t(key);
     });
     document.querySelectorAll('[data-i18n-title]').forEach((element) => {
-      element.title = t(element.dataset.i18nTitle);
+      const key = element.dataset.i18nTitle;
+      if (key) element.title = t(key);
+    });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
+      const key = element.dataset.i18nAriaLabel;
+      if (key) element.setAttribute('aria-label', t(key));
     });
     document.querySelectorAll('[data-i18n-document-title]').forEach((element) => {
-      document.title = t(element.dataset.i18nDocumentTitle);
+      const key = element.dataset.i18nDocumentTitle;
+      if (key) document.title = t(key);
     });
+    if (global.AppIcons && typeof global.AppIcons.applyAll === 'function') {
+      global.AppIcons.applyAll(document);
+    }
     document.documentElement.classList.add('i18n-ready');
-    global.dispatchEvent(new CustomEvent('languageChanged', { detail: { language, direction: locale.meta.direction } }));
+    if (global.dispatchEvent && typeof global.dispatchEvent === 'function') {
+      try {
+        global.dispatchEvent(new CustomEvent('languageChanged', { detail: { language, direction } }));
+      } catch (_) {}
+    }
   }
 
   async function setLanguage(language, { persist = true } = {}) {

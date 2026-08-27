@@ -198,7 +198,7 @@
 
         const thumb = document.createElement('div');
         thumb.className = `filmstrip-thumb ${idx === state.currentPageIndex ? 'active' : ''}`;
-        thumb.title = `انتقل إلى صفحة ${idx + 1}`;
+        thumb.title = global.AppI18n ? global.AppI18n.t('preprocessing.goToPage', { page: idx + 1 }) : `انتقل إلى صفحة ${idx + 1}`;
 
         if (hasObserver) {
           thumb.innerHTML = `

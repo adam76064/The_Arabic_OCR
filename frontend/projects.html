@@ -24,10 +24,10 @@
         </div>
 
         <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;" id="projects-filter-bar">
-            <button class="btn-secondary active" data-filter="all" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">الكل (<span id="count-all">0</span>)</button>
-            <button class="btn-secondary" data-filter="completed" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">مكتمل (<span id="count-completed">0</span>)</button>
-            <button class="btn-secondary" data-filter="in_progress" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">قيد المراجعة (<span id="count-progress">0</span>)</button>
-            <button class="btn-secondary" data-filter="new" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);">جديد (<span id="count-new">0</span>)</button>
+            <button class="btn-secondary active" data-filter="all" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.all">الكل</span> (<span id="count-all">0</span>)</button>
+            <button class="btn-secondary" data-filter="completed" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.completed">مكتمل</span> (<span id="count-completed">0</span>)</button>
+            <button class="btn-secondary" data-filter="in_progress" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.inProgress">قيد المراجعة</span> (<span id="count-progress">0</span>)</button>
+            <button class="btn-secondary" data-filter="new" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.new">جديد</span> (<span id="count-new">0</span>)</button>
         </div>
 
         <div class="table-wrapper">
@@ -50,19 +50,21 @@
     </main>
 
     <script src="js/icons.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
 
     <script src="js/pages/settings.js"></script>
-    <script src="js/i18n/locales/ar.js"></script>
-    <script src="js/i18n/locales/en.js"></script>
-    <script src="js/i18n/locales/de.js"></script>
-    <script src="js/i18n/i18n.js"></script>
     <script src="js/pages/ui-shared.js"></script>
     <script src="js/pages/project-creator.js"></script>
     <script src="js/pages/projects.js"></script>

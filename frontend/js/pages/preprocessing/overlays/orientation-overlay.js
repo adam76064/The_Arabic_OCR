@@ -25,7 +25,7 @@
       ctx.font = 'bold 13px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`⟳ ${rotation}°`, pad + badgeW / 2, pad + badgeH / 2);
+      ctx.fillText(`${rotation}°`, pad + badgeW / 2, pad + badgeH / 2);
       ctx.restore();
     }
 

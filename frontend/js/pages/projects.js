@@ -26,6 +26,10 @@ async function initProjects() {
       filterAndDisplayProjects();
     });
   });
+
+  window.addEventListener('languageChanged', () => {
+    filterAndDisplayProjects();
+  });
 }
 
 function filterAndDisplayProjects() {
@@ -78,13 +82,17 @@ function filterAndDisplayProjects() {
       </td>
       <td>
         <div class="table-actions">
-          <button class="table-btn table-btn-open" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.open') : 'فتح'}</button>
-          <button class="table-btn table-btn-delete" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.delete') : 'حذف'}</button>
+          <button class="table-btn table-btn-open" data-icon="eye" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.open') : 'فتح'}</button>
+          <button class="table-btn table-btn-delete" data-icon="trash" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.delete') : 'حذف'}</button>
         </div>
       </td>
     `;
     tbody.appendChild(tr);
   });
+
+  if (window.AppIcons && typeof window.AppIcons.applyIcons === 'function') {
+    window.AppIcons.applyIcons(tbody);
+  }
 
   bindTableActionButtons();
 }
@@ -163,6 +171,11 @@ async function renderProjectsTable() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) initProjects();
-  else window.addEventListener('pywebviewready', initProjects);
+  if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(initProjects);
+  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+    initProjects();
+  } else {
+    window.addEventListener('pywebviewready', initProjects);
+  }
 });

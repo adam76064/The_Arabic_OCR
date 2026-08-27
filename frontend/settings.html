@@ -8,237 +8,753 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <style>
+        .settings-layout-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        .settings-hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .settings-hero-title h1 {
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .settings-hero-title p {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        .settings-nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .settings-tab-btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--color-text-muted);
+            transition: all var(--trans-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .settings-tab-btn:hover {
+            color: var(--color-text);
+            background: var(--color-surface-hover);
+        }
+
+        .settings-tab-btn.active {
+            background: var(--color-surface);
+            color: var(--color-primary);
+            border-color: var(--color-border);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .settings-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .settings-panel.hidden {
+            display: none !important;
+        }
+
+        .settings-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: var(--shadow-xs);
+            transition: all var(--trans-fast);
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .settings-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-card-title {
+            font-size: var(--text-md);
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .settings-card-desc {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .setting-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--color-border-subtle);
+            gap: 16px;
+        }
+
+        .setting-item-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-item-row:first-child {
+            padding-top: 0;
+        }
+
+        .setting-item-info {
+            flex: 1;
+        }
+
+        .setting-item-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .setting-item-hint {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+
+        /* Modern Switch Slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--color-bg-muted);
+            transition: .2s;
+            border-radius: 24px;
+            border: 1px solid var(--color-border-strong);
+        }
+
+        .switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .2s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .switch input:checked + .slider {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Theme Option Cards */
+        .theme-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .theme-choice-card {
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 14px 12px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all var(--trans-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .theme-choice-card:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface-hover);
+        }
+
+        .theme-choice-card.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .theme-choice-preview {
+            width: 100%;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .theme-choice-preview.preview-light {
+            background: #ffffff;
+        }
+
+        .theme-choice-preview.preview-dark {
+            background: #0e1117;
+        }
+
+        .theme-choice-preview.preview-auto {
+            background: linear-gradient(135deg, #ffffff 50%, #0e1117 50%);
+        }
+
+        /* Palette Cards */
+        .palette-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .palette-choice-card {
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 12px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all var(--trans-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            font-size: var(--text-xs);
+            font-weight: 600;
+        }
+
+        .palette-choice-card:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface-hover);
+        }
+
+        .palette-choice-card.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .palette-choice-swatch {
+            width: 100%;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Shortcuts Editor */
         .shortcut-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-border-subtle);
         }
-        .shortcut-row:last-child { border-bottom: none; }
-        .shortcut-label { font-size: 13.5px; color: #333; }
-        .shortcut-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+
+        .shortcut-row:last-child {
+            border-bottom: none;
+        }
+
+        .shortcut-label {
+            font-size: var(--text-sm);
+            color: var(--color-text);
+        }
+
+        .shortcut-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
         .shortcut-key-btn {
             min-width: 130px;
             text-align: center;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f8f9fa;
-            font-size: 12.5px;
-            font-family: monospace;
+            padding: 6px 12px;
+            border: 1px solid var(--color-border-strong);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: var(--text-xs);
+            font-family: var(--font-mono);
             cursor: pointer;
             direction: ltr;
+            transition: all var(--trans-fast);
         }
+
+        .shortcut-key-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface-hover);
+        }
+
         .shortcut-key-btn.recording {
-            background: #fff3cd;
-            border-color: #f39c12;
-            color: #7a5b00;
+            background: var(--color-warning-light);
+            border-color: var(--color-warning);
+            color: var(--color-warning);
+            font-weight: bold;
         }
+
         .shortcut-reset-btn {
             font-size: 11px;
-            padding: 4px 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: white;
+            padding: 5px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
             cursor: pointer;
-            color: #888;
+            color: var(--color-text-muted);
+            transition: all var(--trans-fast);
         }
-        .shortcut-reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+        .shortcut-reset-btn:hover {
+            border-color: var(--color-danger);
+            color: var(--color-danger);
+            background: var(--color-danger-light);
+        }
+
         .shortcut-category-title {
-            font-size: 12px;
+            font-size: var(--text-xs);
             font-weight: 700;
-            color: #888;
-            margin: 16px 0 4px;
+            color: var(--color-primary);
+            margin: 18px 0 6px;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .shortcut-category-title:first-child { margin-top: 0; }
+
+        .shortcut-category-title:first-child {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body class="home-page">
 
-    <main class="home-main" style="max-width:980px; margin:0 auto; padding-top:10px; opacity: 0; transition: opacity 0.3s ease-in-out;">
+    <main class="settings-layout-wrapper">
+        <!-- Top Hero Header & Global Save Action -->
+        <div class="settings-hero-header">
+            <div class="settings-hero-title">
+                <h1 data-i18n="settings.title">الإعدادات العامة</h1>
+                <p data-i18n="settings.storageSubtitle">تخصيص المظهر، لغة الواجهة، قواعد المعالجة، والبيانات</p>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <button type="button" id="btn-cancel-settings" class="btn-secondary" data-i18n="settings.cancel">إلغاء</button>
+                <button type="button" id="save-settings" class="btn-primary" data-icon="save" data-i18n="settings.save">حفظ الإعدادات</button>
+            </div>
+        </div>
 
-        <div class="sticky-nav-wrapper">
-            <div class="compact-settings-nav">
-                <h1 data-i18n="settings.title" style="font-size: 19px; margin: 0; color: var(--color-text); font-weight: 700;">الإعدادات العامة</h1>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <button type="button" id="btn-cancel-settings" data-i18n="settings.cancel" class="btn-plain" style="font-size: 13.5px;">إلغاء</button>
-                    <button type="button" id="save-settings" data-i18n="settings.save" class="btn-primary" style="font-size: 13.5px; padding: 6px 16px;">حفظ الإعدادات</button>
-                    <div style="border-inline-start: 1px solid #cbd5e1; padding-inline-start: 10px; margin-inline-start: 4px;">
-                        <button type="button" id="btn-back" class="btn-secondary" data-icon="back" style="font-size: 13px; padding: 5px 12px; display: flex; align-items: center; gap: 4px;">
-                            <span data-i18n="settings.back">عودة</span>
-                        </button>
+        <!-- Categorized Nav Tabs -->
+        <nav class="settings-nav-tabs" id="settings-tab-bar">
+            <button type="button" class="settings-tab-btn active" data-tab="appearance" data-icon-label="sun" data-i18n="settings.tabAppearance">المظهر والواجهة</button>
+            <button type="button" class="settings-tab-btn" data-tab="storage" data-icon-label="folder" data-i18n="settings.tabStorage">موقع البيانات</button>
+            <button type="button" class="settings-tab-btn" data-tab="review" data-icon-label="edit" data-i18n="settings.tabReview">المراجعة والتدقيق</button>
+            <button type="button" class="settings-tab-btn" data-tab="categories" data-icon-label="tag" data-i18n="settings.tabCategories">التصنيفات</button>
+            <button type="button" class="settings-tab-btn" data-tab="ai" data-icon-label="sparkles" data-i18n="settings.tabAi">الذكاء الاصطناعي</button>
+            <button type="button" class="settings-tab-btn" data-tab="shortcuts" data-icon-label="keyboard" data-i18n="settings.tabShortcuts">الاختصارات</button>
+        </nav>
+
+        <!-- ── TAB 1: APPEARANCE & INTERFACE ───────────────────────────────── -->
+        <section class="settings-panel" id="panel-appearance">
+            <!-- Night Mode / Appearance Selector Card -->
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="moon"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.appearance">الوضع الليلي والمظهر (Appearance & Theme)</div>
+                    </div>
+                </div>
+                <div class="settings-card-desc" data-i18n="settings.appearanceDesc">اختر السمة المرئية المفضلة للتطبيق لتوفير راحة العين أثناء العمل المطول.</div>
+
+                <div class="theme-options-grid">
+                    <div class="theme-choice-card" id="theme-card-light" data-theme-val="light">
+                        <div class="theme-choice-preview preview-light"></div>
+                        <span data-i18n="theme.lightMode">الوضع النهاري (Light)</span>
+                    </div>
+                    <div class="theme-choice-card" id="theme-card-dark" data-theme-val="dark">
+                        <div class="theme-choice-preview preview-dark"></div>
+                        <span data-i18n="theme.darkMode">الوضع الليلي (Dark)</span>
+                    </div>
+                    <div class="theme-choice-card" id="theme-card-auto" data-theme-val="auto">
+                        <div class="theme-choice-preview preview-auto"></div>
+                        <span data-i18n="theme.autoMode">تلقائي (حسب النظام)</span>
+                    </div>
+                </div>
+
+                <!-- Palette Selection -->
+                <div style="margin-top: 24px; border-top: 1px solid var(--color-border); padding-top: 18px;">
+                    <div class="setting-item-label" style="font-size: 14px; margin-bottom: 4px;" data-i18n="settings.paletteTitle">لوحات ألوان ونغمات الواجهة (Theme Color Palettes)</div>
+                    <div class="setting-item-hint" data-i18n="settings.paletteHint">اختر نغمة الألوان ودرجات التمييز المفضلة عبر كافة صفحات ومحررات التطبيق:</div>
+
+                    <div class="palette-options-grid">
+                        <div class="palette-choice-card active" data-palette-val="default">
+                            <div class="palette-choice-swatch" style="background: #0f766e; color: white;">●</div>
+                            <span data-i18n="theme.paletteEmerald">الزمردي العربي (Emerald)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="ocean">
+                            <div class="palette-choice-swatch" style="background: #2563eb; color: white;">●</div>
+                            <span data-i18n="theme.paletteOcean">الأزرق المحيطي (Ocean)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="sepia">
+                            <div class="palette-choice-swatch" style="background: #b45309; color: #fbf7ee;">●</div>
+                            <span data-i18n="theme.paletteSepia">المخطوطات الدافئة (Sepia)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="amethyst">
+                            <div class="palette-choice-swatch" style="background: #7c3aed; color: white;">●</div>
+                            <span data-i18n="theme.paletteAmethyst">الأرجواني الملكي (Amethyst)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="crimson">
+                            <div class="palette-choice-swatch" style="background: #be123c; color: white;">●</div>
+                            <span data-i18n="theme.paletteCrimson">الياقوتي القرمزي (Ruby)</span>
+                        </div>
+                        <div class="palette-choice-card" data-palette-val="slate">
+                            <div class="palette-choice-swatch" style="background: #475569; color: white;">●</div>
+                            <span data-i18n="theme.paletteSlate">الفحمي الكلاسيكي (Slate)</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Settings Categorized Tabs -->
-            <div class="settings-tabs" id="settings-tab-bar" style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 2px;">
-                <button type="button" class="btn-secondary active settings-tab-btn" data-tab="all" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الكل</button>
-                <button type="button" class="btn-secondary settings-tab-btn" data-tab="general" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">عام والحفظ</button>
-                <button type="button" class="btn-secondary settings-tab-btn" data-tab="ai" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الذكاء الاصطناعي وOCR</button>
-                <button type="button" class="btn-secondary settings-tab-btn" data-tab="review" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">المراجعة والتصنيفات</button>
-                <button type="button" class="btn-secondary settings-tab-btn" data-tab="shortcuts" style="padding: 5px 12px; font-size: 13px; border-radius: var(--radius-full);">الاختصارات</button>
-            </div>
-        </div>
-
-        <div class="settings-card" data-tab-section="general">
-            <div class="settings-section-title" data-i18n="settings.storage">موقع حفظ البيانات (Data Storage)</div>
-            <div class="section-hint" data-i18n="settings.storageHint">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
-            <div class="setting-row" style="margin-top: 12px; align-items: stretch;">
-                <input type="text" id="app-data-path-input" readonly style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-family: inherit; background: #f8fafc; color: #475569; font-size: 13px;" dir="ltr">
-                <button type="button" id="btn-change-data-path" class="btn-secondary" style="padding: 0 16px; margin-inline-start: 8px;" data-i18n="settings.changeFolder">تغيير المجلد...</button>
-            </div>
-        </div>
-
-        <div class="settings-card" data-tab-section="general">
-            <div class="settings-section-title" data-i18n="settings.interface">الواجهة</div>
-            <div class="setting-row language-setting-row">
-                <div>
-                    <label for="interface-language" class="setting-label" data-i18n="settings.language">لغة الواجهة</label>
-                    <div class="section-hint" data-i18n="settings.languageHint">اختر لغة التطبيق. يتغير اتجاه الواجهة تلقائياً للغات من اليمين إلى اليسار أو من اليسار إلى اليمين.</div>
+            <!-- Interface Language & Zoom -->
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="globe"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.interface">لغة الواجهة والتكبير</div>
+                    </div>
                 </div>
-                <select id="interface-language" aria-label="Interface language">
-                    <option value="ar" data-i18n="language.ar">العربية</option>
-                    <option value="en" data-i18n="language.en">English</option>
-                    <option value="de" data-i18n="language.de">Deutsch</option>
-                </select>
-            </div>
-        </div>
+                
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.language">لغة الواجهة (Interface Language)</span>
+                        <span class="setting-item-hint" data-i18n="settings.languageHint">يتغير اتجاه الواجهة تلقائياً حسب اللغة المختارة.</span>
+                    </div>
+                    <select id="interface-language" style="min-width: 160px; padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
+                        <option value="ar" data-i18n="language.ar">العربية (RTL)</option>
+                        <option value="en" data-i18n="language.en">English (LTR)</option>
+                        <option value="de" data-i18n="language.de">Deutsch (LTR)</option>
+                    </select>
+                </div>
 
-        <div class="settings-card" data-tab-section="review">
-            <div class="settings-section-title" data-i18n="settings.review">المراجعة</div>
-            <div class="setting-row">
-                <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.autoMark">تحديد الكتلة كـ "مراجعة" تلقائياً عند التعديل أو المغادرة</span>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.zoom">تكبير عناصر الواجهة (UI Zoom)</span>
+                        <span class="setting-item-hint" data-i18n="settings.zoomHint">ضبط مقياس عرض الشاشة والأزرار</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; min-width: 220px;">
+                        <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" class="range-slider" style="flex: 1;">
+                        <span id="zoom-val" style="font-weight: 700; font-family: var(--font-mono); min-width: 48px; text-align: end; color: var(--color-primary);">100%</span>
+                    </div>
+                </div>
             </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.autoSaveReview">الحفظ التلقائي للتعديلات في صفحة المراجعة</span>
-            </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.autoSaveLayout">الحفظ التلقائي في أداة التخطيط (عند التنقل بين الصفحات)</span>
-            </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="show-iv" checked><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.showImage">إظهار نافذة الصورة الكاملة</span>
-            </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.showCrop">إظهار نافذة الاقتطاع</span>
-            </div>
-        </div>
+        </section>
 
-        <div class="settings-card" data-tab-section="general">
-            <div class="settings-section-title" data-i18n="settings.interface">الواجهة والتكبير</div>
-            <div class="setting-row">
-                <span class="setting-label" data-i18n="settings.zoom">تكبير الواجهة</span>
-                <input type="range" id="ui-zoom" min="0.7" max="1.4" step="0.05" value="1.0" style="flex:1; margin-inline-start:12px;">
-                <span id="zoom-val">100%</span>
-            </div>
-        </div>
-
-        <div class="settings-card" data-tab-section="general">
-            <div class="settings-section-title" data-i18n="settings.history">التراجع والإعادة (Undo / Redo)</div>
-            <div class="setting-row">
-                <span class="setting-label" data-i18n="settings.historyLimit">عدد الخطوات المحفوظة للتراجع/الإعادة لكل المشروع</span>
-                <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width:90px;">
-            </div>
-            <div class="section-hint" style="margin-top:8px;" data-i18n="help.history">
-                يشمل التراجع/الإعادة كل التغييرات في المشروع: ترتيب الكتل، حذفها، تحميل OCR، تغيير التنسيق أو المحتوى النصي، إلخ. إذا كان التغيير في صفحة أخرى، سينتقل التطبيق إليها تلقائياً.
-            </div>
-        </div>
-
-        <div class="settings-card" data-tab-section="review">
-            <div class="settings-section-title" data-i18n="settings.categories">التصنيفات المخصصة (Categories)</div>
-            <div class="section-hint" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية. التصنيفات الافتراضية (Text, Table, إلخ) مدمجة في النظام ولا يمكن حذفها.</div>
-            
-            <div style="display:flex; gap:10px; margin-top:12px; align-items:center;">
-                <input type="text" id="new-cat-name" data-i18n-placeholder="settings.categoryPlaceholder" placeholder="اسم التصنيف (مثل: شعر عمودي)..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; font-family: inherit;">
-                <input type="color" id="new-cat-color" value="#9b59b6" style="width:44px; height:38px; border:none; cursor:pointer; border-radius:4px;">
-                <button id="add-cat-btn" class="btn-primary" type="button" style="padding: 8px 16px;" data-i18n="settings.add">إضافة</button>
-            </div>
-            
-            <div id="custom-categories-list" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;"></div>
-        </div>
-
-        <div class="settings-card" data-tab-section="general">
-            <div class="settings-section-title" data-i18n="settings.deletion">إعدادات الحذف والملفات (Deletion Preferences)</div>
-            <div class="section-hint" data-i18n="help.deletion">تحديد السلوك الافتراضي وتخزين التفضيلات عند مسح الصفحات أو المشاريع.</div>
-            
-            <div class="setting-row">
-                <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.promptPage">السؤال والتأكيد دائماً عند حذف صفحة من المشروع</span>
-            </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.deletePageFiles">حذف الصور والملفات المرتبطة بالصفحة من القرص الصلب عند الحذف</span>
+        <!-- ── TAB 2: DATA STORAGE & DELETION ──────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-storage">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="folder"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.storage">موقع حفظ البيانات والمشاريع</div>
+                    </div>
+                </div>
+                <div class="settings-card-desc" data-i18n="settings.storageDesc">يتم حفظ جميع المشاريع والإعدادات في هذا المجلد. (الافتراضي هو مجلد AppData)</div>
+                
+                <div style="display: flex; gap: 10px; align-items: stretch; margin-top: 10px;">
+                    <input type="text" id="app-data-path-input" readonly style="flex: 1; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-bg); color: var(--color-text); font-family: var(--font-mono); font-size: 13px;" dir="ltr">
+                    <button type="button" id="btn-change-data-path" class="btn-secondary" data-icon="folder" data-i18n="settings.changeFolder">تغيير المجلد...</button>
+                </div>
             </div>
 
-            <div style="height: 1px; background: #e2e8f0; margin: 16px 0;"></div>
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="trash"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.deletion">خيارات الحذف والأمان</div>
+                    </div>
+                </div>
 
-            <div class="setting-row">
-                <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.promptProject">السؤال والتأكيد دائماً عند حذف مشروع كامل</span>
-            </div>
-            <div class="setting-row" style="margin-top:16px;">
-                <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
-                <span class="setting-label" data-i18n="settings.deleteProjectFiles">حذف مجلد وملفات المشروع نهائياً من القرص عند الحذف</span>
-            </div>
-        </div>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.promptPage">تأكيد حذف الصفحات</span>
+                        <span class="setting-item-hint" data-i18n="settings.promptPageHint">إظهار رسالة تأكيد تحذيرية دائماً قبل حذف أي صفحة من المشروع</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="prompt-delete-page" checked><span class="slider"></span></label>
+                </div>
 
-        <div class="settings-card" data-tab-section="ai">
-            <div class="settings-section-title" data-i18n="settings.llmPrompt">تعليمات النماذج الذكية (LLM System Prompt)</div>
-            <div class="section-hint" data-i18n="help.llm">التعليمات البرمجية الأساسية لتوجيه نماذج الذكاء الاصطناعي (مثل Gemini, Claude, OpenAI). يمكنك تعديلها هنا للتطبيق على جميع المشاريع، أو استعادة التعليمة الافتراضية.</div>
-            
-            <div class="form-group" style="margin-top:12px;">
-                <textarea id="llm-system-prompt" rows="10" style="width:100%; font-family: monospace, inherit; font-size: 12.5px; line-height: 1.5; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; direction: ltr; text-align: left;"></textarea>
-            </div>
-            
-            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
-                <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" style="font-size:12.5px;" data-i18n="settings.resetPrompt">إعادة تعيين للتعليمة الافتراضية</button>
-            </div>
-        </div>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.deletePageFiles">حذف ملفات الصفحة من القرص الصلب</span>
+                        <span class="setting-item-hint" data-i18n="settings.deletePageFilesHint">مسح صور الصفحة وملفات JSON الخاصة بها نهائياً من القرص عند الحذف</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="delete-page-files"><span class="slider"></span></label>
+                </div>
 
-        <div class="settings-card" data-tab-section="shortcuts">
-            <div class="settings-section-title" data-i18n="settings.shortcuts">اختصارات لوحة المفاتيح</div>
-            <div class="section-hint" data-i18n="help.shortcuts">اضغط على مربع الاختصار ثم اضغط مفتاح (أو تركيبة مفاتيح) جديد لتعيينه. يجب أن يتضمّن الاختصار Ctrl أو Alt، أو يكون أحد المفاتيح الخاصة (Delete, PageUp, F1...).</div>
-            <div id="shortcuts-list" style="margin-top:10px;"></div>
-            <div style="margin-top:14px;">
-                <button id="shortcuts-reset-all" class="btn-secondary" style="font-size:12.5px;" data-i18n="settings.resetShortcuts">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.promptProject">تأكيد حذف المشاريع</span>
+                        <span class="setting-item-hint" data-i18n="settings.promptProjectHint">إظهار رسالة تأكيد تحذيرية قبل حذف أي مشروع بالكامل</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="prompt-delete-project" checked><span class="slider"></span></label>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.deleteProjectFiles">حذف مجلد المشروع نهائياً</span>
+                        <span class="setting-item-hint" data-i18n="settings.deleteProjectFilesHint">مسح كامل مجلد المشروع وملفات الصفحات من القرص عند الحذف</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="delete-project-files" checked><span class="slider"></span></label>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- ── TAB 3: REVIEW STUDIO RULES ─────────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-review">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="edit"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.reviewStudio">تفضيلات استوديو المراجعة والتدقيق</div>
+                    </div>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.autoMark">تحديد الكتلة كـ "مراجعة" تلقائياً</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoMarkHint">وسم الكتلة النصية بأنها تمت مراجعتها فور تعديلها أو الانتقال منها</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="auto-mark-reviewed"><span class="slider"></span></label>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.autoSaveReview">الحفظ التلقائي في صفحة المراجعة</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoSaveReviewHint">حفظ التعديلات فورياً في ملفات الصفحة عند التنقل بين الكتل</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="auto-save-review"><span class="slider"></span></label>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.autoSaveLayout">الحفظ التلقائي في محرر التخطيط</span>
+                        <span class="setting-item-hint" data-i18n="settings.autoSaveLayoutHint">حفظ مواضع الكتل تلقائياً عند تغيير الصفحة</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="auto-save-layout"><span class="slider"></span></label>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.showCrop">إظهار نافذة الاقتطاع المباشر</span>
+                        <span class="setting-item-hint" data-i18n="settings.showCropHint">عرض الجزء المقتطع من الصورة الأصلية المقابل للكتلة المحددة</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="show-cv" checked><span class="slider"></span></label>
+                </div>
+
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <span class="setting-item-label" data-i18n="settings.historyLimit">عدد خطوات التراجع والإعادة (Undo/Redo)</span>
+                        <span class="setting-item-hint" data-i18n="settings.historyLimitHint">عدد العمليات المحفوظة في ذاكرة المشروع للتراجع</span>
+                    </div>
+                    <input type="number" id="history-limit" min="5" max="500" step="5" value="50" style="width: 90px; padding: 6px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); text-align: center; font-weight: 700;">
+                </div>
+            </div>
+        </section>
+
+        <!-- ── TAB 4: CUSTOM CATEGORIES ───────────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-categories">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="tag"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.customCategories">التصنيفات المخصصة للكتل النصية</div>
+                    </div>
+                </div>
+                <div class="settings-card-desc" data-i18n="settings.categoriesHint">أضف تصنيفات جديدة للكتل النصية مع تحديد لون مميز لكل تصنيف ليظهر في محرر التخطيط والمراجعة.</div>
+
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+                    <input type="text" id="new-cat-name" data-i18n-placeholder="settings.categoryPlaceholder" placeholder="اسم التصنيف (مثل: شعر عمودي، حاشية خاصة)..." style="flex: 1; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text);">
+                    <input type="color" id="new-cat-color" value="#0f766e" style="width: 44px; height: 42px; border: none; cursor: pointer; border-radius: var(--radius-md); padding: 2px; background: transparent;">
+                    <button id="add-cat-btn" class="btn-primary" type="button" data-icon="plus" data-i18n="settings.add">إضافة</button>
+                </div>
+
+                <div id="custom-categories-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </div>
+        </section>
+
+        <!-- ── TAB 5: AI & LLM PROMPT ─────────────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-ai">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="sparkles"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.llmSystemPrompt">تعليمات النماذج الذكية العامة (LLM System Prompt)</div>
+                    </div>
+                </div>
+                <div class="settings-card-desc" data-i18n="settings.llmPromptDesc">التعليمات البرمجية لتوجيه نماذج الذكاء الاصطناعي (Gemini, Claude, GPT, Qwen) عند استخراج كتل وتنسيقات النصوص العربية.</div>
+
+                <div class="form-group">
+                    <textarea id="llm-system-prompt" rows="12" style="width: 100%; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-bg); color: var(--color-text); direction: ltr; text-align: left;"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                    <button id="reset-llm-prompt-btn" class="btn-secondary" type="button" data-icon="undo" data-i18n="settings.resetPrompt">استعادة التعليمة الافتراضية</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── TAB 6: KEYBOARD SHORTCUTS ──────────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-shortcuts">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="keyboard"></div>
+                    <div>
+                        <div class="settings-card-title" data-i18n="settings.shortcutsTitle">اختصارات لوحة المفاتيح المخصصة</div>
+                    </div>
+                </div>
+                <div class="settings-card-desc" data-i18n="settings.shortcutsDesc">انقر على زر أي اختصار ثم اضغط المفاتيح الجديدة لتعيينها. يجب أن يتضمن الاختصار Ctrl أو Alt أو أحد المفاتيح الخاصة.</div>
+
+                <div id="shortcuts-list"></div>
+
+                <div style="margin-top: 20px; border-top: 1px solid var(--color-border); padding-top: 16px; display: flex; justify-content: flex-end;">
+                    <button id="shortcuts-reset-all" class="btn-secondary" data-icon="undo" data-i18n="settings.resetShortcuts">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+                </div>
+            </div>
+        </section>
     </main>
-        <script src="js/icons.js"></script>
+
+    <!-- Core Dependencies -->
+    <script src="js/icons.js"></script>
+    <script src="js/i18n/locales/ar.js"></script>
+    <script src="js/i18n/locales/en.js"></script>
+    <script src="js/i18n/locales/de.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/core/theme.js"></script>
     <script src="js/core/api.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/events.js"></script>
     <script src="js/core/store.js"></script>
     <script src="js/components/modal.js"></script>
     <script src="js/components/notifications.js"></script>
+    <script src="js/components/command-palette.js"></script>
     <script src="js/components/sidebar.js"></script>
-<script src="js/pages/settings.js"></script>
-    <script src="js/i18n/locales/ar.js"></script>
-    <script src="js/i18n/locales/en.js"></script>
-    <script src="js/i18n/locales/de.js"></script>
-    <script src="js/i18n/i18n.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/apply-icons.js"></script>
     <script>
-        // Local working copy of shortcut overrides, edited in the UI and
-        // only merged into window.__appSettings / persisted on Save.
         let pendingShortcuts = {};
-        
+
+        function syncThemeCards() {
+            const currentTheme = (window.ThemeManager ? window.ThemeManager.getTheme() : localStorage.getItem('app_theme')) || 'auto';
+            document.querySelectorAll('.theme-choice-card').forEach(card => {
+                const val = card.dataset.themeVal;
+                card.classList.toggle('active', val === currentTheme);
+            });
+        }
+
+        document.querySelectorAll('.theme-choice-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const val = card.dataset.themeVal;
+                if (window.ThemeManager) {
+                    window.ThemeManager.setTheme(val);
+                }
+                syncThemeCards();
+            });
+        });
+
+        function syncPaletteCards() {
+            const currentPalette = (window.ThemeManager ? window.ThemeManager.getPalette() : localStorage.getItem('app_palette')) || 'default';
+            document.querySelectorAll('.palette-choice-card').forEach(card => {
+                const val = card.dataset.paletteVal;
+                const isSelected = val === currentPalette || (currentPalette === 'emerald' && val === 'default') || (!currentPalette && val === 'default');
+                card.classList.toggle('active', isSelected);
+            });
+        }
+
+        document.querySelectorAll('.palette-choice-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const val = card.dataset.paletteVal;
+                if (window.ThemeManager) {
+                    window.ThemeManager.setPalette(val);
+                }
+                syncPaletteCards();
+            });
+        });
 
         function populateForm() {
             document.getElementById('auto-mark-reviewed').checked = window.__appSettings.autoMarkReviewed !== false;
             document.getElementById('auto-save-review').checked = window.__appSettings.autoSaveReview === true;
             document.getElementById('auto-save-layout').checked = window.__appSettings.autoSaveLayout === true;
-            document.getElementById('show-iv').checked = !!window.__appSettings.showIV;
-            document.getElementById('show-cv').checked = !!window.__appSettings.showCV;
-            document.getElementById('ui-zoom').value = window.__appSettings.uiZoom;
-            document.getElementById('zoom-val').textContent = Math.round(window.__appSettings.uiZoom * 100) + '%';
+            document.getElementById('show-cv').checked = window.__appSettings.showCV !== false;
+            document.getElementById('ui-zoom').value = window.__appSettings.uiZoom || 1.0;
+            document.getElementById('zoom-val').textContent = Math.round((window.__appSettings.uiZoom || 1.0) * 100) + '%';
             document.getElementById('history-limit').value = window.__appSettings.historyLimit || 50;
 
             // Deletion preferences
@@ -252,22 +768,22 @@
 
             pendingShortcuts = Object.assign({}, window.__appSettings.keyboardShortcuts || {});
             renderShortcutsList();
-            
-            // Reveal the UI smoothly after data is loaded
-            document.querySelector('.home-main').style.opacity = '1'; 
             renderCustomCategories();
+            syncThemeCards();
+            syncPaletteCards();
         }
 
         function renderShortcutsList() {
             const container = document.getElementById('shortcuts-list');
+            if (!container) return;
             container.innerHTML = '';
             let lastCategory = null;
 
-            window.__KEYBOARD_COMMANDS.forEach(cmd => {
+            (window.__KEYBOARD_COMMANDS || []).forEach(cmd => {
                 if (cmd.category !== lastCategory) {
                     const title = document.createElement('div');
                     title.className = 'shortcut-category-title';
-                    title.textContent = window.AppI18n.t(`shortcut.category.${cmd.category}`);
+                    title.textContent = window.AppI18n ? window.AppI18n.t(`shortcut.category.${cmd.category}`) : cmd.category;
                     container.appendChild(title);
                     lastCategory = cmd.category;
                 }
@@ -278,7 +794,7 @@
                 const label = document.createElement('span');
                 label.className = 'shortcut-label';
                 const shortcutKey = `shortcut.${cmd.id}`;
-                const shortcutLabel = window.AppI18n.t(shortcutKey);
+                const shortcutLabel = window.AppI18n ? window.AppI18n.t(shortcutKey) : cmd.label;
                 label.textContent = shortcutLabel === shortcutKey ? cmd.label : shortcutLabel;
 
                 const actions = document.createElement('div');
@@ -293,8 +809,7 @@
                 const resetBtn = document.createElement('button');
                 resetBtn.className = 'shortcut-reset-btn';
                 resetBtn.type = 'button';
-                resetBtn.textContent = window.AppI18n.t('shortcut.default');
-                resetBtn.title = window.AppI18n.t('settings.resetShortcut');
+                resetBtn.textContent = window.AppI18n ? window.AppI18n.t('shortcut.default') : 'افتراضي';
                 resetBtn.addEventListener('click', () => {
                     delete pendingShortcuts[cmd.id];
                     keyBtn.textContent = cmd.defaultKey;
@@ -311,7 +826,7 @@
         function startRecording(keyBtn, cmd) {
             keyBtn.classList.add('recording');
             const originalText = keyBtn.textContent;
-            keyBtn.textContent = window.AppI18n.t('shortcut.pressKey');
+            keyBtn.textContent = window.AppI18n ? window.AppI18n.t('shortcut.pressKey') : 'اضغط أي مفتاح...';
 
             const onKeydown = (e) => {
                 e.preventDefault();
@@ -325,7 +840,7 @@
                 }
 
                 const combo = normalizeKeyCombo(e);
-                if (!combo) return; // modifier-only keydown, keep waiting
+                if (!combo) return;
 
                 const hasModifier = combo.includes('Ctrl') || combo.includes('Alt');
                 const specialKeys = ['Delete','Backspace','PageUp','PageDown','Escape','Tab','Enter',
@@ -336,21 +851,13 @@
                 keyBtn.classList.remove('recording');
 
                 if (!hasModifier && !isSpecial) {
-                    showShortcutNotice(window.AppI18n.t('shortcut.invalid'), true);
+                    showShortcutNotice(window.AppI18n ? window.AppI18n.t('shortcut.invalid') : 'يجب أن يتضمن الاختصار Ctrl أو Alt', true);
                     keyBtn.textContent = originalText;
                     return;
                 }
 
                 pendingShortcuts[cmd.id] = combo;
                 keyBtn.textContent = combo;
-
-                const conflict = window.__KEYBOARD_COMMANDS.find(c =>
-                    c.id !== cmd.id && (pendingShortcuts[c.id] || c.defaultKey) === combo);
-                if (conflict) {
-                    const conflictKey = `shortcut.${conflict.id}`;
-                    const conflictLabel = window.AppI18n.t(conflictKey);
-                    showShortcutNotice(window.AppI18n.t('shortcut.conflict', { command: conflictLabel === conflictKey ? conflict.label : conflictLabel }), false);
-                }
             };
             document.addEventListener('keydown', onKeydown, true);
         }
@@ -361,38 +868,36 @@
                 el = document.createElement('div');
                 el.id = 'shortcut-notice';
                 el.style.cssText = 'margin-top:8px;font-size:12.5px;';
-                document.getElementById('shortcuts-list').after(el);
+                document.getElementById('shortcuts-list')?.after(el);
             }
-            el.style.color = isError ? '#e74c3c' : '#f39c12';
-            el.textContent = text;
-            setTimeout(() => { if (el) el.textContent = ''; }, 4000);
+            if (el) {
+                el.style.color = isError ? 'var(--color-danger)' : 'var(--color-warning)';
+                el.textContent = text;
+                setTimeout(() => { if (el) el.textContent = ''; }, 4000);
+            }
         }
 
-        document.getElementById('shortcuts-reset-all').addEventListener('click', () => {
+        document.getElementById('shortcuts-reset-all')?.addEventListener('click', () => {
             pendingShortcuts = {};
             renderShortcutsList();
         });
 
-        // Command labels are generated from locale keys, so refresh the list
-        // immediately after a language switch instead of waiting for reload.
         window.addEventListener('languageChanged', renderShortcutsList);
 
-        document.getElementById('ui-zoom').addEventListener('input', function() {
+        document.getElementById('ui-zoom')?.addEventListener('input', function() {
             document.getElementById('zoom-val').textContent = Math.round(this.value * 100) + '%';
         });
-        
 
         document.getElementById('reset-llm-prompt-btn')?.addEventListener('click', () => {
-            if (confirm(window.AppI18n.t('settings.resetPromptConfirm'))) {
+            if (confirm(window.AppI18n ? window.AppI18n.t('settings.resetPromptConfirm') : 'هل أنت متأكد من استعادة التعليمة الافتراضية؟')) {
                 document.getElementById('llm-system-prompt').value = window.DEFAULT_LLM_PROMPT;
             }
         });
 
-        document.getElementById('save-settings').addEventListener('click', async () => {
+        document.getElementById('save-settings')?.addEventListener('click', async () => {
             window.__appSettings.autoMarkReviewed = document.getElementById('auto-mark-reviewed').checked;
             window.__appSettings.autoSaveReview = document.getElementById('auto-save-review').checked;
             window.__appSettings.autoSaveLayout = document.getElementById('auto-save-layout').checked;
-            window.__appSettings.showIV = document.getElementById('show-iv').checked;
             window.__appSettings.showCV = document.getElementById('show-cv').checked;
             window.__appSettings.uiZoom = parseFloat(document.getElementById('ui-zoom').value);
             window.__appSettings.historyLimit = Math.max(5, parseInt(document.getElementById('history-limit').value) || 50);
@@ -408,11 +913,16 @@
             window.__appSettings.llmSystemPrompt = document.getElementById('llm-system-prompt').value.trim() || window.DEFAULT_LLM_PROMPT;
 
             const ok = await saveAppSettings();
-            alert(ok ? window.AppI18n.t('settings.saved') : window.AppI18n.t('settings.saveLocalOnly'));
+            if (window.showNotif) {
+                window.showNotif(window.AppI18n ? window.AppI18n.t('settings.saved') : 'تم حفظ الإعدادات بنجاح', 'success');
+            } else {
+                alert(ok ? (window.AppI18n ? window.AppI18n.t('settings.saved') : 'تم حفظ الإعدادات') : 'تم الحفظ محلياً');
+            }
         });
 
         window.addEventListener('appSettingsLoaded', populateForm);
 
+        // Language switch
         const languageSelect = document.getElementById('interface-language');
         const syncLanguageSelect = () => {
             if (languageSelect && window.AppI18n) languageSelect.value = window.AppI18n.getLanguage();
@@ -427,7 +937,7 @@
         window.addEventListener('languageChanged', syncLanguageSelect);
         syncLanguageSelect();
 
-        // Data Storage Path Logic
+        // Data Storage Path
         async function initDataPath() {
             if (window.pywebview && window.pywebview.api && window.pywebview.api.get_app_data_path) {
                 const path = await window.pywebview.api.get_app_data_path();
@@ -435,62 +945,62 @@
             }
         }
         
-        document.getElementById('btn-change-data-path').addEventListener('click', async () => {
+        document.getElementById('btn-change-data-path')?.addEventListener('click', async () => {
             if (!window.pywebview || !window.pywebview.api) return;
             const btn = document.getElementById('btn-change-data-path');
             const newPath = await window.pywebview.api.select_app_data_folder();
             
             if (newPath) {
-                const confirmMsg = window.AppI18n.t('settings.moveConfirm', { path: newPath });
+                const confirmMsg = window.AppI18n ? window.AppI18n.t('settings.moveConfirm', { path: newPath }) : `هل تريد نقل البيانات إلى: ${newPath}`;
                 if (!confirm(confirmMsg)) return;
 
                 btn.disabled = true;
-                btn.textContent = window.AppI18n.t('settings.moving');
+                btn.textContent = window.AppI18n ? window.AppI18n.t('settings.moving') : 'جاري النقل...';
                 
                 try {
                     const result = await window.pywebview.api.change_app_data_path(newPath);
                     if (result.ok) {
                         document.getElementById('app-data-path-input').value = newPath;
-                        alert(window.AppI18n.t('settings.moveSuccess'));
+                        alert(window.AppI18n ? window.AppI18n.t('settings.moveSuccess') : 'تم النقل بنجاح');
                     } else {
-                        alert(window.AppI18n.t('settings.moveFailed', { error: result.error }));
+                        alert(window.AppI18n ? window.AppI18n.t('settings.moveFailed', { error: result.error }) : 'فشل النقل');
                     }
                 } catch (e) {
-                    alert(window.AppI18n.t('settings.moveError'));
-                    console.error(e);
+                    alert('خطأ أثناء النقل: ' + e);
                 } finally {
                     btn.disabled = false;
-                    btn.textContent = window.AppI18n.t('settings.changeFolder');
+                    btn.textContent = window.AppI18n ? window.AppI18n.t('settings.changeFolder') : 'تغيير المجلد...';
                 }
             }
         });
 
-        if (window.pywebview) {
-            initDataPath();
-        } else {
-            window.addEventListener('pywebviewready', initDataPath);
-        }
+        if (window.pywebview) initDataPath();
+        else window.addEventListener('pywebviewready', initDataPath);
 
+        // Custom categories
         function renderCustomCategories() {
             const container = document.getElementById('custom-categories-list');
+            if (!container) return;
             container.innerHTML = '';
             const customCats = window.__appSettings.customCategories || {};
             
             for (const [name, color] of Object.entries(customCats)) {
                 const row = document.createElement('div');
-                row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#f8f9fa; border:1px solid #e2e8f0; border-radius:6px;';
+                row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md);';
                 row.innerHTML = `
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <div style="width:18px; height:18px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
-                        <span style="font-size:14px; font-weight:bold; color:#334155;">${name}</span>
+                        <div style="width:16px; height:16px; border-radius:50%; background:${color}; border: 1px solid rgba(0,0,0,0.1);"></div>
+                        <span style="font-size:14px; font-weight:700; color:var(--color-text);">${window.AppI18n ? window.AppI18n.categoryLabel(name) : name}</span>
                     </div>
-                    <button type="button" style="padding:4px 10px; font-size:12px; background:#fef2f2; color:#ef4444; border:1px solid #fecaca; border-radius:4px; cursor:pointer;" onclick="deleteCustomCategory('${name}')">${window.AppI18n.t('settings.delete')}</button>
+                    <button type="button" style="padding:4px 10px; font-size:12px; background:var(--color-danger-light); color:var(--color-danger); border:1px solid var(--color-danger-border); border-radius:var(--radius-sm); cursor:pointer;" onclick="deleteCustomCategory('${name}')">${window.AppI18n ? window.AppI18n.t('settings.delete') : 'حذف'}</button>
                 `;
                 container.appendChild(row);
             }
         }
 
-        document.getElementById('add-cat-btn').addEventListener('click', () => {
+        window.addEventListener('languageChanged', renderCustomCategories);
+
+        document.getElementById('add-cat-btn')?.addEventListener('click', () => {
             const name = document.getElementById('new-cat-name').value.trim();
             const color = document.getElementById('new-cat-color').value;
             if (!name) return;
@@ -508,38 +1018,30 @@
             }
         };
 
-        // Tab Switching Logic
+        // Tab Switching
         document.querySelectorAll('.settings-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.settings-tab-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.classList.remove('btn-primary');
-                    b.classList.add('btn-secondary');
-                });
+                document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                btn.classList.remove('btn-secondary');
-                btn.classList.add('btn-primary');
 
-                const tab = btn.dataset.tab;
-                document.querySelectorAll('.settings-card').forEach(card => {
-                    if (tab === 'all' || card.dataset.tabSection === tab) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                const targetTab = btn.dataset.tab;
+                document.querySelectorAll('.settings-panel').forEach(panel => {
+                    panel.classList.toggle('hidden', panel.id !== `panel-${targetTab}`);
                 });
             });
         });
 
         const navigateBack = () => {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = 'projects.html';
-            }
+            if (window.history.length > 1) window.history.back();
+            else window.location.href = 'projects.html';
         };
-        document.getElementById('btn-back')?.addEventListener('click', navigateBack);
         document.getElementById('btn-cancel-settings')?.addEventListener('click', navigateBack);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateForm();
+            syncThemeCards();
+            syncPaletteCards();
+        });
     </script>
 </body>
 </html>

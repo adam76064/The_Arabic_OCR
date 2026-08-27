@@ -56,7 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pendingJoinTarget) doJoin(pendingJoinTarget, pw);
     });
 
-    if (window.pywebview) {
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(scan);
+    } else if (window.pywebview && window.pywebview.api) {
         scan();
     } else {
         window.addEventListener('pywebviewready', scan);

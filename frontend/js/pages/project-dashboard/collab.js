@@ -64,5 +64,8 @@ async function setupCollaborationPanel() {
     pollActiveUsers();
     if (coopPollInterval) clearInterval(coopPollInterval);
     coopPollInterval = setInterval(pollActiveUsers, 4000);
+    window.addEventListener('beforeunload', () => {
+        if (coopPollInterval) clearInterval(coopPollInterval);
+    });
 }
 

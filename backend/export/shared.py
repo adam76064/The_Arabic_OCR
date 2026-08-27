@@ -173,14 +173,13 @@ def _css_color_to_hex(value):
     """Convert a CSS color value into a 6-char uppercase hex string, or None if unrecognized."""
     if not value:
         return None
-    value = value.strip().lower()
+    value = str(value).strip().lower()
     if value.startswith('#'):
-        h = value[1:]
-        if len(h) == 3:
-            h = ''.join(c * 2 for c in h)
-        if len(h) >= 6 and all(c in '0123456789abcdef' for c in h[:6]):
-            return h[:6].upper()
-        return None
+        value = value[1:]
+    if len(value) == 3 and all(c in '0123456789abcdef' for c in value):
+        return ''.join(c * 2 for c in value).upper()
+    if len(value) >= 6 and all(c in '0123456789abcdef' for c in value[:6]):
+        return value[:6].upper()
     m = re.match(r'rgba?\(([^)]+)\)', value)
     if m:
         parts = [p.strip() for p in m.group(1).split(',')]
@@ -428,6 +427,7 @@ def _set_style_rtl(style, font_name=None, font_size_pt=None, is_rtl=True):
     else:
         if bidi is not None:
             pPr.remove(bidi)
+    _reorder_pPr(pPr)
 
     rPr = style._element.get_or_add_rPr()
     if font_name:
@@ -438,9 +438,12 @@ def _set_style_rtl(style, font_name=None, font_size_pt=None, is_rtl=True):
         rFonts.set(qn('w:ascii'), font_name)
         rFonts.set(qn('w:hAnsi'), font_name)
         rFonts.set(qn('w:cs'), font_name)
+        rFonts.set(qn('w:eastAsia'), font_name)
+        if is_rtl:
+            rFonts.set(qn('w:hint'), 'cs')
 
     if font_size_pt:
-        half_pts = str(int(round(font_size_pt * 2)))
+        half_pts = str(int(round(float(font_size_pt) * 2)))
         sz = rPr.find(qn('w:sz'))
         if sz is None:
             sz = OxmlElement('w:sz')
@@ -459,21 +462,32 @@ def _set_style_rtl(style, font_name=None, font_size_pt=None, is_rtl=True):
             rtl_elem = OxmlElement('w:rtl')
             rPr.append(rtl_elem)
         rtl_elem.set(qn('w:val'), '1')
+        
+        cs_elem = rPr.find(qn('w:cs'))
+        if cs_elem is None:
+            cs_elem = OxmlElement('w:cs')
+            rPr.append(cs_elem)
+        cs_elem.set(qn('w:val'), '1')
     else:
         if rtl_elem is not None:
             rPr.remove(rtl_elem)
+        cs_elem = rPr.find(qn('w:cs'))
+        if cs_elem is not None:
+            rPr.remove(cs_elem)
+
+    _reorder_rPr(rPr)
 
 
 def _set_run_font_and_bidi(run, font_name=None, font_size_pt=None, is_rtl=True):
     """
     Sets run-level font family, font size, and RTL direction in OOXML (w:rPr),
     populating BOTH Latin (w:ascii, w:hAnsi, w:sz) AND Complex Script / Arabic
-    (w:cs, w:szCs, w:rtl, w:cs) so Microsoft Word correctly renders Arabic fonts, sizes,
+    (w:cs, w:szCs, w:rtl, w:cs, w:hint="cs") so Microsoft Word correctly renders Arabic fonts, sizes,
     and right-to-left layout without resetting to Word default sizes/fonts or LTR direction.
     """
     rPr = run._element.get_or_add_rPr()
 
-    # 1. Font Family (Latin + Complex Script / Arabic)
+    # 1. Font Family (Latin + Complex Script / Arabic + Complex Script hint)
     if font_name:
         rFonts = rPr.find(qn('w:rFonts'))
         if rFonts is None:
@@ -482,10 +496,13 @@ def _set_run_font_and_bidi(run, font_name=None, font_size_pt=None, is_rtl=True):
         rFonts.set(qn('w:ascii'), font_name)
         rFonts.set(qn('w:hAnsi'), font_name)
         rFonts.set(qn('w:cs'), font_name)
+        rFonts.set(qn('w:eastAsia'), font_name)
+        if is_rtl:
+            rFonts.set(qn('w:hint'), 'cs')
 
     # 2. Font Size (Latin + Complex Script / Arabic)
     if font_size_pt:
-        half_pts = str(int(round(font_size_pt * 2)))
+        half_pts = str(int(round(float(font_size_pt) * 2)))
         
         sz = rPr.find(qn('w:sz'))
         if sz is None:
@@ -519,6 +536,82 @@ def _set_run_font_and_bidi(run, font_name=None, font_size_pt=None, is_rtl=True):
         cs_elem = rPr.find(qn('w:cs'))
         if cs_elem is not None:
             cs_elem.set(qn('w:val'), '0')
+
+    _reorder_rPr(rPr)
+
+
+def _apply_run_formatting(run, style, font_name, font_size, is_r_rtl=True, cat_fmt=None):
+    """Applies complete inline formatting to a docx run, including Complex Script font, size,
+    bidi, bold (w:b & w:bCs), italic (w:i & w:iCs), underline, strike, color (w:color),
+    and highlight shading (w:shd), then guarantees ISO/IEC 29500 element sequence order via _reorder_rPr."""
+    cat_fmt = cat_fmt or {}
+    rPr = run._element.get_or_add_rPr()
+
+    r_font_name = style.get('font_family') or font_name
+    r_font_size = style.get('font_size') or font_size
+
+    _set_run_font_and_bidi(run, r_font_name, r_font_size, is_rtl=is_r_rtl)
+
+    # Bold (Standard + Complex Script)
+    if style.get('bold') or cat_fmt.get('bold'):
+        run.bold = True
+        bCs = rPr.find(qn('w:bCs'))
+        if bCs is None:
+            bCs = OxmlElement('w:bCs')
+            rPr.append(bCs)
+        bCs.set(qn('w:val'), '1')
+
+    # Italic (Standard + Complex Script)
+    if style.get('italic') or cat_fmt.get('italic'):
+        run.italic = True
+        iCs = rPr.find(qn('w:iCs'))
+        if iCs is None:
+            iCs = OxmlElement('w:iCs')
+            rPr.append(iCs)
+        iCs.set(qn('w:val'), '1')
+
+    # Underline
+    if style.get('underline') or cat_fmt.get('underline'):
+        run.underline = True
+
+    # Strike
+    if style.get('strike'):
+        run.font.strike = True
+
+    # Superscript / Subscript
+    if style.get('superscript'):
+        run.font.superscript = True
+    elif style.get('subscript'):
+        run.font.subscript = True
+
+    # Text Color (run.font.color + explicit w:color OOXML element)
+    run_color = style.get('color') or cat_fmt.get('color')
+    if run_color:
+        try:
+            hex_c = _css_color_to_hex(run_color)
+            if hex_c:
+                run.font.color.rgb = RGBColor.from_string(hex_c)
+                col_el = rPr.find(qn('w:color'))
+                if col_el is None:
+                    col_el = OxmlElement('w:color')
+                    rPr.append(col_el)
+                col_el.set(qn('w:val'), hex_c)
+        except Exception:
+            pass
+
+    # Shading / Highlight
+    run_bg = style.get('highlight') or cat_fmt.get('bgColor')
+    if run_bg:
+        try:
+            hex_bg = _css_color_to_hex(run_bg) or run_bg
+            if hex_bg:
+                _set_run_highlight_hex(run, hex_bg)
+        except Exception:
+            pass
+
+    # Strictly reorder w:rPr child tags to match OpenXML standard
+    _reorder_rPr(rPr)
+
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -605,7 +698,7 @@ def _apply_poetry_paragraph_layout_v169(para, align, is_rtl):
     jc.set(qn('w:val'), align)
 
 def _fill_poetry_cell(cell, text, font_name, font_size, is_rtl, align='lowKashida',
-                      valign='bottom', soft_return=True):
+                      valign='bottom', soft_return=True, cat_fmt=None):
     """Write text into a poetry table cell with proper font, size, direction,
     Justify Low (w:jc=lowKashida), vertical bottom alignment, and soft return (Shift+Enter)."""
     cell.text = ''
@@ -622,10 +715,7 @@ def _fill_poetry_cell(cell, text, font_name, font_size, is_rtl, align='lowKashid
             if not run_text:
                 continue
             run = para.add_run(run_text)
-            _set_run_font_and_bidi(run, font_name, font_size, is_rtl=is_rtl)
-            if style.get('bold'):  run.bold = True
-            if style.get('italic'): run.italic = True
-            if style.get('underline'): run.underline = True
+            _apply_run_formatting(run, style, font_name, font_size, is_r_rtl=is_rtl, cat_fmt=cat_fmt)
             
         # Soft return (Shift+Enter) forces Word to stretch hemistich across full cell width
         if soft_return:
@@ -634,7 +724,6 @@ def _fill_poetry_cell(cell, text, font_name, font_size, is_rtl, align='lowKashid
             br_run._element.append(br_elem)
             _set_run_font_and_bidi(br_run, font_name, font_size, is_rtl=is_rtl)
             
-    # Re-apply alignment after adding runs
     # Re-apply alignment after adding runs
     _apply_poetry_paragraph_layout_v169(para, align, is_rtl)
 
@@ -752,11 +841,11 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
 
             # In RTL tables: col0 = rightmost (صدر), col1 = center, col2 = leftmost (عجز)
             _fill_poetry_cell(row.cells[0], right_text, eff_font_name, eff_font_size,
-                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True)
+                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True, cat_fmt=cat_fmt)
             _fill_poetry_cell(row.cells[1], '',         eff_font_name, eff_font_size,
-                               effective_rtl, align='center',     valign='bottom', soft_return=False)
+                               effective_rtl, align='center',     valign='bottom', soft_return=False, cat_fmt=cat_fmt)
             _fill_poetry_cell(row.cells[2], left_text,  eff_font_name, eff_font_size,
-                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True)
+                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True, cat_fmt=cat_fmt)
 
     elif cat == 'Staggered-poetry':
         # 2-column staggered layout: 7.5 cm / 7.5 cm
@@ -773,9 +862,9 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
             for c_idx, w in enumerate(col_widths):
                 _set_cell_width(right_row.cells[c_idx], w)
             _fill_poetry_cell(right_row.cells[0], right_text, eff_font_name, eff_font_size,
-                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True)
+                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True, cat_fmt=cat_fmt)
             _fill_poetry_cell(right_row.cells[1], '',         eff_font_name, eff_font_size,
-                               effective_rtl, align='center',     valign='bottom', soft_return=False)
+                               effective_rtl, align='center',     valign='bottom', soft_return=False, cat_fmt=cat_fmt)
 
             # Even row: right col empty, left hemistich (col 1)
             left_row = tbl.rows[line_idx * 2 + 1]
@@ -783,9 +872,9 @@ def _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=
             for c_idx, w in enumerate(col_widths):
                 _set_cell_width(left_row.cells[c_idx], w)
             _fill_poetry_cell(left_row.cells[0], '',        eff_font_name, eff_font_size,
-                               effective_rtl, align='center',     valign='bottom', soft_return=False)
+                               effective_rtl, align='center',     valign='bottom', soft_return=False, cat_fmt=cat_fmt)
             _fill_poetry_cell(left_row.cells[1], left_text, eff_font_name, eff_font_size,
-                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True)
+                               effective_rtl, align='lowKashida', valign='bottom', soft_return=True, cat_fmt=cat_fmt)
 
 
 def _set_run_highlight_hex(run, hex_color):
@@ -839,6 +928,37 @@ _PPR_CHILD_ORDER = [
 ]
 
 _PPR_ORDER_INDEX = {tag: i for i, tag in enumerate(_PPR_CHILD_ORDER)}
+
+_RPR_CHILD_ORDER = [
+    'rStyle', 'rFonts', 'b', 'bCs', 'i', 'iCs', 'caps', 'smallCaps',
+    'strike', 'dstrike', 'outline', 'shadow', 'emboss', 'imprint',
+    'noProof', 'snapToGrid', 'vanish', 'webHidden', 'color', 'spacing',
+    'w', 'kern', 'position', 'sz', 'szCs', 'highlight', 'u', 'effect',
+    'bdr', 'shd', 'fitText', 'vertAlign', 'rtl', 'cs', 'em', 'lang',
+    'eastAsianLayout', 'specVanish', 'oMath'
+]
+
+_RPR_ORDER_INDEX = {tag: i for i, tag in enumerate(_RPR_CHILD_ORDER)}
+
+
+def _reorder_rPr(rPr):
+    """Sort all child elements of rPr to strictly match OpenXML ISO/IEC 29500 XSD sequence order.
+    Guarantees Microsoft Word correctly respects fonts, colors, bold/italic, size, and RTL without resetting to defaults."""
+    if rPr is None or len(rPr) <= 1:
+        return
+
+    children = list(rPr)
+    for child in children:
+        rPr.remove(child)
+
+    def get_order_key(elem):
+        tag_name = elem.tag.rsplit('}', 1)[-1] if '}' in elem.tag else elem.tag
+        return _RPR_ORDER_INDEX.get(tag_name, 999)
+
+    children.sort(key=get_order_key)
+    for child in children:
+        rPr.append(child)
+
 
 def _reorder_pPr(pPr):
     """Sort all child elements of pPr to strictly match OpenXML ISO/IEC 29500 XSD sequence order.
@@ -1007,49 +1127,23 @@ def _add_formatted_paragraph(doc, paragraph_text, cat, font_name, font_size,
             continue
 
         run = para.add_run(run_text)
-
-        r_font_name = style.get('font_family') or eff_font_name
-        r_font_size = style.get('font_size') or eff_font_size
         
         # Run direction: style['dir'] if specified, else paragraph direction
         r_dir = style.get('dir')
         is_r_rtl = (r_dir == 'rtl') if r_dir else (False if r_dir == 'ltr' else p_effective_rtl)
 
-        # Apply OOXML font name, font size (w:sz + w:szCs), and RTL (w:rtl)
-        _set_run_font_and_bidi(run, r_font_name, r_font_size, is_rtl=is_r_rtl)
-
-        if style.get('bold') or cat_fmt.get('bold'):
-            run.bold = True
-        if style.get('italic') or cat_fmt.get('italic'):
-            run.italic = True
-        if style.get('underline') or cat_fmt.get('underline'):
-            run.underline = True
-        if style.get('strike'):
-            run.font.strike = True
-        if style.get('superscript'):
-            run.font.superscript = True
-        if style.get('subscript'):
-            run.font.subscript = True
-        
-        run_color = style.get('color') or cat_fmt.get('color')
-        if run_color:
-            try:
-                hex_c = _css_color_to_hex(run_color)
-                if hex_c:
-                    run.font.color.rgb = RGBColor.from_string(hex_c)
-            except Exception:
-                pass
-        
-        run_bg = style.get('highlight') or cat_fmt.get('bgColor')
-        if run_bg:
-            try:
-                _set_run_highlight_hex(run, run_bg)
-            except Exception:
-                pass
+        # Apply comprehensive inline formatting (font, size, CS hint, bold/bCs, italic/iCs, color, highlight)
+        _apply_run_formatting(run, style, eff_font_name, eff_font_size, is_r_rtl=is_r_rtl, cat_fmt=cat_fmt)
 
     if cat in ('Title', 'Section-header'):
         for run in para.runs:
             run.bold = True
+            bCs = run._element.get_or_add_rPr().find(qn('w:bCs'))
+            if bCs is None:
+                bCs = OxmlElement('w:bCs')
+                run._element.get_or_add_rPr().append(bCs)
+            bCs.set(qn('w:val'), '1')
+            _reorder_rPr(run._element.get_or_add_rPr())
     _set_line_spacing(para, p_line_spacing)
     fmt = para.paragraph_format
 

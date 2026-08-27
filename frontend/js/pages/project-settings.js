@@ -7,17 +7,13 @@ const projectId = urlParams.get('id');
 async function initSettings() {
     if (!projectId) { window.location.href = 'projects.html'; return; }
 
+    bindTabNavigation();
+
     // Load project data
     currentProject = await window.pywebview.api.load_project(projectId);
     if (!currentProject) { alert(window.AppI18n.t('projectSettings.loadFailed')); return; }
 
     const meta = currentProject.metadata || {};
-
-    // استرجاع كود المزامنة المحفوظ
-    if (meta.cloud_share_id) {
-        document.getElementById('host-cloud-password').value = meta.cloud_password || '';
-        document.getElementById('host-cloud-result').innerHTML = `كود المشاركة المحفوظ (Share ID): <br><br> <span style="background: #e2e8f0; padding: 6px 10px; border-radius: 4px; color: #0f172a; user-select: all; display: inline-block; margin-top: 8px;">${meta.cloud_share_id}</span>`;
-    }
 
     const textOpts = meta.text_features || {};
 
@@ -38,10 +34,12 @@ async function initSettings() {
     document.getElementById('ps-norm-hamza').checked = textOpts.normalize_hamza ?? false;
 
     const tashkeel = textOpts.tashkeel_option || 'none';
-    document.querySelector(`input[name="ps_tashkeel"][value="${tashkeel}"]`).checked = true;
+    const tashkeelRadio = document.querySelector(`input[name="ps_tashkeel"][value="${tashkeel}"]`);
+    if (tashkeelRadio) tashkeelRadio.checked = true;
     
     const tanween = textOpts.tanween_option || 'none';
-    document.querySelector(`input[name="ps_tanween"][value="${tanween}"]`).checked = true;
+    const tanweenRadio = document.querySelector(`input[name="ps_tanween"][value="${tanween}"]`);
+    if (tanweenRadio) tanweenRadio.checked = true;
 
     const numbers = textOpts.numbers_option || 'none';
     const numbersRadio = document.querySelector(`input[name="ps_numbers"][value="${numbers}"]`);
@@ -91,23 +89,25 @@ async function initSettings() {
     const lanPwdInput = document.getElementById('ps-lan-password');
     const autoSaveSelect = document.getElementById('ps-autosave-interval');
 
-    lanBroadcast.checked = meta.lan_broadcasting ?? false;
-    lanPwdInput.value = meta.lan_password || '';
-    autoSaveSelect.value = meta.autosave_interval ?? 5;
+    if (lanBroadcast) lanBroadcast.checked = meta.lan_broadcasting ?? false;
+    if (lanPwdInput) lanPwdInput.value = meta.lan_password || '';
+    if (autoSaveSelect) autoSaveSelect.value = meta.autosave_interval ?? 5;
 
     const updateBadges = () => {
-        if (lanBadge) {
+        if (lanBadge && lanBroadcast) {
             lanBadge.textContent = lanBroadcast.checked ? window.AppI18n.t('projectSettings.enabled') : window.AppI18n.t('projectSettings.stopped');
-            lanBadge.style.background = lanBroadcast.checked ? '#dcfce7' : '#fee2e2';
-            lanBadge.style.color = lanBroadcast.checked ? '#15803d' : '#b91c1c';
+            lanBadge.style.background = lanBroadcast.checked ? 'var(--color-success-light)' : 'var(--color-danger-light)';
+            lanBadge.style.color = lanBroadcast.checked ? 'var(--color-success)' : 'var(--color-danger)';
         }
     };
     updateBadges();
 
-    lanBroadcast.addEventListener('change', async () => {
-        updateBadges();
-        await window.pywebview.api.toggle_broadcasting(currentProject.id, 'lan', lanBroadcast.checked);
-    });
+    if (lanBroadcast) {
+        lanBroadcast.addEventListener('change', async () => {
+            updateBadges();
+            await window.pywebview.api.toggle_broadcasting(currentProject.id, 'lan', lanBroadcast.checked);
+        });
+    }
 
     // LAN Tabs Switching Logic
     const lanTabHostBtn = document.getElementById('lan-tab-host-btn');
@@ -122,19 +122,15 @@ async function initSettings() {
         lanTabHostBtn.addEventListener('click', () => {
             lanTabHostSec.classList.remove('hidden');
             lanTabMemberSec.classList.add('hidden');
-            lanTabHostBtn.style.color = '#0369a1';
-            lanTabHostBtn.style.borderBottom = '2px solid #0369a1';
-            lanTabMemberBtn.style.color = '#64748b';
-            lanTabMemberBtn.style.borderBottom = 'none';
+            lanTabHostBtn.classList.add('active');
+            lanTabMemberBtn.classList.remove('active');
         });
 
         lanTabMemberBtn.addEventListener('click', () => {
             lanTabMemberSec.classList.remove('hidden');
             lanTabHostSec.classList.add('hidden');
-            lanTabMemberBtn.style.color = '#0369a1';
-            lanTabMemberBtn.style.borderBottom = '2px solid #0369a1';
-            lanTabHostBtn.style.color = '#64748b';
-            lanTabHostBtn.style.borderBottom = 'none';
+            lanTabMemberBtn.classList.add('active');
+            lanTabHostBtn.classList.remove('active');
         });
     }
 
@@ -146,7 +142,7 @@ async function initSettings() {
             
             currentProject.metadata.lan_password = pw;
             currentProject.metadata.lan_broadcasting = true;
-            lanBroadcast.checked = true;
+            if (lanBroadcast) lanBroadcast.checked = true;
             updateBadges();
 
             await window.pywebview.api.update_project_metadata(currentProject.id, currentProject.metadata);
@@ -155,37 +151,50 @@ async function initSettings() {
         });
     }
 
-    // Cloud Tabs Switching Logic
-    const tabHostBtn = document.getElementById('cloud-tab-host-btn');
-    const tabMemberBtn = document.getElementById('cloud-tab-member-btn');
-    const tabHostSec = document.getElementById('cloud-tab-host-sec');
-    const tabMemberSec = document.getElementById('cloud-tab-member-sec');
-
     // Password strength check helper
     const validatePwd = async (pwd, feedbackElId) => {
         const feedbackEl = document.getElementById(feedbackElId);
         if (!pwd) { if (feedbackEl) feedbackEl.textContent = ''; return true; }
         const res = await window.pywebview.api.validate_password_strength(pwd);
         if (!res.valid) {
-            if (feedbackEl) feedbackEl.innerHTML = '⚠️ ' + res.errors.join(' | ');
+            if (feedbackEl) feedbackEl.innerHTML = res.errors.join(' | ');
             return false;
         }
-        if (feedbackEl) feedbackEl.innerHTML = `<span style="color:#15803d;">${window.AppI18n.t('projectSettings.strongPassword')}</span>`;
+        if (feedbackEl) feedbackEl.innerHTML = `<span style="color:var(--color-success);">${window.AppI18n.t('projectSettings.strongPassword')}</span>`;
         return true;
     };
 
-    lanPwdInput.addEventListener('input', () => validatePwd(lanPwdInput.value, 'lan-pwd-feedback'));
+    if (lanPwdInput) {
+        lanPwdInput.addEventListener('input', () => validatePwd(lanPwdInput.value, 'lan-pwd-feedback'));
+    }
 
     // 4. Notifications
-    document.getElementById('ps-notif-join').checked = meta.notif_join ?? true;
-    document.getElementById('ps-notif-page').checked = meta.notif_page ?? true;
-    document.getElementById('ps-notif-edit').checked = meta.notif_edit ?? false;
+    const notifJoin = document.getElementById('ps-notif-join');
+    const notifPage = document.getElementById('ps-notif-page');
+    const notifEdit = document.getElementById('ps-notif-edit');
+    if (notifJoin) notifJoin.checked = meta.notif_join ?? true;
+    if (notifPage) notifPage.checked = meta.notif_page ?? true;
+    if (notifEdit) notifEdit.checked = meta.notif_edit ?? false;
 
     // 5. Category Formatting Rules
     initCategoryFormatting(meta.category_formatting || {});
 
     // 6. Post-Processing Settings
     initPostProcessingSettings(meta.post_processing || {});
+}
+
+function bindTabNavigation() {
+    document.querySelectorAll('.settings-nav-tabs .settings-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.settings-nav-tabs .settings-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const targetTab = btn.dataset.tab;
+            document.querySelectorAll('.settings-panel').forEach(panel => {
+                panel.classList.toggle('hidden', panel.id !== `panel-${targetTab}`);
+            });
+        });
+    });
 }
 
 // ─── CATEGORY FORMATTING MANAGER ───
@@ -304,10 +313,10 @@ function saveCurrentCategoryFormattingUI(category) {
     };
 }
 
-document.getElementById('project-settings-form').addEventListener('submit', async (e) => {
+document.getElementById('project-settings-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const lanPwd = document.getElementById('ps-lan-password').value;
+    const lanPwd = document.getElementById('ps-lan-password')?.value;
 
     if (lanPwd) {
         const vLan = await window.pywebview.api.validate_password_strength(lanPwd);
@@ -319,32 +328,32 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
 
     saveCurrentCategoryFormattingUI(activeCategory);
     const btn = document.getElementById('btn-save');
-    btn.disabled = true; btn.textContent = window.AppI18n.t('projectSettings.saving');
+    if (btn) { btn.disabled = true; btn.textContent = window.AppI18n.t('projectSettings.saving'); }
 
-    const tashkeelVal = document.querySelector('input[name="ps_tashkeel"]:checked').value;
+    const tashkeelVal = document.querySelector('input[name="ps_tashkeel"]:checked')?.value || 'none';
 
     const newMetadata = {
         title: document.getElementById('ps-title').value.trim(),
         author: document.getElementById('ps-author').value.trim(),
         publisher: document.getElementById('ps-publisher').value.trim(),
         logical_start: parseInt(document.getElementById('ps-logical-start').value) || 1,
-        lan_broadcasting: document.getElementById('ps-lan-broadcast').checked,
+        lan_broadcasting: document.getElementById('ps-lan-broadcast')?.checked ?? false,
         lan_password: lanPwd || null,
-        autosave_interval: parseInt(document.getElementById('ps-autosave-interval').value) || 5,
-        notif_join: document.getElementById('ps-notif-join').checked,
-        notif_page: document.getElementById('ps-notif-page').checked,
-        notif_edit: document.getElementById('ps-notif-edit').checked,
+        autosave_interval: parseInt(document.getElementById('ps-autosave-interval')?.value) || 5,
+        notif_join: document.getElementById('ps-notif-join')?.checked ?? true,
+        notif_page: document.getElementById('ps-notif-page')?.checked ?? true,
+        notif_edit: document.getElementById('ps-notif-edit')?.checked ?? false,
         category_formatting: categoryFormatting,
         text_features: {
-            remove_kasheeda: document.getElementById('ps-remove-kasheeda').checked,
-            clean_extra_lines: document.getElementById('ps-clean-lines').checked,
-            clean_double_spaces: document.getElementById('ps-clean-spaces').checked,
-            fix_punctuation: document.getElementById('ps-fix-punct').checked,
-            fix_waw: document.getElementById('ps-fix-waw').checked,
-            superscript_footnotes: document.getElementById('ps-super-footnotes').checked,
-            normalize_hamza: document.getElementById('ps-norm-hamza').checked,
+            remove_kasheeda: document.getElementById('ps-remove-kasheeda')?.checked ?? true,
+            clean_extra_lines: document.getElementById('ps-clean-lines')?.checked ?? false,
+            clean_double_spaces: document.getElementById('ps-clean-spaces')?.checked ?? false,
+            fix_punctuation: document.getElementById('ps-fix-punct')?.checked ?? false,
+            fix_waw: document.getElementById('ps-fix-waw')?.checked ?? false,
+            superscript_footnotes: document.getElementById('ps-super-footnotes')?.checked ?? false,
+            normalize_hamza: document.getElementById('ps-norm-hamza')?.checked ?? false,
             tashkeel_option: tashkeelVal,
-            tanween_option: document.querySelector('input[name="ps_tanween"]:checked').value,
+            tanween_option: document.querySelector('input[name="ps_tanween"]:checked')?.value || 'none',
             numbers_option: document.querySelector('input[name="ps_numbers"]:checked')?.value || 'none',
             remove_all_tashkeel: tashkeelVal === 'remove_all',
             remove_tashkeel_keep_tanween: tashkeelVal === 'keep_tanween'
@@ -371,23 +380,23 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
             if (ocredPagesCount > 0 && window.AestheticDialog?.confirm) {
                 window.__selectedApplyScope = 'unreviewed';
                 const messageHtml = `
-                    <p style="margin-bottom: 12px; font-size: 14px; color: #334155;">
+                    <p style="margin-bottom: 12px; font-size: 14px; color: var(--color-text);">
                         ${window.AppI18n.t('projectSettings.savedSummary')}<br>
                         ${window.AppI18n.t('projectSettings.processedPages', { count: ocredPagesCount })}<br>
                         ${window.AppI18n.t('projectSettings.applyQuestion')}
                     </p>
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; background: var(--color-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="all" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyAll')}</span>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--color-text);">${window.AppI18n.t('projectSettings.applyAll')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="unreviewed" checked onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyUnreviewed')}</span>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--color-text);">${window.AppI18n.t('projectSettings.applyUnreviewed')}</span>
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="radio" name="apply_scope" value="none" onchange="window.__selectedApplyScope=this.value" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; font-weight: 500; color: #0f172a;">${window.AppI18n.t('projectSettings.applyLater')}</span>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--color-text);">${window.AppI18n.t('projectSettings.applyLater')}</span>
                         </label>
                     </div>
                 `;
@@ -404,7 +413,7 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
                             return;
                         }
                         
-                        btn.textContent = window.AppI18n.t('projectSettings.applying');
+                        if (btn) btn.textContent = window.AppI18n.t('projectSettings.applying');
                         try {
                             const res = await window.pywebview.api.apply_project_settings_changes(currentProject.id, selectedScope);
                             if (res && res.ok) {
@@ -440,23 +449,27 @@ document.getElementById('project-settings-form').addEventListener('submit', asyn
         } else {
             alert(window.AppI18n.t('projectSettings.saveError'));
         }
-        btn.disabled = false; btn.textContent = window.AppI18n.t('projectSettings.save');
+        if (btn) { btn.disabled = false; btn.textContent = window.AppI18n.t('projectSettings.save'); }
     }
 });
 
-// توجيه زر الإلغاء وزر العودة إلى لوحة التحكم
+// Navigation buttons
 const navigateToDashboard = () => { window.location.href = `project-dashboard.html?id=${projectId}`; };
 document.getElementById('btn-cancel')?.addEventListener('click', navigateToDashboard);
 document.getElementById('btn-back')?.addEventListener('click', navigateToDashboard);
 
-// إزالة زر العودة للمراجعة القديم إن وجد
+// Remove legacy back to review button
 const backToReviewBtn = document.getElementById('back-to-review');
 if (backToReviewBtn) backToReviewBtn.remove();
 
-
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.pywebview) initSettings();
-    else window.addEventListener('pywebviewready', initSettings);
+    if (window.AppApi && typeof window.AppApi.ready === 'function') {
+        window.AppApi.ready().then(initSettings);
+    } else if (window.pywebview && window.pywebview.api) {
+        initSettings();
+    } else {
+        window.addEventListener('pywebviewready', initSettings);
+    }
 });
 
 // ─── POST-PROCESSING SETTINGS ───────────────────────────────────────────────
@@ -531,4 +544,4 @@ function initPostProcessingSettings(ppOpts) {
             }
         });
     }
-}
+}
