@@ -129,8 +129,17 @@ function syncElementFromContent(el, contentEl) {
         return changed;
     }
     const newHtml = contentEl.innerHTML;
-    const changed = newHtml !== el.text;
+    let changed = newHtml !== el.text;
     el.text = newHtml;
+
+    if (contentEl.style.lineHeight) el.line_height = contentEl.style.lineHeight;
+    if (contentEl.style.marginTop) el.margin_top = contentEl.style.marginTop;
+    if (contentEl.style.marginBottom) el.margin_bottom = contentEl.style.marginBottom;
+    if (contentEl.style.fontFamily) el.font_family = contentEl.style.fontFamily;
+    if (contentEl.style.fontSize) el.font_size = contentEl.style.fontSize;
+    if (contentEl.style.textAlign) el.align = contentEl.style.textAlign;
+    if (contentEl.dir) el.dir = contentEl.dir;
+
     return changed;
 }
 
@@ -201,15 +210,46 @@ function renderBlocksList(ocrData) {
             if (catFmt.dir) content.dir = catFmt.dir;
             if (catFmt.align) content.style.textAlign = catFmt.align;
             if (catFmt.fontFamily) content.style.fontFamily = catFmt.fontFamily;
-            if (catFmt.fontSize) content.style.fontSize = catFmt.fontSize;
-            if (catFmt.lineSpacing) content.style.setProperty('--block-line-height', catFmt.lineSpacing);
-            if (catFmt.spaceBefore) content.style.setProperty('--block-space-before', catFmt.spaceBefore);
-            if (catFmt.spaceAfter) content.style.setProperty('--block-space-after', catFmt.spaceAfter);
+            if (catFmt.fontSize) {
+                content.style.fontSize = catFmt.fontSize;
+                content.style.setProperty('--block-font-size', catFmt.fontSize);
+            }
+            if (catFmt.lineSpacing) {
+                content.style.lineHeight = catFmt.lineSpacing;
+                content.style.setProperty('--block-line-height', catFmt.lineSpacing);
+            }
+            if (catFmt.spaceBefore) {
+                content.style.marginTop = catFmt.spaceBefore;
+                content.style.setProperty('--block-space-before', catFmt.spaceBefore);
+            }
+            if (catFmt.spaceAfter) {
+                content.style.marginBottom = catFmt.spaceAfter;
+                content.style.setProperty('--block-space-after', catFmt.spaceAfter);
+            }
             if (catFmt.color) content.style.color = catFmt.color;
             if (catFmt.bgColor) content.style.backgroundColor = catFmt.bgColor;
             if (catFmt.bold) content.style.fontWeight = 'bold';
             if (catFmt.italic) content.style.fontStyle = 'italic';
             if (catFmt.underline) content.style.textDecoration = 'underline';
+        }
+
+        // Element-level overrides if present
+        if (element.line_height) {
+            content.style.lineHeight = element.line_height;
+            content.style.setProperty('--block-line-height', element.line_height);
+        }
+        if (element.margin_top) {
+            content.style.marginTop = element.margin_top;
+            content.style.setProperty('--block-space-before', element.margin_top);
+        }
+        if (element.margin_bottom) {
+            content.style.marginBottom = element.margin_bottom;
+            content.style.setProperty('--block-space-after', element.margin_bottom);
+        }
+        if (element.font_family) content.style.fontFamily = element.font_family;
+        if (element.font_size) {
+            content.style.fontSize = element.font_size;
+            content.style.setProperty('--block-font-size', element.font_size);
         }
 
         // 1. RENDER TABLE OR TEXT
