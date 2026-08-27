@@ -7,7 +7,7 @@ window.AppLocales.de = {
     "batch.cancelledMsg": "Verarbeitung angehalten.",
     "batch.completedMsg": "Verarbeitung abgeschlossen! {count} Seiten in {seconds}s verarbeitet.",
     "batch.fromOriginal": "Vom unbearbeiteten Originalscan starten (empfohlen beim Ausführen aller Stufen)",
-    "batch.modalTitle": "Stapelverarbeitungs-Assistent",
+    "batch.modalTitle": "Stapelverarbeitung für Seiten",
     "batch.noPagesSelected": "Bitte wählen Sie gültige Seiten zur Verarbeitung aus.",
     "batch.noStagesSelected": "Bitte wählen Sie mindestens eine Stufe aus.",
     "batch.presetAll": "Alle",

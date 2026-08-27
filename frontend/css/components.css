@@ -465,8 +465,8 @@
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: var(--color-sidebar);
-  color: var(--color-text-inverse);
+  background: var(--color-surface);
+  color: var(--color-text);
   padding: 8px 18px;
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-xl);
@@ -486,11 +486,27 @@
 }
 .floating-batch-bar .batch-count-badge {
   background: var(--color-primary);
-  color: white;
+  color: #ffffff;
   padding: 2px 8px;
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: bold;
+}
+.floating-batch-bar .btn-secondary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+.floating-batch-bar .btn-secondary:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.floating-batch-bar .btn-plain {
+  color: var(--color-text-muted);
+}
+.floating-batch-bar .btn-plain:hover {
+  color: var(--color-danger);
 }
 
 /* ── Pipeline Stepper ────────────────────────────────────────────────── */

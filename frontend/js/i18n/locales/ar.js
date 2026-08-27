@@ -7,7 +7,7 @@ window.AppLocales.ar = {
     "batch.cancelledMsg": "تم إيقاف عملية المعالجة.",
     "batch.completedMsg": "اكتملت المعالجة بنجاح! تم معالجة {count} صفحة في {seconds} ثانية.",
     "batch.fromOriginal": "البدء من المسح الأصلي غير المعدل (موصى به عند معالجة كافة المراحل)",
-    "batch.modalTitle": "معالجة مجمعة للصفحات (Batch Wizard)",
+    "batch.modalTitle": "معالجة مجمعة للصفحات",
     "batch.noPagesSelected": "الرجاء تحديد صفحات صالحة للمعالجة.",
     "batch.noStagesSelected": "الرجاء اختيار مرحلة واحدة على الأقل للتنفيذ.",
     "batch.presetAll": "الكل",

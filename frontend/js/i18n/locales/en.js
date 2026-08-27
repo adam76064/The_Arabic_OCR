@@ -7,7 +7,7 @@ window.AppLocales.en = {
     "batch.cancelledMsg": "Batch processing stopped.",
     "batch.completedMsg": "Batch processing completed! Processed {count} pages in {seconds}s.",
     "batch.fromOriginal": "Start from original pristine scans (recommended when running all stages)",
-    "batch.modalTitle": "Batch Processing Wizard",
+    "batch.modalTitle": "Batch Processing for Pages",
     "batch.noPagesSelected": "Please select valid pages to process.",
     "batch.noStagesSelected": "Please select at least one stage to execute.",
     "batch.presetAll": "All",
