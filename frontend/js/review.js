@@ -97,13 +97,16 @@ async function initApp() {
         const saveBtn = document.getElementById('save-page');
         if (saveBtn) navDiv.parentNode.insertBefore(netBadge, saveBtn);
 
-        setInterval(async () => {
+        const netInterval = setInterval(async () => {
             if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.get_network_status) return;
             try {
                 const status = await window.pywebview.api.get_network_status();
                 netBadge.style.display = 'none';
             } catch (e) {}
         }, 5000);
+        window.addEventListener('beforeunload', () => {
+            clearInterval(netInterval);
+        });
     }
 
     if (typeof updateReviewPanel === 'function') updateReviewPanel();
