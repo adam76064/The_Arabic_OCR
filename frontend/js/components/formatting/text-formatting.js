@@ -291,10 +291,18 @@ const TextFormatting = {
                 if (pElem && target.contains(pElem) && pElem !== target) {
                     pElem.style.setProperty(kebabCmd, val, 'important');
                 } else {
-                    if (kebabCmd === 'line-height') target.style.setProperty('--block-line-height', val);
-                    else if (kebabCmd === 'margin-top') target.style.setProperty('--block-space-before', val);
-                    else if (kebabCmd === 'margin-bottom') target.style.setProperty('--block-space-after', val);
-                    else target.style.setProperty(kebabCmd, val, 'important');
+                    if (kebabCmd === 'line-height') {
+                        target.style.setProperty('--block-line-height', val);
+                        target.style.lineHeight = val;
+                    } else if (kebabCmd === 'margin-top') {
+                        target.style.setProperty('--block-space-before', val);
+                        target.style.marginTop = val;
+                    } else if (kebabCmd === 'margin-bottom') {
+                        target.style.setProperty('--block-space-after', val);
+                        target.style.marginBottom = val;
+                    } else {
+                        target.style.setProperty(kebabCmd, val, 'important');
+                    }
                 }
 
                 if (window.persistBrushEdit) window.persistBrushEdit(target);
@@ -498,44 +506,107 @@ function _syncSingleToolbar(container) {
     // 8. Block Styles (Line Spacing, Paragraph Spacing)
     const lineHeightSel = container.querySelector('select[data-style-cmd="lineHeight"]');
     if (lineHeightSel) {
-        const lh = pElem.style.lineHeight || pElem.style.getPropertyValue('--block-line-height') || '';
-        let foundLh = false;
-        for (let i = 0; i < lineHeightSel.options.length; i++) {
-            if (lineHeightSel.options[i].value === lh) {
-                lineHeightSel.selectedIndex = i;
-                foundLh = true;
-                break;
+        let lhRaw = pElem.style.lineHeight ||
+                    pElem.style.getPropertyValue('--block-line-height') ||
+                    editable.style.getPropertyValue('--block-line-height') ||
+                    editable.style.lineHeight || '';
+
+        let matchedLhIdx = 0;
+        if (lhRaw) {
+            const numLh = parseFloat(lhRaw);
+            if (!isNaN(numLh)) {
+                let minDiff = 0.08;
+                for (let i = 1; i < lineHeightSel.options.length; i++) {
+                    const optVal = parseFloat(lineHeightSel.options[i].value);
+                    const diff = Math.abs(optVal - numLh);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        matchedLhIdx = i;
+                    }
+                }
             }
         }
-        if (!foundLh) lineHeightSel.selectedIndex = 0;
+        if (matchedLhIdx === 0) {
+            // Try computed style ratio: lineHeight (px) / fontSize (px)
+            const cs = window.getComputedStyle(pElem);
+            const lhPx = parseFloat(cs.lineHeight);
+            const fsPx = parseFloat(cs.fontSize);
+            if (!isNaN(lhPx) && !isNaN(fsPx) && fsPx > 0) {
+                const ratio = lhPx / fsPx;
+                let minDiff = 0.22;
+                for (let i = 1; i < lineHeightSel.options.length; i++) {
+                    const optVal = parseFloat(lineHeightSel.options[i].value);
+                    const diff = Math.abs(optVal - ratio);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        matchedLhIdx = i;
+                    }
+                }
+            }
+        }
+        lineHeightSel.selectedIndex = matchedLhIdx;
+    }
+
+    function matchMarginSelect(sel, rawVal, computedPx) {
+        if (!sel) return;
+        let matchedIdx = 0;
+        if (rawVal) {
+            const mPt = rawVal.match(/(\d+(?:\.\d+)?)/);
+            if (mPt) {
+                const targetPt = parseFloat(mPt[1]);
+                let minDiff = 1.5;
+                for (let i = 1; i < sel.options.length; i++) {
+                    const optPtMatch = sel.options[i].value.match(/(\d+(?:\.\d+)?)/);
+                    if (optPtMatch) {
+                        const optPt = parseFloat(optPtMatch[1]);
+                        const diff = Math.abs(optPt - targetPt);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            matchedIdx = i;
+                        }
+                    }
+                }
+            }
+        }
+        if (matchedIdx === 0 && computedPx) {
+            const px = parseFloat(computedPx);
+            if (!isNaN(px) && px > 0) {
+                const pt = px * 0.75;
+                let minDiff = 2.5;
+                for (let i = 1; i < sel.options.length; i++) {
+                    const optPtMatch = sel.options[i].value.match(/(\d+(?:\.\d+)?)/);
+                    if (optPtMatch) {
+                        const optPt = parseFloat(optPtMatch[1]);
+                        const diff = Math.abs(optPt - pt);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            matchedIdx = i;
+                        }
+                    }
+                }
+            }
+        }
+        sel.selectedIndex = matchedIdx;
     }
 
     const marginTopSel = container.querySelector('select[data-style-cmd="marginTop"]');
     if (marginTopSel) {
-        const mt = pElem.style.marginTop || pElem.style.getPropertyValue('--block-space-before') || '';
-        let foundMt = false;
-        for (let i = 0; i < marginTopSel.options.length; i++) {
-            if (marginTopSel.options[i].value === mt) {
-                marginTopSel.selectedIndex = i;
-                foundMt = true;
-                break;
-            }
-        }
-        if (!foundMt) marginTopSel.selectedIndex = 0;
+        const mtRaw = pElem.style.marginTop ||
+                      pElem.style.getPropertyValue('--block-space-before') ||
+                      editable.style.getPropertyValue('--block-space-before') ||
+                      editable.style.marginTop || '';
+        const csMt = window.getComputedStyle(pElem).marginTop;
+        matchMarginSelect(marginTopSel, mtRaw, csMt);
     }
 
     const marginBotSel = container.querySelector('select[data-style-cmd="marginBottom"]');
     if (marginBotSel) {
-        const mb = pElem.style.marginBottom || pElem.style.getPropertyValue('--block-space-after') || '';
-        let foundMb = false;
-        for (let i = 0; i < marginBotSel.options.length; i++) {
-            if (marginBotSel.options[i].value === mb) {
-                marginBotSel.selectedIndex = i;
-                foundMb = true;
-                break;
-            }
-        }
-        if (!foundMb) marginBotSel.selectedIndex = 0;
+        const mbRaw = pElem.style.marginBottom ||
+                      pElem.style.getPropertyValue('--block-space-after') ||
+                      editable.style.getPropertyValue('--block-space-after') ||
+                      editable.style.marginBottom || '';
+        const csMb = window.getComputedStyle(pElem).marginBottom;
+        matchMarginSelect(marginBotSel, mbRaw, csMb);
     }
 }
 
