@@ -3,6 +3,8 @@ window.AppLocales.de = {
   meta: {"name":"Deutsch","nativeName":"Deutsch","direction":"ltr"},
   messages: {
     "app.name": "OCR-Prüfwerkzeug",
+    "common.saved": "Gespeichert",
+    "common.saving": "Wird gespeichert...",
     "batch.cancel": "Abbrechen",
     "batch.cancelledMsg": "Verarbeitung angehalten.",
     "batch.completedMsg": "Verarbeitung abgeschlossen! {count} Seiten in {seconds}s verarbeitet.",

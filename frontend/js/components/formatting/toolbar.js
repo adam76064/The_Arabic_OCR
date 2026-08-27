@@ -15,7 +15,11 @@ const TAB_ICONS = {
 
 const formatText = (key) => window.AppI18n?.t(key) || key;
 
-const TOOLBAR_HTML = `
+function getToolbarHTML() {
+    const textHtml = (typeof window.getTextToolbarHTML === 'function') ? window.getTextToolbarHTML() : (window.TEXT_TOOLBAR_HTML || '');
+    const tableHtml = (typeof window.getTableToolbarHTML === 'function') ? window.getTableToolbarHTML() : (window.TABLE_TOOLBAR_HTML || '');
+
+    return `
     <div class="toolbar-tabs-container">
         <div class="toolbar-tabs">
             <button class="toolbar-tab-btn active" data-tab="text-tools">${TAB_ICONS.text}<span>${formatText('format.text')}</span></button>
@@ -23,19 +27,20 @@ const TOOLBAR_HTML = `
             <button class="toolbar-tab-btn" data-tab="processing-tools">${TAB_ICONS.tools}<span>${formatText('format.processing')}</span></button>
         </div>
 
-        <div class="toolbar-tab-content active" id="text-tools">${window.TEXT_TOOLBAR_HTML}</div>
-        <div class="toolbar-tab-content" id="table-tools">${window.TABLE_TOOLBAR_HTML}</div>
+        <div class="toolbar-tab-content active" id="text-tools">${textHtml}</div>
+        <div class="toolbar-tab-content" id="table-tools">${tableHtml}</div>
         <div class="toolbar-tab-content" id="processing-tools">
             <button class="toolbar-icon-btn" id="insert-quran-btn" title="${formatText('format.quranTitle')}" style="width:auto !important; padding: 0 10px !important; gap: 6px; font-size: 13px; font-weight: bold;">${TAB_ICONS.book}<span>${formatText('format.quran')}</span></button>
         </div>
     </div>
-`;
+    `;
+}
 
 async function injectToolbar(containerId, isBlockEditor = false) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = TOOLBAR_HTML;
+    container.innerHTML = getToolbarHTML();
 
     if (!isBlockEditor) {
         container.querySelectorAll('.block-only-tool').forEach(el => el.remove());
@@ -55,3 +60,5 @@ async function injectToolbar(containerId, isBlockEditor = false) {
 }
 
 window.injectToolbar = injectToolbar;
+window.getToolbarHTML = getToolbarHTML;
+

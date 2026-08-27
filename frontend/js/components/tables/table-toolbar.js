@@ -25,7 +25,8 @@ const TABLE_ICONS = {
 
 const tableText = (key) => window.AppI18n?.t(key) || key;
 
-const TABLE_TOOLBAR_HTML = `
+function getTableToolbarHTML() {
+    return `
     <button class="toolbar-icon-btn" id="tb-insert-table" title="${tableText('table.insert')}">${TABLE_ICONS.insertTable}</button>
     <button class="toolbar-icon-btn" id="tb-text-to-table" title="${tableText('table.textToTable')}">${TABLE_ICONS.textToTable}</button>
     <button class="toolbar-icon-btn" id="tb-table-to-text" title="${tableText('table.tableToText')}">${TABLE_ICONS.tableToText}</button>
@@ -58,6 +59,9 @@ const TABLE_TOOLBAR_HTML = `
     <button class="toolbar-icon-btn" id="tb-delete-col" title="${tableText('table.deleteCol')}" style="color: #ef4444;">${TABLE_ICONS.deleteCol}</button>
     <button class="toolbar-icon-btn" id="tb-delete-table" title="${tableText('table.delete')}" style="color: #ef4444;">${TABLE_ICONS.deleteTable}</button>
 `;
+}
+
+const TABLE_TOOLBAR_HTML = getTableToolbarHTML();
 
 // ── Helpers shared between the toolbar buttons and the context menu ─────
 function currentTableTarget() {
@@ -524,6 +528,7 @@ const TableToolbar = {
 window.TableToolbar = TableToolbar;
 window.TableContextMenu = TableContextMenu;
 window.TABLE_TOOLBAR_HTML = TABLE_TOOLBAR_HTML;
+window.getTableToolbarHTML = getTableToolbarHTML;
 window.applyFill = applyFill;
 window.applyBorders = applyBorders;
 window.applyValign = applyValign;

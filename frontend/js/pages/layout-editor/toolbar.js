@@ -30,9 +30,11 @@ function setupToolbar() {
     document.getElementById('btn-save')?.addEventListener('click', async () => {
         const btn = document.getElementById('btn-save');
         const originalText = btn.textContent;
+        const savingText = window.AppI18n?.t('layout.saving') || 'جاري الحفظ...';
+        const savedText = window.AppI18n?.t('layout.saved') || 'تم الحفظ';
         
         btn.disabled = true; 
-        btn.textContent = 'جاري الحفظ...';
+        btn.textContent = savingText;
         
         try {
             if (window.pywebview?.api?.repopulate_page_text_from_raw) {
@@ -47,7 +49,7 @@ function setupToolbar() {
                 await window.pywebview.api.update_page_ocr(currentProject.id, currentPageIndex, ocrData);
             }
             
-            btn.textContent = 'تم الحفظ';
+            btn.textContent = savedText;
             setTimeout(() => { 
                 btn.textContent = originalText; 
                 btn.disabled = false; 

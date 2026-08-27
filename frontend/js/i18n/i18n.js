@@ -75,7 +75,12 @@
 
     document.querySelectorAll('[data-i18n]').forEach((element) => {
       const key = element.dataset.i18n;
-      if (key) element.textContent = t(key);
+      if (key) {
+        element.textContent = t(key);
+        if (element.hasAttribute('data-icon') || element.hasAttribute('data-icon-label')) {
+          element.removeAttribute('data-icon-applied');
+        }
+      }
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
       const key = element.dataset.i18nPlaceholder;
@@ -85,10 +90,17 @@
       const key = element.dataset.i18nTitle;
       if (key) element.title = t(key);
     });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
+      const key = element.dataset.i18nAriaLabel;
+      if (key) element.setAttribute('aria-label', t(key));
+    });
     document.querySelectorAll('[data-i18n-document-title]').forEach((element) => {
       const key = element.dataset.i18nDocumentTitle;
       if (key) document.title = t(key);
     });
+    if (global.AppIcons && typeof global.AppIcons.applyAll === 'function') {
+      global.AppIcons.applyAll(document);
+    }
     document.documentElement.classList.add('i18n-ready');
     if (global.dispatchEvent && typeof global.dispatchEvent === 'function') {
       try {

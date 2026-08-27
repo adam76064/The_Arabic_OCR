@@ -24,7 +24,8 @@ const TEXT_ICONS = {
 
 const textToolText = (key) => window.AppI18n?.t(key) || key;
 
-const TEXT_TOOLBAR_HTML = `
+function getTextToolbarHTML() {
+    return `
     <button class="toolbar-icon-btn" data-cmd="bold" title="${textToolText('format.bold')}">${TEXT_ICONS.bold}</button>
     <button class="toolbar-icon-btn" data-cmd="italic" title="${textToolText('format.italic')}">${TEXT_ICONS.italic}</button>
     <button class="toolbar-icon-btn" data-cmd="underline" title="${textToolText('format.underline')}">${TEXT_ICONS.underline}</button>
@@ -94,7 +95,10 @@ const TEXT_TOOLBAR_HTML = `
     <span class="toolbar-icon-sep block-only-tool"></span>
     <button class="toolbar-icon-btn block-only-tool" data-dir="rtl" title="${textToolText('format.rtl')}">${TEXT_ICONS.dirRtl}</button>
     <button class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="${textToolText('format.ltr')}">${TEXT_ICONS.dirLtr}</button>
-`;
+    `;
+}
+
+const TEXT_TOOLBAR_HTML = getTextToolbarHTML();
 
 let savedSelectionRange = null;
 let savedEditable = null;
@@ -383,8 +387,6 @@ const TextFormatting = {
         document.addEventListener('focusin', syncToolbar);
 
         setupGlobalBrushes();
-    }
-};
     }
 };
 
@@ -793,5 +795,6 @@ function setupGlobalBrushes() {
 
 window.TextFormatting = TextFormatting;
 window.TEXT_TOOLBAR_HTML = TEXT_TOOLBAR_HTML;
+window.getTextToolbarHTML = getTextToolbarHTML;
 window.updateToolbarState = updateToolbarState;
 window.updateFormattingToolbarState = updateToolbarState;

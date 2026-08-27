@@ -69,6 +69,9 @@ async function initHome() {
         const safeAuthor = p.author ? (window.AppUtils ? window.AppUtils.escapeHtml(p.author) : p.author) : '';
         const dateStr = p.created_at ? new Date(p.created_at).toLocaleDateString(document.documentElement.lang || 'ar-EG') : '';
 
+        const isRtl = document.documentElement.dir === 'rtl' || !document.documentElement.dir;
+        const chevronName = isRtl ? 'chevronLeft' : 'chevronRight';
+
         card.innerHTML = `
           <div style="display: flex; align-items: center; gap: 14px; flex: 1; min-width: 220px;">
             <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -90,7 +93,7 @@ async function initHome() {
             </div>
             <div class="recent-progress" style="width: 120px;"><div class="recent-progress-fill" style="width:${pct}%"></div></div>
             <div style="color: var(--color-text-muted); display: flex; align-items: center;">
-              ${window.AppIcons ? window.AppIcons.get('chevronLeft', 'width:16px;height:16px;') : ''}
+              ${window.AppIcons ? window.AppIcons.get(chevronName, 'width:16px;height:16px;') : ''}
             </div>
           </div>
         `;

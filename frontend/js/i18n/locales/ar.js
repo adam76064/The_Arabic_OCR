@@ -3,6 +3,8 @@ window.AppLocales.ar = {
   meta: {"name":"العربية","nativeName":"العربية","direction":"rtl"},
   messages: {
     "app.name": "أداة مراجعة OCR",
+    "common.saved": "تم الحفظ",
+    "common.saving": "جاري الحفظ...",
     "batch.cancel": "إيقاف",
     "batch.cancelledMsg": "تم إيقاف عملية المعالجة.",
     "batch.completedMsg": "اكتملت المعالجة بنجاح! تم معالجة {count} صفحة في {seconds} ثانية.",

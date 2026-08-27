@@ -1,6 +1,5 @@
 """
 Main entry - slim version using new organized backend/app/api.
-Fixes pywebview WinForms logging OSError on Windows when stdout is not available.
 """
 import os
 import sys
@@ -10,30 +9,17 @@ import warnings
 import urllib.parse
 from threading import Thread
 
-# Suppress dependency warnings (e.g. urllib3 / requests version mismatch on Python 3.12-3.14)
-warnings.filterwarnings('ignore')
+# Suppress noisy library dependency warnings (e.g. urllib3 / requests version mismatch)
+warnings.filterwarnings('ignore', category=Warning, module='requests')
 
 import webview
 import webview.util
 from backend.app.api import Api
 from backend.app.api import cleanup_old_residue as _cleanup
 
-# --- Fix pywebview logging flood that causes OSError [WinError 1] on WinForms ---
-# pywebview's util.py does logger.debug(...) which tries to write to stderr.
-# When app is run without console (WinForms via pythonw), stderr handle is invalid -> OSError.
-# We silence all webview loggers and replace handlers with NullHandler to prevent "Logging error" tracebacks.
-try:
-    for name in ['webview', 'webview.platforms.winforms', 'webview.platforms.edgechromium', 'webview.util']:
-        lg = logging.getLogger(name)
-        lg.handlers = [logging.NullHandler()]
-        lg.setLevel(logging.CRITICAL)
-        lg.propagate = False
-    logging.getLogger().handlers = [logging.NullHandler()]
-    logging.basicConfig(level=logging.CRITICAL, handlers=[logging.NullHandler()])
-    # Prevent logging module from trying to print its own errors to stderr
-    logging.raiseExceptions = False
-except Exception:
-    pass
+# Configure standard application logging
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(name)s: %(message)s')
+logger = logging.getLogger('TheArabicOCR')
 
 # --- Patch pywebview js_bridge_call for safe page navigation ---
 # When the frontend navigates (window.location.href), pending asynchronous calls in Python threads
@@ -64,6 +50,7 @@ def _safe_js_bridge_call(window, func_name, param, value_id):
                 result = json.dumps(result).replace('\\', '\\\\').replace("'", "\\'")
                 retval = f"{{value: '{result}'}}"
             except Exception as e:
+                logger.error("Error executing %s: %s", func_name, e, exc_info=True)
                 error = {'message': str(e), 'name': type(e).__name__}
                 result = json.dumps(error).replace('\\', '\\\\').replace("'", "\\'")
                 retval = f"{{isError: true, value: '{result}'}}"
@@ -112,7 +99,7 @@ def main():
         min_size=(1000, 700),
     )
     api.set_window(window)
-    webview.start(debug=False)
+    webview.start(debug=True)
 
 if __name__ == '__main__':
     main()

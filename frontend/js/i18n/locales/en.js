@@ -3,6 +3,8 @@ window.AppLocales.en = {
   meta: {"name":"English","nativeName":"English","direction":"ltr"},
   messages: {
     "app.name": "OCR Review Tool",
+    "common.saved": "Saved",
+    "common.saving": "Saving...",
     "batch.cancel": "Cancel",
     "batch.cancelledMsg": "Batch processing stopped.",
     "batch.completedMsg": "Batch processing completed! Processed {count} pages in {seconds}s.",

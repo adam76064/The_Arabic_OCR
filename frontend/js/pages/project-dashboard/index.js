@@ -137,6 +137,10 @@ function setupEventBindings() {
                 }
 
             } else if (tool === 'llm') {
+                const provider = document.getElementById('llm-provider').value;
+                const apiKey = document.getElementById('llm-api-key').value.trim();
+                const baseUrl = document.getElementById('llm-base-url').value.trim();
+                const customModel = document.getElementById('llm-model-name').value.trim();
                 const customPrompt = document.getElementById('ocr-modal-llm-prompt')?.value.trim() || window.__appSettings?.llmSystemPrompt || window.DEFAULT_LLM_PROMPT;
                 const rememberForProj = document.getElementById('remember-prompt-for-project')?.checked || false;
 

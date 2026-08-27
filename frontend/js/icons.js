@@ -193,6 +193,9 @@
           el.setAttribute('data-icon-applied', iconName);
         }
       });
+    },
+    applyIcons(root = document) {
+      return this.applyAll(root);
     }
   };
 
