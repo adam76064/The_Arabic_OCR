@@ -96,10 +96,47 @@ const TEXT_TOOLBAR_HTML = `
     <button class="toolbar-icon-btn block-only-tool" data-dir="ltr" title="${textToolText('format.ltr')}">${TEXT_ICONS.dirLtr}</button>
 `;
 
+let savedSelectionRange = null;
+let savedEditable = null;
+
+function saveCurrentSelection() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    const node = range.startContainer;
+    const elem = node.nodeType === Node.TEXT_NODE ? node.parentNode : node;
+    const editable = elem.closest && elem.closest('.block-content, #text-preview-body, td[contenteditable="true"], div[contenteditable="true"]');
+    if (editable) {
+        savedSelectionRange = range.cloneRange();
+        savedEditable = editable;
+        window.lastFocusedEditable = editable;
+    }
+}
+
+function restoreSelection() {
+    if (savedSelectionRange && savedEditable) {
+        if (document.activeElement !== savedEditable) {
+            savedEditable.focus();
+        }
+        const sel = window.getSelection();
+        if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(savedSelectionRange);
+        }
+        return true;
+    }
+    const target = window.lastFocusedEditable;
+    if (target) {
+        target.focus();
+        return true;
+    }
+    return false;
+}
+
 function ensureWordSelectedIfCollapsed() {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return;
-    if (!sel.isCollapsed) return; // User already made an explicit selection range
+    if (!sel.isCollapsed) return; // Explicit user selection range already exists
 
     const range = sel.getRangeAt(0);
     const node = range.startContainer;
@@ -138,6 +175,7 @@ function ensureWordSelectedIfCollapsed() {
             newRange.setEnd(node, end);
             sel.removeAllRanges();
             sel.addRange(newRange);
+            savedSelectionRange = newRange.cloneRange();
         }
     }
 }
@@ -146,6 +184,21 @@ let cachedSystemFonts = null;
 
 const TextFormatting = {
     async init(container) {
+        // Prevent toolbar buttons from stealing focus / collapsing selection on mousedown
+        container.querySelectorAll('button, label.toolbar-icon-color-label').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION' || e.target.type === 'color') return;
+                saveCurrentSelection();
+                e.preventDefault();
+            });
+        });
+
+        // Save active selection before interacting with dropdowns or color picker
+        container.querySelectorAll('select, input[type="color"]').forEach(el => {
+            el.addEventListener('mousedown', () => saveCurrentSelection());
+            el.addEventListener('focus', () => saveCurrentSelection());
+        });
+
         // Font population
         const fontDropdown = container.querySelector('.dynamic-font-dropdown');
         if (fontDropdown) {
@@ -168,40 +221,46 @@ const TextFormatting = {
         // Basic Formatting (auto-selects word if selection is collapsed)
         container.querySelectorAll('button[data-cmd]').forEach(btn => {
             btn.addEventListener('click', () => {
-                const target = window.lastFocusedEditable;
-                if (!target) return;
-                target.focus();
+                restoreSelection();
                 ensureWordSelectedIfCollapsed();
-                document.execCommand(btn.dataset.cmd, false, null);
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                const cmd = btn.dataset.cmd;
+                document.execCommand(cmd, false, null);
+                saveCurrentSelection();
+                const target = window.lastFocusedEditable;
+                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         container.querySelectorAll('input[data-color-cmd]').forEach(inp => {
             inp.addEventListener('input', () => {
-                const target = window.lastFocusedEditable;
-                if (!target) return;
-                target.focus();
+                restoreSelection();
                 ensureWordSelectedIfCollapsed();
-                document.execCommand(inp.dataset.colorCmd, false, inp.value);
-                const bar = inp.dataset.colorCmd === 'foreColor'
+                const cmd = inp.dataset.colorCmd;
+                document.execCommand(cmd, false, inp.value);
+                const bar = cmd === 'foreColor'
                     ? container.querySelector('#tf-fore-color-bar')
                     : container.querySelector('#tf-hilite-color-bar');
                 if (bar) bar.style.background = inp.value;
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                saveCurrentSelection();
+                const target = window.lastFocusedEditable;
+                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         container.querySelectorAll('select[data-cmd]').forEach(sel => {
             sel.addEventListener('change', () => {
-                const target = window.lastFocusedEditable;
-                if (!target) return;
-                target.focus();
+                restoreSelection();
                 ensureWordSelectedIfCollapsed();
-                document.execCommand(sel.dataset.cmd, false, sel.value);
-                if (window.persistBrushEdit) window.persistBrushEdit(target);
+                const cmd = sel.dataset.cmd;
+                const val = sel.value;
+                if (val) {
+                    document.execCommand(cmd, false, val);
+                }
+                saveCurrentSelection();
+                const target = window.lastFocusedEditable;
+                if (window.persistBrushEdit && target) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
@@ -209,9 +268,9 @@ const TextFormatting = {
         // Paragraph-level Alignment Logic
         container.querySelectorAll('.align-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                restoreSelection();
                 const target = window.lastFocusedEditable;
                 if (!target) return;
-                target.focus();
 
                 const alignVal = btn.dataset.align;
                 const selection = window.getSelection();
@@ -238,6 +297,7 @@ const TextFormatting = {
                         target.style.textAlign = alignVal;
                     }
                 }
+                saveCurrentSelection();
                 if (window.persistBrushEdit) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
@@ -246,9 +306,9 @@ const TextFormatting = {
         // Paragraph-level Direction Logic
         container.querySelectorAll('[data-dir]').forEach(btn => {
             btn.addEventListener('click', () => {
+                restoreSelection();
                 const target = window.lastFocusedEditable;
                 if (!target) return;
-                target.focus();
 
                 const dirVal = btn.dataset.dir;
                 const selection = window.getSelection();
@@ -269,6 +329,7 @@ const TextFormatting = {
                         target.style.direction = dirVal;
                     }
                 }
+                saveCurrentSelection();
                 if (window.persistBrushEdit) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
@@ -277,9 +338,9 @@ const TextFormatting = {
         // Block-level CSS style commands (Line Spacing, Paragraph Spacing)
         container.querySelectorAll('select[data-style-cmd]').forEach(sel => {
             sel.addEventListener('change', () => {
+                restoreSelection();
                 const target = window.lastFocusedEditable;
                 if (!target) return;
-                target.focus();
 
                 const cmd = sel.dataset.styleCmd;
                 const val = sel.value;
@@ -305,19 +366,25 @@ const TextFormatting = {
                     }
                 }
 
+                saveCurrentSelection();
                 if (window.persistBrushEdit) window.persistBrushEdit(target);
                 updateToolbarState(container);
             });
         });
 
         // Dynamic Toolbar State Synchronizer
-        const syncToolbar = () => updateToolbarState(container);
+        const syncToolbar = () => {
+            saveCurrentSelection();
+            updateToolbarState(container);
+        };
         document.addEventListener('selectionchange', syncToolbar);
         document.addEventListener('keyup', syncToolbar);
         document.addEventListener('mouseup', syncToolbar);
         document.addEventListener('focusin', syncToolbar);
 
         setupGlobalBrushes();
+    }
+};
     }
 };
 
