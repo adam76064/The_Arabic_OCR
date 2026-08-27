@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 import sys
 import os
+from PyInstaller.utils.hooks import collect_data_files, copy_metadata
 
 block_cipher = None
 
@@ -8,6 +9,24 @@ added_datas = [
     ('frontend', 'frontend'),
     ('data', 'data'),
 ]
+
+# Collect litellm data files (such as model_prices_and_context_window_backup.json) and metadata
+try:
+    added_datas += collect_data_files('litellm')
+    added_datas += copy_metadata('litellm')
+except Exception:
+    pass
+
+# Collect certifi and tiktoken data files
+try:
+    added_datas += collect_data_files('certifi')
+except Exception:
+    pass
+
+try:
+    added_datas += collect_data_files('tiktoken')
+except Exception:
+    pass
 
 hidden_imports = [
     'webview',

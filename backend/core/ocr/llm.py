@@ -9,7 +9,7 @@ import base64
 
 try:
     import litellm
-except ImportError:
+except Exception:
     litellm = None
 
 try:
