@@ -81,7 +81,7 @@ async function initHome() {
               <span class="recent-card-title" style="color: var(--color-text); font-weight: 700; display: block;">${safeTitle}</span>
               <div class="recent-card-meta" style="color: var(--color-text-muted); font-size: 12px; margin-top: 3px;">
                 ${safeAuthor ? `${safeAuthor} · ` : ''}
-                ${total} ${window.AppI18n ? (total === 1 ? window.AppI18n.t('dash.page') : window.AppI18n.t('dashStats.pages')) : 'صفحة'} · ${dateStr}
+                ${total} ${window.AppI18n ? (total === 1 ? window.AppI18n.t('dash.page') : window.AppI18n.t('dash.pagesCount')) : (total === 1 ? 'صفحة' : 'صفحات')} · ${dateStr}
               </div>
             </div>
           </div>

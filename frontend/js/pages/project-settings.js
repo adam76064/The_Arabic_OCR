@@ -23,6 +23,12 @@ async function initSettings() {
     document.getElementById('ps-author').value = meta.author || '';
     document.getElementById('ps-publisher').value = meta.publisher || '';
     document.getElementById('ps-logical-start').value = meta.logical_start || 1;
+    if (document.getElementById('ps-city')) document.getElementById('ps-city').value = meta.city || '';
+    if (document.getElementById('ps-edition')) document.getElementById('ps-edition').value = meta.edition || '';
+    if (document.getElementById('ps-volume')) document.getElementById('ps-volume').value = meta.volume || '';
+    if (document.getElementById('ps-year')) document.getElementById('ps-year').value = meta.year || '';
+    if (document.getElementById('ps-editor')) document.getElementById('ps-editor').value = meta.editor || '';
+    if (document.getElementById('ps-isbn')) document.getElementById('ps-isbn').value = meta.isbn || '';
 
     // 2. Text Processing Rules
     document.getElementById('ps-remove-kasheeda').checked = textOpts.remove_kasheeda ?? true;
@@ -336,6 +342,12 @@ document.getElementById('project-settings-form')?.addEventListener('submit', asy
         title: document.getElementById('ps-title').value.trim(),
         author: document.getElementById('ps-author').value.trim(),
         publisher: document.getElementById('ps-publisher').value.trim(),
+        city: document.getElementById('ps-city')?.value.trim() || '',
+        edition: document.getElementById('ps-edition')?.value.trim() || '',
+        volume: document.getElementById('ps-volume')?.value.trim() || '',
+        year: document.getElementById('ps-year')?.value.trim() || '',
+        editor: document.getElementById('ps-editor')?.value.trim() || '',
+        isbn: document.getElementById('ps-isbn')?.value.trim() || '',
         logical_start: parseInt(document.getElementById('ps-logical-start').value) || 1,
         lan_broadcasting: document.getElementById('ps-lan-broadcast')?.checked ?? false,
         lan_password: lanPwd || null,

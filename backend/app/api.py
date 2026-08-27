@@ -154,6 +154,13 @@ class Api:
     def delete_page(self, project_id, page_index, delete_files=False):
         return self.project_manager.delete_page(project_id, page_index, delete_files=delete_files)
 
+    def delete_project_page(self, project_id, page_index, delete_files=False):
+        return self.delete_page(project_id, page_index, delete_files=delete_files)
+
+    def update_project(self, project_id, project_data):
+        self.project_manager.update_project(project_id, project_data)
+        return {"ok": True}
+
     def update_page_ocr(self, project_id, page_index, ocr_data, status=None):
         # Fast load — we only need page status, not all OCR text across the project
         project = self.project_manager.load_project(project_id)

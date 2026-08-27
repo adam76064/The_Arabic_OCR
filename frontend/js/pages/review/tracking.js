@@ -48,10 +48,43 @@ if (typeof debouncedTrackingUpdate !== 'undefined') {
 // Setup UI for tracking settings (runs at load time after DOM)
 (function setupTrackingUI() {
     const btn = document.getElementById('track-settings-btn');
-    if (btn) {
-        btn.addEventListener('click', () => {
-            const menu = document.getElementById('track-settings-menu');
-            if (menu) menu.classList.toggle('hidden');
+    const menu = document.getElementById('track-settings-menu');
+    if (btn && menu) {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const willOpen = menu.classList.contains('hidden');
+            if (willOpen) {
+                menu.classList.remove('hidden');
+                menu.style.top = '100%';
+                menu.style.bottom = 'auto';
+                menu.style.left = 'auto';
+                menu.style.right = '0';
+
+                // Check viewport bounds
+                const rect = menu.getBoundingClientRect();
+                if (rect.left < 10) {
+                    menu.style.right = 'auto';
+                    menu.style.left = '0';
+                }
+                if (rect.bottom > window.innerHeight - 10) {
+                    menu.style.top = 'auto';
+                    menu.style.bottom = '100%';
+                }
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Hide when text-preview is opened
+        document.getElementById('text-preview-btn')?.addEventListener('click', () => {
+            menu.classList.add('hidden');
         });
     }
 

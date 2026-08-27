@@ -83,3 +83,60 @@
   background: var(--color-surface);
   color: var(--color-text);
 }
+
+/* Dashboard Table View styling */
+.table-wrapper {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  width: 100%;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th {
+  background: var(--color-bg);
+  padding: 12px 18px;
+  text-align: start;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dashboard-table td {
+  padding: 12px 18px;
+  font-size: var(--text-sm);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+  color: var(--color-text);
+}
+
+.dashboard-table tbody tr:hover {
+  background: var(--color-surface-hover);
+}
+
+.dashboard-table tbody tr.selected {
+  background: var(--color-primary-light);
+}
+
+.dashboard-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dashboard-table td .btn-secondary,
+.dashboard-table td .btn-primary {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 64px;
+}

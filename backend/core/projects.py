@@ -54,12 +54,17 @@ class ProjectManager:
                 continue
             data = self.load_project(project_id)
             if data and "metadata" in data:
+                pages = data.get("pages", [])
+                total = len(pages)
+                reviewed = sum(1 for p in pages if p.get("status") == "reviewed")
                 projects.append(
                     {
                         "id": data.get("id", project_id),
                         "title": data["metadata"].get("title", "Untitled"),
                         "author": data["metadata"].get("author", "Unknown"),
                         "created_at": data.get("created_at", ""),
+                        "page_count": total,
+                        "reviewed_count": reviewed,
                     }
                 )
         return projects

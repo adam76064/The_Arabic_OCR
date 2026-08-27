@@ -38,27 +38,27 @@
         <div class="pipeline-stepper">
             <div class="pipeline-step" id="step-preprocess" data-i18n-title="dash.stepPreprocessDesc" title="ضبط استقامة الصفحات، القص، والهوامش">
                 <span class="step-num">1</span>
-                <span data-i18n="dash.stepPreprocess">المعالجة الأولية (ScanTailor)</span>
+                <span data-i18n="dash.stepPreprocess">المعالجة الأولية</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step" id="step-ocr" data-i18n-title="dash.stepOcrDesc" title="استخراج النصوص بـ PaddleOCR أو Google Lens أو LLM">
+            <div class="pipeline-step" id="step-ocr" data-i18n-title="dash.stepOcrDesc" title="استخراج النصوص">
                 <span class="step-num">2</span>
-                <span data-i18n="dash.stepOcr">استخراج النصوص (OCR)</span>
+                <span data-i18n="dash.stepOcr">استخراج النصوص</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
             <div class="pipeline-step" id="step-layout" data-i18n-title="dash.stepLayoutDesc" title="تعديل الكتل والفقرات والجداول">
                 <span class="step-num">3</span>
-                <span data-i18n="dash.stepLayout">محرر التخطيط (Layout)</span>
+                <span data-i18n="dash.stepLayout">محرر التخطيط</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
             <div class="pipeline-step active" id="step-review" data-i18n-title="dash.stepReviewDesc" title="مراجعة وتدقيق وتنسيق النص">
                 <span class="step-num">4</span>
-                <span data-i18n="dash.stepReview">محرر التدقيق (Review)</span>
+                <span data-i18n="dash.stepReview">محرر التدقيق</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step" id="step-export" data-i18n-title="dash.stepExportDesc" title="تصدير DOCX / PDF / ePub">
+            <div class="pipeline-step" id="step-export" data-i18n-title="dash.stepExportDesc" title="تصدير الملفات">
                 <span class="step-num">5</span>
-                <span data-i18n="dash.stepExport">التصدير النهائي (Export)</span>
+                <span data-i18n="dash.stepExport">التصدير النهائي</span>
             </div>
         </div>
 
@@ -117,7 +117,7 @@
         <div class="menu-header" id="ctx-page-title" data-i18n="dash.ctxPageTitle">إجراءات الصفحة</div>
         <button type="button" class="ctx-item" id="ctx-action-ocr"><span data-i18n="dash.ctxOcr">بدء التعرف الضوئي (OCR)</span></button>
         <button type="button" class="ctx-item" id="ctx-action-layout"><span data-i18n="dash.ctxLayout">فتح محرر التخطيط</span></button>
-        <button type="button" class="ctx-item" id="ctx-action-preprocess"><span data-i18n="dash.ctxPreprocess">المعالجة الأولية (ScanTailor)</span></button>
+        <button type="button" class="ctx-item" id="ctx-action-preprocess"><span data-i18n="dash.ctxPreprocess">المعالجة الأولية</span></button>
         <button type="button" class="ctx-item" id="ctx-action-review"><span data-i18n="dash.ctxReview">فتح المراجعة والتدقيق</span></button>
         <div class="ctx-divider"></div>
         <button type="button" class="ctx-item" id="ctx-action-mark-reviewed"><span data-i18n="dash.ctxMarkReviewed">تحديد كـ "تمت المراجعة"</span></button>

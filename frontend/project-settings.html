@@ -318,16 +318,16 @@
                 <span data-i18n="ps.metadata">البيانات الأساسية</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="ocr" data-icon="sparkles">
-                <span data-i18n="ps.processing">قواعد المعالجة</span>
+                <span data-i18n="ps.processing">المعالجة البعدية للنصوص</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="formatting" data-icon="edit">
-                <span data-i18n="ps.categoryFormatting">تنسيق التصنيفات</span>
+                <span data-i18n="ps.categoryFormatting">تنسيقات تصنيفات الكتل النصية</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="post" data-icon="tools">
-                <span data-i18n="ps.postProcessing">ما بعد OCR</span>
+                <span data-i18n="ps.postProcessing">المعالجة البعدية</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="collab" data-icon="lan">
-                <span data-i18n="ps.collaboration">المشاركة والشبكة</span>
+                <span data-i18n="ps.collaboration">المشاركة والعمل التعاوني</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="notif" data-icon="notif">
                 <span data-i18n="ps.notifications">الإشعارات</span>
@@ -340,7 +340,7 @@
                 <div class="settings-card">
                     <div class="settings-card-header">
                         <div class="settings-card-icon" data-icon="book"></div>
-                        <div class="settings-card-title" data-i18n="ps.metadata">بيانات الكتاب والمشروع</div>
+                        <div class="settings-card-title" data-i18n="ps.metadata">البيانات الأساسية</div>
                     </div>
                     <div class="settings-card-desc" data-i18n="projectSettings.metaDesc">المعلومات الوصفية للكتاب وتحديد نقطة بداية الترقيم الفعلي.</div>
 
@@ -360,6 +360,36 @@
                             <input type="text" id="ps-publisher" placeholder="دار النشر أو سنة الطبع" data-i18n-placeholder="ps.publisherPlaceholder">
                         </div>
                         <div class="form-group">
+                            <label class="form-label" data-i18n="ps.city">مكان النشر / المدينة</label>
+                            <input type="text" id="ps-city" placeholder="مثال: الرياض / القاهرة" data-i18n-placeholder="ps.cityPlaceholder">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.edition">الطبعة</label>
+                            <input type="text" id="ps-edition" placeholder="مثال: الطبعة الأولى" data-i18n-placeholder="ps.editionPlaceholder">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.volume">الجزء / المجلد</label>
+                            <input type="text" id="ps-volume" placeholder="مثال: الجزء الأول" data-i18n-placeholder="ps.volumePlaceholder">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.year">سنة النشر</label>
+                            <input type="text" id="ps-year" placeholder="مثال: 1445 هـ / 2024 م" data-i18n-placeholder="ps.yearPlaceholder">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.editor">المحقق / المراجع</label>
+                            <input type="text" id="ps-editor" placeholder="اسم المحقق أو المدقق" data-i18n-placeholder="ps.editorPlaceholder">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ps.isbn">الرقم الدولي المعياري (ISBN)</label>
+                            <input type="text" id="ps-isbn" placeholder="مثال: 978-3-16-148410-0" data-i18n-placeholder="ps.isbnPlaceholder">
+                        </div>
+                        <div class="form-group">
                             <label class="form-label" data-i18n="ps.pageStart">بداية ترقيم الصفحات (PDF)</label>
                             <input type="number" id="ps-logical-start" min="1" value="1">
                         </div>
@@ -372,9 +402,9 @@
                 <div class="settings-card">
                     <div class="settings-card-header">
                         <div class="settings-card-icon" data-icon="sparkles"></div>
-                        <div class="settings-card-title" data-i18n="ps.processing">قواعد تنقيح ومعالجة النصوص (OCR)</div>
+                        <div class="settings-card-title" data-i18n="ps.processing">المعالجة البعدية للنصوص</div>
                     </div>
-                    <div class="settings-card-desc" data-i18n="ps.processingHint">تُطبق هذه القواعد تلقائياً عند استيراد صفحات OCR جديدة لهذا المشروع.</div>
+                    <div class="settings-card-desc" data-i18n="ps.processingHint">تُطبق هذه القواعد على النص المستخرج ضوئيًا</div>
 
                     <div class="grid-options" style="margin-bottom: 20px;">
                         <label class="option-item">
@@ -589,9 +619,9 @@
                 <div class="settings-card" id="post-processing-card">
                     <div class="settings-card-header">
                         <div class="settings-card-icon" data-icon="tools"></div>
-                        <div class="settings-card-title" data-i18n="ps.postProcessing">معالجة ما بعد OCR (Post-Processing)</div>
+                        <div class="settings-card-title" data-i18n="ps.postProcessing">المعالجة البعدية</div>
                     </div>
-                    <div class="settings-card-desc" data-i18n="projectSettings.postOverview">خيارات تلقائية تُطبَّق بعد استخراج النص لإعادة ترتيب مربعيات النص وحساب اتجاه القراءة العربي الصحيح.</div>
+                    <div class="settings-card-desc" data-i18n="projectSettings.postOverview">خيارات تلقائية تُطبَّق بعد استخراج النص مثل إعادة ترتيب كتل النصوص والاستنتاج الآلي لأرقام الصفحات، إلخ.</div>
 
                     <!-- Reading Order -->
                     <div class="feature-box">
@@ -599,7 +629,7 @@
                             <div>
                                 <h4 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 14.5px; font-weight: 700;" data-i18n="ps.readingOrder">إعادة ترتيب المربعات حسب اتجاه القراءة العربي</h4>
                                 <p style="margin: 0; font-size: 12.5px; color: var(--color-text-muted); line-height: 1.5;" data-i18n="projectSettings.readingDetail">
-                                    يعيد ترتيب المربعات النصية تلقائياً من الأعلى لليمن ثم لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (تصفح العمود الأيمن أولاً ثم الأيسر).
+                                    يعيد ترتيب المربعات النصية تلقائياً من الأعلى للأسفل، ومن اليمين لليسار، ويعالج الصفحات ذات الأعمدة المزدوجة (العمود الأيمن أولاً ثم الأيسر).
                                 </p>
                             </div>
                             <label class="switch">
@@ -616,9 +646,9 @@
                     <div class="feature-box">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px;">
                             <div>
-                                <h4 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 14.5px; font-weight: 700;" data-i18n="ps.pagination">الكشف التلقائي عن أرقام الصفحات (Pagination Detection)</h4>
+                                <h4 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 14.5px; font-weight: 700;" data-i18n="ps.pagination">الكشف التلقائي عن أرقام الصفحات</h4>
                                 <p style="margin: 0; font-size: 12.5px; color: var(--color-text-muted); line-height: 1.5;" data-i18n="projectSettings.paginationDetail">
-                                    يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم (Page-number).
+                                    يكتشف أرقام الصفحات المستقلة أعلى وأسفل الصفحات بالتسلسل ويقوم بتصنيفها تلقائياً بالوسم
                                 </p>
                             </div>
                             <label class="switch">

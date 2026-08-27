@@ -58,7 +58,11 @@ function escapeHtml(str) { const div = document.createElement('div'); div.textCo
     }
 
     function renderPreview() { document.getElementById('text-preview-body').innerHTML = buildPreviewHTML(); }
-    document.getElementById('text-preview-btn').addEventListener('click', () => { renderPreview(); document.getElementById('text-preview-overlay').classList.remove('hidden'); });
+    document.getElementById('text-preview-btn').addEventListener('click', () => {
+        document.getElementById('track-settings-menu')?.classList.add('hidden');
+        renderPreview();
+        document.getElementById('text-preview-overlay').classList.remove('hidden');
+    });
     rawToggle.addEventListener('change', () => { if (!document.getElementById('text-preview-overlay').classList.contains('hidden')) renderPreview(); });
     document.getElementById('text-preview-close').addEventListener('click', () => { document.getElementById('text-preview-overlay').classList.add('hidden'); });
 

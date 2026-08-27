@@ -11,11 +11,12 @@ const COMMAND_HANDLERS = {
     'save-page':           () => document.getElementById('save-page')?.click(),
     'prev-page':           () => document.getElementById('prev-page')?.click(),
     'next-page':           () => document.getElementById('next-page')?.click(),
-    'load-ocr-page':       () => document.getElementById('ocr-range-btn')?.click(),
+    'open-fullpage':       () => document.getElementById('toolbar-thumb-wrapper')?.click(),
     'toggle-sidebar':      () => document.getElementById('toggle-sidebar')?.click(),
     'project-settings':    () => window.location.href = `project-settings.html?id=${currentProject.id}`,
     'undo':                () => performUndo(),
     'redo':                () => performRedo(),
+    'export':              () => window.location.href = `export.html?id=${currentProject.id}`,
     'text-preview':        () => document.getElementById('text-preview-btn')?.click(),
     'dashboard':           () => document.getElementById('dashboard-btn')?.click(),
 
@@ -64,7 +65,7 @@ function isTypingInPlainFormField() {
 function setupKeyboardShortcuts() {
     const idByCommand = {
         'save-page': 'save-page', 'prev-page': 'prev-page', 'next-page': 'next-page',
-        'load-ocr-page': 'ocr-range-btn', 'toggle-sidebar': 'toggle-sidebar',
+        'open-fullpage': 'toolbar-thumb-wrapper', 'toggle-sidebar': 'toggle-sidebar',
         'undo': 'undo-btn', 'redo': 'redo-btn', 'text-preview': 'text-preview-btn', 'dashboard': 'dashboard-btn',
         'block-font-increase': 'block-font-increase', 'block-font-decrease': 'block-font-decrease',
         'crop-zoom-in': 'crop-zoom-in', 'crop-zoom-out': 'crop-zoom-out', 'crop-zoom-reset': 'crop-zoom-reset',
