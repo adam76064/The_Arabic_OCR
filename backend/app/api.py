@@ -4,6 +4,7 @@ Replaces monolithic Api class in main.py with modular, organized version.
 Preserves same public method names so frontend JS continues to work.
 """
 import os
+import sys
 import getpass
 import tempfile
 import shutil
