@@ -99,7 +99,7 @@ def main():
         min_size=(1000, 700),
     )
     api.set_window(window)
-    webview.start(debug=True)
+    webview.start(debug=False)
 
 if __name__ == '__main__':
     main()
