@@ -10,6 +10,13 @@ import tempfile
 import shutil
 import glob
 import json
+os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+try:
+    import certifi
+    os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+    os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
+except Exception:
+    pass
 import fitz  # PyMuPDF
 import webview
 
@@ -433,6 +440,7 @@ class Api:
         try:
             tmp_dir = tempfile.mkdtemp(prefix='locro_ocr_')
             total_pages = len(indices_to_process)
+            failed_pages = []
 
             for seq_idx, current_idx in enumerate(indices_to_process):
                 page_ui_num = current_idx + 1
@@ -450,9 +458,15 @@ class Api:
                     active_img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
                     pix.save(active_img_path)
                 else:
+                    failed_pages.append((page_ui_num, 'تعذر الوصول لصورة الصفحة.'))
                     continue
 
-                blocks = run_locro_ocr(active_img_path)
+                try:
+                    blocks = run_locro_ocr(active_img_path)
+                except Exception as locro_err:
+                    print(f"[LocroOCR] فشل مسح صفحة {page_ui_num}: {locro_err}")
+                    failed_pages.append((page_ui_num, str(locro_err)))
+                    continue
 
                 if mode == 'full_page':
                     cleaned_elements = self._apply_cleaning_to_elements(blocks, text_config, page_data, engine_dpi=300.0, category_formatting=cat_fmt, post_processing=post_proc)
@@ -462,7 +476,13 @@ class Api:
                 elif mode == 'bboxes':
                     existing_data = page_data.get('ocr_data', [])
                     if not existing_data:
+                        # Fallback to full_page recognition if no bboxes exist
+                        cleaned_elements = self._apply_cleaning_to_elements(blocks, text_config, page_data, engine_dpi=300.0, category_formatting=cat_fmt, post_processing=post_proc)
+                        project['pages'][current_idx]['ocr_data'] = cleaned_elements
+                        project['pages'][current_idx]['status'] = 'pending'
+                        self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_elements)
                         continue
+
                     native_w = float(page_data.get('native_width', 1))
                     native_h = float(page_data.get('native_height', 1))
                     normalized_locro_blocks = self.ocr_service.handler.standardize_page_blocks(blocks, native_w, native_h, current_dpi=300.0)
@@ -543,7 +563,14 @@ class Api:
                     self.project_manager.update_project(project_id, project)
 
             self.project_manager.update_project(project_id, project)
-            self._emit_paddle_progress('completed', 'تمت المعالجة عبر Locro بنجاح!', 100)
+            if failed_pages and len(failed_pages) == total_pages:
+                err_msg = failed_pages[0][1]
+                self._emit_paddle_progress('error', f"فشل التعرف عبر Locro: {err_msg}", 0)
+                return {'ok': False, 'error': f"فشل التعرف عبر Locro: {err_msg}"}
+            elif failed_pages:
+                self._emit_paddle_progress('completed', f"تمت معالجة {total_pages - len(failed_pages)} صفحة بنجاح (تعذر مسح {len(failed_pages)} صفحات)", 100)
+            else:
+                self._emit_paddle_progress('completed', 'تمت المعالجة عبر Locro بنجاح!', 100)
             return {'ok': True, 'project': project}
 
         except Exception as e:
@@ -584,6 +611,7 @@ class Api:
             glens = GoogleLensOCR(max_workers=3)
             tmp_dir = tempfile.mkdtemp(prefix='glens_ocr_')
             total_pages = len(indices_to_process)
+            failed_pages = []
 
             for seq_idx, current_idx in enumerate(indices_to_process):
                 page_ui_num = current_idx + 1
@@ -601,6 +629,7 @@ class Api:
                     active_img_path = os.path.join(tmp_dir, f"page_{current_idx}.png")
                     pix.save(active_img_path)
                 else:
+                    failed_pages.append((page_ui_num, 'تعذر الوصول لصورة الصفحة.'))
                     continue
 
                 page_data = project['pages'][current_idx]
@@ -609,6 +638,9 @@ class Api:
                 results = glens.extract_batch([Path(active_img_path)])
 
                 if not results or not results[0].get('success'):
+                    err_msg = results[0].get('error', 'فشل في استجابة Google Lens') if results else 'لا توجد استجابة من محرك Google Lens'
+                    print(f"[GoogleLensOCR] فشل صفحة {page_ui_num}: {err_msg}")
+                    failed_pages.append((page_ui_num, err_msg))
                     continue
                 detailed_blocks = results[0].get('detailed_blocks', [])
 
@@ -618,7 +650,7 @@ class Api:
                         geom = block.get('geometry', {})
                         if not geom:
                             continue
-                        lines_text = [line.get('text', '') for line in block.get('lines', [])]
+                        lines_text = [line.get('text', '') if isinstance(line, dict) else str(line) for line in block.get('lines', [])]
                         block['text'] = "\n".join(lines_text)
                         block['category'] = "Text"
                         block['reviewed'] = False
@@ -634,7 +666,26 @@ class Api:
                 elif mode == 'bboxes':
                     existing_data = page_data.get('ocr_data', [])
                     if not existing_data:
+                        # Fallback to full_page recognition if no bboxes exist
+                        new_ocr_data = []
+                        for block in detailed_blocks:
+                            geom = block.get('geometry', {})
+                            if not geom:
+                                continue
+                            lines_text = [line.get('text', '') if isinstance(line, dict) else str(line) for line in block.get('lines', [])]
+                            block['text'] = "\n".join(lines_text)
+                            block['category'] = "Text"
+                            block['reviewed'] = False
+                            block['dir'] = "rtl"
+                            block['align'] = "right"
+                            new_ocr_data.append(block)
+
+                        cleaned_data = self._apply_cleaning_to_elements(new_ocr_data, text_config, page_data, engine_dpi=200.0, category_formatting=cat_fmt, post_processing=post_proc)
+                        project['pages'][current_idx]['ocr_data'] = cleaned_data
+                        project['pages'][current_idx]['status'] = 'pending'
+                        self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_data)
                         continue
+
                     native_w = float(page_data.get('native_width', 1))
                     native_h = float(page_data.get('native_height', 1))
 
@@ -717,13 +768,20 @@ class Api:
                     self.project_manager.update_project(project_id, project)
 
             self.project_manager.update_project(project_id, project)
-            self._emit_paddle_progress('completed', 'تمت المعالجة عبر Google Lens بنجاح!', 100)
+            if failed_pages and len(failed_pages) == total_pages:
+                err_msg = failed_pages[0][1]
+                self._emit_paddle_progress('error', f"فشل التعرف عبر Google Lens: {err_msg}", 0)
+                return {'ok': False, 'error': f"فشل التعرف عبر Google Lens: {err_msg}"}
+            elif failed_pages:
+                self._emit_paddle_progress('completed', f"تمت معالجة {total_pages - len(failed_pages)} صفحة بنجاح (تعذر مسح {len(failed_pages)} صفحات)", 100)
+            else:
+                self._emit_paddle_progress('completed', 'تمت المعالجة عبر Google Lens بنجاح!', 100)
             return {'ok': True, 'project': project}
 
         except Exception as e:
             import traceback
             traceback.print_exc()
-            self._emit_paddle_progress('error', str(e), 100)
+            self._emit_paddle_progress('error', str(e), 0)
             return {'ok': False, 'error': str(e)}
         finally:
             if doc is not None:

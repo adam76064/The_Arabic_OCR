@@ -1,42 +1,74 @@
 """
 Google Lens OCR adapter.
-Wraps chrome_lens_py with thread-safe event loops per original code.
+Wraps chrome_lens_py with thread-safe async executions.
 """
+import os
+import sys
 import asyncio
-import json
+import logging
 from pathlib import Path
 from typing import List, Dict, Callable, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 try:
+    import certifi
+    os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+    os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
+except Exception:
+    pass
+
+try:
     from chrome_lens_py import LensAPI
 except ImportError:
-    LensAPI = None
+    try:
+        from chrome_lens_py.api import LensAPI
+    except ImportError:
+        LensAPI = None
+
+logger = logging.getLogger(__name__)
 
 
 class GoogleLensOCR:
-    def __init__(self, max_workers: int = 4):
+    def __init__(self, max_workers: int = 3):
         self.max_workers = max_workers
 
     def _extract_single_sync(self, image_path: Path) -> Dict:
-        try:
-            if LensAPI is None:
-                return {"text": "", "detailed_blocks": [], "success": False, "error": "chrome_lens_py not installed"}
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            lens = LensAPI()
-            result = loop.run_until_complete(lens.process_image(image_path=str(image_path), output_format="detailed"))
-            loop.close()
+        if LensAPI is None:
+            return {
+                "text": "",
+                "detailed_blocks": [],
+                "success": False,
+                "error": "حزمة chrome_lens_py غير متوفرة في بيئة التشغيل.",
+            }
 
-            detailed_blocks = result.get("detailed_blocks", [])
+        async def _run():
+            lens = LensAPI()
+            try:
+                res = await lens.process_image(image_path=str(image_path), output_format="detailed")
+                return res
+            finally:
+                if hasattr(lens, "request_handler") and hasattr(lens.request_handler, "client"):
+                    try:
+                        await lens.request_handler.client.aclose()
+                    except Exception:
+                        pass
+
+        try:
+            result = asyncio.run(_run())
+
+            detailed_blocks = result.get("detailed_blocks", []) if isinstance(result, dict) else []
             full_text_lines = []
             for block in detailed_blocks:
                 for line in block.get("lines", []):
-                    full_text_lines.append(line.get("text", ""))
+                    if isinstance(line, dict):
+                        full_text_lines.append(line.get("text", ""))
+                    elif isinstance(line, str):
+                        full_text_lines.append(line)
             full_text = "\n".join(full_text_lines)
 
             return {"text": full_text, "detailed_blocks": detailed_blocks, "success": True}
         except Exception as e:
+            logger.error("GoogleLensOCR extraction error on %s: %s", image_path, e, exc_info=True)
             return {"text": "", "detailed_blocks": [], "success": False, "error": str(e)}
 
     def extract_batch(self, image_paths: List[Path], progress_callback: Optional[Callable] = None) -> List[Dict]:

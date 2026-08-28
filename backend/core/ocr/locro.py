@@ -1,16 +1,42 @@
 """
 Locro OCR adapter - offline Chrome ScreenAI.
 """
+import logging
+
+logger = logging.getLogger(__name__)
+
+_SCREEN_AI_INSTANCE = None
 
 
 def get_screen_ai():
+    global _SCREEN_AI_INSTANCE
+    if _SCREEN_AI_INSTANCE is not None:
+        return _SCREEN_AI_INSTANCE
+
+    ScreenAI = None
     try:
         from ...vendor.locro import ScreenAI
     except (ImportError, ValueError):
-        from backend.vendor.locro import ScreenAI
+        pass
+
+    if ScreenAI is None:
+        try:
+            from backend.vendor.locro import ScreenAI
+        except ImportError:
+            pass
+
+    if ScreenAI is None:
+        try:
+            from locro import ScreenAI
+        except ImportError:
+            pass
+
+    if ScreenAI is None:
+        raise RuntimeError("تعذر استيراد وحدة Locro ScreenAI المدمجة.")
 
     try:
-        return ScreenAI()
+        _SCREEN_AI_INSTANCE = ScreenAI()
+        return _SCREEN_AI_INSTANCE
     except Exception as e:
         raise RuntimeError(
             f"تعذر تشغيل نموذج Locro ScreenAI: متصفح Google Chrome غير مثبت في المسار الافتراضي على الجهاز أو غير متاح.\nالتفاصيل: {e}"

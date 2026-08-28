@@ -7,6 +7,8 @@ import re
 import json
 import base64
 
+os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+
 try:
     import litellm
 except Exception:

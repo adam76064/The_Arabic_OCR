@@ -1,32 +1,23 @@
 # -*- mode: python ; coding: utf-8 -*-
 import sys
 import os
-from PyInstaller.utils.hooks import collect_data_files, copy_metadata
+from PyInstaller.utils.hooks import collect_data_files, copy_metadata, collect_submodules
 
 block_cipher = None
 
 added_datas = [
     ('frontend', 'frontend'),
     ('data', 'data'),
+    ('backend/vendor/locro', 'backend/vendor/locro'),
 ]
 
-# Collect litellm data files (such as model_prices_and_context_window_backup.json) and metadata
-try:
-    added_datas += collect_data_files('litellm')
-    added_datas += copy_metadata('litellm')
-except Exception:
-    pass
-
-# Collect certifi and tiktoken data files
-try:
-    added_datas += collect_data_files('certifi')
-except Exception:
-    pass
-
-try:
-    added_datas += collect_data_files('tiktoken')
-except Exception:
-    pass
+# Collect data files and metadata for packages requiring assets
+for pkg in ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py']:
+    try:
+        added_datas += collect_data_files(pkg)
+        added_datas += copy_metadata(pkg)
+    except Exception:
+        pass
 
 hidden_imports = [
     'webview',
@@ -45,59 +36,42 @@ hidden_imports = [
     'litellm',
     'typer',
     'orjson',
-    'backend',
-    'backend.app',
-    'backend.app.api',
-    'backend.app.events',
-    'backend.core',
-    'backend.core.config',
-    'backend.core.json_utils',
-    'backend.core.pdf',
-    'backend.core.projects',
-    'backend.core.quran',
-    'backend.core.text',
-    'backend.core.ocr',
-    'backend.core.ocr.google_lens',
-    'backend.core.ocr.llm',
-    'backend.core.ocr.paddle',
-    'backend.core.ocr.service',
-    'backend.core.ocr.locro',
-    'backend.core.ocr.locro._dll',
-    'backend.core.ocr.locro._download',
-    'backend.core.ocr.locro._models',
-    'backend.core.ocr.locro._protobuf',
-    'backend.collab',
-    'backend.collab.discovery',
-    'backend.collab.sync',
-    'backend.export',
-    'backend.export.docx_export',
-    'backend.export.html_epub',
-    'backend.export.json_export',
-    'backend.export.shared',
-    'backend.export.txt_export',
-    'backend.post_processing',
-    'backend.post_processing.detector',
-    'backend.post_processing.manager',
-    'backend.post_processing.sorter',
-    'backend.preprocessing',
-    'backend.preprocessing.batch',
-    'backend.preprocessing.engine',
-    'backend.preprocessing.storage',
-    'backend.preprocessing.stages',
-    'backend.preprocessing.stages.base',
-    'backend.preprocessing.stages.content',
-    'backend.preprocessing.stages.deskew',
-    'backend.preprocessing.stages.layout',
-    'backend.preprocessing.stages.orientation',
-    'backend.preprocessing.stages.output',
-    'backend.preprocessing.stages.split',
-    'backend.table',
-    'backend.table.handler',
-    'backend.table.table_handler',
-    'backend.utils',
-    'backend.utils.retriever',
-    'backend.utils.stitcher',
+    'certifi',
+    'httpx',
+    'httpcore',
+    'h2',
+    'h11',
+    'anyio',
+    'sniffio',
+    'google.protobuf',
+    'curl_cffi',
 ]
+
+# Automatically collect all submodules from backend and plugins
+try:
+    hidden_imports += collect_submodules('backend')
+except Exception:
+    pass
+
+try:
+    hidden_imports += collect_submodules('backend.vendor.locro')
+except Exception:
+    pass
+
+try:
+    hidden_imports += collect_submodules('chrome_lens_py')
+except Exception:
+    pass
+
+try:
+    hidden_imports += collect_submodules('httpx')
+    hidden_imports += collect_submodules('httpcore')
+    hidden_imports += collect_submodules('h2')
+except Exception:
+    pass
+
+# Deduplicate
+hidden_imports = sorted(list(set(hidden_imports)))
 
 a = Analysis(
     ['main.py'],
@@ -145,3 +119,4 @@ coll = COLLECT(
     upx_exclude=[],
     name='TheArabicOCR',
 )
+
