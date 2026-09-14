@@ -48,6 +48,9 @@ jobs:
       - name: Package release ZIP
         shell: pwsh
         run: |
+          if (Test-Path dist/TheArabicOCR/_internal/python3*.dll) {
+            Copy-Item dist/TheArabicOCR/_internal/python3*.dll -Destination dist/TheArabicOCR/ -Force
+          }
           Compress-Archive -Path dist/TheArabicOCR/* -DestinationPath dist/TheArabicOCR-Windows-x64.zip -Force
 
       - name: Determine Release Tag

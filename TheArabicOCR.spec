@@ -12,7 +12,7 @@ added_datas = [
 ]
 
 # Collect data files and metadata for packages requiring assets
-for pkg in ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py']:
+for pkg in ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py', 'pythonnet', 'clr_loader']:
     try:
         added_datas += collect_data_files(pkg)
         added_datas += copy_metadata(pkg)
@@ -24,7 +24,10 @@ hidden_imports = [
     'webview.platforms',
     'webview.platforms.edgechromium',
     'webview.platforms.winforms',
+    'webview.platforms.mshtml',
+    'webview.platforms.qt',
     'clr',
+    'clr_loader',
     'pythonnet',
     'fitz',
     'docx',
@@ -60,6 +63,13 @@ except Exception:
 
 try:
     hidden_imports += collect_submodules('chrome_lens_py')
+except Exception:
+    pass
+
+try:
+    hidden_imports += collect_submodules('clr_loader')
+    hidden_imports += collect_submodules('pythonnet')
+    hidden_imports += collect_submodules('webview.platforms')
 except Exception:
     pass
 
