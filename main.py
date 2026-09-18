@@ -36,6 +36,14 @@ for _cdir in _candidate_dirs:
 # Suppress noisy library dependency warnings (e.g. urllib3 / requests version mismatch)
 warnings.filterwarnings('ignore', category=Warning, module='requests')
 
+# --- Bypass Protobuf strict runtime version validation ---
+# Prevents VersionError when gencode version is newer than runtime version across environments
+try:
+    import google.protobuf.runtime_version
+    google.protobuf.runtime_version.ValidateProtobufRuntimeVersion = lambda *args, **kwargs: None
+except Exception:
+    pass
+
 import webview
 import webview.util
 from backend.app.api import Api

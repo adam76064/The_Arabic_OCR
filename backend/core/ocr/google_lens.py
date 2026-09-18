@@ -17,6 +17,13 @@ try:
 except Exception:
     pass
 
+# Bypass Protobuf strict runtime version validation if gencode mismatch occurs
+try:
+    import google.protobuf.runtime_version
+    google.protobuf.runtime_version.ValidateProtobufRuntimeVersion = lambda *args, **kwargs: None
+except Exception:
+    pass
+
 try:
     from chrome_lens_py import LensAPI
 except ImportError:
