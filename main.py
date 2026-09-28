@@ -10,28 +10,27 @@ import warnings
 import urllib.parse
 from threading import Thread
 
-# --- Ensure pythonnet / clr_loader can resolve Python.Runtime.dll and Python C-API ---
-# When bundled with PyInstaller (--onedir), python3XX.dll is placed in _internal.
-# We must register the search directories and export PYTHONNET_PYDLL so pythonnet finds it.
-_candidate_dirs = []
-if hasattr(sys, '_MEIPASS'):
-    _candidate_dirs.extend([sys._MEIPASS, os.path.join(sys._MEIPASS, '_internal')])
-if getattr(sys, 'frozen', False):
-    _exe_dir = os.path.dirname(sys.executable)
-    _candidate_dirs.extend([_exe_dir, os.path.join(_exe_dir, '_internal')])
-_candidate_dirs.append(os.path.dirname(os.path.abspath(__file__)))
+# --- Ensure pythonnet / clr_loader can resolve Python.Runtime.dll on Windows ---
+if sys.platform == 'win32':
+    _candidate_dirs = []
+    if hasattr(sys, '_MEIPASS'):
+        _candidate_dirs.extend([sys._MEIPASS, os.path.join(sys._MEIPASS, '_internal')])
+    if getattr(sys, 'frozen', False):
+        _exe_dir = os.path.dirname(sys.executable)
+        _candidate_dirs.extend([_exe_dir, os.path.join(_exe_dir, '_internal')])
+    _candidate_dirs.append(os.path.dirname(os.path.abspath(__file__)))
 
-for _cdir in _candidate_dirs:
-    if os.path.isdir(_cdir):
-        if hasattr(os, 'add_dll_directory'):
-            try:
-                os.add_dll_directory(_cdir)
-            except Exception:
-                pass
-        if 'PYTHONNET_PYDLL' not in os.environ:
-            _matched_dlls = glob.glob(os.path.join(_cdir, 'python3*.dll'))
-            if _matched_dlls:
-                os.environ['PYTHONNET_PYDLL'] = _matched_dlls[0]
+    for _cdir in _candidate_dirs:
+        if os.path.isdir(_cdir):
+            if hasattr(os, 'add_dll_directory'):
+                try:
+                    os.add_dll_directory(_cdir)
+                except Exception:
+                    pass
+            if 'PYTHONNET_PYDLL' not in os.environ:
+                _matched_dlls = glob.glob(os.path.join(_cdir, 'python3*.dll'))
+                if _matched_dlls:
+                    os.environ['PYTHONNET_PYDLL'] = _matched_dlls[0]
 
 # Suppress noisy library dependency warnings (e.g. urllib3 / requests version mismatch)
 warnings.filterwarnings('ignore', category=Warning, module='requests')
@@ -132,9 +131,16 @@ def main():
     )
     api.set_window(window)
 
-    # Attempt starting webview with graceful fallback across available GUI engines
+    # Platform-specific GUI engine fallback sequence
+    if sys.platform.startswith('linux'):
+        gui_engines = [None, 'gtk', 'qt']
+    elif sys.platform == 'darwin':
+        gui_engines = [None, 'cocoa', 'qt']
+    else:
+        gui_engines = [None, 'edgechromium', 'winforms', 'mshtml', 'qt']
+
     started = False
-    for gui_engine in [None, 'edgechromium', 'winforms', 'mshtml', 'qt']:
+    for gui_engine in gui_engines:
         try:
             if gui_engine:
                 webview.start(debug=False, gui=gui_engine)

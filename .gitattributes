@@ -1,0 +1,4 @@
+# Enforce LF for shell scripts and AppRun on any OS
+*.sh text eol=lf
+AppRun text eol=lf
+packaging/linux/AppRun text eol=lf

@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+# Resolve AppDir root path
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+export APPDIR="${HERE}"
+export PATH="${HERE}/usr/bin:${PATH}"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:${HERE}/usr/bin/_internal:${HERE}/usr/bin:${LD_LIBRARY_PATH}"
+export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+
+# GObject Introspection typelib path (WebKitGTK)
+if [ -d "${HERE}/usr/lib/girepository-1.0" ]; then
+    export GI_TYPELIB_PATH="${HERE}/usr/lib/girepository-1.0:${GI_TYPELIB_PATH}"
+fi
+
+# Launch application binary
+exec "${HERE}/usr/bin/TheArabicOCR" "$@"

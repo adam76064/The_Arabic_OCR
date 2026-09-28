@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=The Arabic OCR
+GenericName=Arabic OCR Review Tool
+Comment=Desktop application to convert scanned Arabic PDFs into clean Word, EPUB, and text documents
+Exec=TheArabicOCR %F
+Icon=thearabicocr
+Terminal=false
+Categories=Office;Publishing;Utility;OCR;
+MimeType=application/pdf;image/png;image/jpeg;image/tiff;
+StartupWMClass=TheArabicOCR

@@ -12,7 +12,11 @@ added_datas = [
 ]
 
 # Collect data files and metadata for packages requiring assets
-for pkg in ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py', 'pythonnet', 'clr_loader']:
+packages_to_collect = ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py']
+if sys.platform == 'win32':
+    packages_to_collect += ['pythonnet', 'clr_loader']
+
+for pkg in packages_to_collect:
     try:
         added_datas += collect_data_files(pkg)
         added_datas += copy_metadata(pkg)
@@ -22,13 +26,6 @@ for pkg in ['litellm', 'certifi', 'tiktoken', 'chrome_lens_py', 'pythonnet', 'cl
 hidden_imports = [
     'webview',
     'webview.platforms',
-    'webview.platforms.edgechromium',
-    'webview.platforms.winforms',
-    'webview.platforms.mshtml',
-    'webview.platforms.qt',
-    'clr',
-    'clr_loader',
-    'pythonnet',
     'fitz',
     'docx',
     'PIL',
@@ -50,6 +47,28 @@ hidden_imports = [
     'curl_cffi',
 ]
 
+if sys.platform == 'win32':
+    hidden_imports += [
+        'webview.platforms.edgechromium',
+        'webview.platforms.winforms',
+        'webview.platforms.mshtml',
+        'webview.platforms.qt',
+        'clr',
+        'clr_loader',
+        'pythonnet',
+    ]
+elif sys.platform.startswith('linux'):
+    hidden_imports += [
+        'webview.platforms.gtk',
+        'webview.platforms.qt',
+        'gi',
+    ]
+elif sys.platform == 'darwin':
+    hidden_imports += [
+        'webview.platforms.cocoa',
+        'webview.platforms.qt',
+    ]
+
 # Automatically collect all submodules from backend and plugins
 try:
     hidden_imports += collect_submodules('backend')
@@ -66,9 +85,14 @@ try:
 except Exception:
     pass
 
+if sys.platform == 'win32':
+    try:
+        hidden_imports += collect_submodules('clr_loader')
+        hidden_imports += collect_submodules('pythonnet')
+    except Exception:
+        pass
+
 try:
-    hidden_imports += collect_submodules('clr_loader')
-    hidden_imports += collect_submodules('pythonnet')
     hidden_imports += collect_submodules('webview.platforms')
 except Exception:
     pass
