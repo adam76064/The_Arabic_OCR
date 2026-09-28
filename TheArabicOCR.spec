@@ -59,10 +59,19 @@ if sys.platform == 'win32':
     ]
 elif sys.platform.startswith('linux'):
     hidden_imports += [
-        'webview.platforms.gtk',
         'webview.platforms.qt',
-        'gi',
+        'webview.platforms.gtk',
+        'PyQt5',
+        'PyQt5.QtCore',
+        'PyQt5.QtGui',
+        'PyQt5.QtWidgets',
+        'PyQt5.QtWebEngineWidgets',
     ]
+    try:
+        import gi
+        hidden_imports.append('gi')
+    except ImportError:
+        pass
 elif sys.platform == 'darwin':
     hidden_imports += [
         'webview.platforms.cocoa',
@@ -89,6 +98,11 @@ if sys.platform == 'win32':
     try:
         hidden_imports += collect_submodules('clr_loader')
         hidden_imports += collect_submodules('pythonnet')
+    except Exception:
+        pass
+elif sys.platform.startswith('linux'):
+    try:
+        hidden_imports += collect_submodules('PyQt5')
     except Exception:
         pass
 

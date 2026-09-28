@@ -94,7 +94,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          pip install pyinstaller PyGObject
+          pip install pyinstaller PyQt5 PyQtWebEngine
+          pip install "PyGObject<3.48.0" || true
 
       - name: Compile application with PyInstaller
         run: |
@@ -119,6 +120,7 @@ jobs:
 
           cp packaging/linux/thearabicocr.png AppDir/thearabicocr.png
           cp packaging/linux/thearabicocr.png AppDir/usr/share/icons/hicolor/512x512/apps/thearabicocr.png
+          ln -sf thearabicocr.png AppDir/.DirIcon
 
       - name: Build AppImage via appimagetool
         run: |
@@ -141,17 +143,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Windows Artifact
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: TheArabicOCR-Windows-x64
           path: release-artifacts
-
-      - name: Download Linux Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: TheArabicOCR-Linux-x86_64
-          path: release-artifacts
+          merge-multiple: true
 
       - name: Determine Release Tag
         id: release_info

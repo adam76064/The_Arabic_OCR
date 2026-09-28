@@ -133,7 +133,7 @@ def main():
 
     # Platform-specific GUI engine fallback sequence
     if sys.platform.startswith('linux'):
-        gui_engines = [None, 'gtk', 'qt']
+        gui_engines = ['qt', 'gtk', None]
     elif sys.platform == 'darwin':
         gui_engines = [None, 'cocoa', 'qt']
     else:
