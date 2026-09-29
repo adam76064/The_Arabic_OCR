@@ -175,11 +175,22 @@ jobs:
       - name: Build scantailor-advanced (stalib) from source
         id: stalib
         continue-on-error: true
+        shell: bash
         run: |
-          if [ -x packaging/macos/build_stalib.sh ]; then
-            packaging/macos/build_stalib.sh
+          if [ ! -f packaging/macos/build_stalib.sh ]; then
+            echo "build_stalib.sh is not present; using OpenCV fallback"
+            exit 0
+          fi
+
+          chmod +x packaging/macos/build_stalib.sh
+          ./packaging/macos/build_stalib.sh
+
+      - name: Report stalib status
+        run: |
+          if [ "${{ steps.stalib.outcome }}" = "success" ]; then
+            echo "### stalib: built OK (${{ matrix.arch }})" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "build_stalib.sh not present or not executable; skipping or using fallback"
+            echo "### stalib: NOT built for ${{ matrix.arch }} - app will use OpenCV fallbacks" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Create .icns app icon
@@ -192,28 +203,32 @@ jobs:
           OUTPUT="packaging/macos/TheArabicOCR.icns"
 
           test -f "$SRC" || {
-            echo "Icon source not found: $SRC"
+            echo "::error::Icon source not found: $SRC"
             exit 1
           }
 
-          rm -rf "$ICONSET"
-          mkdir -p "$ICONSET"
-          mkdir -p "$(dirname "$OUTPUT")"
+          mkdir -p "$ICONSET" "$(dirname "$OUTPUT")"
+          rm -f "$ICONSET"/*.png
 
-          # macOS iconutil-compatible iconset sizes (standard base sizes and @2x retina)
           for size in 16 32 128 256 512; do
-            retina=$((size * 2))
+            sips -s format png \
+              -z "$size" "$size" \
+              "$SRC" \
+              --out "$ICONSET/icon_${size}x${size}.png"
 
-            sips -s format png -z "$size" "$size" "$SRC" \
-              --out "$ICONSET/icon_${size}x${size}.png" >/dev/null
+            double_size=$((size * 2))
 
-            sips -s format png -z "$retina" "$retina" "$SRC" \
-              --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
+            sips -s format png \
+              -z "$double_size" "$double_size" \
+              "$SRC" \
+              --out "$ICONSET/icon_${size}x${size}@2x.png"
           done
+
+          echo "Generated icon files:"
+          ls -la "$ICONSET"
 
           iconutil -c icns "$ICONSET" -o "$OUTPUT"
           test -s "$OUTPUT"
-          rm -rf "$ICONSET"
 
       - name: Compile application with PyInstaller
         run: |
