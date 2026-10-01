@@ -148,7 +148,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=(sys.platform != 'darwin'),
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -163,8 +163,27 @@ coll = COLLECT(
     a.zipfiles,
     a.datas,
     strip=False,
-    upx=True,
+    upx=(sys.platform != 'darwin'),
     upx_exclude=[],
     name='TheArabicOCR',
 )
 
+# macOS: wrap the folder build into a proper .app bundle
+if sys.platform == 'darwin':
+    _icon = 'packaging/macos/TheArabicOCR.icns'
+    app = BUNDLE(
+        coll,
+        name='TheArabicOCR.app',
+        icon=_icon if os.path.exists(_icon) else None,
+        bundle_identifier='com.thearabicocr.app',
+        info_plist={
+            'CFBundleName': 'The Arabic OCR',
+            'CFBundleDisplayName': 'The Arabic OCR',
+            'CFBundleShortVersionString': os.environ.get('APP_VERSION', '0.1.0'),
+            'NSHighResolutionCapable': True,
+            'LSMinimumSystemVersion': '11.0',
+            # LAN sharing uses zeroconf / local network access
+            'NSLocalNetworkUsageDescription': 'Used to share projects with team members on your local network.',
+            'NSBonjourServices': ['_ocrreview._tcp'],
+        },
+    )
