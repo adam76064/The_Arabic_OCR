@@ -39,7 +39,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          pip install pyinstaller pythonnet clr_loader
+          pip install pyinstaller pythonnet clr_loader PyQt5 PyQtWebEngine
 
       - name: Compile application with PyInstaller
         run: |

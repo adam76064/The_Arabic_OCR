@@ -48,9 +48,133 @@ import webview.util
 from backend.app.api import Api
 from backend.app.api import cleanup_old_residue as _cleanup
 
-# Configure standard application logging
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(name)s: %(message)s')
+# Configure persistent multi-destination logging
+import platform
+import shutil
+from pathlib import Path
+from logging.handlers import RotatingFileHandler
+
+def get_log_file_path():
+    if sys.platform == 'win32':
+        base = os.getenv('APPDATA') or os.path.join(str(Path.home()), 'AppData', 'Roaming')
+        log_dir = os.path.join(base, 'The_Arabic_OCR', 'logs')
+    elif sys.platform == 'darwin':
+        log_dir = os.path.expanduser('~/Library/Logs/The_Arabic_OCR')
+    else:
+        log_dir = os.path.expanduser('~/.local/share/The_Arabic_OCR/logs')
+    try:
+        os.makedirs(log_dir, exist_ok=True)
+        return os.path.join(log_dir, 'app.log')
+    except Exception:
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
+
+LOG_FILE = get_log_file_path()
+
+_handlers = []
+try:
+    _file_handler = RotatingFileHandler(LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=3, encoding='utf-8')
+    _file_handler.setFormatter(logging.Formatter('[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s'))
+    _handlers.append(_file_handler)
+except Exception:
+    pass
+
+if sys.stdout is not None:
+    _stream_handler = logging.StreamHandler(sys.stdout)
+    _stream_handler.setFormatter(logging.Formatter('[%(levelname)s] [%(name)s]: %(message)s'))
+    _handlers.append(_stream_handler)
+
+logging.basicConfig(level=logging.INFO, handlers=_handlers or None)
 logger = logging.getLogger('TheArabicOCR')
+
+def show_native_message_box(title, message, icon='error'):
+    """Show a native GUI alert when window or critical subsystem fails."""
+    if sys.platform == 'win32':
+        try:
+            import ctypes
+            # 0x10 = MB_ICONERROR, 0x30 = MB_ICONWARNING, 0x40 = MB_ICONINFORMATION
+            flag = 0x10 if icon == 'error' else (0x30 if icon == 'warning' else 0x40)
+            ctypes.windll.user32.MessageBoxW(0, message, title, flag | 0x0)
+            return
+        except Exception:
+            pass
+    elif sys.platform == 'darwin':
+        try:
+            import subprocess
+            icon_str = 'stop' if icon == 'error' else 'caution'
+            subprocess.run([
+                'osascript', '-e',
+                f'display dialog "{message}" with title "{title}" buttons {{"OK"}} default button "OK" with icon {icon_str}'
+            ], check=False)
+            return
+        except Exception:
+            pass
+    elif sys.platform.startswith('linux'):
+        try:
+            import subprocess
+            if shutil.which('zenity'):
+                opt = '--error' if icon == 'error' else '--warning'
+                subprocess.run(['zenity', opt, f'--title={title}', f'--text={message}'], check=False)
+                return
+            elif shutil.which('kdialog'):
+                opt = '--error' if icon == 'error' else '--sorry'
+                subprocess.run(['kdialog', opt, message, '--title', title], check=False)
+                return
+        except Exception:
+            pass
+
+    if sys.stderr:
+        print(f"[{title}] {message}", file=sys.stderr)
+
+def _global_exception_handler(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.critical("Unhandled top-level exception:", exc_info=(exc_type, exc_value, exc_traceback))
+    show_native_message_box(
+        "The Arabic OCR - Critical Error",
+        f"An unexpected error occurred and the application must close.\n\n"
+        f"{exc_type.__name__}: {exc_value}\n\n"
+        f"Diagnostic details have been saved to:\n{LOG_FILE}",
+        icon='error'
+    )
+
+sys.excepthook = _global_exception_handler
+
+def log_system_diagnostics():
+    logger.info("==========================================")
+    logger.info("Starting The Arabic OCR")
+    logger.info("Platform: %s (%s, %s)", sys.platform, platform.platform(), platform.machine())
+    logger.info("Python: %s (%s)", sys.version.split()[0], sys.executable)
+    logger.info("Frozen bundle: %s", getattr(sys, 'frozen', False))
+    logger.info("Log path: %s", LOG_FILE)
+
+    if sys.platform == 'win32':
+        # Check Edge WebView2 Runtime in Windows Registry
+        try:
+            import winreg
+            wv2_ver = None
+            for root in [winreg.HKEY_LOCAL_MACHINE, winreg.HKEY_CURRENT_USER]:
+                for subkey in [
+                    r"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-2870-4104-8522-4293077E08CE}",
+                    r"SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-2870-4104-8522-4293077E08CE}",
+                ]:
+                    try:
+                        with winreg.OpenKey(root, subkey) as k:
+                            val, _ = winreg.QueryValueEx(k, "pv")
+                            if val:
+                                wv2_ver = val
+                                break
+                    except Exception:
+                        pass
+                if wv2_ver:
+                    break
+            if wv2_ver:
+                logger.info("Microsoft Edge WebView2 detected: %s", wv2_ver)
+            else:
+                logger.warning("Microsoft Edge WebView2 is NOT detected in Windows registry!")
+        except Exception as e:
+            logger.debug("WebView2 registry check error: %s", e)
+    logger.info("==========================================")
 
 # --- Patch pywebview js_bridge_call for safe page navigation ---
 # When the frontend navigates (window.location.href), pending asynchronous calls in Python threads
@@ -113,10 +237,12 @@ def get_resource_path(relative_path):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 def main():
+    log_system_diagnostics()
+
     try:
         _cleanup()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Cleanup residue error: %s", e)
 
     api = Api()
     html_path = get_resource_path(os.path.join('frontend', 'index.html'))
@@ -137,11 +263,13 @@ def main():
     elif sys.platform == 'darwin':
         gui_engines = [None, 'cocoa', 'qt']
     else:
-        gui_engines = [None, 'edgechromium', 'winforms', 'mshtml', 'qt']
+        # On Windows: Try modern Edge Chromium, then Qt (Chromium), then WinForms, then MSHTML
+        gui_engines = [None, 'edgechromium', 'qt', 'winforms', 'mshtml']
 
     started = False
     for gui_engine in gui_engines:
         try:
+            logger.info("Attempting to start GUI with engine: '%s'", gui_engine or "default")
             if gui_engine:
                 webview.start(debug=False, gui=gui_engine)
             else:
@@ -149,11 +277,20 @@ def main():
             started = True
             break
         except Exception as e:
-            logger.warning("Failed to start webview with GUI engine '%s': %s", gui_engine, e)
+            logger.warning("Failed to start webview with GUI engine '%s': %s", gui_engine, e, exc_info=True)
             continue
 
     if not started:
-        logger.error("Could not initialize any supported webview GUI backend.")
+        error_msg = (
+            "Could not initialize any supported display engine (WebView).\n\n"
+            "Possible causes:\n"
+            "1. Microsoft Edge WebView2 Runtime is missing or disabled.\n"
+            "2. Microsoft Visual C++ 2015-2022 Redistributable is missing.\n\n"
+            f"Detailed diagnostic logs have been saved to:\n{LOG_FILE}"
+        )
+        logger.critical(error_msg)
+        show_native_message_box("The Arabic OCR - Display Engine Error", error_msg, icon='error')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

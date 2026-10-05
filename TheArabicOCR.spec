@@ -56,6 +56,11 @@ if sys.platform == 'win32':
         'clr',
         'clr_loader',
         'pythonnet',
+        'PyQt5',
+        'PyQt5.QtCore',
+        'PyQt5.QtGui',
+        'PyQt5.QtWidgets',
+        'PyQt5.QtWebEngineWidgets',
     ]
 elif sys.platform.startswith('linux'):
     hidden_imports += [
@@ -98,6 +103,10 @@ if sys.platform == 'win32':
     try:
         hidden_imports += collect_submodules('clr_loader')
         hidden_imports += collect_submodules('pythonnet')
+    except Exception:
+        pass
+    try:
+        hidden_imports += collect_submodules('PyQt5')
     except Exception:
         pass
 elif sys.platform.startswith('linux'):
