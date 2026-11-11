@@ -123,6 +123,10 @@ class OCRHandler:
                 block_entry["confidence"] = raw["confidence"]
             if "table_structure" in raw:
                 block_entry["table_structure"] = raw["table_structure"]
+            # Forward digital-extraction enrichment keys so they survive standardisation
+            for _extra in ("font_name", "font_size", "font_color", "is_digital"):
+                if _extra in raw:
+                    block_entry[_extra] = raw[_extra]
             standardized.append(block_entry)
 
         return standardized

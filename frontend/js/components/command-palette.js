@@ -115,6 +115,36 @@
           icon: 'settings',
           category: 'project',
           action: () => (window.location.href = `project-settings.html${projQuery}`)
+        },
+        {
+          id: 'proj-digital-ocr',
+          title: t('ocr.digitalLabel', '⚡ استخراج رقمي مباشر (Digital Direct)'),
+          icon: 'ocr',
+          category: 'action',
+          action: () => {
+            const digitalRadio = document.querySelector('input[name="ocr-tool"][value="digital"]');
+            if (digitalRadio) {
+              digitalRadio.checked = true;
+              digitalRadio.dispatchEvent(new Event('change'));
+              document.getElementById('paddle-ocr-modal')?.classList.remove('hidden');
+            } else {
+              window.location.href = `project-dashboard.html${projQuery}`;
+            }
+          }
+        },
+        {
+          id: 'proj-integrity-audit',
+          title: t('review.integrityModalTitle', '🔐 فحص سلامة النص والتطابق اللغوي (Integrity Audit)'),
+          icon: 'verify',
+          category: 'action',
+          action: () => {
+            const auditBtn = document.getElementById('integrity-audit-btn');
+            if (auditBtn) {
+              auditBtn.click();
+            } else {
+              window.location.href = `review.html${projQuery}`;
+            }
+          }
         }
       );
     }

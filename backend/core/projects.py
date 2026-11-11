@@ -93,7 +93,7 @@ class ProjectManager:
             if not os.path.isdir(pages_dir):
                 return data
             for idx, page in enumerate(data["pages"]):
-                if not page.get("ocr_data"):
+                if page.get("ocr_data") is None:
                     page_file = os.path.join(pages_dir, f"page_{idx}.json")
                     if os.path.exists(page_file):
                         try:
@@ -103,6 +103,47 @@ class ProjectManager:
                         except Exception:
                             pass
             return data
+
+    def migrate_project_ocr_to_pages(self, project_id):
+        """
+        Migrates inline ocr_data from project.json into modular pages/page_{i}.json files.
+        Dramatically shrinks project.json (often from >20MB to <100KB) and accelerates project loading.
+        """
+        with self.lock:
+            path = os.path.join(self.projects_dir, project_id, "project.json")
+            if not os.path.exists(path):
+                return {"ok": False, "error": "المشروع غير موجود."}
+
+            orig_size = os.path.getsize(path)
+            data = load_json(path)
+            if not data or "pages" not in data:
+                return {"ok": False, "error": "بيانات المشروع غير صالحة."}
+
+            pages_dir = os.path.join(self.projects_dir, project_id, "pages")
+            os.makedirs(pages_dir, exist_ok=True)
+
+            migrated_count = 0
+            for idx, page in enumerate(data.get("pages", [])):
+                ocr = page.get("ocr_data")
+                if ocr is not None:
+                    page_file = os.path.join(pages_dir, f"page_{idx}.json")
+                    temp_p = page_file + ".tmp"
+                    dump_json(ocr, temp_p, indent=2)
+                    os.replace(temp_p, page_file)
+                    page["ocr_data"] = None
+                    migrated_count += 1
+
+            self._save_project_file(project_id, data)
+            new_size = os.path.getsize(path)
+            pct_reduction = round((orig_size - new_size) / max(1, orig_size) * 100, 1) if orig_size > 0 else 0.0
+            return {
+                "ok": True,
+                "migrated_pages": migrated_count,
+                "orig_size_bytes": orig_size,
+                "new_size_bytes": new_size,
+                "reduction_ratio": pct_reduction,
+                "message": f"تم ترحيل {migrated_count} صفحة وتقليص حجم ملف المشروع بنسبة {pct_reduction}% بنجاح!"
+            }
 
     def save_page_ocr(self, project_id, page_index, ocr_data):
         """Save OCR data for an individual page into pages/page_{page_index}.json."""
@@ -258,8 +299,7 @@ class ProjectManager:
         path = os.path.join(self.projects_dir, "app_settings.json")
         if os.path.exists(path):
             try:
-                with open(path, "r", encoding="utf-8") as f:
-                    return load_json(path)
+                return load_json(path)
             except Exception:
                 return {}
         return {}

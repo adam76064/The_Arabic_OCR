@@ -150,6 +150,30 @@
                 <div class="form-group">
                     <label data-i18n="dash.tool">أداة المعالجة (OCR Tool)</label>
                     <div class="form-section">
+                        <div class="radio-group tool-option" id="tool-digital-container" style="background: rgba(46, 204, 113, 0.08); padding: 10px; border-radius: var(--radius-md); border: 1px solid rgba(46, 204, 113, 0.3); margin-bottom: 12px;">
+                            <label class="radio-item" style="font-size: 15px; font-weight: 700; color: #27ae60; cursor: pointer;">
+                                <input type="radio" name="ocr-tool" value="digital">
+                                <span data-i18n="ocr.digitalLabel">⚡ استخراج رقمي مباشر (Digital Direct — دقة 100% دون OCR)</span>
+                            </label>
+                            <div class="section-hint" style="margin-inline-start: 24px; margin-top: 4px; font-size: 11px; color: var(--color-text-secondary);" data-i18n="ocr.digitalDesc">
+                                مخصص لملفات PDF الرقمية (المصدرة من Word أو InDesign). يستخرج النص الأصلي بدقة تامة وسرعة فائقة دون استهلاك واجهات الذكاء الاصطناعي.
+                            </div>
+                            
+                            <!-- Digital Triage Probe Panel -->
+                            <div id="digital-sub-options" class="hidden" style="margin-top: 10px; margin-inline-start: 24px; padding: 10px 12px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="font-size: 12px; font-weight: 600; color: var(--color-text);" data-i18n="ocr.probeTitle">فحص الصفحات مسبقاً (Triage Probe):</span>
+                                    <button type="button" id="btn-probe-digital" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">
+                                        <span data-i18n="ocr.btnProbe">🔍 فحص الصفحات الآن</span>
+                                    </button>
+                                </div>
+                                <div id="digital-probe-result" class="hidden" style="margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--color-text-secondary);">
+                                    <div id="digital-probe-summary" style="font-weight: 600; margin-bottom: 6px;"></div>
+                                    <div id="digital-probe-chips" style="display: flex; gap: 4px; flex-wrap: wrap; max-height: 90px; overflow-y: auto; padding: 4px; background: var(--color-surface); border-radius: 4px; border: 1px solid var(--color-border);"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="radio-group tool-option" id="tool-paddle-container">
                             <label class="radio-item" style="font-size: 15px;">
                                 <input type="radio" name="ocr-tool" value="paddle" checked> 

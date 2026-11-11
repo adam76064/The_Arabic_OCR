@@ -13,6 +13,7 @@ except ImportError:
     # fallback when imported as table_detector still
     from table_detector import orchestrator, line_grid_detector, blob_detector, column_finder, row_grouper, row_reconciler
 
+from .onnx_engine import get_onnx_table_engine
 from ..utils.retriever import extract_text_for_bbox
 
 
@@ -42,8 +43,25 @@ class TableHandler:
         method_used = "none"
         cols_x, rows_y = [tx1, tx2], [ty1, ty2]
 
+        # Tier 0: ONNX Table Engine (SLANet int8 / Surya ONNX)
+        if extraction_method == "onnx":
+            try:
+                crop_x1, crop_y1 = int(max(0, tx1 * scale_x)), int(max(0, ty1 * scale_y))
+                crop_x2, crop_y2 = int(min(full_img.shape[1], tx2 * scale_x)), int(min(full_img.shape[0], ty2 * scale_y))
+                table_crop = full_img[crop_y1:crop_y2, crop_x1:crop_x2]
+                if table_crop.size > 0:
+                    onnx_engine = get_onnx_table_engine()
+                    onnx_res = onnx_engine.detect_table_grid(table_crop, crop_origin=(tx1, ty1), scale=(scale_x, scale_y))
+                    if onnx_res and onnx_res.get("rows", 0) > 0 and onnx_res.get("cols", 0) > 0:
+                        grid = True
+                        method_used = onnx_res.get("engine", "onnx")
+                        cols_x = onnx_res.get("cols_x", [tx1, tx2])
+                        rows_y = onnx_res.get("rows_y", [ty1, ty2])
+            except Exception as e:
+                print(f"[TableHandler] ONNX table extraction warning: {e}")
+
         # Tier 1: Native PDF vectors
-        if extraction_method in ["auto", "native"] and pdf_path and os.path.exists(pdf_path):
+        if grid is None and extraction_method in ["auto", "native"] and pdf_path and os.path.exists(pdf_path):
             try:
                 doc = fitz.open(pdf_path)
                 pdf_page = doc[page_index]
@@ -69,6 +87,23 @@ class TableHandler:
                         rows_y = [round((y / scale_y) + ty1, 2) for y in grid["rows_y"]]
             except Exception as e:
                 print(f"[TableHandler] Vector extraction failed: {e}")
+
+        # Tier 1.5: ONNX Table Engine fallback if auto mode and vectors produced no grid
+        if grid is None and extraction_method in ["auto", "onnx"]:
+            try:
+                crop_x1, crop_y1 = int(max(0, tx1 * scale_x)), int(max(0, ty1 * scale_y))
+                crop_x2, crop_y2 = int(min(full_img.shape[1], tx2 * scale_x)), int(min(full_img.shape[0], ty2 * scale_y))
+                table_crop = full_img[crop_y1:crop_y2, crop_x1:crop_x2]
+                if table_crop.size > 0:
+                    onnx_engine = get_onnx_table_engine()
+                    onnx_res = onnx_engine.detect_table_grid(table_crop, crop_origin=(tx1, ty1), scale=(scale_x, scale_y))
+                    if onnx_res and onnx_res.get("rows", 0) > 0 and onnx_res.get("cols", 0) > 0:
+                        grid = True
+                        method_used = onnx_res.get("engine", "onnx")
+                        cols_x = onnx_res.get("cols_x", [tx1, tx2])
+                        rows_y = onnx_res.get("rows_y", [ty1, ty2])
+            except Exception as e:
+                print(f"[TableHandler] ONNX fallback table extraction warning: {e}")
 
         # Tier 2: Word coordinates
         if grid is None and extraction_method in ["auto", "coordinates"]:

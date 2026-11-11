@@ -41,6 +41,27 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.table import WD_TABLE_DIRECTION
 
+
+def _reflow_block_text(text: str) -> str:
+    """
+    In digital PDFs and OCR output, lines within a continuous paragraph are split with '\n'.
+    Reflows them into continuous running text by replacing single newlines with spaces,
+    while preserving double newlines ('\n\n') as distinct paragraph boundaries.
+    Preserves HTML formatting tags.
+    """
+    if not text:
+        return ""
+    if "<p" in text or "<div" in text or "<table" in text:
+        return text
+    t = text.replace('\r\n', '\n').replace('\r', '\n')
+    paras = [p.strip() for p in re.split(r'\n\s*\n', t) if p.strip()]
+    reflowed = []
+    for p in paras:
+        lines = [line.strip() for line in p.split('\n') if line.strip()]
+        reflowed.append(" ".join(lines))
+    return "\n\n".join(reflowed)
+
+
 def export_docx(project, page_indices, output_path, opts=None):
     """
     opts keys (all optional, sensible defaults):
@@ -84,10 +105,55 @@ def export_docx(project, page_indices, output_path, opts=None):
     section = doc.sections[0]
     section.page_width = pw
     section.page_height = ph
-    section.left_margin = Cm(2.5)
-    section.right_margin = Cm(2.5)
-    section.top_margin = Cm(2.5)
-    section.bottom_margin = Cm(2.5)
+
+    # ── Stage 1: Global Page Geometry Probe & Dynamic Margin Deduction ────────
+    all_x0 = []
+    all_x1 = []
+    all_y0 = []
+    all_y1 = []
+    native_pw_pts = None
+    native_ph_pts = None
+
+    for idx in page_indices:
+        if idx < len(project.get('pages', [])):
+            p = project['pages'][idx]
+            pw_val = p.get('width')
+            ph_val = p.get('height')
+            if pw_val and ph_val:
+                native_pw_pts = float(pw_val)
+                native_ph_pts = float(ph_val)
+            for el in p.get('ocr_data', []):
+                cat = el.get('category', 'Text')
+                if cat in ('Page-header', 'Page-footer', 'Header', 'Footer', 'Page-number'):
+                    continue
+                bbox = el.get('bbox')
+                if bbox and len(bbox) == 4:
+                    bx0, by0, bx1, by1 = bbox
+                    if bx1 > bx0 and by1 > by0:
+                        all_x0.append(bx0)
+                        all_x1.append(bx1)
+                        all_y0.append(by0)
+                        all_y1.append(by1)
+
+    if native_pw_pts and native_ph_pts and all_x0 and all_x1 and all_y0 and all_y1:
+        # Dynamic margins matching the original document envelope
+        deduced_left_pt = max(25.0, min(108.0, min(all_x0)))
+        deduced_right_pt = max(25.0, min(108.0, native_pw_pts - max(all_x1)))
+        deduced_top_pt = max(25.0, min(108.0, min(all_y0)))
+        deduced_bottom_pt = max(25.0, min(108.0, native_ph_pts - max(all_y1)))
+
+        section.left_margin = Pt(deduced_left_pt)
+        section.right_margin = Pt(deduced_right_pt)
+        section.top_margin = Pt(deduced_top_pt)
+        section.bottom_margin = Pt(deduced_bottom_pt)
+        section.page_width = Pt(native_pw_pts)
+        section.page_height = Pt(native_ph_pts)
+    else:
+        section.left_margin = Cm(2.0)
+        section.right_margin = Cm(2.0)
+        section.top_margin = Cm(2.0)
+        section.bottom_margin = Cm(2.0)
+
     if landscape:
         section.orientation = WD_ORIENT.LANDSCAPE
 
@@ -140,6 +206,25 @@ def export_docx(project, page_indices, output_path, opts=None):
             
             block_font_size = el.get('font_size') or el.get('fontSize') or el.get('size')
 
+            # ── Stage 2: Native Section Headers and Footers ───────────────────────
+            if cat in ('Page-header', 'Header'):
+                header = section.header
+                p_head = header.paragraphs[0]
+                p_head.text = text
+                _apply_paragraph_layout(p_head, el_align or 'center', effective_rtl)
+                for run in p_head.runs:
+                    _set_run_font_and_bidi(run, font_name, max(8, font_size - 2), is_rtl=effective_rtl)
+                continue
+
+            if cat in ('Page-footer', 'Footer'):
+                footer = section.footer
+                p_foot = footer.paragraphs[0]
+                p_foot.text = text
+                _apply_paragraph_layout(p_foot, el_align or 'center', effective_rtl)
+                for run in p_foot.runs:
+                    _set_run_font_and_bidi(run, font_name, max(8, font_size - 2), is_rtl=effective_rtl)
+                continue
+
             # ── Poetry blocks (Vertical-poetry & Staggered-poetry) ──────────────────────────
             if cat in ('Vertical-poetry', 'Staggered-poetry'):
                 _add_poetry_docx(doc, el, cat, font_name, font_size, effective_rtl, cat_fmt=cat_fmt)
@@ -157,6 +242,10 @@ def export_docx(project, page_indices, output_path, opts=None):
                     tbl.style = 'Table Grid'
                     if effective_rtl:
                         tbl.table_direction = WD_TABLE_DIRECTION.RTL
+                        tblPr = tbl._tbl.tblPr
+                        if not tblPr.xpath('./w:bidiVisual'):
+                            bv = OxmlElement('w:bidiVisual')
+                            tblPr.append(bv)
 
                     # 1. Merge cells natively in DOCX based on spans
                     for c_info in cells:
@@ -225,7 +314,8 @@ def export_docx(project, page_indices, output_path, opts=None):
                 continue
 
             if text_mode == 'formatted':
-                paragraphs = _split_block_paragraphs(text) or [text]
+                reflowed_text = _reflow_block_text(text)
+                paragraphs = _split_block_paragraphs(reflowed_text) or [reflowed_text]
                 for p_text in paragraphs:
                     _add_formatted_paragraph(doc, p_text, cat, font_name, font_size,
                                               line_spacing, para_indent, space_after,

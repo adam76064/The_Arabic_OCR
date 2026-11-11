@@ -1,0 +1,78 @@
+# Universal AI Coding Assistant & Engineering Operating Procedures
+
+> **Operating Directive**: Before planning, reading, modifying, or generating any code in this repository, the AI assistant MUST read and strictly adhere to these standard operating procedures.
+
+---
+
+## 1. Zero-Assumption & Truthfulness Directive
+
+- **Never Assume or Guess**: If requirements, technical constraints, business logic, or file formats are ambiguous, **never guess or fabricate**. Ask the user for clarification or search official documentation.
+- **Web Search When in Doubt**: Before implementing unfamiliar libraries, third-party APIs, framework features, or platform-specific quirks, search official documentation and developer references for modern, verified best practices.
+- **No Unsolicited Breaking Changes**: Do not delete existing features, refactor core architectures, alter data formats, or strip dependencies without explaining the rationale and obtaining explicit user confirmation first.
+- **Preserve Documentation & Code Integrity**: Never delete or rewrite existing comments, docstrings, or type definitions that are unrelated to your current task unless explicitly instructed.
+
+---
+
+## 2. Planning & Thought Discipline
+
+- **Plan Before Execution**: For non-trivial tasks (multi-file changes, architectural decisions, new integrations), always produce a concise, structured plan outlining:
+  1. Root cause analysis (for bugs) or requirement breakdown (for features).
+  2. Concrete files to create/modify.
+  3. Identified edge cases, concurrency hazards, and potential failure modes.
+  4. Specific verification steps.
+- **Incremental & Focused Execution**: Avoid monolithic, unreviewable multi-file rewrites. Implement changes in clean, modular increments that can be inspected and tested independently.
+
+---
+
+## 3. Engineering Craftsmanship & "Anti-Slop" Discipline
+
+### A. Code Quality & Architecture
+- **Type Safety**: Enforce strict typing (type annotations in Python, strict TypeScript, idiomatic types in Go/Rust/C#).
+- **Explicit Error Handling**: Avoid blanket `catch (e) {}` or `except: pass`. Handle specific exceptions, provide clear error messages with operational context, and fail gracefully.
+- **Defensive Resource Management**: Ensure file handles, database connections, sockets, and subprocesses are properly pooled or closed (e.g., context managers, `using`/`defer` blocks).
+- **Idempotency & Resilience**: Ensure scripts, database migrations, and pipeline stages can be safely re-run without duplicating or corrupting state.
+
+### B. Frontend & UI Craftsmanship (Eliminating Generic "AI Slop")
+- **Avoid Cliché Templates**: Do not produce generic, homogenous SaaS interfaces (e.g. ubiquitous purple/indigo hero gradients, centered three-card grids, repetitive icon boxes, or lazy `transition: all`).
+- **High-Craft Principles**:
+  - Define and use deliberate design tokens (colors, spacing, shadows, radii).
+  - Establish a clear typographic hierarchy with appropriate font weights, line-heights, and tracking.
+  - Prioritize micro-contrast, intentional negative space, and accessible states (focus, hover, active, disabled).
+  - Use purposeful, snappy micro-interactions (100–200ms) with clean cubic-bezier easing.
+  - Implement robust responsive behaviors (avoid rigid pixel heights/widths that break on different viewports).
+
+---
+
+## 4. Verification & Testing Standards
+
+- **Evidence-Based Completion**: A task is never marked "complete" simply because code was written. You must execute and verify the result before declaring completion.
+- **Automated Verification**:
+  - Run the test suite, linter, and type checker after any code change.
+  - For new features or bug fixes, write targeted unit, integration, or smoke tests demonstrating that the fix works and edge cases are handled.
+- **Visual & UI Verification**:
+  - When working on web/frontend or visual components, inspect rendered output (using headless browser testing, Playwright, screenshots, or DOM checks) to verify visual alignment and user flows.
+- **Platform & Environment Awareness**:
+  - Account for OS differences (Windows PowerShell vs. Linux/macOS bash, path separators `\` vs. `/`, text encoding UTF-8 vs. CP1252, line endings CRLF vs. LF).
+  - Never leave orphaned background processes or port collisions running.
+
+---
+
+## 5. Repository Hygiene & Security
+
+- **Security & Privacy First**:
+  - Always verify that a robust `.gitignore` is present before creating files.
+  - Never commit API keys, credentials, secret tokens, private data, environment files (`.env`), or large temporary binaries/caches.
+- **Commit Discipline**:
+  - Maintain a clean Git log using conventional, descriptive commit messages (e.g., `feat: ...`, `fix: ...`, `refactor: ...`, `test: ...`).
+  - Summarize the exact changes made, why they were necessary, and what verification was performed.
+
+---
+
+## 6. Project Memory & Context Continuity
+
+- **Persist Critical Context**: In multi-turn or long-running development projects, maintain a project memory log (such as `.brain/project_memory.md` or `docs/DECISIONS.md`) documenting:
+  - Architecture decisions and patterns adopted.
+  - Technical milestones achieved.
+  - Key discoveries, edge cases, and known quirks.
+  - Next planned steps.
+- **State Checkpoints**: For batch jobs or long-running pipelines, always implement checkpointing files so progress is never lost if a process is interrupted.

@@ -774,8 +774,13 @@ def _parse_poetry_lines(el):
         verse_clean = _strip_markdown_and_tags(verse).strip()
         if not verse_clean:
             continue
-        if '|' in verse_clean:
-            parts = verse_clean.split('|', 1)
+        split_sep = None
+        for candidate in ('|', '...', '…', '***', ' * * * '):
+            if candidate in verse_clean:
+                split_sep = candidate
+                break
+        if split_sep:
+            parts = verse_clean.split(split_sep, 1)
             temp_lines.append((parts[0].strip(), parts[1].strip()))
         else:
             temp_lines.append((verse_clean, None))

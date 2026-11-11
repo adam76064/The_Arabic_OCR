@@ -187,6 +187,37 @@ async function initSettings() {
 
     // 6. Post-Processing Settings
     initPostProcessingSettings(meta.post_processing || {});
+
+    // 7. Storage Migration Handler
+    document.getElementById('btn-migrate-storage')?.addEventListener('click', async () => {
+        const btn = document.getElementById('btn-migrate-storage');
+        const infoEl = document.getElementById('storage-status-info');
+        const pid = projectId || currentProject?.id || (typeof currentProjectId !== 'undefined' ? currentProjectId : null);
+        if (!btn || !pid) return;
+
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري الضغط والتجزئة...';
+
+        try {
+            const res = await window.pywebview.api.migrate_project_ocr_to_pages(pid);
+            if (res && res.ok) {
+                const origKb = Math.round((res.orig_size_bytes || 0) / 1024);
+                const newKb = Math.round((res.new_size_bytes || 0) / 1024);
+                const msg = `✅ ${res.message} (الحجم: من ${origKb} KB إلى ${newKb} KB)`;
+                if (infoEl) infoEl.innerHTML = `<span style="color: #27ae60; font-weight: 600;">${msg}</span>`;
+                if (window.AppNotifications) window.AppNotifications.show(msg, 'success');
+                else alert(msg);
+            } else {
+                alert('فشل الضغط: ' + (res?.error || 'خطأ غير معروف'));
+            }
+        } catch (err) {
+            console.error('Migration failed', err);
+            alert('خطأ أثناء تجزئة البيانات: ' + err);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = window.AppI18n ? window.AppI18n.t('ps.btnMigrateStorage') : '⚡ ضغط وتجزئة ملف المشروع الآن';
+        }
+    });
 }
 
 function bindTabNavigation() {

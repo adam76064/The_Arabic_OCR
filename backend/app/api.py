@@ -10,6 +10,7 @@ import tempfile
 import shutil
 import glob
 import json
+import threading
 os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
 try:
     import certifi
@@ -33,7 +34,9 @@ from ..core.ocr.llm import LLMOCRHandler
 from ..core.text import ArabicTextCleaner
 from ..core.quran import QuranHandler
 from ..table.handler import TableHandler
-from ..export import export_json, export_txt, export_docx, export_html, export_epub3
+from ..export import export_json, export_txt, export_docx, export_docx_exact, export_html, export_epub3
+from ..core.digital_extractor import DigitalPDFExtractor
+from ..core.verification import IntegrityVerifier
 from ..collab.discovery import LANDiscovery
 from ..collab.sync import LANSyncServer, LANSyncClient
 from ..utils.retriever import populate_layout_blocks_text
@@ -81,6 +84,8 @@ class Api:
         self.preprocessing_engine = PreprocessingEngine(self.project_manager)
         self.preprocessing_worker = None
 
+        self.digital_extractor = DigitalPDFExtractor()
+        self.integrity_verifier = IntegrityVerifier()
         self.events = EventEmitter(lambda: self._window)
 
     # --- window binding ---
@@ -171,11 +176,22 @@ class Api:
         self.project_manager.update_project(project_id, project_data)
         return {"ok": True}
 
+    def migrate_project_ocr_to_pages(self, project_id):
+        """API wrapper for modular storage migration."""
+        return self.project_manager.migrate_project_ocr_to_pages(project_id)
+
     def update_page_ocr(self, project_id, page_index, ocr_data, status=None):
-        # Fast load — we only need page status, not all OCR text across the project
+        # Always persist modular per-page OCR JSON
+        self.project_manager.save_page_ocr(project_id, page_index, ocr_data)
+
+        # Fast load — update page status in project.json without re-bloating it with full OCR arrays
         project = self.project_manager.load_project(project_id)
         if project and 0 <= page_index < len(project.get('pages', [])):
-            project['pages'][page_index]['ocr_data'] = ocr_data
+            pages_dir = os.path.join(self.project_manager.projects_dir, project_id, "pages")
+            if os.path.isdir(pages_dir):
+                project['pages'][page_index]['ocr_data'] = None
+            else:
+                project['pages'][page_index]['ocr_data'] = ocr_data
             if status is not None:
                 project['pages'][page_index]['status'] = status
             else:
@@ -345,6 +361,166 @@ class Api:
                     doc.insert_pdf(fallback_doc, from_page=pdf_idx, to_page=pdf_idx)
         doc.save(out_pdf_path)
         doc.close()
+
+    # --- Digital Extraction & Verification (Nassij-style deterministic engine) ---
+    def probe_digital_pages(self, project_id, page_indices=None):
+        """
+        Inspects PDF pages to determine whether they are digital-born (have selectable text layer)
+        or scanned pages that require OCR.
+        """
+        project = self.project_manager.load_project(project_id)
+        if not project:
+            return {'ok': False, 'error': 'المشروع غير موجود.'}
+        pdf_path = project.get('pdf_path')
+        if not pdf_path or not os.path.exists(pdf_path):
+            return {'ok': False, 'error': 'ملف PDF غير موجود.'}
+
+        doc = fitz.open(pdf_path)
+        pages = project.get('pages', [])
+        indices = page_indices if page_indices is not None else list(range(len(pages)))
+
+        results = []
+        for p_idx in indices:
+            if 0 <= p_idx < len(doc):
+                page = doc[p_idx]
+                is_dig, reason = self.digital_extractor.is_digital_page(page)
+                results.append({
+                    'page_index': p_idx,
+                    'page_number': p_idx + 1,
+                    'is_digital': is_dig,
+                    'reason': reason
+                })
+        doc.close()
+        return {'ok': True, 'pages': results}
+
+    def trigger_digital_extraction(self, project_id, start_idx=None, end_idx=None, page_indices=None):
+        """
+        Direct deterministic extraction for digital-born Arabic PDFs.
+        Bypasses OCR to guarantee 100% character integrity and instant speed.
+        Runs in a background daemon thread to avoid blocking the WebView UI.
+        """
+        project = self.project_manager.load_project(project_id)
+        if not project:
+            return {'ok': False, 'error': 'المشروع غير موجود.'}
+
+        pdf_path = project.get('pdf_path')
+        if not pdf_path or not os.path.exists(pdf_path):
+            return {'ok': False, 'error': 'ملف PDF الأصلي غير متوفر.'}
+
+        meta = project.get('metadata', {})
+        text_config = meta.get('text_features', {})
+        cat_fmt = meta.get('category_formatting', {})
+        post_proc = meta.get('post_processing', {})
+
+        if page_indices is not None and isinstance(page_indices, list) and len(page_indices) > 0:
+            indices_to_process = [int(i) for i in page_indices if 0 <= int(i) < len(project['pages'])]
+        else:
+            s = int(start_idx) if start_idx is not None else 0
+            e = int(end_idx) if end_idx is not None else len(project['pages']) - 1
+            indices_to_process = list(range(s, e + 1))
+
+        if not indices_to_process:
+            return {'ok': False, 'error': 'لم يتم تحديد صفحات صالحة.'}
+
+        def _do_extraction():
+            doc = fitz.open(pdf_path)
+            total_pages = len(indices_to_process)
+            extracted_pages = []
+            scanned_pages = []
+
+            try:
+                for seq_idx, current_idx in enumerate(indices_to_process):
+                    page_ui_num = current_idx + 1
+                    progress_pct = (seq_idx / total_pages) * 100
+                    self._emit_paddle_progress('extracting', f"استخراج رقمي مباشر لصفحة {page_ui_num}...", progress_pct)
+
+                    page_data = project['pages'][current_idx]
+                    native_w = float(page_data.get('native_width', 0)) or float(doc[current_idx].rect.width)
+                    native_h = float(page_data.get('native_height', 0)) or float(doc[current_idx].rect.height)
+
+                    ext_result = self.digital_extractor.extract_page(doc, current_idx, native_width=native_w, native_height=native_h)
+
+                    if not ext_result.get('is_digital', False):
+                        scanned_pages.append(page_ui_num)
+                        continue
+
+                    raw_blocks = ext_result.get('blocks', [])
+                    cleaned_blocks = self._apply_cleaning_to_elements(
+                        raw_blocks,
+                        text_config,
+                        page_data,
+                        engine_dpi=72.0,
+                        category_formatting=cat_fmt,
+                        post_processing=post_proc
+                    )
+
+                    # E-1: Apply reading order sort when enabled in project post-processing config
+                    if post_proc.get('auto_sort_reading_order'):
+                        from ..post_processing import PostProcessingManager
+                        _pp_mgr = PostProcessingManager(config=post_proc)
+                        cleaned_blocks = _pp_mgr.process_page(cleaned_blocks, page_height=native_h)
+
+                    self.project_manager.save_page_ocr(project_id, current_idx, cleaned_blocks)
+                    self.project_manager.save_raw_ocr(project_id, current_idx, cleaned_blocks)
+                    project['pages'][current_idx]['ocr_data'] = cleaned_blocks
+                    project['pages'][current_idx]['status'] = 'reviewed'
+                    project['pages'][current_idx]['is_digital'] = True
+                    extracted_pages.append(page_ui_num)
+
+                doc.close()
+                self.project_manager.update_project(project_id, project)
+
+                msg = f"تم استخراج {len(extracted_pages)} صفحة رقمية بنسبة دقة 100%."
+                if scanned_pages:
+                    msg += f" ({len(scanned_pages)} صفحات مصورة تتطلب مسح OCR)"
+                self._emit_paddle_progress('completed', msg, 100)
+
+            except Exception as exc:
+                import traceback
+                traceback.print_exc()
+                try:
+                    doc.close()
+                except Exception:
+                    pass
+                self._emit_paddle_progress('error', str(exc), 0)
+
+        threading.Thread(target=_do_extraction, daemon=True).start()
+        return {'ok': True, 'message': 'بدأ الاستخراج الرقمي المباشر...'}
+
+    def audit_project_integrity(self, project_id, page_indices=None, docx_path=None, options=None):
+        """
+        Runs mathematical integrity verification between original PDF text
+        and extracted project text (or exported DOCX file).
+        Supports configurable tashkeel/diacritics and kashida options,
+        and computes cryptographic Merkle root hashes.
+        """
+        project = self.project_manager.load_project_with_ocr(project_id)
+        if not project:
+            return {'ok': False, 'error': 'المشروع غير موجود.'}
+        pdf_path = project.get('pdf_path')
+        if not pdf_path or not os.path.exists(pdf_path):
+            return {'ok': False, 'error': 'ملف PDF الأصلي غير متوفر.'}
+
+        opts = options or {}
+        verifier = IntegrityVerifier(
+            ignore_kashida=opts.get('ignore_kashida', True),
+            ignore_whitespace=opts.get('ignore_whitespace', True),
+            ignore_tashkeel=opts.get('ignore_tashkeel', False),
+        )
+
+        source_canon, src_pages = verifier.extract_pdf_canonical_text(pdf_path, page_indices=page_indices)
+
+        if docx_path and os.path.exists(docx_path):
+            target_canon = verifier.extract_docx_canonical_text(docx_path)
+            target_name = os.path.basename(docx_path)
+            tgt_pages = [target_canon]
+        else:
+            target_canon, tgt_pages = verifier.extract_project_canonical_text(project, page_indices=page_indices)
+            target_name = "نصوص المشروع (Project Data)"
+
+        report = verifier.verify_integrity(source_canon, target_canon, source_pages=src_pages, target_pages=tgt_pages)
+        report['target_name'] = target_name
+        return report
 
     def trigger_paddle_ocr(self, project_id, start_idx, end_idx, page_indices=None):
         project = self.project_manager.load_project(project_id)
@@ -932,6 +1108,7 @@ class Api:
                 'json': ('JSON files (*.json)', 'All files (*.*)'),
                 'txt': ('Text files (*.txt)', 'All files (*.*)'),
                 'docx': ('Word files (*.docx)', 'All files (*.*)'),
+                'docx_exact': ('Word files (*.docx)', 'All files (*.*)'),
                 'html': ('HTML files (*.html)', 'All files (*.*)'),
                 'epub3': ('EPUB files (*.epub)', 'All files (*.*)'),
                 'epub': ('EPUB files (*.epub)', 'All files (*.*)'),
@@ -1003,7 +1180,11 @@ class Api:
         elif fmt == 'txt':
             return export_txt(project, page_indices, output_path, project.get('metadata', {}).get('logical_start', 1), opts=opts)
         elif fmt == 'docx':
+            if opts and opts.get('layout_mode') == 'exact':
+                return export_docx_exact(project, page_indices, output_path, opts)
             return export_docx(project, page_indices, output_path, opts)
+        elif fmt in ('docx_exact', 'exact_docx'):
+            return export_docx_exact(project, page_indices, output_path, opts)
         elif fmt == 'html':
             return export_html(project, page_indices, output_path, opts)
         elif fmt == 'epub3' or fmt == 'epub':

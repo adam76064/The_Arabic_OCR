@@ -50,6 +50,10 @@
     getAppSettings: () => call('get_app_settings'),
     saveAppSettings: (s) => call('save_app_settings', s),
     exportProject: (pid, fmt, indices, opts, outDir) => call('export_project', pid, fmt, indices, opts, outDir),
+    probeDigitalPages: (pid, indices) => call('probe_digital_pages', pid, indices),
+    triggerDigitalExtraction: (pid, start, end, indices) => call('trigger_digital_extraction', pid, start, end, indices),
+    auditProjectIntegrity: (pid, indices, docxPath, options) => call('audit_project_integrity', pid, indices, docxPath, options),
+    migrateProjectOcr: (pid) => call('migrate_project_ocr_to_pages', pid),
     // ... add as needed fallback generic call covers rest
   };
 

@@ -156,6 +156,23 @@
             </div>
 
             <!-- Format specific options -->
+            <div id="opts-docx" class="format-specific-options" style="margin-bottom: 14px; padding: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--color-text);" data-i18n="export.docxLayoutLabel">نمط تخطيط Word (DOCX Layout Mode):</div>
+                <div style="display: flex; gap: 20px; align-items: center; font-size: 13px;">
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="radio" name="exp-docx-layout" value="flowing" checked>
+                        <span data-i18n="export.docxFlowing">مستند انسيابي قابل للتعديل (Flowing Document)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; color: #2980b9;">
+                        <input type="radio" name="exp-docx-layout" value="exact">
+                        <span data-i18n="export.docxExact">تطابق بصري تام 1:1 (Exact Positioned Frames)</span>
+                    </label>
+                </div>
+                <p style="font-size: 11px; color: var(--color-text-secondary); margin: 6px 0 0 0;" data-i18n="export.docxExactHint">
+                    النمط التام يطابق أبعاد ومواقع فقرات ملف PDF بدقة المليمتر عبر إطارات ثابتة دون أي ترحيل للأسطر.
+                </p>
+            </div>
+
             <div id="opts-txt" class="format-specific-options hidden">
                 <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--color-text);" data-i18n="export.txtSettings">إعدادات ملفات الـ TXT:</div>
                 <div style="display: flex; gap: 10px; align-items: center; font-size: 13px;">
@@ -229,11 +246,16 @@
 
             function updateFormatOptionsVisibility() {
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
+                const optsDocx = document.getElementById('opts-docx');
                 const optsTxt = document.getElementById('opts-txt');
                 const optsEpub = document.getElementById('opts-epub');
+                if (optsDocx) optsDocx.classList.toggle('hidden', !formats.includes('docx'));
                 if (optsTxt) optsTxt.classList.toggle('hidden', !formats.includes('txt'));
                 if (optsEpub) optsEpub.classList.toggle('hidden', !(formats.includes('html') || formats.includes('epub3')));
             }
+
+            // Initialise format-option panel visibility to match the pre-checked DOCX card
+            updateFormatOptionsVisibility();
 
             document.getElementById('execute-export-btn')?.addEventListener('click', async () => {
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
@@ -250,8 +272,10 @@
                 btn.textContent = window.AppI18n ? window.AppI18n.t('export.exporting') : '⏳ جاري التصدير...';
 
                 try {
+                    const docxLayout = document.querySelector('input[name="exp-docx-layout"]:checked')?.value || 'flowing';
                     const options = {
-                        table_sep: document.getElementById('exp-table-sep')?.value || '\t'
+                        table_sep: document.getElementById('exp-table-sep')?.value || '\t',
+                        layout_mode: docxLayout
                     };
                     const res = await window.pywebview.api.export_project(currentProject.id, formats, indices, options);
                     if (res === null) {

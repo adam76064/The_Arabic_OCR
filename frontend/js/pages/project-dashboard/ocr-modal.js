@@ -46,11 +46,13 @@ function setupPaddleModal() {
         const glensSubOpts = document.getElementById('glens-sub-options');
         const locroSubOpts = document.getElementById('locro-sub-options');
         const llmSubOpts = document.getElementById('llm-sub-options');
+        const digitalSubOpts = document.getElementById('digital-sub-options');
         const startBtn = document.getElementById('start-ocr-btn');
         
         if (glensSubOpts) glensSubOpts.classList.add('hidden');
         if (locroSubOpts) locroSubOpts.classList.add('hidden');
         if (llmSubOpts) llmSubOpts.classList.add('hidden');
+        if (digitalSubOpts) digitalSubOpts.classList.add('hidden');
 
         if (e.target.value === 'glens') {
             if (glensSubOpts) glensSubOpts.classList.remove('hidden');
@@ -62,6 +64,9 @@ function setupPaddleModal() {
             if (llmSubOpts) llmSubOpts.classList.remove('hidden');
             startBtn.disabled = false;
             loadLLMSettings();
+        } else if (e.target.value === 'digital') {
+            if (digitalSubOpts) digitalSubOpts.classList.remove('hidden');
+            startBtn.disabled = false;
         } else {
             if (paddleTrialsLeft <= 0) {
                 startBtn.disabled = true;
@@ -77,6 +82,60 @@ function setupPaddleModal() {
             customFields.classList.remove('hidden');
         } else {
             customFields.classList.add('hidden');
+        }
+    });
+
+    // Digital Triage Probe button handler
+    document.getElementById('btn-probe-digital')?.addEventListener('click', async () => {
+        const btn = document.getElementById('btn-probe-digital');
+        const resBox = document.getElementById('digital-probe-result');
+        const summaryEl = document.getElementById('digital-probe-summary');
+        const chipsEl = document.getElementById('digital-probe-chips');
+        const pid = (typeof currentProjectId !== 'undefined' && currentProjectId) ? currentProjectId : currentProject?.id;
+        if (!btn || !pid) return;
+
+        const rangeMode = document.querySelector('input[name="ocr-range"]:checked')?.value || 'all';
+        let pageIndices = null;
+        if (rangeMode === 'selected') {
+            const start = parseInt(document.getElementById('ocr-start-page').value) || 1;
+            const end = parseInt(document.getElementById('ocr-end-page').value) || currentProject?.pages?.length || 1;
+            if (window.selectedBatchIndices && window.selectedBatchIndices.length > 0) {
+                pageIndices = window.selectedBatchIndices;
+            } else {
+                pageIndices = [];
+                for (let i = start - 1; i <= end - 1; i++) pageIndices.push(i);
+            }
+        }
+
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = window.AppI18n ? window.AppI18n.t('ocr.probing') : '⏳ جاري الفحص...';
+
+        try {
+            const res = await window.pywebview.api.probe_digital_pages(pid, pageIndices);
+            if (res && res.ok && res.pages) {
+                resBox.classList.remove('hidden');
+                const digitalPages = res.pages.filter(p => p.is_digital);
+                const scannedPages = res.pages.filter(p => !p.is_digital);
+
+                summaryEl.innerHTML = window.AppI18n
+                    ? window.AppI18n.t('ocr.probeResultSummary', { digital: digitalPages.length, scanned: scannedPages.length })
+                    : `نتيجة الفحص: ${digitalPages.length} صفحة رقمية (استخراج 100%) | ${scannedPages.length} صفحة مصورة (تحتاج OCR)`;
+
+                chipsEl.innerHTML = res.pages.map(p => {
+                    const icon = p.is_digital ? '🟢' : '🟡';
+                    const title = p.is_digital ? 'صفحة رقمية جاهزة للاستخراج' : (p.reason || 'صفحة مصورة');
+                    return `<span title="${title}" style="display:inline-flex; align-items:center; gap:2px; font-size:11px; padding:2px 6px; border-radius:3px; background:${p.is_digital ? 'rgba(39,174,96,0.1)' : 'rgba(243,156,18,0.1)'}; color:${p.is_digital ? '#27ae60' : '#d68910'}; font-weight:600;">${icon} ص${p.page_number}</span>`;
+                }).join('');
+            } else {
+                alert((window.AppI18n ? window.AppI18n.t('dashboard.pythonError') : 'خطأ: ') + (res?.error || ''));
+            }
+        } catch (err) {
+            console.error('Probe failed', err);
+            alert('فشل الفحص: ' + err);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
         }
     });
 

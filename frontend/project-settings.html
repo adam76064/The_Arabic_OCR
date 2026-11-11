@@ -395,6 +395,25 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Storage Modularization Card -->
+                <div class="settings-card" style="margin-top: 20px;">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" data-icon="settings"></div>
+                        <div class="settings-card-title" data-i18n="ps.storageOptimization">تحسين أداء التخزين وتجزئة البيانات</div>
+                    </div>
+                    <div class="settings-card-desc" data-i18n="ps.storageOptimizationHint">
+                        تفريغ وتجزئة بيانات OCR من ملف المشروع إلى ملفات مستقلة لكل صفحة لتسريع فتح المشروع وتقليص الحجم.
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+                        <div id="storage-status-info" style="font-size: 12px; color: var(--color-text-secondary);">
+                            يمكنك ضغط وهيكلة بيانات المشروع إذا كان حجمه كبيراً لتسريع التحميل.
+                        </div>
+                        <button type="button" id="btn-migrate-storage" class="btn-secondary" style="font-size: 13px; padding: 8px 16px;">
+                            <span data-i18n="ps.btnMigrateStorage">⚡ ضغط وتجزئة ملف المشروع الآن</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- ════ TAB 2: OCR & TEXT PROCESSING RULES ════ -->

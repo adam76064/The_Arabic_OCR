@@ -212,6 +212,12 @@ function renderPagesTable() {
         const isOcred = page.ocr_data && page.ocr_data.length > 0;
         const allBlocksReviewed = isOcred && page.ocr_data.every(b => b.category === 'Picture' || b.reviewed === true);
         const isReviewed = (page.status === 'reviewed' || allBlocksReviewed) && page.status !== 'pending' && page.status !== 'unreviewed';
+        const isDigital = !!page.is_digital;
+        const digitalBadge = isOcred
+            ? (isDigital
+                ? `<span title="${dashboardText('dashboard.isDigital')}" style="font-size: 10px; background: rgba(39,174,96,0.12); color: #27ae60; border: 1px solid rgba(39,174,96,0.3); border-radius: 4px; padding: 2px 5px; font-weight: 700; white-space: nowrap;">🟢 ${dashboardText('dashboard.isDigital')}</span>`
+                : `<span title="${dashboardText('dashboard.isScanned')}" style="font-size: 10px; background: rgba(243,156,18,0.12); color: #d68910; border: 1px solid rgba(243,156,18,0.3); border-radius: 4px; padding: 2px 5px; font-weight: 700; white-space: nowrap;">🟡 ${dashboardText('dashboard.isScanned')}</span>`)
+            : '';
         const pageNum = index + 1;
         const isChecked = selectedPageIndices.has(index);
 
@@ -231,9 +237,12 @@ function renderPagesTable() {
                 <td><input type="checkbox" class="page-checkbox" data-index="${index}" ${isChecked ? 'checked' : ''} style="accent-color: var(--color-primary);"></td>
                 <td><strong>${pageNum}</strong></td>
                 <td>
-                    <span class="status-badge ${isOcred ? 'parsed' : 'unparsed'}">
-                        ${isOcred ? iconBadge('check', dashboardText('dashboard.extracted')) : iconBadge('clock', dashboardText('dashboard.waitingOcr'))}
-                    </span>
+                    <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                        <span class="status-badge ${isOcred ? 'parsed' : 'unparsed'}">
+                            ${isOcred ? iconBadge('check', dashboardText('dashboard.extracted')) : iconBadge('clock', dashboardText('dashboard.waitingOcr'))}
+                        </span>
+                        ${digitalBadge}
+                    </div>
                 </td>
                 <td>
                     <span class="status-badge" style="border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: bold; ${isOcred ? 'background: var(--color-primary-light); color: var(--color-primary);' : 'background: var(--color-bg-alt); color: var(--color-text-muted);'}">
@@ -273,10 +282,11 @@ function renderPagesTable() {
                     <canvas class="page-thumb-canvas" data-index="${index}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
                 </div>
                 <div class="page-card-footer">
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 6px; flex-wrap: wrap;">
                         <span class="status-badge ${isOcred ? 'parsed' : 'unparsed'}" style="font-size: 10px; padding: 2px 6px;">
                             ${isOcred ? iconBadge('check', 'OCR') : iconBadge('clock', 'OCR')}
                         </span>
+                        ${isOcred ? digitalBadge : ''}
                         <span class="status-badge ${isReviewed ? 'completed' : 'pending'}" style="font-size: 10px; padding: 2px 6px;">
                             ${isReviewed ? iconBadge('check', dashboardText('dashboard.reviewed')) : iconBadge('clock', dashboardText('dashboard.waitingReview'))}
                         </span>

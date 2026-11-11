@@ -105,7 +105,32 @@ function setupEventBindings() {
             document.getElementById('ocr-progress-fill').style.background = '#3498db';
             progressModal.classList.remove('hidden');
 
-            if (tool === 'glens') {
+            // Update progress modal title to reflect the active tool
+            const progressTitle = document.getElementById('ocr-progress-title');
+            if (progressTitle) {
+                if (tool === 'digital') {
+                    progressTitle.textContent = window.AppI18n ? window.AppI18n.t('ocr.digitalProgress') : 'جاري الاستخراج الرقمي المباشر...';
+                } else {
+                    progressTitle.textContent = window.AppI18n ? window.AppI18n.t('ocr.progressTitle') : 'جاري معالجة OCR...';
+                }
+            }
+
+            if (tool === 'digital') {
+                const response = await window.pywebview.api.trigger_digital_extraction(
+                    currentProjectId, start - 1, end - 1, pageIndices
+                );
+                if (!response.ok) {
+                    if (window.onPaddleProgress) window.onPaddleProgress({ stage: 'error', message: response.error });
+                    else { alert(dashboardMessage('dashboard.pythonError') + response.error); progressModal.classList.add('hidden'); }
+                } else {
+                    currentProject = await window.pywebview.api.load_project(currentProjectId);
+                    renderPagesTable();
+                    renderDashboardStats();
+                    if (window.AppNotifications) {
+                        window.AppNotifications.show(response.message || 'اكتمل الاستخراج الرقمي بنجاح!', 'success');
+                    }
+                }
+            } else if (tool === 'glens') {
                 const glensMode = document.querySelector('input[name="glens-mode"]:checked').value;
                 
                 const response = await window.pywebview.api.trigger_google_lens_ocr(
