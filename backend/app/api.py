@@ -5,6 +5,7 @@ Preserves same public method names so frontend JS continues to work.
 """
 import os
 import sys
+import re
 import getpass
 import tempfile
 import shutil
@@ -34,7 +35,7 @@ from ..core.ocr.llm import LLMOCRHandler
 from ..core.text import ArabicTextCleaner
 from ..core.quran import QuranHandler
 from ..table.handler import TableHandler
-from ..export import export_json, export_txt, export_docx, export_docx_exact, export_html, export_epub3
+from ..export import export_json, export_txt, export_docx, export_docx_exact, export_html, export_epub3, export_pdf
 from ..core.digital_extractor import DigitalPDFExtractor
 from ..core.verification import IntegrityVerifier
 from ..collab.discovery import LANDiscovery
@@ -1112,6 +1113,7 @@ class Api:
                 'html': ('HTML files (*.html)', 'All files (*.*)'),
                 'epub3': ('EPUB files (*.epub)', 'All files (*.*)'),
                 'epub': ('EPUB files (*.epub)', 'All files (*.*)'),
+                'pdf': ('PDF files (*.pdf)', 'All files (*.*)'),
             }
 
             # Normalize formats into a list
@@ -1189,7 +1191,130 @@ class Api:
             return export_html(project, page_indices, output_path, opts)
         elif fmt == 'epub3' or fmt == 'epub':
             return export_epub3(project, page_indices, output_path, opts)
+        elif fmt == 'pdf':
+            return export_pdf(project, page_indices, output_path, opts)
         return output_path
+
+    # --- Project Search & Replace (F-1) ---
+    def search_project(self, project_id, query, is_regex=False, page_indices=None):
+        """Global search across all pages of a project (F-1)."""
+        try:
+            if not query:
+                return []
+            project = self.project_manager.load_project_with_ocr(project_id)
+            if not project:
+                return []
+            pages = project.get("pages", [])
+            if not pages:
+                # Fallback: check if page files exist directly in pages/ directory
+                pages_dir = os.path.join(self.project_manager.projects_dir, project_id, "pages")
+                if os.path.isdir(pages_dir):
+                    found_indices = [
+                        int(f[5:-5]) for f in os.listdir(pages_dir)
+                        if f.startswith("page_") and f.endswith(".json") and f[5:-5].isdigit()
+                    ]
+                    if found_indices:
+                        max_idx = max(found_indices)
+                        pages = [{"ocr_data": self.project_manager.load_page_ocr(project_id, i)} for i in range(max_idx + 1)]
+                        project["pages"] = pages
+
+            results = []
+            target_indices = page_indices if page_indices is not None else list(range(len(pages)))
+
+            pattern = re.compile(query if is_regex else re.escape(query), re.IGNORECASE)
+
+            for p_idx in target_indices:
+                if p_idx >= len(pages):
+                    continue
+                p = pages[p_idx]
+                for b_idx, block in enumerate(p.get("ocr_data", []) or []):
+                    text = block.get("text", "")
+                    if not text:
+                        continue
+                    for match in pattern.finditer(text):
+                        start, end = match.span()
+                        context_start = max(0, start - 30)
+                        context_end = min(len(text), end + 30)
+                        snippet = text[context_start:context_end].replace("\n", " ")
+                        results.append({
+                            "page_index": p_idx,
+                            "block_index": b_idx,
+                            "block_order": block.get("order", b_idx + 1),
+                            "category": block.get("category", "Text"),
+                            "match_start": start,
+                            "match_end": end,
+                            "context": snippet,
+                        })
+            return results
+        except Exception as e:
+            print(f"[API] search_project error: {e}")
+            return []
+
+    def replace_in_project(self, project_id, find_text, replace_text, is_regex=False, page_indices=None):
+        """Global find and replace across all pages of a project (F-1)."""
+        try:
+            if not find_text:
+                return {"ok": False, "error": "Find text cannot be empty."}
+            project = self.project_manager.load_project_with_ocr(project_id)
+            if not project:
+                return {"ok": False, "error": "Project not found."}
+
+            pages = project.get("pages", [])
+            if not pages:
+                pages_dir = os.path.join(self.project_manager.projects_dir, project_id, "pages")
+                if os.path.isdir(pages_dir):
+                    found_indices = [
+                        int(f[5:-5]) for f in os.listdir(pages_dir)
+                        if f.startswith("page_") and f.endswith(".json") and f[5:-5].isdigit()
+                    ]
+                    if found_indices:
+                        max_idx = max(found_indices)
+                        pages = [{"ocr_data": self.project_manager.load_page_ocr(project_id, i)} for i in range(max_idx + 1)]
+                        project["pages"] = pages
+
+            target_indices = page_indices if page_indices is not None else list(range(len(pages)))
+            pattern = re.compile(find_text if is_regex else re.escape(find_text))
+
+            total_replacements = 0
+            modified_pages = []
+
+            for p_idx in target_indices:
+                if p_idx >= len(pages):
+                    continue
+                p = pages[p_idx]
+                ocr_data = p.get("ocr_data", []) or []
+                page_changed = False
+
+                for block in ocr_data:
+                    text = block.get("text", "")
+                    if not text:
+                        continue
+                    new_text, count = pattern.subn(replace_text, text)
+                    if count > 0:
+                        block["text"] = new_text
+                        total_replacements += count
+                        page_changed = True
+
+                if page_changed:
+                    self.project_manager.save_page_ocr(project_id, p_idx, ocr_data)
+                    modified_pages.append(p_idx)
+
+            return {
+                "ok": True,
+                "replacement_count": total_replacements,
+                "modified_pages": modified_pages,
+            }
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    # --- Project Version Snapshots (F-5) ---
+    def list_page_snapshots(self, project_id, page_index):
+        """Lists historical snapshots for a page (F-5)."""
+        return self.project_manager.list_page_snapshots(project_id, page_index)
+
+    def restore_page_snapshot(self, project_id, page_index, filename):
+        """Restores a page from a snapshot file (F-5)."""
+        return self.project_manager.restore_page_snapshot(project_id, page_index, filename)
 
     # --- LAN / Collaboration ---
     def start_lan_sharing(self, project_id, lan_password=None):

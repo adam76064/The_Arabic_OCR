@@ -232,21 +232,23 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Floating Zoom / Canvas Controls ────────────────────────────────────── */
+/* ── Floating Zoom / Canvas Controls (Relocated to Top-End to Prevent CTA Collision) ── */
 .canvas-floating-controls {
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 16px;
+  inset-inline-end: 16px;
+  bottom: auto;
+  left: auto;
+  transform: none;
   display: flex;
   align-items: center;
   gap: 4px;
-  background: var(--color-sidebar);
+  background: var(--color-surface);
   backdrop-filter: blur(8px);
   padding: 4px 8px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-strong);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   z-index: 10;
 }
 

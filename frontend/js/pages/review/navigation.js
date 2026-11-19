@@ -11,6 +11,17 @@ function navigatePage(dir) {
     selectBlock(-1);
     activeEditingIndex = -1;
     updateReviewPanel();
+    if (typeof updateFilmstripHighlight === 'function') updateFilmstripHighlight();
+}
+
+function goToPage(idx) {
+    if (!currentProject) return;
+    if (idx < 0 || idx >= currentProject.pages.length) return;
+    currentPageIndex = idx;
+    selectBlock(-1);
+    activeEditingIndex = -1;
+    updateReviewPanel();
+    if (typeof updateFilmstripHighlight === 'function') updateFilmstripHighlight();
 }
 
 function moveFocusAndReview(dir) {

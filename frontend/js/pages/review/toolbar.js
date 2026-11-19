@@ -41,6 +41,7 @@ function setupToolbar() {
         const btn = e.currentTarget;
         btn.disabled = true;
         await saveBlockSilently();
+        window.markPageDirty(false);
         if (typeof showNotif === 'function') showNotif(window.AppI18n.t('review.pageSaved'), 'success');
         setTimeout(() => btn.disabled = false, 500);
     });
@@ -149,6 +150,153 @@ function setupToolbar() {
             btn.disabled = false;
         }
     });
+
+    // ── Filmstrip Navigator (UI-R4 / G-4) ──
+    const toggleFilmstripBtn = document.getElementById('toggle-filmstrip-btn');
+    const filmstrip = document.getElementById('review-filmstrip');
+    if (toggleFilmstripBtn && filmstrip) {
+        toggleFilmstripBtn.addEventListener('click', () => {
+            filmstrip.classList.toggle('hidden');
+        });
+    }
+
+    // ── Search & Replace Bar (F-1 / UI-R5) ──
+    const searchDrawer = document.getElementById('project-search-bar');
+    const openSearchBtn = document.getElementById('btn-open-search');
+    const closeSearchBtn = document.getElementById('btn-close-search');
+    const searchInput = document.getElementById('proj-search-input');
+    const replaceInput = document.getElementById('proj-replace-input');
+    const searchCountEl = document.getElementById('search-results-count');
+
+    const toggleSearch = () => {
+        if (!searchDrawer) return;
+        const isHidden = searchDrawer.classList.toggle('hidden');
+        if (!isHidden && searchInput) {
+            searchInput.focus();
+            searchInput.select();
+        }
+    };
+
+    openSearchBtn?.addEventListener('click', toggleSearch);
+    closeSearchBtn?.addEventListener('click', () => searchDrawer?.classList.add('hidden'));
+
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'f' || e.key === 'F')) {
+            e.preventDefault();
+            toggleSearch();
+        }
+    });
+
+    document.getElementById('btn-do-search')?.addEventListener('click', async () => {
+        const query = searchInput?.value?.trim();
+        if (!query || !currentProject) return;
+        const isRegex = document.getElementById('search-opt-regex')?.checked || false;
+        try {
+            const api = window.AppApi || window.pywebview?.api;
+            let results = [];
+            if (api?.search_project) {
+                results = await api.search_project(currentProject.id, query, isRegex);
+            } else {
+                // Client-side search across loaded project pages
+                currentProject.pages.forEach((p, pIdx) => {
+                    (p.ocr_data || []).forEach((b, bIdx) => {
+                        const txt = b.text || '';
+                        if (txt.includes(query)) {
+                            results.push({ page_index: pIdx, block_index: bIdx });
+                        }
+                    });
+                });
+            }
+            if (searchCountEl) searchCountEl.textContent = `${results.length} نتيجة`;
+            if (results.length > 0) {
+                // Navigate to first match
+                window.goToPage?.(results[0].page_index);
+            }
+        } catch (err) {
+            console.error('Search error', err);
+        }
+    });
+
+    document.getElementById('btn-do-replace-all')?.addEventListener('click', async () => {
+        const findText = searchInput?.value?.trim();
+        const repText = replaceInput?.value ?? '';
+        if (!findText || !currentProject) return;
+        const isRegex = document.getElementById('search-opt-regex')?.checked || false;
+        try {
+            const api = window.AppApi || window.pywebview?.api;
+            if (api?.replace_in_project) {
+                const res = await api.replace_in_project(currentProject.id, findText, repText, isRegex);
+                if (res?.ok) {
+                    if (searchCountEl) searchCountEl.textContent = `تم استبدال ${res.replacement_count || 0}`;
+                    if (typeof updateReviewPanel === 'function') updateReviewPanel();
+                }
+            } else {
+                let replaced = 0;
+                currentProject.pages.forEach(p => {
+                    (p.ocr_data || []).forEach(b => {
+                        if (b.text && b.text.includes(findText)) {
+                            b.text = b.text.replaceAll(findText, repText);
+                            replaced++;
+                        }
+                    });
+                });
+                if (searchCountEl) searchCountEl.textContent = `تم استبدال ${replaced}`;
+                window.markPageDirty(true);
+                if (typeof updateReviewPanel === 'function') updateReviewPanel();
+            }
+        } catch (err) {
+            console.error('Replace error', err);
+        }
+    });
 }
+
+function markPageDirty(dirty = true) {
+    const pill = document.getElementById('save-status-pill');
+    const txt = document.getElementById('save-status-text');
+    if (!pill || !txt) return;
+    if (dirty) {
+        pill.className = 'save-status-pill dirty';
+        txt.textContent = '● غير محفوظ (Ctrl+S)';
+    } else {
+        pill.className = 'save-status-pill saved';
+        txt.textContent = '✓ تم الحفظ';
+    }
+}
+window.markPageDirty = markPageDirty;
+
+function renderReviewFilmstrip() {
+    const area = document.getElementById('filmstrip-scroll-area');
+    if (!area || !currentProject?.pages) return;
+    area.innerHTML = '';
+    currentProject.pages.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = `filmstrip-item ${idx === currentPageIndex ? 'current' : ''}`;
+        item.dataset.index = idx;
+        const thumbUrl = window.__appDataPath 
+            ? `file:///${window.__appDataPath}/projects/${currentProject.id}/thumbs/${p.image_path}` 
+            : `projects/${currentProject.id}/thumbs/${p.image_path}`;
+        const fallbackUrl = window.__appDataPath 
+            ? `file:///${window.__appDataPath}/projects/${currentProject.id}/images/${p.image_path}` 
+            : `projects/${currentProject.id}/images/${p.image_path}`;
+
+        item.innerHTML = `
+            <img src="${thumbUrl}" alt="P${idx+1}" loading="lazy" onerror="this.src='${fallbackUrl}';">
+            <span class="filmstrip-badge">${idx + 1}</span>
+        `;
+        item.addEventListener('click', () => {
+            window.goToPage?.(idx);
+        });
+        area.appendChild(item);
+    });
+}
+window.renderReviewFilmstrip = renderReviewFilmstrip;
+
+function updateFilmstripHighlight() {
+    document.querySelectorAll('.filmstrip-item').forEach(item => {
+        const idx = parseInt(item.dataset.index, 10);
+        item.classList.toggle('current', idx === currentPageIndex);
+    });
+}
+window.updateFilmstripHighlight = updateFilmstripHighlight;
 
 window.setupToolbar = setupToolbar;

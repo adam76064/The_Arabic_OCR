@@ -9,21 +9,39 @@
     return !!(window.pywebview && window.pywebview.api && typeof window.pywebview.api.get_projects === 'function');
   }
 
-  function whenReady() {
+  function whenReady(timeoutMs = 1200) {
     if (readyPromise) return readyPromise;
-    readyPromise = new Promise((resolve) => {
+    readyPromise = new Promise((resolve, reject) => {
       if (isApiReady()) {
         resolve(window.pywebview.api);
         return;
       }
+      let settled = false;
+      const timer = setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          clearInterval(interval);
+          reject(new Error('pywebview API initialization timed out'));
+        }
+      }, timeoutMs);
+
       window.addEventListener('pywebviewready', () => {
-        resolve(window.pywebview.api);
+        if (!settled) {
+          settled = true;
+          clearTimeout(timer);
+          clearInterval(interval);
+          resolve(window.pywebview.api);
+        }
       }, { once: true });
       // fallback poll in case event missed
       const interval = setInterval(() => {
         if (isApiReady()) {
-          clearInterval(interval);
-          resolve(window.pywebview.api);
+          if (!settled) {
+            settled = true;
+            clearTimeout(timer);
+            clearInterval(interval);
+            resolve(window.pywebview.api);
+          }
         }
       }, 100);
     });
@@ -54,6 +72,10 @@
     triggerDigitalExtraction: (pid, start, end, indices) => call('trigger_digital_extraction', pid, start, end, indices),
     auditProjectIntegrity: (pid, indices, docxPath, options) => call('audit_project_integrity', pid, indices, docxPath, options),
     migrateProjectOcr: (pid) => call('migrate_project_ocr_to_pages', pid),
+    searchProject: (pid, q, regex, indices) => call('search_project', pid, q, regex, indices),
+    replaceInProject: (pid, find, rep, regex, indices) => call('replace_in_project', pid, find, rep, regex, indices),
+    listPageSnapshots: (pid, idx) => call('list_page_snapshots', pid, idx),
+    restorePageSnapshot: (pid, idx, fn) => call('restore_page_snapshot', pid, idx, fn),
     // ... add as needed fallback generic call covers rest
   };
 

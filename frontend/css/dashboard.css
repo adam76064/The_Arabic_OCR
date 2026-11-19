@@ -1,0 +1,306 @@
+/* dashboard.css — Dedicated styles for Project Dashboard screen */
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.dashboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  color: var(--color-text);
+  margin: 0;
+  font-weight: 800;
+}
+
+.dashboard-subtitle {
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.dashboard-actions-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── Stepper Overhaul (Zero Clipping, Dynamic Done States) ── */
+.pipeline-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-xs);
+  width: 100%;
+  box-sizing: border-box;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: all var(--trans-fast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pipeline-step:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.pipeline-step.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 700;
+  border: 1px solid var(--color-primary-border);
+}
+
+.pipeline-step.step-done {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.pipeline-step.step-done .step-num {
+  background: var(--color-success);
+  color: #ffffff;
+}
+
+.pipeline-step.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pipeline-step .step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-bg-muted);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pipeline-step.active .step-num {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.pipeline-arrow {
+  color: var(--color-text-faint);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Local Collaboration Panel (Collapsible / Compact) ── */
+#dashboard-coop-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.coop-status-text {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coop-members-list {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* ── Controls Row (View Switcher, Bulk Checkbox) ── */
+.dashboard-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.dashboard-select-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--color-text);
+  user-select: none;
+}
+
+.dashboard-view-mode-bar {
+  display: flex;
+  gap: 4px;
+  background: var(--color-bg-muted);
+  padding: 3px;
+  border-radius: var(--radius-md);
+}
+
+.dashboard-view-mode-bar .btn-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Thumbnail Status Overlay & Badges (UI-D4) ── */
+.page-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-border);
+}
+
+.page-card-thumb-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--color-canvas);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.page-card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+
+/* Status Strip on bottom edge of thumbnail */
+.page-status-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 5;
+}
+
+.page-status-strip.status-raw { background: var(--color-border-strong); }
+.page-status-strip.status-ocr { background: var(--color-warning); }
+.page-status-strip.status-reviewed { background: var(--color-success); }
+.page-status-strip.status-error { background: var(--color-danger); }
+
+/* Status pill badge on top of card */
+.page-status-badge {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-size: 10.5px;
+  font-weight: 700;
+  z-index: 5;
+  box-shadow: var(--shadow-xs);
+  backdrop-filter: blur(4px);
+}
+
+.page-status-badge.status-raw {
+  background: rgba(148, 163, 184, 0.85);
+  color: #ffffff;
+}
+
+.page-status-badge.status-ocr {
+  background: rgba(217, 119, 6, 0.9);
+  color: #ffffff;
+}
+
+.page-status-badge.status-reviewed {
+  background: rgba(22, 163, 74, 0.9);
+  color: #ffffff;
+}
+
+.page-status-badge.status-error {
+  background: rgba(220, 38, 38, 0.9);
+  color: #ffffff;
+}
+
+/* ── Shimmer Skeleton for Stats (UI-D6 / UI-X4) ── */
+.stats-skeleton-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stats-skeleton-card {
+  height: 80px;
+  background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-bg-muted) 50%, var(--color-surface) 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}

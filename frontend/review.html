@@ -12,52 +12,99 @@
 <body class="review-page">
 
     <main id="main-content">
-        <div class="toolbar">
-            <div class="page-nav">
-                <button id="prev-page" class="nav-btn" data-i18n-title="review.previous" title="السابق">‹</button>
-                <span class="page-indicator">
-                    <span data-i18n="review.bookPage">صفحة الكتاب:</span> <strong id="logical-page-display">1</strong>
-                    &nbsp;|&nbsp; PDF:
-                    <input type="number" id="current-page-num" value="1">
-                    <span data-i18n="review.of">من</span> <span id="total-pages">1</span>
-                </span>
-                <button id="next-page" class="nav-btn" data-i18n-title="review.next" title="التالي">›</button>
+        <!-- Search & Replace Drawer (F-1 / UI-R5) -->
+        <div id="project-search-bar" class="project-search-drawer hidden">
+            <div class="search-drawer-inner">
+                <div class="search-input-group">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="proj-search-input" placeholder="بحث في صفحات المشروع (Ctrl+F)..." dir="auto">
+                    <input type="text" id="proj-replace-input" placeholder="استبدال بـ..." dir="auto">
+                </div>
+                <div class="search-actions-group">
+                    <label class="search-checkbox-label" style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                        <input type="checkbox" id="search-opt-regex">
+                        <span>Regex</span>
+                    </label>
+                    <button id="btn-do-search" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">بحث</button>
+                    <button id="btn-do-replace" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">استبدال</button>
+                    <button id="btn-do-replace-all" class="btn-primary" style="padding: 4px 10px; font-size: 12px;">استبدال الكل</button>
+                    <span id="search-results-count" class="search-count-label"></span>
+                    <button id="btn-close-search" class="btn-icon" style="width: 24px; height: 24px; font-size: 14px;">✕</button>
+                </div>
             </div>
+        </div>
 
-            <div id="toolbar-thumb-wrapper" data-i18n-title="review.thumb" title="معاينة الصفحة — انقر للتكبير">
-                <img id="thumb-image" src="" alt="thumbnail">
-                <canvas id="thumb-canvas"></canvas>
-                <div id="toolbar-thumb-popup">
-                    <img id="thumb-popup-image" src="" alt="">
-                    <canvas id="thumb-popup-canvas"></canvas>
+        <div class="review-toolbar-group">
+            <!-- Band 1: Navigation & Page Status -->
+            <div class="toolbar toolbar-nav-band">
+                <div class="page-nav">
+                    <button id="prev-page" class="nav-btn" data-i18n-title="review.previous" title="السابق">‹</button>
+                    <span class="page-indicator">
+                        <span data-i18n="review.bookPage">صفحة الكتاب:</span> <strong id="logical-page-display">1</strong>
+                        &nbsp;|&nbsp; PDF:
+                        <input type="number" id="current-page-num" value="1">
+                        <span data-i18n="review.of">من</span> <span id="total-pages">1</span>
+                    </span>
+                    <button id="next-page" class="nav-btn" data-i18n-title="review.next" title="التالي">›</button>
+                </div>
+
+                <div id="toolbar-thumb-wrapper" data-i18n-title="review.thumb" title="معاينة الصفحة — انقر للتكبير">
+                    <img id="thumb-image" src="" alt="thumbnail">
+                    <canvas id="thumb-canvas"></canvas>
+                    <div id="toolbar-thumb-popup">
+                        <img id="thumb-popup-image" src="" alt="">
+                        <canvas id="thumb-popup-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Unsaved Changes Status Pill (UI-R2) -->
+                <div id="save-status-pill" class="save-status-pill saved" title="حالة الحفظ">
+                    <span class="save-status-dot">●</span>
+                    <span id="save-status-text">تم الحفظ</span>
+                </div>
+
+                <div style="margin-inline-start: auto; display: flex; align-items: center; gap: 8px;">
+                    <div class="page-nav" data-i18n-title="review.fontZoom" title="تكبير/تصغير حجم خط عرض الكتل النصية">
+                        <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontDown" title="تصغير حجم عرض النص">A-</button>
+                        <span class="page-indicator" id="block-font-value">100%</span>
+                        <button id="block-font-increase" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontUp" title="تكبير حجم عرض النص">A+</button>
+                    </div>
+
+                    <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" data-i18n-title="nav.themeToggle" title="الوضع الليلي / النهاري" data-icon="moon"></button>
                 </div>
             </div>
 
-            <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo"></button>
-            <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo"></button>
-            <button id="save-page" class="btn-icon" data-i18n-title="review.save" title="حفظ التعديلات (Ctrl+S)" data-icon="save"></button>
-            <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات ككتلة واحدة قابلة للتحرير" data-icon="preview" data-i18n="review.text">عرض النص</button>
-            <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard" data-i18n="review.dashboard">لوحة</button>
-            <button id="integrity-audit-btn" class="btn-secondary" title="فحص سلامة النص والتطابق اللغوي التام مع أصل الـ PDF" data-icon="verify" data-i18n="review.integrityAudit">سلامة النص</button>
-
-            <div class="page-nav" data-i18n-title="review.fontZoom" title="تكبير/تصغير حجم خط عرض الكتل النصية (لا يغيّر حجم الخط الفعلي في التصدير)">
-                <button id="block-font-decrease" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontDown" title="تصغير حجم عرض النص">A-</button>
-                <span class="page-indicator" id="block-font-value">100%</span>
-                <button id="block-font-increase" class="nav-btn" style="font-size:12px;" data-i18n-title="review.fontUp" title="تكبير حجم عرض النص">A+</button>
-            </div>
-
-            <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" data-i18n-title="nav.themeToggle" title="الوضع الليلي / النهاري" data-icon="moon"></button>
-
-            <div class="page-nav" style="position: relative; margin-inline-start: 8px;">
-                <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
-                <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong); padding: 12px; border-radius: var(--radius-md); z-index: 9999; box-shadow: var(--shadow-xl); width: max-content; display: flex; flex-direction: column; gap: 8px; color: var(--color-text);">
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords">تتبع الكلمات</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
-                    <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
+            <!-- Band 2: Editing, Tools & Verification -->
+            <div class="toolbar toolbar-action-band">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo"></button>
+                    <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo"></button>
+                    <button id="save-page" class="btn-primary" style="padding: 5px 12px; font-size: 13px; font-weight: 700;" data-i18n-title="review.save" title="حفظ التعديلات (Ctrl+S)" data-icon="save">حفظ (Ctrl+S)</button>
                 </div>
-            </div>
 
+                <div class="toolbar-sep"></div>
+
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button id="btn-open-search" class="btn-secondary" title="البحث والاستبدال (Ctrl+F)" data-icon="search">بحث واستبدال</button>
+                    <button id="text-preview-btn" class="btn-secondary" title="عرض النص الكامل لجميع الصفحات" data-icon="preview" data-i18n="review.text">عرض النص</button>
+                    <button id="dashboard-btn" class="btn-secondary" title="عرض لوحة تقدّم المراجعة والإحصائيات" data-icon="dashboard" data-i18n="review.dashboard">لوحة</button>
+                    <button id="integrity-audit-btn" class="btn-secondary" title="فحص سلامة النص والتطابق اللغوي التام" data-icon="verify" data-i18n="review.integrityAudit">سلامة النص</button>
+                </div>
+
+                <div class="toolbar-sep"></div>
+
+                <div class="page-nav" style="position: relative;">
+                    <button id="track-settings-btn" class="btn-secondary" data-i18n-title="review.trackingTitle" title="إعدادات التتبع" data-icon="search" data-i18n="review.tracking">التتبع</button>
+                    <div id="track-settings-menu" class="hidden" style="position: absolute; top: 100%; inset-inline-end: 0; background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong); padding: 12px; border-radius: var(--radius-md); z-index: 9999; box-shadow: var(--shadow-xl); width: max-content; display: flex; flex-direction: column; gap: 8px; color: var(--color-text);">
+                        <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-cells" checked> <span data-i18n="review.trackCells">تتبع خلايا الجداول</span></label>
+                        <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-words"> <span data-i18n="review.trackWords">تتبع الكلمات</span></label>
+                        <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-lines"> <span data-i18n="review.trackLines">تتبع الأسطر (عند فشل الكلمات)</span></label>
+                        <label style="cursor: pointer;"><input type="checkbox" id="cfg-track-block"> <span data-i18n="review.trackBlock">تتبع الكتلة (الأساس)</span></label>
+                    </div>
+                </div>
+
+                <button id="toggle-filmstrip-btn" class="btn-secondary" style="margin-inline-start: auto; padding: 4px 10px; font-size: 12px;" title="تبديل شريط المصغرات"><span>المصغرات</span></button>
+            </div>
         </div>
 
         <div class="editor-container">
@@ -92,6 +139,11 @@
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Bottom Page Filmstrip Navigator (UI-R4 / G-4) -->
+        <div id="review-filmstrip" class="review-filmstrip">
+            <div id="filmstrip-scroll-area" class="filmstrip-scroll-area"></div>
         </div>
     </main>
 

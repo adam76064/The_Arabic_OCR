@@ -146,7 +146,7 @@ class ProjectManager:
             }
 
     def save_page_ocr(self, project_id, page_index, ocr_data):
-        """Save OCR data for an individual page into pages/page_{page_index}.json."""
+        """Save OCR data for an individual page into pages/page_{page_index}.json, with snapshot versioning (F-5)."""
         with self.lock:
             pages_dir = os.path.join(self.projects_dir, project_id, "pages")
             os.makedirs(pages_dir, exist_ok=True)
@@ -154,6 +154,68 @@ class ProjectManager:
             temp_path = path + ".tmp"
             dump_json(ocr_data, temp_path, indent=2)
             os.replace(temp_path, path)
+
+            # Version History Snapshots (keep last 20 snapshots per page)
+            try:
+                history_dir = os.path.join(pages_dir, "history")
+                os.makedirs(history_dir, exist_ok=True)
+                import time
+                ts = int(time.time() * 1000)
+                snap_path = os.path.join(history_dir, f"page_{page_index}_{ts}.json")
+                dump_json(ocr_data, snap_path, indent=2)
+
+                # Prune oldest if > 20 snapshots
+                prefix = f"page_{page_index}_"
+                snaps = [
+                    f for f in os.listdir(history_dir)
+                    if f.startswith(prefix) and f.endswith(".json")
+                ]
+                if len(snaps) > 20:
+                    snaps.sort()
+                    for old_snap in snaps[:-20]:
+                        try:
+                            os.remove(os.path.join(history_dir, old_snap))
+                        except Exception:
+                            pass
+            except Exception as e:
+                print(f"[Projects] Snapshot warning for page {page_index}: {e}")
+
+    def list_page_snapshots(self, project_id, page_index):
+        """Returns list of timestamped snapshots for a page: [{filename, timestamp_ms, date_str}]."""
+        with self.lock:
+            history_dir = os.path.join(self.projects_dir, project_id, "pages", "history")
+            if not os.path.exists(history_dir):
+                return []
+            prefix = f"page_{page_index}_"
+            snaps = [
+                f for f in os.listdir(history_dir)
+                if f.startswith(prefix) and f.endswith(".json")
+            ]
+            snaps.sort(reverse=True)
+            result = []
+            for s in snaps:
+                try:
+                    ts_part = s[len(prefix):-5]
+                    ts_val = int(ts_part)
+                    result.append({
+                        "filename": s,
+                        "timestamp_ms": ts_val,
+                    })
+                except Exception:
+                    continue
+            return result
+
+    def restore_page_snapshot(self, project_id, page_index, snapshot_filename):
+        """Restores page OCR data from a snapshot file."""
+        with self.lock:
+            history_dir = os.path.join(self.projects_dir, project_id, "pages", "history")
+            snap_path = os.path.join(history_dir, snapshot_filename)
+            if not os.path.exists(snap_path):
+                return {"ok": False, "error": "Snapshot file not found."}
+            data = load_json(snap_path)
+            target_path = os.path.join(self.projects_dir, project_id, "pages", f"page_{page_index}.json")
+            dump_json(data, target_path, indent=2)
+            return {"ok": True, "ocr_data": data}
 
     def load_page_ocr(self, project_id, page_index):
         """Load OCR data for a single page — checks pages/ first, falls back to project.json inline data."""

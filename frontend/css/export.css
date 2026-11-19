@@ -1,0 +1,213 @@
+/* export.css — Dedicated styles for Project Export Studio */
+
+.export-container {
+  max-width: 1040px;
+  margin: 24px auto 60px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.export-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
+}
+
+.export-title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.export-subtitle {
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.export-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--trans-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.export-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: var(--color-text);
+  font-size: var(--text-md);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Format Selection Grid (Full-width, Responsive Auto-fit) ── */
+.format-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.format-select-card {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color var(--trans-fast), background var(--trans-fast), transform var(--trans-fast), box-shadow var(--trans-fast);
+  background: var(--color-surface);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.format-select-card:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.format-select-card.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: 0 0 0 1px var(--color-primary-border);
+}
+
+.format-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.format-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.format-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 3px;
+}
+
+.format-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.format-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* ── Format-Specific Options Panels ── */
+.format-specific-options {
+  padding: 18px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border-strong);
+  margin-top: 14px;
+  box-sizing: border-box;
+}
+
+.options-heading {
+  font-weight: 700;
+  font-size: 13.5px;
+  margin-bottom: 8px;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.options-radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+/* ── Live Export Progress & Cancellation (UI-E2) ── */
+.export-progress-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.export-progress-bar-wrap {
+  width: 100%;
+  height: 12px;
+  background: var(--color-bg-muted);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: 14px 0 10px;
+}
+
+.export-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+  border-radius: var(--radius-full);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.export-progress-status-text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+/* ── Recent Exports History (UI-E4) ── */
+.recent-exports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.recent-export-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}

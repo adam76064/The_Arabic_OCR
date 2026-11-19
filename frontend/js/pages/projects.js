@@ -58,6 +58,25 @@ function filterAndDisplayProjects() {
   });
 
   tbody.innerHTML = '';
+  if (allLoadedProjects.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 48px 20px;">
+          <div style="width: 52px; height: 52px; margin: 0 auto 12px; border-radius: var(--radius-full); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+            ${window.AppIcons ? window.AppIcons.get('projects', 'width:28px;height:28px;') : '📁'}
+          </div>
+          <h3 style="margin: 0 0 6px 0; color: var(--color-text); font-size: 16px; font-weight: 700;">${window.AppI18n ? window.AppI18n.t('projects.none') : 'لا توجد مشاريع حتى الآن'}</h3>
+          <p style="color: var(--color-text-muted); font-size: 13px; margin: 0 0 16px 0;">ابدأ بإنشاء أول مشروع لك لمعالجة وتدقيق النصوص العربية</p>
+          <button type="button" class="btn-primary trigger-new-project" style="margin: 0 auto; display: inline-flex; align-items: center; gap: 6px;">
+            ${window.AppIcons ? window.AppIcons.get('plus', 'width:14px;height:14px;') : '+'}
+            <span>${window.AppI18n ? window.AppI18n.t('nav.newProject') : 'مشروع جديد'}</span>
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
   if (filtered.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--color-text-muted); padding:40px;">${window.AppI18n ? window.AppI18n.t('projects.none') : 'لا توجد مشاريع مطابقة للبحث'}</td></tr>`;
     return;
@@ -140,7 +159,18 @@ function bindTableActionButtons() {
 }
 
 async function renderProjectsTable() {
-  allLoadedProjects = (await window.pywebview.api.get_projects()) || [];
+  try {
+    if (window.AppApi && typeof window.AppApi.getProjects === 'function') {
+      allLoadedProjects = (await window.AppApi.getProjects()) || [];
+    } else if (window.pywebview?.api?.get_projects) {
+      allLoadedProjects = (await window.pywebview.api.get_projects()) || [];
+    } else {
+      allLoadedProjects = [];
+    }
+  } catch (err) {
+    console.error('Failed to load projects:', err);
+    allLoadedProjects = [];
+  }
   allLoadedProjects.sort((a,b) => (b.created_at > a.created_at ? 1 : -1));
 
   // Update counts
@@ -171,11 +201,19 @@ async function renderProjectsTable() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.AppApi && typeof window.AppApi.ready === 'function') {
-    window.AppApi.ready().then(initProjects);
-  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+  let initialized = false;
+  const safeInit = () => {
+    if (initialized) return;
+    initialized = true;
     initProjects();
+  };
+
+  if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(safeInit).catch(safeInit);
+  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+    safeInit();
   } else {
-    window.addEventListener('pywebviewready', initProjects);
+    window.addEventListener('pywebviewready', safeInit);
+    setTimeout(safeInit, 1200); // Browser/mock fallback
   }
 });

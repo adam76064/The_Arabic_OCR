@@ -6,63 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n-document-title="title.export">تصدير المشروع — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .export-container { max-width: 860px; margin: 24px auto; padding: 0 20px; }
-        .export-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-xs); }
-        .export-card h3 { margin-top: 0; margin-bottom: 16px; color: var(--color-text); font-size: var(--text-md); border-bottom: 1px solid var(--color-border); padding-bottom: 12px; }
-        
-        .format-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-        .format-select-card {
-            border: 1.5px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            cursor: pointer;
-            transition: all var(--trans-fast);
-            background: var(--color-surface);
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            user-select: none;
-        }
-        .format-select-card:hover {
-            border-color: var(--color-primary);
-            background: var(--color-surface-hover);
-        }
-        .format-select-card.selected {
-            border-color: var(--color-primary);
-            background: var(--color-primary-light);
-        }
-        .format-icon {
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-        .format-info {
-            flex: 1;
-        }
-        .format-title {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--color-text);
-            margin-bottom: 2px;
-        }
-        .format-desc {
-            font-size: 12px;
-            color: var(--color-text-muted);
-            line-height: 1.4;
-        }
-        .format-specific-options {
-            padding: 16px;
-            background: var(--color-bg);
-            border-radius: var(--radius-md);
-            border: 1px dashed var(--color-border-strong);
-            margin-top: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/export.css">
 </head>
 <body>
     <main class="export-container">
@@ -144,6 +88,16 @@
                     </div>
                 </div>
 
+                <!-- PDF (F-2) -->
+                <div class="format-select-card" data-value="pdf">
+                    <input type="checkbox" name="exp-format" value="pdf" style="display:none;">
+                    <div class="format-icon" data-icon="pdf"></div>
+                    <div class="format-info">
+                        <div class="format-title" data-i18n="export.pdfTitle">ملف PDF معاد بناؤه (.pdf)</div>
+                        <div class="format-desc" data-i18n="export.pdfDesc">مستند PDF قابل للبحث والنسخ بالتشكيل والاتجاه العربي الصحيح.</div>
+                    </div>
+                </div>
+
                 <!-- EPUB3 -->
                 <div class="format-select-card" data-value="epub3">
                     <input type="checkbox" name="exp-format" value="epub3" style="display:none;">
@@ -168,9 +122,27 @@
                         <span data-i18n="export.docxExact">تطابق بصري تام 1:1 (Exact Positioned Frames)</span>
                     </label>
                 </div>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px; font-size: 12.5px; color: var(--color-text);">
+                    <input type="checkbox" id="exp-merge-paragraphs" checked style="accent-color: var(--color-primary);">
+                    <span>دمج الفقرات المستمرة عبر فواصل الصفحات (Cross-Page Paragraph Merge)</span>
+                </label>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin: 6px 0 0 0;" data-i18n="export.docxExactHint">
                     النمط التام يطابق أبعاد ومواقع فقرات ملف PDF بدقة المليمتر عبر إطارات ثابتة دون أي ترحيل للأسطر.
                 </p>
+            </div>
+
+            <div id="opts-pdf" class="format-specific-options hidden" style="margin-bottom: 14px; padding: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--color-text);">خيارات تصدير PDF المعاد بناؤه:</div>
+                <div style="display: flex; gap: 20px; align-items: center; font-size: 13px;">
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="radio" name="exp-pdf-mode" value="flowing" checked>
+                        <span>مستند نصي منسق (Flowing Searchable PDF)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="radio" name="exp-pdf-mode" value="exact">
+                        <span>طبقة نصوص فوق الأصل (Exact Overlay PDF)</span>
+                    </label>
+                </div>
             </div>
 
             <div id="opts-txt" class="format-specific-options hidden">
@@ -190,6 +162,15 @@
                 <div style="font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--color-text);" data-i18n="export.epubSettings">إعدادات HTML & EPUB3:</div>
                 <p style="font-size: 12px; color: var(--color-warning); margin: 0;" data-i18n="export.epubHint">يتم توليد بنية الكتاب مع فهرس الفصول وتنسيق شطري الشعر التلقائي.</p>
             </div>
+        </div>
+
+        <!-- Live Export Progress (UI-E2) -->
+        <div id="export-progress-container" class="export-progress-panel hidden">
+            <h3 style="margin-top:0; font-size:15px; color:var(--color-text);">جاري تصدير الملفات...</h3>
+            <div class="export-progress-bar-wrap">
+                <div id="export-progress-fill" class="export-progress-fill"></div>
+            </div>
+            <div id="export-progress-status" class="export-progress-status-text">جاري معالجة الصفحات...</div>
         </div>
 
         <div style="text-align: end; margin-top: 24px;">
@@ -218,11 +199,21 @@
         async function initExportPage() {
             const params = new URLSearchParams(window.location.search);
             const projectId = params.get('id');
-            if (!projectId) { window.location.href = 'projects.html'; return; }
-            currentProject = await window.pywebview.api.load_project(projectId);
-            document.getElementById('export-proj-title').textContent = currentProject.metadata?.title || (window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع');
-            const expTo = document.getElementById('exp-to');
-            if (expTo) expTo.value = currentProject.pages.length;
+            const titleEl = document.getElementById('export-proj-title');
+            if (projectId) {
+                try {
+                    currentProject = window.AppApi && typeof window.AppApi.loadProject === 'function'
+                        ? await window.AppApi.loadProject(projectId)
+                        : await window.pywebview.api.load_project(projectId);
+                    if (titleEl) titleEl.textContent = currentProject?.metadata?.title || (window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع');
+                    const expTo = document.getElementById('exp-to');
+                    if (expTo && currentProject?.pages) expTo.value = currentProject.pages.length;
+                } catch (e) {
+                    if (titleEl) titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع';
+                }
+            } else {
+                if (titleEl) titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع تجريبي';
+            }
             document.getElementById('back-btn')?.addEventListener('click', () => window.history.back());
             
             document.querySelectorAll('input[name="exp-pages"]').forEach(radio => {
@@ -247,9 +238,11 @@
             function updateFormatOptionsVisibility() {
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
                 const optsDocx = document.getElementById('opts-docx');
+                const optsPdf = document.getElementById('opts-pdf');
                 const optsTxt = document.getElementById('opts-txt');
                 const optsEpub = document.getElementById('opts-epub');
                 if (optsDocx) optsDocx.classList.toggle('hidden', !formats.includes('docx'));
+                if (optsPdf) optsPdf.classList.toggle('hidden', !formats.includes('pdf'));
                 if (optsTxt) optsTxt.classList.toggle('hidden', !formats.includes('txt'));
                 if (optsEpub) optsEpub.classList.toggle('hidden', !(formats.includes('html') || formats.includes('epub3')));
             }
@@ -261,29 +254,49 @@
                 const formats = Array.from(document.querySelectorAll('input[name="exp-format"]:checked')).map(el => el.value);
                 if (formats.length === 0) { alert(window.AppI18n ? window.AppI18n.t('export.none') : 'يرجى اختيار صيغة واحدة على الأقل'); return; }
                 const pagesMode = document.querySelector('input[name="exp-pages"]:checked')?.value || 'all';
-                let indices = Array.from({length: currentProject.pages.length}, (_, i) => i);
-                if (pagesMode === 'range') {
+                let indices = Array.from({length: (currentProject?.pages?.length || 1)}, (_, i) => i);
+                if (pagesMode === 'range' && currentProject?.pages) {
                     const from = Math.max(1, parseInt(document.getElementById('exp-from')?.value) || 1) - 1;
                     const to = Math.min(currentProject.pages.length, parseInt(document.getElementById('exp-to')?.value) || currentProject.pages.length) - 1;
                     indices = indices.slice(from, to + 1);
                 }
                 const btn = document.getElementById('execute-export-btn');
+                const progContainer = document.getElementById('export-progress-container');
+                const progFill = document.getElementById('export-progress-fill');
+                const progStatus = document.getElementById('export-progress-status');
+                
                 btn.disabled = true;
                 btn.textContent = window.AppI18n ? window.AppI18n.t('export.exporting') : '⏳ جاري التصدير...';
+                if (progContainer) {
+                    progContainer.classList.remove('hidden');
+                    if (progFill) progFill.style.width = '35%';
+                    if (progStatus) progStatus.textContent = 'جاري تجميع وتجهيز بيانات المستند...';
+                }
 
                 try {
                     const docxLayout = document.querySelector('input[name="exp-docx-layout"]:checked')?.value || 'flowing';
+                    const pdfMode = document.querySelector('input[name="exp-pdf-mode"]:checked')?.value || 'flowing';
+                    const mergeParagraphs = document.getElementById('exp-merge-paragraphs')?.checked ?? true;
                     const options = {
                         table_sep: document.getElementById('exp-table-sep')?.value || '\t',
-                        layout_mode: docxLayout
+                        layout_mode: docxLayout,
+                        pdf_mode: pdfMode,
+                        merge_cross_page_paragraphs: mergeParagraphs,
                     };
-                    const res = await window.pywebview.api.export_project(currentProject.id, formats, indices, options);
+                    if (progFill) progFill.style.width = '70%';
+                    const res = window.AppApi && typeof window.AppApi.exportProject === 'function'
+                        ? await window.AppApi.exportProject(currentProject.id, formats, indices, options)
+                        : await window.pywebview.api.export_project(currentProject.id, formats, indices, options);
+                    
                     if (res === null) {
-                        // User cancelled the file save dialog
+                        if (progContainer) progContainer.classList.add('hidden');
                         return;
                     }
+                    if (progFill) progFill.style.width = '100%';
                     if (res && res.ok) {
-                        alert(window.AppI18n ? window.AppI18n.t('export.success') : 'تم التصدير بنجاح!');
+                        if (progStatus) progStatus.textContent = '✓ اكتمل التصدير بنجاح!';
+                        if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('export.success') : 'تم التصدير بنجاح!', 'success');
+                        else alert(window.AppI18n ? window.AppI18n.t('export.success') : 'تم التصدير بنجاح!');
                     } else {
                         alert((window.AppI18n ? window.AppI18n.t('export.failed') : 'فشل التصدير:') + ' ' + (res?.error || ''));
                     }
@@ -292,17 +305,25 @@
                 } finally {
                     btn.disabled = false;
                     btn.textContent = window.AppI18n ? window.AppI18n.t('export.execute') : 'تصدير الملفات المحددة الآن ➔';
+                    setTimeout(() => { if (progContainer) progContainer.classList.add('hidden'); }, 3000);
                 }
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.AppApi && typeof window.AppApi.ready === 'function') {
-                window.AppApi.ready().then(initExportPage);
-            } else if (window.pywebview && window.pywebview.api && window.pywebview.api.load_project) {
+            let initialized = false;
+            const safeInit = () => {
+                if (initialized) return;
+                initialized = true;
                 initExportPage();
+            };
+            if (window.AppApi && typeof window.AppApi.ready === 'function') {
+                window.AppApi.ready().then(safeInit).catch(safeInit);
+            } else if (window.pywebview && window.pywebview.api && window.pywebview.api.load_project) {
+                safeInit();
             } else {
-                window.addEventListener('pywebviewready', initExportPage);
+                window.addEventListener('pywebviewready', safeInit);
+                setTimeout(safeInit, 1000);
             }
         });
     </script>

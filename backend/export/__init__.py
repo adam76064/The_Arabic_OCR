@@ -7,14 +7,15 @@ from .txt_export import export_txt
 from .docx_export import export_docx
 from .docx_exact_export import export_docx_exact
 from .html_epub import export_html, export_epub3
+from .pdf_export import export_pdf
 
-__all__ = ["export_json", "export_txt", "export_docx", "export_docx_exact", "export_html", "export_epub3"]
+__all__ = ["export_json", "export_txt", "export_docx", "export_docx_exact", "export_html", "export_epub3", "export_pdf"]
 
 
 def export_project(project, fmt, page_indices, output_path, opts=None, logical_start=1):
     """
-    Unified entry: fmt in {'json','txt','docx','docx_exact','html','epub3'}
-    opts.layout_mode in {'flowing', 'exact'} controls DOCX output mode.
+    Unified entry: fmt in {'json','txt','docx','docx_exact','html','epub3','pdf'}
+    opts.layout_mode in {'flowing', 'exact'} controls DOCX / PDF output mode.
     """
     opts = opts or {}
     fmt = fmt.lower()
@@ -32,5 +33,7 @@ def export_project(project, fmt, page_indices, output_path, opts=None, logical_s
         return export_html(project, page_indices, output_path, opts=opts)
     elif fmt in ("epub3", "epub"):
         return export_epub3(project, page_indices, output_path, opts=opts)
+    elif fmt == "pdf":
+        return export_pdf(project, page_indices, output_path, opts=opts)
     else:
         raise ValueError(f"Unsupported export format: {fmt}")

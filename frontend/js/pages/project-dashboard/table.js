@@ -269,11 +269,23 @@ function renderPagesTable() {
 
         // 2. Render Grid Card
         if (gridContainer) {
+            let statusClass = 'status-raw';
+            let statusLabel = dashboardText('dashboard.waitingOcr');
+            if (isReviewed) {
+                statusClass = 'status-reviewed';
+                statusLabel = dashboardText('dashboard.reviewed');
+            } else if (isOcred) {
+                statusClass = 'status-ocr';
+                statusLabel = dashboardText('dashboard.extracted');
+            }
+
             const card = document.createElement('div');
             card.className = `page-card ${isChecked ? 'selected' : ''}`;
             card.dataset.index = index;
             card.innerHTML = `
                 <div class="page-card-thumb" data-index="${index}" style="position: relative; overflow: hidden; border-radius: var(--radius-md); background: var(--color-bg-alt);">
+                    <div class="page-status-strip ${statusClass}"></div>
+                    <span class="page-status-badge ${statusClass}">${statusLabel}</span>
                     <div class="page-card-header">
                         <span class="page-num-pill">${pageNum}</span>
                         <input type="checkbox" class="page-checkbox" data-index="${index}" ${isChecked ? 'checked' : ''} style="accent-color: var(--color-primary); width: 18px; height: 18px;">
@@ -307,6 +319,56 @@ function renderPagesTable() {
     initDashboardViewControls();
     setupContextMenu();
     initThumbnailObserver();
+    updatePipelineStepperStates();
+}
+
+function updatePipelineStepperStates() {
+    if (!currentProject?.pages || currentProject.pages.length === 0) return;
+    const total = currentProject.pages.length;
+    let ocredCount = 0;
+    let reviewedCount = 0;
+    currentProject.pages.forEach(p => {
+        const isOcred = p.ocr_data && p.ocr_data.length > 0;
+        if (isOcred) ocredCount++;
+        const allBlocksReviewed = isOcred && p.ocr_data.every(b => b.category === 'Picture' || b.reviewed === true);
+        if ((p.status === 'reviewed' || allBlocksReviewed) && p.status !== 'pending' && p.status !== 'unreviewed') {
+            reviewedCount++;
+        }
+    });
+
+    const stepPre = document.getElementById('step-preprocess');
+    const stepOcr = document.getElementById('step-ocr');
+    const stepLayout = document.getElementById('step-layout');
+    const stepReview = document.getElementById('step-review');
+    const stepExport = document.getElementById('step-export');
+
+    stepPre?.classList.add('step-done');
+    const preNum = stepPre?.querySelector('.step-num');
+    if (preNum) preNum.innerHTML = '✓';
+
+    if (ocredCount === total && total > 0) {
+        stepOcr?.classList.add('step-done');
+        stepOcr?.classList.remove('active');
+        const num = stepOcr?.querySelector('.step-num');
+        if (num) num.innerHTML = '✓';
+    } else if (ocredCount > 0) {
+        stepOcr?.classList.add('active');
+    }
+
+    if (ocredCount === total && total > 0) {
+        stepLayout?.classList.add('step-done');
+        const num = stepLayout?.querySelector('.step-num');
+        if (num) num.innerHTML = '✓';
+    }
+
+    if (reviewedCount === total && total > 0) {
+        stepReview?.classList.add('step-done');
+        const num = stepReview?.querySelector('.step-num');
+        if (num) num.innerHTML = '✓';
+        stepExport?.classList.add('active');
+    } else if (reviewedCount > 0 || ocredCount > 0) {
+        stepReview?.classList.add('active');
+    }
 }
 
 const DASHBOARD_CATEGORY_COLORS = {

@@ -165,11 +165,23 @@ def export_docx(project, page_indices, output_path, opts=None):
     _set_style_rtl(style, font_name=font_name, font_size_pt=font_size, is_rtl=rtl)
 
     first_page = True
+    last_block_cat = None
+    last_block_text = ""
+    merge_cross_page = bool(opts.get('merge_cross_page_paragraphs', True))
+
     for page_num, i in enumerate(page_indices):
         page = project['pages'][i]
         ocr_data = page.get('ocr_data') or []
 
-        if not first_page and page_break:
+        # Check if first block of this page continues an unfinished paragraph from previous page (L-3)
+        continued_para = False
+        if merge_cross_page and not first_page and last_block_cat == 'Text' and ocr_data:
+            if last_block_text and not last_block_text.rstrip().endswith(('.', '؟', '!', ':', '؛')):
+                first_body_el = next((e for e in ocr_data if e.get('category') not in SKIP_CATEGORIES and e.get('category') not in ('Page-header', 'Header')), None)
+                if first_body_el and first_body_el.get('category') == 'Text':
+                    continued_para = True
+
+        if not first_page and page_break and not continued_para:
             _add_page_break(doc)
         first_page = False
 
@@ -320,6 +332,8 @@ def export_docx(project, page_indices, output_path, opts=None):
                     _add_formatted_paragraph(doc, p_text, cat, font_name, font_size,
                                               line_spacing, para_indent, space_after,
                                               el_align, effective_rtl, cat_fmt=cat_fmt, block_font_size=block_font_size)
+                last_block_cat = cat
+                last_block_text = text
                 continue
 
             # raw mode: keep stored text exactly as-is, one paragraph per element
@@ -333,6 +347,9 @@ def export_docx(project, page_indices, output_path, opts=None):
             fmt.first_line_indent = Cm(para_indent) if cat == 'Text' else Cm(0)
             _set_paragraph_spacing(para, 0, space_after)
             _apply_paragraph_layout(para, el_align, effective_rtl)
+
+            last_block_cat = cat
+            last_block_text = text
 
     doc.save(output_path)
     return output_path

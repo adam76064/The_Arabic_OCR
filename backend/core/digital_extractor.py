@@ -527,8 +527,9 @@ class DigitalPDFExtractor:
             dominant_size = max(set(_span_sizes_r), key=_span_sizes_r.count) if _span_sizes_r else median_font_size
             dominant_color = max(set(span_colors), key=span_colors.count) if span_colors else 0
 
-            # Categorize based on spatial zone and font sizing
+            # Categorize based on spatial zone, font sizing, and poetry patterns
             category = self._classify_category(bbox, page_h, dominant_size, median_font_size, full_block_text)
+            font_cat = self.detect_font_category(dominant_font)
 
             standardized_blocks.append({
                 "order": 0,
@@ -540,17 +541,27 @@ class DigitalPDFExtractor:
                 "dir": "rtl",
                 "align": "right" if category not in ("Title", "Page-header", "Page-footer", "Page-number") else "center",
                 "font_name": dominant_font,
+                "font_category": font_cat,
                 "font_size": round(dominant_size, 1),
                 "font_color": f"#{dominant_color:06x}",
                 "lines": lines_data,
                 "is_digital": True,
             })
 
-        # Merge table blocks and text blocks, then sort in natural reading order
+        # Merge table blocks and text blocks, then sort via Recursive XY-Cut in true Arabic RTL order (L-1)
         all_blocks = table_blocks + standardized_blocks
-        all_blocks.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
-        for idx_b, b in enumerate(all_blocks):
-            b["order"] = idx_b + 1
+        all_blocks, total_cols = self._sort_blocks_xy_cut(all_blocks, page_w, page_h)
+
+        # Character corruption and decorative font detection (L-2, L-10)
+        all_page_text = "\n".join(b.get("text", "") for b in all_blocks)
+        page_corruption_rate = self.compute_corruption_rate(all_page_text)
+        dominant_page_font = "Traditional Arabic"
+        if standardized_blocks:
+            all_fonts = [b.get("font_name", "") for b in standardized_blocks if b.get("font_name")]
+            if all_fonts:
+                dominant_page_font = max(set(all_fonts), key=all_fonts.count)
+        dominant_font_cat = self.detect_font_category(dominant_page_font)
+        decorative_fallback = (dominant_font_cat in ("nastaliq", "decorative")) and (page_corruption_rate > 0.05)
 
         return {
             "ok": True,
@@ -559,7 +570,142 @@ class DigitalPDFExtractor:
             "native_width": page_w,
             "native_height": page_h,
             "blocks": all_blocks,
+            "total_columns": total_cols,
+            "dominant_font": dominant_page_font,
+            "font_category": dominant_font_cat,
+            "corruption_rate": round(page_corruption_rate, 4),
+            "decorative_font_fallback_recommended": decorative_fallback,
         }
+
+    @staticmethod
+    def detect_font_category(font_name: str) -> str:
+        """Categorizes font names into nastaliq, decorative, naskh, or standard (L-10)."""
+        fn = (font_name or "").lower()
+        if any(k in fn for k in ("nastaliq", "nafees", "iranian", "shekasteh", "urdu")):
+            return "nastaliq"
+        if any(k in fn for k in ("thuluth", "kufi", "diwani", "ruqah", "andalus", "decorative")):
+            return "decorative"
+        if any(k in fn for k in ("arabictypesetting", "traditional", "simplified", "amiri", "naskh", "adobe arabic")):
+            return "naskh"
+        return "standard"
+
+    @staticmethod
+    def compute_corruption_rate(text: str) -> float:
+        """Computes proportion of characters with CMap / PUA corruption codepoints (L-2)."""
+        if not text:
+            return 0.0
+        total = len(text)
+        corrupt = sum(1 for c in text if ord(c) == 0xFFFD or 0xE000 <= ord(c) <= 0xF8FF)
+        return corrupt / max(1, total)
+
+    @staticmethod
+    def is_poetry(text: str) -> bool:
+        """Detects whether text lines represent two balanced hemistichs (L-6)."""
+        if not text:
+            return False
+        clean_lines = [line.strip() for line in text.split('\n') if line.strip()]
+        if len(clean_lines) < 2:
+            return False
+        matched = 0
+        for line in clean_lines:
+            parts = re.split(r"\s*\.{3,}\s*|\s*[\*ـ–-]{2,}\s*|\t|\s{3,}", line)
+            if len(parts) == 2:
+                w1 = len(parts[0].split())
+                w2 = len(parts[1].split())
+                if w1 >= 2 and w2 >= 2 and abs(w1 - w2) <= 3:
+                    matched += 1
+        return (matched / len(clean_lines)) >= 0.5
+
+    @staticmethod
+    def _sort_blocks_xy_cut(
+        blocks: List[Dict[str, Any]], page_w: float, page_h: float
+    ) -> Tuple[List[Dict[str, Any]], int]:
+        """
+        Sorts blocks in natural Arabic RTL reading order using Recursive XY-Cut (L-1).
+        Header blocks top-to-bottom -> Right Column top-to-bottom -> Left Column top-to-bottom -> Footer blocks.
+        """
+        if not blocks:
+            return [], 1
+
+        headers = []
+        footers = []
+        body_blocks = []
+
+        for b in blocks:
+            cat = b.get("category", "Text")
+            bbox = b.get("bbox", [0, 0, 0, 0])
+            if cat == "Page-header" or bbox[3] <= page_h * 0.08:
+                headers.append(b)
+            elif cat in ("Page-footer", "Page-number") or bbox[1] >= page_h * 0.92:
+                footers.append(b)
+            else:
+                body_blocks.append(b)
+
+        headers.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
+        footers.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
+
+        if not body_blocks:
+            merged = headers + footers
+            for i, b in enumerate(merged):
+                b["order"] = i + 1
+                b["col_index"] = 0
+            return merged, 1
+
+        min_gutter = max(18.0, page_w * 0.035)
+
+        x_events = []
+        for idx, b in enumerate(body_blocks):
+            bx0, _, bx1, _ = b["bbox"]
+            x_events.append((bx0, 1, idx))
+            x_events.append((bx1, -1, idx))
+        x_events.sort(key=lambda ev: (ev[0], -ev[1]))
+
+        active_count = 0
+        last_zero_start = None
+        gutters = []
+
+        min_content_x = min(b["bbox"][0] for b in body_blocks)
+        max_content_x = max(b["bbox"][2] for b in body_blocks)
+
+        for x_val, delta, _ in x_events:
+            if active_count == 0 and last_zero_start is not None:
+                gap_w = x_val - last_zero_start
+                if gap_w >= min_gutter and last_zero_start > min_content_x + 15 and x_val < max_content_x - 15:
+                    gutters.append((last_zero_start, x_val))
+                last_zero_start = None
+
+            active_count += delta
+            if active_count == 0:
+                last_zero_start = x_val
+
+        num_columns = len(gutters) + 1
+        if num_columns > 1:
+            col_dividers = [(g[0] + g[1]) / 2.0 for g in gutters]
+            for b in body_blocks:
+                cx = (b["bbox"][0] + b["bbox"][2]) / 2.0
+                col_left_idx = 0
+                for div_x in col_dividers:
+                    if cx > div_x:
+                        col_left_idx += 1
+                col_rtl_idx = (num_columns - 1) - col_left_idx
+                b["col_index"] = col_rtl_idx
+
+            body_blocks.sort(key=lambda b: (b.get("col_index", 0), b["bbox"][1], -b["bbox"][0]))
+        else:
+            for b in body_blocks:
+                b["col_index"] = 0
+            body_blocks.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
+
+        for h in headers:
+            h["col_index"] = 0
+        for f in footers:
+            f["col_index"] = 0
+
+        merged_all = headers + body_blocks + footers
+        for idx_b, b in enumerate(merged_all):
+            b["order"] = idx_b + 1
+
+        return merged_all, num_columns
 
     def _classify_category(
         self,
@@ -569,7 +715,7 @@ class DigitalPDFExtractor:
         median_font_size: float,
         text: str,
     ) -> str:
-        """Heuristic block category classification based on geometry and font scale."""
+        """Heuristic block category classification based on geometry, font scale, and poetry patterns."""
         y_top = bbox[1]
         y_bottom = bbox[3]
 
@@ -579,11 +725,14 @@ class DigitalPDFExtractor:
 
         # Bottom 8% of page -> Page-footer or Page-number
         if y_top >= page_h * 0.92:
-            # Check if it consists mostly of digits
             stripped = text.strip()
             if re.match(r"^[\d\u0660-\u0669\u06F0-\u06F9\s\-\–\/]+$", stripped):
                 return "Page-number"
             return "Page-footer"
+
+        # Poetry check (L-6)
+        if self.is_poetry(text):
+            return "Vertical-poetry"
 
         # Significantly larger font -> Title / Header
         if font_size >= median_font_size * 1.4:

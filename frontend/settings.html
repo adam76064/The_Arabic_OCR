@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="css/home.css">
     <style>
         .settings-layout-wrapper {
-            max-width: 960px;
+            max-width: 1080px;
             margin: 0 auto;
             padding: 24px 20px 60px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .settings-hero-header {
@@ -21,6 +23,7 @@
             margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 16px;
+            width: 100%;
         }
 
         .settings-hero-title h1 {
@@ -40,9 +43,10 @@
             display: flex;
             gap: 8px;
             margin-bottom: 24px;
-            overflow-x: auto;
+            flex-wrap: wrap;
             padding-bottom: 4px;
             border-bottom: 1px solid var(--color-border);
+            width: 100%;
         }
 
         .settings-tab-btn {
@@ -267,9 +271,16 @@
         /* Palette Cards */
         .palette-options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
             margin-top: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 860px) {
+            .palette-options-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
         }
 
         .palette-choice-card {
@@ -421,6 +432,7 @@
             <button type="button" class="settings-tab-btn" data-tab="categories" data-icon-label="tag" data-i18n="settings.tabCategories">التصنيفات</button>
             <button type="button" class="settings-tab-btn" data-tab="ai" data-icon-label="sparkles" data-i18n="settings.tabAi">الذكاء الاصطناعي</button>
             <button type="button" class="settings-tab-btn" data-tab="shortcuts" data-icon-label="keyboard" data-i18n="settings.tabShortcuts">الاختصارات</button>
+            <button type="button" class="settings-tab-btn" data-tab="about" data-icon-label="info" data-i18n="settings.tabAbout">عن الأداة</button>
         </nav>
 
         <!-- ── TAB 1: APPEARANCE & INTERFACE ───────────────────────────────── -->
@@ -667,6 +679,32 @@
 
                 <div style="margin-top: 20px; border-top: 1px solid var(--color-border); padding-top: 16px; display: flex; justify-content: flex-end;">
                     <button id="shortcuts-reset-all" class="btn-secondary" data-icon="undo" data-i18n="settings.resetShortcuts">إعادة تعيين كل الاختصارات للوضع الافتراضي</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── TAB 7: ABOUT & CREDITS (UI-S4) ───────────────────────────────── -->
+        <section class="settings-panel hidden" id="panel-about">
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="info"></div>
+                    <div>
+                        <div class="settings-card-title">عن أداة مراجعة OCR العربية</div>
+                        <div class="settings-card-subtitle" style="color: var(--color-text-muted); font-size: 12px; margin-top: 2px;">Arabic OCR Review & Post-Processing Studio</div>
+                    </div>
+                </div>
+                <div style="padding: 16px 0; border-bottom: 1px solid var(--color-border); line-height: 1.8; font-size: 13.5px; color: var(--color-text);">
+                    <p><strong>الإصدار:</strong> v2.5.0 LTS</p>
+                    <p>منظومة معالجة وتدقيق النصوص العربية الممسوحة ضوئياً والرقمية، مع دعم الاستخراج الانسيابي والتطابق البصري التام (1:1) للكتب والمخطوطات، وتصدير متكامل إلى صيغ Word (DOCX)، PDF معاد بناؤه بالتشكيل، EPUB3، و HTML.</p>
+                    <div style="margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <span class="status-badge reviewed">✓ RTL-First Architecture</span>
+                        <span class="status-badge reviewed">✓ Recursive XY-Cut Multi-column</span>
+                        <span class="status-badge reviewed">✓ BiDi Reshaper Engine</span>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--color-text-muted);">
+                    <div>الترخيص: رخصة MIT مفتوحة المصدر</div>
+                    <div>المساهم: adam76064@gmail.com</div>
                 </div>
             </div>
         </section>

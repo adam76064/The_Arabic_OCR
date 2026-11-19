@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n-document-title="title.dashboard">إدارة صفحات المشروع — أداة مراجعة OCR</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <main id="main-content" class="home-main" style="flex: 1; min-width: 0; max-width: 1200px; margin: 0 auto; padding: 24px 20px; box-sizing: border-box; width: 100%;">
+    <main id="main-content" class="home-main dashboard-main">
         <!-- Universal Breadcrumbs -->
         <nav class="app-breadcrumbs">
             <a href="index.html" data-i18n="nav.home">الرئيسية</a>
@@ -19,13 +20,13 @@
         </nav>
 
         <!-- Top Header & Actions -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+        <div class="dashboard-header-row">
             <div>
-                <h1 style="font-size: 22px; color: var(--color-text); margin: 0; font-weight: 800;" data-i18n="dash.title">إدارة صفحات المشروع</h1>
-                <p id="dashboard-proj-subtitle" style="color: var(--color-text-muted); margin-top: 4px; font-size: 13px;" data-i18n="dash.subtitle">استعراض الصفحات واستخراج النصوص والتخطيط</p>
+                <h1 class="dashboard-title" data-i18n="dash.title">إدارة صفحات المشروع</h1>
+                <p id="dashboard-proj-subtitle" class="dashboard-subtitle" data-i18n="dash.subtitle">استعراض الصفحات واستخراج النصوص والتخطيط</p>
             </div>
             
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <div class="dashboard-actions-group">
                 <button id="dashboard-global-ocr-btn" class="btn-primary" data-icon="ocr" title="بدء التعرف الضوئي (OCR)" data-i18n-title="dash.ocr"><span data-i18n="dash.ocr">OCR</span></button>
                 <button id="dashboard-preprocess-btn" class="btn-secondary" data-icon="preprocess" data-i18n="dash.preprocessing">معالجة أولية</button>
                 <button id="dashboard-settings-btn" class="btn-secondary" data-icon="settings" data-i18n="dash.settings">إعدادات</button>
@@ -63,12 +64,12 @@
         </div>
 
         <!-- Collaboration Status Bar (Compact) -->
-        <div id="dashboard-coop-panel" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 12px 18px; margin-bottom: 20px; box-shadow: var(--shadow-xs); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-weight: 700; font-size: 13px; color: var(--color-text);" data-icon-label="lan" data-i18n="dash.collab">التعاون المحلي (LAN):</span>
+        <div id="dashboard-coop-panel">
+            <div class="coop-status-text">
+                <span data-icon-label="lan" data-i18n="dash.collab">التعاون المحلي (LAN):</span>
                 <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">محلي: متوقف</button>
             </div>
-            <div id="dash-active-collaborators" style="display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--color-text-muted);">
+            <div id="dash-active-collaborators" class="coop-members-list">
                 <span style="font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>
             </div>
         </div>
@@ -76,18 +77,18 @@
         <div id="dashboard-stats-container" style="margin-bottom: 20px;"></div>
 
         <!-- Controls Row: View Mode + Select All -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+        <div class="dashboard-controls-row">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--color-text);">
+                <label class="dashboard-select-all">
                     <input type="checkbox" id="dash-select-all-cb" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
                     <span data-i18n="dash.selectAllPages">تحديد جميع الصفحات</span>
                 </label>
             </div>
 
             <!-- View Switcher -->
-            <div style="display: flex; gap: 4px; background: var(--color-bg-muted); padding: 3px; border-radius: var(--radius-md);">
-                <button id="view-mode-grid" class="btn-icon active" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض المصغرات الشبكي" data-i18n-title="dash.viewGrid" data-icon="layout"></button>
-                <button id="view-mode-table" class="btn-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" title="عرض الجدول" data-i18n-title="dash.viewTable" data-icon="order"></button>
+            <div class="dashboard-view-mode-bar">
+                <button id="view-mode-grid" class="btn-icon active" title="عرض المصغرات الشبكي" data-i18n-title="dash.viewGrid" data-icon="layout"></button>
+                <button id="view-mode-table" class="btn-icon" title="عرض الجدول" data-i18n-title="dash.viewTable" data-icon="order"></button>
             </div>
         </div>
 

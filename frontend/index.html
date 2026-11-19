@@ -10,6 +10,18 @@
 </head>
 <body class="home-page">
 
+    <header class="app-topbar">
+        <div class="topbar-brand">
+            <span data-icon="book" style="color: var(--color-primary);"></span>
+            <span>Arabic OCR</span>
+            <span style="font-size: 11px; padding: 2px 6px; border-radius: var(--radius-sm); background: var(--color-primary-light); color: var(--color-primary); font-weight: 700;">v2.5</span>
+        </div>
+        <div class="topbar-actions">
+            <button id="btn-toggle-theme" class="btn-icon theme-toggle-btn" data-i18n-title="nav.themeToggle" title="الوضع الليلي / النهاري" data-icon="moon"></button>
+            <a href="settings.html" class="btn-icon" data-i18n-title="nav.settings" title="الإعدادات" data-icon="settings"></a>
+        </div>
+    </header>
+
     <main class="home-main">
         <section class="hero">
             <h1 data-i18n="home.welcome">مرحبًا بكم في أداة معالجة ومراجعة النصوص</h1>
@@ -23,24 +35,18 @@
             <div class="dropzone-subtitle" data-i18n="home.dropzone.subtitle">سيتم استخراج وتجهيز الصفحات تلقائياً لبدء المعالجة والتدقيق</div>
         </div>
 
-        <div class="home-cards">
-            <a href="#" class="home-card card-primary trigger-new-project">
-                <div class="card-icon" data-icon="plus"></div>
-                <div class="card-title" data-i18n="nav.newProject">مشروع جديد</div>
-                <div class="card-desc" data-i18n="home.newProject.description">إنشاء مشروع مراجعة OCR جديد</div>
-            </a>
-
+        <div class="home-cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
             <a href="projects.html" class="home-card card-secondary">
                 <div class="card-icon" data-icon="projects"></div>
                 <div class="card-title" data-i18n="nav.projects">المشاريع</div>
                 <div class="card-desc" data-i18n="home.projects.description">عرض وإدارة مشاريعك الحالية</div>
-                <div class="card-badge" id="projects-count">...</div>
+                <div class="card-badge" id="projects-count">0</div>
             </a>
 
             <a href="settings.html" class="home-card card-neutral">
                 <div class="card-icon" data-icon="settings"></div>
                 <div class="card-title" data-i18n="nav.settings">الإعدادات</div>
-                <div class="card-desc" data-i18n="home.settings.description">تخصيص أداة المراجعة</div>
+                <div class="card-desc" data-i18n="home.settings.description">تخصيص أداة المراجعة ومحركات OCR والخطوط</div>
             </a>
         </div>
 

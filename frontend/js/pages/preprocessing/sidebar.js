@@ -58,6 +58,12 @@
           state.updateStageParams('deskew', { angle: val, manual: true, auto_detect: false });
           this.triggerDebouncedPreview();
         });
+        deskewSlider.addEventListener('dblclick', () => {
+          deskewSlider.value = 0;
+          if (deskewVal) deskewVal.textContent = '0.00°';
+          state.updateStageParams('deskew', { angle: 0.0, manual: true, auto_detect: false });
+          this.triggerLivePreview();
+        });
       }
 
       const autoDeskewBtn = this.sidebar.querySelector('#btn-auto-deskew');

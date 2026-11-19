@@ -114,11 +114,18 @@ window.addEventListener('languageChanged', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.AppApi && typeof window.AppApi.ready === 'function') {
-    window.AppApi.ready().then(initHome);
-  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+  let initialized = false;
+  const safeInit = () => {
+    if (initialized) return;
+    initialized = true;
     initHome();
+  };
+  if (window.AppApi && typeof window.AppApi.ready === 'function') {
+    window.AppApi.ready().then(safeInit).catch(safeInit);
+  } else if (window.pywebview && window.pywebview.api && window.pywebview.api.get_projects) {
+    safeInit();
   } else {
-    window.addEventListener('pywebviewready', initHome);
+    window.addEventListener('pywebviewready', safeInit);
+    setTimeout(safeInit, 1000);
   }
 });

@@ -19,6 +19,9 @@ function updateReviewPanel() {
     const logicalPageEl = document.getElementById('logical-page-display');
     if (logicalPageEl) logicalPageEl.textContent = currentPageIndex + logicalStart;
 
+    if (typeof renderReviewFilmstrip === 'function') renderReviewFilmstrip();
+    if (typeof updateFilmstripHighlight === 'function') updateFilmstripHighlight();
+
     const imgPath = `file:///${window.__appDataPath}/projects/${currentProject.id}/images/${page.image_path}`;
     const pageImg = document.getElementById('page-image');
     const thumbImg = document.getElementById('thumb-image');
@@ -312,7 +315,11 @@ function renderBlocksList(ocrData) {
             if (typeof window.updateTrackingHighlight === 'function') window.updateTrackingHighlight(content, element); else if (typeof updateTrackingHighlight === 'function') updateTrackingHighlight(content, element);
         });
 
-        content.addEventListener('input', () => { const fn = window.debouncedTrackingUpdate || (typeof debouncedTrackingUpdate !== 'undefined' ? debouncedTrackingUpdate : null); if (fn) fn(content, element); });
+        content.addEventListener('input', () => {
+            if (typeof window.markPageDirty === 'function') window.markPageDirty(true);
+            const fn = window.debouncedTrackingUpdate || (typeof debouncedTrackingUpdate !== 'undefined' ? debouncedTrackingUpdate : null);
+            if (fn) fn(content, element);
+        });
         content.addEventListener('keyup', (e) => {
             if (e.key.startsWith('Arrow') || e.key === 'Home' || e.key === 'End') {
                 const fn = window.debouncedTrackingUpdate || (typeof debouncedTrackingUpdate !== 'undefined' ? debouncedTrackingUpdate : null);
