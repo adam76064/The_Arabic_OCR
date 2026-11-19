@@ -644,6 +644,8 @@
 }
 
 /* Specific Category Edge Accents */
+.text-block[data-cat="Text"] { border-inline-start-color: var(--cat-text-accent); }
+.text-block[data-cat="Picture"], .text-block[data-cat="Image"] { border-inline-start-color: var(--cat-image-accent); }
 .text-block[data-cat="Quran"] { border-inline-start-color: var(--cat-quran-accent); }
 .text-block[data-cat="Title"] { border-inline-start-color: var(--cat-title-accent); }
 .text-block[data-cat="Section-header"] { border-inline-start-color: var(--cat-header-accent); }

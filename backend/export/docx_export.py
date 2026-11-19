@@ -185,13 +185,14 @@ def export_docx(project, page_indices, output_path, opts=None):
             _add_page_break(doc)
         first_page = False
 
-        # Page number label at top
+        # Page number label at top (omit if continuing a mid-sentence paragraph across page break)
         num_font = font_name or 'Simplified Arabic'
         num_size = (font_size - 4) if font_size else 10
-        if page_numbering == 'pdf':
-            _add_page_number_label(doc, f'[PDF p.{i + 1}]', num_font, num_size, rtl)
-        elif page_numbering == 'logical':
-            _add_page_number_label(doc, f'[ص {i + logical_start}]', num_font, num_size, rtl)
+        if not continued_para:
+            if page_numbering == 'pdf':
+                _add_page_number_label(doc, f'[PDF p.{i + 1}]', num_font, num_size, rtl)
+            elif page_numbering == 'logical':
+                _add_page_number_label(doc, f'[ص {i + logical_start}]', num_font, num_size, rtl)
 
         cat_fmt_map = (project.get('metadata', {}).get('category_formatting', {}) or {})
         for el in ocr_data:
@@ -328,25 +329,46 @@ def export_docx(project, page_indices, output_path, opts=None):
             if text_mode == 'formatted':
                 reflowed_text = _reflow_block_text(text)
                 paragraphs = _split_block_paragraphs(reflowed_text) or [reflowed_text]
-                for p_text in paragraphs:
-                    _add_formatted_paragraph(doc, p_text, cat, font_name, font_size,
-                                              line_spacing, para_indent, space_after,
-                                              el_align, effective_rtl, cat_fmt=cat_fmt, block_font_size=block_font_size)
+                for p_idx, p_text in enumerate(paragraphs):
+                    if continued_para and el is first_body_el and p_idx == 0 and doc.paragraphs:
+                        # Seamlessly merge into the unfinished paragraph from preceding page
+                        last_p = doc.paragraphs[-1]
+                        runs_spec = parse_inline_runs(p_text)
+                        for r_idx, (run_text, style) in enumerate(runs_spec):
+                            if not run_text:
+                                continue
+                            lead_space = " " if r_idx == 0 else ""
+                            run = last_p.add_run(lead_space + run_text)
+                            r_font = style.get('font_family') or cat_fmt.get('fontFamily') or font_name
+                            r_sz = style.get('font_size') or block_font_size or font_size
+                            r_dir = style.get('dir')
+                            is_r_rtl = (r_dir == 'rtl') if r_dir else effective_rtl
+                            _apply_run_formatting(run, style, r_font, r_sz, is_r_rtl=is_r_rtl, cat_fmt=cat_fmt)
+                    else:
+                        _add_formatted_paragraph(doc, p_text, cat, font_name, font_size,
+                                                  line_spacing, para_indent, space_after,
+                                                  el_align, effective_rtl, cat_fmt=cat_fmt, block_font_size=block_font_size)
                 last_block_cat = cat
                 last_block_text = text
                 continue
 
             # raw mode: keep stored text exactly as-is, one paragraph per element
-            para = doc.add_paragraph()
-            _apply_paragraph_layout(para, el_align, effective_rtl)
-            run = para.add_run(text)
-            raw_style = {'bold': True} if cat in ('Title', 'Section-header') else {}
-            _apply_run_formatting(run, raw_style, font_name, block_font_size or font_size, is_r_rtl=effective_rtl, cat_fmt=cat_fmt)
-            _set_line_spacing(para, line_spacing)
-            fmt = para.paragraph_format
-            fmt.first_line_indent = Cm(para_indent) if cat == 'Text' else Cm(0)
-            _set_paragraph_spacing(para, 0, space_after)
-            _apply_paragraph_layout(para, el_align, effective_rtl)
+            if continued_para and el is first_body_el and doc.paragraphs:
+                last_p = doc.paragraphs[-1]
+                run = last_p.add_run(" " + text)
+                raw_style = {'bold': True} if cat in ('Title', 'Section-header') else {}
+                _apply_run_formatting(run, raw_style, font_name, block_font_size or font_size, is_r_rtl=effective_rtl, cat_fmt=cat_fmt)
+            else:
+                para = doc.add_paragraph()
+                _apply_paragraph_layout(para, el_align, effective_rtl)
+                run = para.add_run(text)
+                raw_style = {'bold': True} if cat in ('Title', 'Section-header') else {}
+                _apply_run_formatting(run, raw_style, font_name, block_font_size or font_size, is_r_rtl=effective_rtl, cat_fmt=cat_fmt)
+                _set_line_spacing(para, line_spacing)
+                fmt = para.paragraph_format
+                fmt.first_line_indent = Cm(para_indent) if cat == 'Text' else Cm(0)
+                _set_paragraph_spacing(para, 0, space_after)
+                _apply_paragraph_layout(para, el_align, effective_rtl)
 
             last_block_cat = cat
             last_block_text = text

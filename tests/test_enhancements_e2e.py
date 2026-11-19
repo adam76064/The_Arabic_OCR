@@ -61,6 +61,30 @@ def test_xy_cut_two_column_rtl_ordering():
     print("[PASS] XY-Cut correctly prioritized right-column over left-column in RTL mode.")
 
 
+def test_xy_cut_multi_column_with_spanning_headers():
+    """Verify that wide horizontal elements (e.g. section headers) slice the page into slices without breaking RTL column order."""
+    blocks = [
+        {"category": "Title", "bbox": [50, 50, 550, 90], "text": "عنوان رئيسي عريض"},
+        {"category": "Text", "bbox": [320, 100, 560, 150], "text": "عمود أيمن 1"},
+        {"category": "Text", "bbox": [40, 100, 280, 150], "text": "عمود أيسر 1"},
+        {"category": "Section-header", "bbox": [50, 200, 550, 240], "text": "عنوان فرعي يقطع الصفحة عرضياً"},
+        {"category": "Text", "bbox": [320, 260, 560, 310], "text": "عمود أيمن 2"},
+        {"category": "Text", "bbox": [40, 260, 280, 310], "text": "عمود أيسر 2"},
+    ]
+    sorted_blocks, total_cols = DigitalPDFExtractor._sort_blocks_xy_cut(blocks, 600.0, 800.0)
+    assert total_cols == 2
+    texts = [b["text"] for b in sorted_blocks]
+    assert texts == [
+        "عنوان رئيسي عريض",
+        "عمود أيمن 1",
+        "عمود أيسر 1",
+        "عنوان فرعي يقطع الصفحة عرضياً",
+        "عمود أيمن 2",
+        "عمود أيسر 2",
+    ]
+    print("[PASS] Multi-column XY-Cut with spanning headers verified RTL order.")
+
+
 def test_xy_cut_single_column_preservation():
     """Single-column pages should preserve natural top-down vertical reading order."""
     page_w = 600.0
@@ -144,7 +168,14 @@ def test_cross_page_paragraph_continuation(tmp_path):
     res_path = export_docx(project, [0, 1], out_docx, opts={"merge_cross_page_paragraphs": True})
     assert os.path.exists(res_path)
     assert os.path.getsize(res_path) > 1000
-    print("[PASS] Cross-page paragraph continuation exported to DOCX successfully.")
+
+    # Deep verification: ensure the paragraphs across pages were merged into ONE paragraph in DOCX
+    import docx
+    doc = docx.Document(res_path)
+    paras = [p.text for p in doc.paragraphs if p.text.strip()]
+    assert len(paras) == 1, f"Expected 1 merged paragraph, got {len(paras)}"
+    assert "استمرت في الصفحة" in paras[0]
+    print("[PASS] Cross-page paragraph continuation exported to DOCX successfully as a single merged paragraph.")
 
 
 # ── 5. PDF Reconstruction Export (F-2) ────────────────────────────────────────
@@ -170,12 +201,15 @@ def test_pdf_export_flowing_mode(tmp_path):
     assert os.path.exists(res)
     assert os.path.getsize(res) > 500
 
-    # Verify PyMuPDF can open and read the generated PDF
+    # Deep verification: verify PyMuPDF can open and read genuine Arabic text WITHOUT question marks (?)
     import fitz
     doc = fitz.open(res)
     assert len(doc) == 1
+    page_text = doc[0].get_text()
+    assert "?" not in page_text, f"PDF text contained '?' encoding artifacts: {page_text}"
+    assert len(page_text.strip()) > 20
     doc.close()
-    print("[PASS] PDF flowing reconstruction generated valid readable PDF.")
+    print("[PASS] PDF flowing reconstruction generated valid readable Arabic PDF without encoding corruptions.")
 
 
 def test_pdf_export_exact_mode(tmp_path):
@@ -200,8 +234,11 @@ def test_pdf_export_exact_mode(tmp_path):
     import fitz
     doc = fitz.open(res)
     assert len(doc) == 1
+    page_text = doc[0].get_text()
+    assert "?" not in page_text, f"PDF exact text contained '?' encoding artifacts: {page_text}"
+    assert len(page_text.strip()) > 10
     doc.close()
-    print("[PASS] PDF exact reconstruction generated valid coordinate-placed PDF.")
+    print("[PASS] PDF exact reconstruction generated valid coordinate-placed Arabic PDF without question marks.")
 
 
 # ── 6. Global Search & Replace Across Project (F-1) ───────────────────────────

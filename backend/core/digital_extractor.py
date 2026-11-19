@@ -623,13 +623,14 @@ class DigitalPDFExtractor:
         """
         Sorts blocks in natural Arabic RTL reading order using Recursive XY-Cut (L-1).
         Header blocks top-to-bottom -> Right Column top-to-bottom -> Left Column top-to-bottom -> Footer blocks.
+        Splits around wide spanning elements (horizontal cuts) then detects vertical columns within slices.
         """
         if not blocks:
             return [], 1
 
         headers = []
         footers = []
-        body_blocks = []
+        content_blocks = []
 
         for b in blocks:
             cat = b.get("category", "Text")
@@ -639,73 +640,127 @@ class DigitalPDFExtractor:
             elif cat in ("Page-footer", "Page-number") or bbox[1] >= page_h * 0.92:
                 footers.append(b)
             else:
-                body_blocks.append(b)
+                content_blocks.append(b)
 
-        headers.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
-        footers.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
+        headers.sort(key=lambda b: (b["bbox"][1], -b["bbox"][2]))
+        footers.sort(key=lambda b: (b["bbox"][1], -b["bbox"][2]))
 
-        if not body_blocks:
+        if not content_blocks:
             merged = headers + footers
             for i, b in enumerate(merged):
                 b["order"] = i + 1
                 b["col_index"] = 0
             return merged, 1
 
+        # Check for wide spanning blocks (headers/dividers spanning >= 65% width or crossing midline)
+        mid_x = page_w / 2.0
+        spanning = []
+        columnar = []
+        for b in content_blocks:
+            bx0, by0, bx1, by1 = b["bbox"]
+            w = bx1 - bx0
+            cat = b.get("category", "Text")
+            is_wide = (w >= page_w * 0.65) or (
+                w >= page_w * 0.45 and cat in ("Title", "Section-header") and bx0 < mid_x and bx1 > mid_x
+            )
+            if is_wide:
+                spanning.append(b)
+            else:
+                columnar.append(b)
+
+        # Slice columnar blocks along Y using spanning blocks as horizontal boundaries
+        spanning.sort(key=lambda b: b["bbox"][1])
+        slices = []
+        curr_y = 0.0
+        for span in spanning:
+            sy0 = span["bbox"][1]
+            sy1 = span["bbox"][3]
+            slice_blocks = [b for b in columnar if b["bbox"][3] <= sy0 and b["bbox"][1] >= curr_y]
+            if slice_blocks:
+                slices.append(("columns", slice_blocks))
+            slices.append(("span", [span]))
+            curr_y = sy1
+
+        remaining = [b for b in columnar if b["bbox"][1] >= curr_y]
+        if remaining:
+            slices.append(("columns", remaining))
+
+        placed_ids = {id(b) for _, sblocks in slices for b in sblocks}
+        unplaced = [b for b in columnar if id(b) not in placed_ids]
+        if unplaced:
+            slices.append(("columns", unplaced))
+
+        total_page_cols = 1
+        ordered_body = []
         min_gutter = max(18.0, page_w * 0.035)
 
-        x_events = []
-        for idx, b in enumerate(body_blocks):
-            bx0, _, bx1, _ = b["bbox"]
-            x_events.append((bx0, 1, idx))
-            x_events.append((bx1, -1, idx))
-        x_events.sort(key=lambda ev: (ev[0], -ev[1]))
+        for stype, sblocks in slices:
+            if stype == "span":
+                for b in sblocks:
+                    b["col_index"] = 0
+                ordered_body.extend(sblocks)
+                continue
 
-        active_count = 0
-        last_zero_start = None
-        gutters = []
+            min_content_x = min(b["bbox"][0] for b in sblocks)
+            max_content_x = max(b["bbox"][2] for b in sblocks)
 
-        min_content_x = min(b["bbox"][0] for b in body_blocks)
-        max_content_x = max(b["bbox"][2] for b in body_blocks)
+            x_events = []
+            for idx, b in enumerate(sblocks):
+                bx0, _, bx1, _ = b["bbox"]
+                x_events.append((bx0, 1, idx))
+                x_events.append((bx1, -1, idx))
+            x_events.sort(key=lambda ev: (ev[0], -ev[1]))
 
-        for x_val, delta, _ in x_events:
-            if active_count == 0 and last_zero_start is not None:
-                gap_w = x_val - last_zero_start
-                if gap_w >= min_gutter and last_zero_start > min_content_x + 15 and x_val < max_content_x - 15:
-                    gutters.append((last_zero_start, x_val))
-                last_zero_start = None
+            active_count = 0
+            last_zero_start = None
+            gutters = []
 
-            active_count += delta
-            if active_count == 0:
-                last_zero_start = x_val
+            for x_val, delta, _ in x_events:
+                if active_count == 0 and last_zero_start is not None:
+                    gap_w = x_val - last_zero_start
+                    if gap_w >= min_gutter and last_zero_start > min_content_x + 10 and x_val < max_content_x - 10:
+                        gutters.append((last_zero_start, x_val))
+                    last_zero_start = None
 
-        num_columns = len(gutters) + 1
-        if num_columns > 1:
-            col_dividers = [(g[0] + g[1]) / 2.0 for g in gutters]
-            for b in body_blocks:
-                cx = (b["bbox"][0] + b["bbox"][2]) / 2.0
-                col_left_idx = 0
-                for div_x in col_dividers:
-                    if cx > div_x:
-                        col_left_idx += 1
-                col_rtl_idx = (num_columns - 1) - col_left_idx
-                b["col_index"] = col_rtl_idx
+                active_count += delta
+                if active_count == 0:
+                    last_zero_start = x_val
 
-            body_blocks.sort(key=lambda b: (b.get("col_index", 0), b["bbox"][1], -b["bbox"][0]))
-        else:
-            for b in body_blocks:
-                b["col_index"] = 0
-            body_blocks.sort(key=lambda b: (b["bbox"][1], b["bbox"][0]))
+            num_cols = len(gutters) + 1
+            if num_cols > total_page_cols:
+                total_page_cols = num_cols
+
+            if num_cols > 1:
+                col_dividers = [(g[0] + g[1]) / 2.0 for g in gutters]
+                for b in sblocks:
+                    cx = (b["bbox"][0] + b["bbox"][2]) / 2.0
+                    col_left_idx = 0
+                    for div_x in col_dividers:
+                        if cx > div_x:
+                            col_left_idx += 1
+                    col_rtl_idx = (num_cols - 1) - col_left_idx
+                    b["col_index"] = col_rtl_idx
+
+                # RTL ordering: Right Column (col_index=0) first, then y0 ascending, then x0 descending
+                sblocks.sort(key=lambda b: (b.get("col_index", 0), b["bbox"][1], -b["bbox"][0]))
+            else:
+                for b in sblocks:
+                    b["col_index"] = 0
+                # Single column: sort by y (quantized to line height), then -x0 (RTL reading order)
+                sblocks.sort(key=lambda b: (round(b["bbox"][1] / 8.0) * 8.0, -b["bbox"][0]))
+
+            ordered_body.extend(sblocks)
 
         for h in headers:
             h["col_index"] = 0
         for f in footers:
             f["col_index"] = 0
 
-        merged_all = headers + body_blocks + footers
+        merged_all = headers + ordered_body + footers
         for idx_b, b in enumerate(merged_all):
             b["order"] = idx_b + 1
 
-        return merged_all, num_columns
+        return merged_all, total_page_cols
 
     def _classify_category(
         self,
