@@ -472,3 +472,40 @@ def test_zero_transition_all_in_stylesheets():
                         offenders.append(f"{fname}:{line_idx}: {line.strip()}")
     assert not offenders, f"Found transition: all occurrences:\n" + "\n".join(offenders)
     print("[PASS] Verified 0 instances of 'transition: all' across all frontend stylesheets.")
+
+
+def test_zero_transition_all_in_html_files():
+    """Verify that expensive 'transition: all' is also eliminated across all HTML templates."""
+    fe_dir = os.path.join(os.path.dirname(__file__), "..", "frontend")
+    offenders = []
+    for fname in os.listdir(fe_dir):
+        if fname.endswith(".html"):
+            fpath = os.path.join(fe_dir, fname)
+            with open(fpath, "r", encoding="utf-8") as f:
+                for line_idx, line in enumerate(f, 1):
+                    if re.search(r"transition:\s*all\b", line):
+                        offenders.append(f"{fname}:{line_idx}: {line.strip()}")
+    assert not offenders, f"Found transition: all occurrences in HTML files:\n" + "\n".join(offenders)
+    print("[PASS] Verified 0 instances of 'transition: all' across HTML files.")
+
+
+def test_review_js_safe_dom_manipulation():
+    """Verify that review.js does not attempt cross-parent insertBefore operations (Band-1 vs Band-2)."""
+    rev_js = os.path.join(os.path.dirname(__file__), "..", "frontend", "js", "review.js")
+    with open(rev_js, "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "navDiv.parentNode.insertBefore(netBadge, saveBtn)" not in content
+    assert "saveBtn.parentNode.insertBefore(netBadge, saveBtn)" in content
+    print("[PASS] Verified safe toolbar DOM manipulation in review.js.")
+
+
+def test_projects_sort_i18n_present():
+    """Verify that projects.sort translation key is defined in ar, en, and de locales."""
+    locales_dir = os.path.join(os.path.dirname(__file__), "..", "frontend", "js", "i18n", "locales")
+    for lang in ["ar", "en", "de"]:
+        fpath = os.path.join(locales_dir, f"{lang}.js")
+        with open(fpath, "r", encoding="utf-8") as f:
+            content = f.read()
+        assert '"projects.sort":' in content, f"Missing projects.sort in {lang}.js"
+    print("[PASS] Verified 'projects.sort' i18n keys present across ar, en, de.")
+

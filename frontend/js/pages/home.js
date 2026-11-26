@@ -14,6 +14,16 @@ async function initHome() {
   const api = window.AppApi || { call: (m,...a)=>window.pywebview.api[m](...a), getProjects: ()=>window.pywebview.api.get_projects() };
   let projects = [];
   try {
+    if (window.pywebview && window.pywebview.api && window.pywebview.api.get_app_data_path) {
+      window.__appDataPath = (await window.pywebview.api.get_app_data_path()).replace(/\\/g, '/');
+    } else if (api.call) {
+      window.__appDataPath = (await api.call('get_app_data_path')).replace(/\\/g, '/');
+    }
+  } catch (e) {
+    window.__appDataPath = '';
+  }
+
+  try {
     projects = (await (api.getProjects ? api.getProjects() : api.call('get_projects'))) || [];
   } catch (e) {
     console.error('Error loading projects:', e);

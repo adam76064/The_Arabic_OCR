@@ -68,7 +68,8 @@
     const cropSection = document.getElementById('crop-section');
     if (!btn || !container) return;
 
-    if (window.__appSettings?.reviewSideBySideMode) {
+    const shouldSideBySide = window.__appSettings?.reviewSideBySideMode ?? (window.innerWidth >= 900);
+    if (shouldSideBySide) {
       container.classList.add('side-by-side-mode');
       if (cropSection) cropSection.style.height = '';
     }

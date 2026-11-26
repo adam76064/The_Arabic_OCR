@@ -552,6 +552,7 @@ window.AppLocales.en = {
     "projects.pages": "Pages",
     "projects.progress": "Progress",
     "projects.search": "Search…",
+    "projects.sort": "Sort by:",
     "projects.title": "Projects",
     "projects.untitled": "Project",
     "properties.analyzing": "Analyzing...",

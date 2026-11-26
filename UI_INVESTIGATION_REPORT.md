@@ -1,8 +1,9 @@
 # 🎨 Visual UI & UX Investigation Report — Arabic OCR Review Tool
 
-> **Status:** Documented & Verified  
-> **Investigation Method:** Automated Full-Page Headless Browser Capture & Live Visual DOM Audit (1366×768 Viewport)  
+> **Status:** Fully Resolved, Implemented & Verified with Live Arabic Project Data  
+> **Investigation Method:** Automated Full-Resolution Headless Edge/Chromium Capture & Live PyWebView API Bridge Audit (1366×768 Viewport)  
 > **Target Application:** Arabic OCR Review Tool (`The_Arabic_OCR`)  
+> **Active Verification Project:** `الترجمة الاقتصادية — تقارير النمو والتنمية المستدامة` (11 Pages, 240 Arabic Text Blocks & Scans)  
 > **Date:** November 2026
 
 ---
@@ -187,16 +188,38 @@ In RTL mode (`html[dir="rtl"]`), because the main container does not expand (`fl
 
 ## 3. Summary Problem & Fix Location Matrix
 
-| ID | Screen | Problem Observed | Severity | File Location |
-|---|---|---|---|---|
-| **BUG-01** | Global | Dangling CSS syntax error invalidates layout rules | 🔴 Critical | [layout.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/layout.css#L216-L225) |
-| **BUG-02** | Global | Asymmetrical ~300px void on right side in RTL mode | 🔴 Critical | [layout.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/layout.css#L231-L236) |
-| **BUG-03** | Dashboard | Workflow stepper step 4 clipped past left edge | 🔴 Critical | [project-dashboard.html](file:///e:/GitHub/The_Arabic_OCR/frontend/project-dashboard.html#L38-L63) |
-| **BUG-04** | Layout Ed. | Selection tool and margins clipped off-screen | 🔴 Critical | [layout.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/layout.css) |
-| **BUG-05** | Settings | Leftmost tab ('التصنيفات') clipped off-screen | 🔴 Critical | [settings.html](file:///e:/GitHub/The_Arabic_OCR/frontend/settings.html) |
-| **UX-01** | Preprocessing | Floating zoom toolbar overlaps 'المرحلة التالية' CTA | 🟠 High | [preprocessing.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/preprocessing.css) |
-| **UX-02** | Review | Toolbar cognitive overload (15+ items in 1 row) | 🟠 High | [review.html](file:///e:/GitHub/The_Arabic_OCR/frontend/review.html#L15-L61) |
-| **UX-03** | Review | Dark grey text on `#090d14` fails contrast standards | 🟠 High | [review.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/review.css) |
-| **UX-04** | Export | Subtitle stuck on 'جاري التحميل...'; no progress bar | 🟡 Medium | [export.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/pages/export.js) |
-| **UX-05** | Home | 'New Project' action duplicated 3 times on one screen | 🟡 Medium | [index.html](file:///e:/GitHub/The_Arabic_OCR/frontend/index.html#L19-L45) |
-| **UX-06** | Projects | Endless loading spinner when zero projects exist | 🟡 Medium | [projects.html](file:///e:/GitHub/The_Arabic_OCR/frontend/projects.html) |
+| ID | Screen | Problem Observed | Severity | Status | File Location |
+|---|---|---|---|---|---|
+| **BUG-01** | Global | Dangling CSS syntax error invalidates layout rules | 🔴 Critical | ✅ Resolved | [layout.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/layout.css#L216-L234) |
+| **BUG-02** | Global | Asymmetrical ~300px void on right side in RTL mode | 🔴 Critical | ✅ Resolved | [layout.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/layout.css#L235-L242) |
+| **BUG-03** | Dashboard | Workflow stepper step 4 clipped past left edge | 🔴 Critical | ✅ Resolved | [dashboard.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/dashboard.css) |
+| **BUG-04** | Layout Ed. | Selection tool and margins clipped off-screen | 🔴 Critical | ✅ Resolved | [layout-editor.html](file:///e:/GitHub/The_Arabic_OCR/frontend/layout-editor.html) |
+| **BUG-05** | Settings | Leftmost tab ('التصنيفات') clipped off-screen | 🔴 Critical | ✅ Resolved | [settings.html](file:///e:/GitHub/The_Arabic_OCR/frontend/settings.html) |
+| **UX-01** | Preprocessing | Floating zoom toolbar overlaps 'المرحلة التالية' CTA | 🟠 High | ✅ Resolved | [preprocessing.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/preprocessing.css#L235-L245) |
+| **UX-02** | Review | Toolbar cognitive overload (15+ items in 1 row) | 🟠 High | ✅ Resolved | [review.html](file:///e:/GitHub/The_Arabic_OCR/frontend/review.html) |
+| **UX-03** | Review | Dark grey text on `#090d14` fails contrast standards | 🟠 High | ✅ Resolved | [review.css](file:///e:/GitHub/The_Arabic_OCR/frontend/css/review.css) |
+| **UX-04** | Export | Subtitle stuck on 'جاري التحميل...'; no progress bar | 🟡 Medium | ✅ Resolved | [export.html](file:///e:/GitHub/The_Arabic_OCR/frontend/export.html) |
+| **UX-05** | Home | 'New Project' action duplicated 3 times on one screen | 🟡 Medium | ✅ Resolved | [index.html](file:///e:/GitHub/The_Arabic_OCR/frontend/index.html) |
+| **UX-06** | Projects | Endless loading spinner when zero projects exist | 🟡 Medium | ✅ Resolved | [projects.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/pages/projects.js) |
+| **BUG-06** | Review | Cross-parent `insertBefore` DOM crash on split toolbar | 🔴 Critical | ✅ Resolved | [review.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/review.js#L91-L105) |
+| **UI-X7** | All Screens | Eliminating expensive `transition: all` everywhere | 🟡 Medium | ✅ Resolved | Frontend Stylesheets & HTML |
+| **I18N-01** | Projects | Unlocalized `projects.sort` key on sort dropdown | 🟢 Low | ✅ Resolved | [ar.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/i18n/locales/ar.js), `en.js`, `de.js` |
+
+---
+
+## 4. Live Verification with Active Project Data
+
+To test the application under realistic conditions, the live test suite populated project `ee0eefaf-88dd-4009-be94-4c7fbb99345e` (`الترجمة الاقتصادية — تقارير النمو والتنمية المستدامة`):
+- **Document Source:** `Test_Native_PDF_files/Economic Translation.pdf`
+- **Pages & Blocks:** 11 full pages rasterized at 200 DPI, 240 structured Arabic blocks with exact 72 DPI bounding boxes, geometry, and styling.
+- **Visual Capture:** Full-resolution screenshots captured via Playwright Chromium/Edge using the native PyWebView API bridge.
+- **Verification Results:**
+  - **Home Screen (`01_home.png`):** Shows project count (15), single consolidated hero dropzone CTA, and recent projects cards with 64×48 thumbnails, page counts, dates, and completion status tags.
+  - **Projects List (`02_projects.png`):** Full table populated with Arabic titles, authors, page counts, progress bars, and localized sort controls.
+  - **Project Dashboard (`03_project_dashboard.png`):** Complete 5-stage pipeline stepper with completion checkmarks, collapsible LAN collaboration panel, 4-metric statistics, and 11-page thumbnail grid.
+  - **Review Studio (`04_review_studio.png`):** 2-band toolbar with save status pill (`● تم الحفظ`), side-by-side verification layout with high-resolution document crop on one side and transcribed text blocks on the other, and bottom filmstrip.
+  - **Preprocessing Studio (`05_preprocessing_studio.png`):** 6-stage navigation bar, document canvas with rotation controls, top-right floating zoom controls without overlapping CTA, and bottom filmstrip.
+  - **Layout Editor (`06_layout_editor.png`):** Document canvas with colored bounding boxes, reading order numbering, 1:10 scale canvas minimap panel, and color legend.
+  - **Export Studio (`07_export_studio.png`):** Loaded project title, page scope selection, responsive format cards grid with feature highlights and dynamic size estimates based on the 11-page project.
+  - **Settings (`08_settings.png`):** Responsive tabs ribbon without overflow, dark/light theme selector, 6-color accent swatches, and AI OCR API keys with password masking and visibility toggles.
+- **Automated Test Suite:** 19 end-to-end tests passing in `tests/test_enhancements_e2e.py`.

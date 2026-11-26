@@ -552,6 +552,7 @@ window.AppLocales.de = {
     "projects.pages": "Seiten",
     "projects.progress": "Fortschritt",
     "projects.search": "Suchen…",
+    "projects.sort": "Sortieren nach:",
     "projects.title": "Projekte",
     "projects.untitled": "Projekt",
     "properties.analyzing": "Analysieren...",

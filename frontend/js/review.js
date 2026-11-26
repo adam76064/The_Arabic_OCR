@@ -89,13 +89,17 @@ async function initApp() {
     if (typeof setupBlocksListDelegation === 'function') setupBlocksListDelegation();
 
     // Network badge
+    const saveBtn = document.getElementById('save-page');
     const navDiv = document.querySelector('.page-nav');
-    if (navDiv) {
+    if (saveBtn || navDiv) {
         const netBadge = document.createElement('div');
         netBadge.id = 'network-status-badge';
         netBadge.style.cssText = 'font-size:12px; padding:4px 10px; border-radius:20px; font-weight:bold; display:none; align-items:center; gap:5px; margin-right: 10px;';
-        const saveBtn = document.getElementById('save-page');
-        if (saveBtn) navDiv.parentNode.insertBefore(netBadge, saveBtn);
+        if (saveBtn && saveBtn.parentNode) {
+            saveBtn.parentNode.insertBefore(netBadge, saveBtn);
+        } else if (navDiv && navDiv.parentNode) {
+            navDiv.parentNode.appendChild(netBadge);
+        }
 
         const netInterval = setInterval(async () => {
             if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.get_network_status) return;
@@ -110,6 +114,10 @@ async function initApp() {
     }
 
     if (typeof updateReviewPanel === 'function') updateReviewPanel();
+    if (typeof selectBlock === 'function') {
+        const blocks = currentProject?.pages?.[currentPageIndex]?.ocr_data || [];
+        if (blocks.length > 0) selectBlock(0);
+    }
     console.log('[Review] initApp completed, project loaded', currentProject?.metadata?.title);
 }
 

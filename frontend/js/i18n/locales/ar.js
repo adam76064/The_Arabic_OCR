@@ -552,6 +552,7 @@ window.AppLocales.ar = {
     "projects.pages": "الصفحات",
     "projects.progress": "التقدم",
     "projects.search": "بحث...",
+    "projects.sort": "الترتيب:",
     "projects.title": "المشاريع",
     "projects.untitled": "المشروع",
     "properties.analyzing": "جاري التحليل...",
