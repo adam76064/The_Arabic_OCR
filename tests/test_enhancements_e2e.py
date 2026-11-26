@@ -397,8 +397,8 @@ def test_ui_audit_report_elements_present():
     # Screen 1: Home
     with open(os.path.join(fe_dir, "index.html"), "r", encoding="utf-8") as f:
         h_html = f.read()
-    assert "app-topbar" in h_html
     assert "hero-dropzone" in h_html
+    assert "home-main" in h_html
 
     # Screen 2: Projects
     with open(os.path.join(fe_dir, "projects.html"), "r", encoding="utf-8") as f:
