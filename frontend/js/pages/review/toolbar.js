@@ -314,7 +314,7 @@ function renderReviewFilmstrip() {
             : `projects/${currentProject.id}/images/${p.image_path}`;
 
         item.innerHTML = `
-            <img src="${thumbUrl}" alt="P${idx+1}" loading="lazy" onerror="this.src='${fallbackUrl}';">
+            <img src="${thumbUrl}" alt="P${idx+1}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackUrl}';">
             <span class="filmstrip-badge">${idx + 1}</span>
         `;
         item.addEventListener('click', () => {

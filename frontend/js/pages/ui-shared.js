@@ -8,7 +8,7 @@ const DYNAMIC_STYLES = `
     /* Toolbar Tabs */
     .toolbar-tabs-container { display: flex; flex-direction: column; width: 100%; }
     .toolbar-tabs { display: flex; background: var(--color-bg-alt); border-bottom: 1px solid var(--color-border); }
-    .toolbar-tab-btn { padding: 8px 18px; font-size: var(--text-sm); font-weight: bold; color: var(--color-text-muted); background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .toolbar-tab-btn { padding: 8px 18px; font-size: var(--text-sm); font-weight: bold; color: var(--color-text-muted); background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s, background-color 0.15s, border-color 0.15s; }
     .toolbar-tab-btn:hover { color: var(--color-text); }
     .toolbar-tab-btn.active { color: var(--color-primary); border-bottom: 2px solid var(--color-primary); background: var(--color-surface); }
     .toolbar-tab-content { display: none; padding: 7px 10px; flex-wrap: wrap; gap: 5px; background: var(--color-surface); align-items: center; }
@@ -19,7 +19,7 @@ const DYNAMIC_STYLES = `
         display: inline-flex !important; align-items: center !important; justify-content: center !important; 
         width: 32px !important; height: 32px !important; padding: 0 !important; 
         border: 1px solid transparent !important; border-radius: var(--radius-sm) !important; 
-        background: transparent !important; color: var(--color-text-secondary) !important; cursor: pointer !important; transition: all 0.15s !important; 
+        background: transparent !important; color: var(--color-text-secondary) !important; cursor: pointer !important; transition: background-color 0.15s, border-color 0.15s, color 0.15s !important; 
     }
     #sticky-toolbar button.toolbar-icon-btn:hover, #text-preview-toolbar button.toolbar-icon-btn:hover { 
         background: var(--color-surface-hover) !important; border-color: var(--color-border-strong) !important; color: var(--color-primary) !important; 
@@ -40,7 +40,7 @@ const DYNAMIC_STYLES = `
     .toolbar-icon-color-label svg { pointer-events: none; }
 
     /* Shared select control (font name / font size) */
-    .toolbar-select { height: 32px; padding: 0 8px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--text-sm); color: var(--color-text); background: var(--color-surface); cursor: pointer; transition: all 0.15s; }
+    .toolbar-select { height: 32px; padding: 0 8px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--text-sm); color: var(--color-text); background: var(--color-surface); cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
     .toolbar-select:hover { border-color: var(--color-border-strong); }
     .toolbar-select:focus { outline: none; border-color: var(--color-primary); }
 
@@ -59,7 +59,7 @@ const DYNAMIC_STYLES = `
     .aes-group .aes-row { display: flex; gap: 10px; }
     .aes-group .aes-row > * { flex: 1; }
     .aes-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-    .aes-actions button { padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; font-size: var(--text-sm); border: none; transition: all var(--trans-fast); }
+    .aes-actions button { padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; font-size: var(--text-sm); border: none; transition: background-color var(--trans-fast), color var(--trans-fast), border-color var(--trans-fast); }
     .aes-btn-cancel { background: var(--color-bg-muted); color: var(--color-text-secondary); }
     .aes-btn-cancel:hover { background: var(--color-border-strong); color: var(--color-text); }
     .aes-btn-confirm { background: var(--color-primary); color: var(--color-text-inverse); }

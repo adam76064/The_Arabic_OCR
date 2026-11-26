@@ -45,42 +45,48 @@
 </head>
 <body>
     <div id="layout-main">
-    <header class="layout-toolbar">
-        <button id="btn-back" class="btn-secondary" data-icon="back" data-i18n="layout.back">رجوع</button>
-        <button id="prev-page" class="btn-secondary" data-icon="prev" data-i18n="layout.previous">السابق</button>
-        <span style="font-weight: bold; font-size: 15px; margin: 0 10px; color: #2c3e50;"><span data-i18n="layout.page">تخطيط صفحة</span> <span id="page-num-display">...</span></span>
-        <button id="next-page" class="btn-secondary" data-icon="next" data-i18n="layout.next">التالي</button>
-        
-        <div class="tool-group">
-            <button id="btn-undo" class="tool-btn" data-i18n-title="layout.undo" title="تراجع (Ctrl+Z)" data-icon="undo" disabled></button>
-            <button id="btn-redo" class="tool-btn" data-i18n-title="layout.redo" title="إعادة (Ctrl+Y)" data-icon="redo" disabled></button>
+    <header class="layout-toolbar-header" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow-xs); z-index: 10; flex-shrink: 0; display: flex; flex-direction: column;">
+        <!-- Band 1: Page Navigation, Undo/Redo & Save Action -->
+        <div class="layout-toolbar layout-toolbar-nav" style="display: flex; gap: 10px; align-items: center; padding: 7px 18px; border-bottom: 1px solid var(--color-border);">
+            <button id="btn-back" class="btn-secondary" data-icon="back" data-i18n="layout.back">رجوع</button>
+            <button id="prev-page" class="btn-secondary" data-icon="prev" data-i18n="layout.previous">السابق</button>
+            <span style="font-weight: bold; font-size: 15px; margin: 0 10px; color: var(--color-text);"><span data-i18n="layout.page">تخطيط صفحة</span> <span id="page-num-display">...</span></span>
+            <button id="next-page" class="btn-secondary" data-icon="next" data-i18n="layout.next">التالي</button>
+            
+            <div class="tool-group">
+                <button id="btn-undo" class="tool-btn" data-i18n-title="layout.undo" title="تراجع (Ctrl+Z)" data-icon="undo" disabled></button>
+                <button id="btn-redo" class="tool-btn" data-i18n-title="layout.redo" title="إعادة (Ctrl+Y)" data-icon="redo" disabled></button>
+            </div>
+
+            <div style="flex: 1;"></div>
+            <button id="btn-save" class="btn-success" data-icon="save" data-i18n="layout.save" style="font-size: 13.5px; font-weight: 700; padding: 6px 16px;">حفظ التخطيط</button>
         </div>
 
-        <div class="tool-group">
-            <button id="tool-select" class="tool-btn active-tool" data-i18n-title="layout.selectTitle" title="تحديد الكتل والتعديل الداخلي للجداول" data-icon="select" data-i18n="layout.select">تحديد</button>
-            <button id="tool-move" class="tool-btn" data-i18n-title="layout.moveTitle" title="تحريك وتغيير حجم الكتل بالكامل" data-icon="move" data-i18n="layout.move">تحريك</button>
-            <button id="tool-draw" class="tool-btn" data-i18n-title="layout.drawTitle" title="رسم كتلة نصية جديدة" data-icon="draw" data-i18n="layout.draw">رسم</button>
-            <button id="tool-order" class="tool-btn" data-i18n-title="layout.orderTitle" title="انقر على الكتل بالتسلسل لترتيبها" data-icon="order" data-i18n="layout.order">ترتيب</button>
-            <button id="tool-flowlines" class="tool-btn" title="إظهار/إخفاء خطوط تسلسل القراءة" data-i18n-title="layout.flowlinesTitle" data-icon="order" data-i18n="layout.flowlines">مسار القراءة</button>
-        </div>
+        <!-- Band 2: Canvas Tools, Block Operations & History -->
+        <div class="layout-toolbar layout-toolbar-tools" style="display: flex; gap: 10px; align-items: center; padding: 6px 18px; background: var(--color-bg-alt);">
+            <div class="tool-group" style="border: none; padding: 0; margin: 0;">
+                <button id="tool-select" class="tool-btn active-tool" data-i18n-title="layout.selectTitle" title="تحديد الكتل والتعديل الداخلي للجداول" data-icon="select" data-i18n="layout.select">تحديد</button>
+                <button id="tool-move" class="tool-btn" data-i18n-title="layout.moveTitle" title="تحريك وتغيير حجم الكتل بالكامل" data-icon="move" data-i18n="layout.move">تحريك</button>
+                <button id="tool-draw" class="tool-btn" data-i18n-title="layout.drawTitle" title="رسم كتلة نصية جديدة" data-icon="draw" data-i18n="layout.draw">رسم</button>
+                <button id="tool-order" class="tool-btn" data-i18n-title="layout.orderTitle" title="انقر على الكتل بالتسلسل لترتيبها" data-icon="order" data-i18n="layout.order">ترتيب</button>
+                <button id="tool-flowlines" class="tool-btn" title="إظهار/إخفاء خطوط تسلسل القراءة" data-i18n-title="layout.flowlinesTitle" data-icon="order" data-i18n="layout.flowlines">مسار القراءة</button>
+            </div>
 
-        <div class="tool-group">
-            <button id="btn-merge" class="tool-btn" data-i18n-title="layout.mergeTitle" title="دمج الكتل المحددة" data-icon="merge" disabled data-i18n="layout.merge">دمج</button>
-            <button id="btn-delete" class="tool-btn danger" data-i18n-title="layout.deleteTitle" title="حذف الكتل المحددة" data-icon="trash" disabled data-i18n="layout.delete">حذف</button>
-            <button id="btn-toggle-history" class="tool-btn" title="سجل العمليات" data-icon="order">السجل</button>
+            <div class="tool-group">
+                <button id="btn-merge" class="tool-btn" data-i18n-title="layout.mergeTitle" title="دمج الكتل المحددة" data-icon="merge" disabled data-i18n="layout.merge">دمج</button>
+                <button id="btn-delete" class="tool-btn danger" data-i18n-title="layout.deleteTitle" title="حذف الكتل المحددة" data-icon="trash" disabled data-i18n="layout.delete">حذف</button>
+                <button id="btn-toggle-history" class="tool-btn" title="سجل العمليات" data-icon="order">السجل</button>
+            </div>
         </div>
-
-        <div style="flex: 1;"></div>
-        <button id="btn-save" class="btn-success" data-icon="save" data-i18n="layout.save">حفظ التخطيط</button>
     </header>
 
     <!-- Multi-select Count Badge (UI-LE2) -->
-    <div id="layout-selection-badge" class="hidden" style="position: fixed; top: 70px; inset-inline-end: 20px; z-index: 50; background: var(--color-primary); color: #fff; padding: 6px 14px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; box-shadow: var(--shadow-md); pointer-events: none;">
+    <div id="layout-selection-badge" class="hidden" style="position: fixed; top: 96px; inset-inline-end: 20px; z-index: 50; background: var(--color-primary); color: #fff; padding: 6px 14px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; box-shadow: var(--shadow-md); pointer-events: none;">
         <span id="layout-selection-count">0</span> كتل محددة
     </div>
 
     <!-- History Panel (UI-LE3) -->
-    <div id="layout-history-panel" class="hidden" style="position: fixed; top: 60px; inset-inline-end: 20px; z-index: 60; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); width: 220px; max-height: 320px; display: flex; flex-direction: column;">
+    <div id="layout-history-panel" class="hidden" style="position: fixed; top: 96px; inset-inline-end: 20px; z-index: 60; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); width: 220px; max-height: 320px; display: flex; flex-direction: column;">
         <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border); font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; color: var(--color-text);">
             <span>سجل العمليات (History)</span>
             <button id="close-history-btn" style="background:none; border:none; cursor:pointer; font-size:13px; color:var(--color-text-muted);">✕</button>
@@ -111,7 +117,7 @@
 
     <main id="canvas-container">
         <div id="canvas-wrapper">
-            <img id="page-image" src="" alt="Page Layout">
+            <img id="page-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Page Layout">
             <canvas id="layout-canvas"></canvas>
         </div>
     </main>

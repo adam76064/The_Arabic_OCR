@@ -253,14 +253,23 @@
                     currentProject = window.AppApi && typeof window.AppApi.loadProject === 'function'
                         ? await window.AppApi.loadProject(projectId)
                         : await window.pywebview.api.load_project(projectId);
-                    if (titleEl) titleEl.textContent = currentProject?.metadata?.title || (window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع');
+                    if (titleEl) {
+                        titleEl.removeAttribute('data-i18n');
+                        titleEl.textContent = currentProject?.metadata?.title || (window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع');
+                    }
                     const expTo = document.getElementById('exp-to');
                     if (expTo && currentProject?.pages) expTo.value = currentProject.pages.length;
                 } catch (e) {
-                    if (titleEl) titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع';
+                    if (titleEl) {
+                        titleEl.removeAttribute('data-i18n');
+                        titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع';
+                    }
                 }
             } else {
-                if (titleEl) titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع تجريبي';
+                if (titleEl) {
+                    titleEl.removeAttribute('data-i18n');
+                    titleEl.textContent = window.AppI18n ? window.AppI18n.t('export.untitled') : 'مشروع تجريبي';
+                }
             }
             document.getElementById('back-btn')?.addEventListener('click', () => window.history.back());
             

@@ -509,3 +509,53 @@ def test_projects_sort_i18n_present():
         assert '"projects.sort":' in content, f"Missing projects.sort in {lang}.js"
     print("[PASS] Verified 'projects.sort' i18n keys present across ar, en, de.")
 
+
+def test_zero_transition_all_in_js_files():
+    """Verify that no JavaScript files dynamically inject 'transition: all' into DOM stylesheets (UI-X7)."""
+    js_dir = os.path.join(os.path.dirname(__file__), "..", "frontend", "js")
+    offenders = []
+    for root, _, files in os.walk(js_dir):
+        for fname in files:
+            if fname.endswith(".js"):
+                fpath = os.path.join(root, fname)
+                with open(fpath, "r", encoding="utf-8", errors="ignore") as f:
+                    for line_idx, line in enumerate(f, 1):
+                        if re.search(r"transition:\s*all\b", line):
+                            offenders.append(f"{fname}:{line_idx}: {line.strip()}")
+    assert not offenders, f"Found transition: all occurrences in JS files:\n" + "\n".join(offenders)
+    print("[PASS] Verified 0 instances of 'transition: all' across JS files.")
+
+
+def test_batch_and_projects_i18n_keys_present():
+    """Verify that batch actions and project operation translation keys are present in all locales."""
+    locales_dir = os.path.join(os.path.dirname(__file__), "..", "frontend", "js", "i18n", "locales")
+    required_keys = [
+        "dash.batchExport",
+        "dash.batchDelete",
+        "dash.batchDeleteSuccess",
+        "dash.confirmBatchDelete",
+        "projects.renamePrompt",
+        "projects.renameSuccess",
+        "projects.duplicateSuccess",
+    ]
+    for lang in ["ar", "en", "de"]:
+        fpath = os.path.join(locales_dir, f"{lang}.js")
+        with open(fpath, "r", encoding="utf-8") as f:
+            content = f.read()
+        for key in required_keys:
+            assert f'"{key}":' in content, f"Missing '{key}' in {lang}.js"
+    print("[PASS] Verified all batch actions and project operation i18n keys present across ar, en, de.")
+
+
+def test_layout_editor_two_band_toolbar_structure():
+    """Verify that layout-editor.html separates toolbar into distinct bands preventing RTL button truncation."""
+    le_html = os.path.join(os.path.dirname(__file__), "..", "frontend", "layout-editor.html")
+    with open(le_html, "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "layout-toolbar-nav" in content
+    assert "layout-toolbar-tools" in content
+    assert 'id="btn-save"' in content
+    assert 'id="tool-select"' in content
+    print("[PASS] Verified two-band toolbar layout structure in layout-editor.html.")
+
+

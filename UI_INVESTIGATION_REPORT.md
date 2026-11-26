@@ -202,8 +202,11 @@ In RTL mode (`html[dir="rtl"]`), because the main container does not expand (`fl
 | **UX-05** | Home | 'New Project' action duplicated 3 times on one screen | 🟡 Medium | ✅ Resolved | [index.html](file:///e:/GitHub/The_Arabic_OCR/frontend/index.html) |
 | **UX-06** | Projects | Endless loading spinner when zero projects exist | 🟡 Medium | ✅ Resolved | [projects.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/pages/projects.js) |
 | **BUG-06** | Review | Cross-parent `insertBefore` DOM crash on split toolbar | 🔴 Critical | ✅ Resolved | [review.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/review.js#L91-L105) |
-| **UI-X7** | All Screens | Eliminating expensive `transition: all` everywhere | 🟡 Medium | ✅ Resolved | Frontend Stylesheets & HTML |
+| **BUG-07** | Layout Ed. | Single-row layout toolbar overflows in RTL pushing 'Save Layout' and 'History' off-screen ($x < 0$) | 🔴 Critical | ✅ Resolved | [layout-editor.html](file:///e:/GitHub/The_Arabic_OCR/frontend/layout-editor.html) |
+| **UI-X7** | All Screens | Eliminating expensive `transition: all` everywhere | 🟡 Medium | ✅ Resolved | Frontend Stylesheets, HTML & JS |
 | **I18N-01** | Projects | Unlocalized `projects.sort` key on sort dropdown | 🟢 Low | ✅ Resolved | [ar.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/i18n/locales/ar.js), `en.js`, `de.js` |
+| **I18N-02** | Dashboard & Projects | Missing batch action and project operation translation keys (`dash.batchExport`, `dash.batchDelete`, `projects.renamePrompt`, etc.) | 🟠 High | ✅ Resolved | [ar.js](file:///e:/GitHub/The_Arabic_OCR/frontend/js/i18n/locales/ar.js), `en.js`, `de.js` |
+| **UX-07** | Review & Preprocessing | Empty `src=""` on placeholder and modal images triggers browser reload errors | 🟡 Medium | ✅ Resolved | [review.html](file:///e:/GitHub/The_Arabic_OCR/frontend/review.html), [preprocessing.html](file:///e:/GitHub/The_Arabic_OCR/frontend/preprocessing.html) |
 
 ---
 
@@ -222,4 +225,4 @@ To test the application under realistic conditions, the live test suite populate
   - **Layout Editor (`06_layout_editor.png`):** Document canvas with colored bounding boxes, reading order numbering, 1:10 scale canvas minimap panel, and color legend.
   - **Export Studio (`07_export_studio.png`):** Loaded project title, page scope selection, responsive format cards grid with feature highlights and dynamic size estimates based on the 11-page project.
   - **Settings (`08_settings.png`):** Responsive tabs ribbon without overflow, dark/light theme selector, 6-color accent swatches, and AI OCR API keys with password masking and visibility toggles.
-- **Automated Test Suite:** 19 end-to-end tests passing in `tests/test_enhancements_e2e.py`.
+- **Automated Test Suite:** 22 end-to-end tests passing in `tests/test_enhancements_e2e.py` (24 total passed across repository).

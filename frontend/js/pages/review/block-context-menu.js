@@ -40,7 +40,7 @@ const BLOCK_CONTEXT_MODALS_HTML = `
            <p style="font-size:13px; color: var(--color-text-muted); margin-top:0; margin-bottom:16px;">${blockContextText('block.splitHint')}</p>
            
            <div id="split-img-container" style="position:relative; display:inline-block; border:2px dashed var(--color-border-strong); border-radius:6px; cursor:crosshair; max-width: 100%; box-shadow: var(--shadow-sm); overflow:hidden; background: var(--color-canvas);">
-               <img id="split-target-img" src="" style="display:block; max-width:100%; pointer-events:none;">
+               <img id="split-target-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" style="display:block; max-width:100%; pointer-events:none;">
                <div id="split-line" style="position:absolute; left:0; right:0; height:2px; background:#e74c3c; top:50%; pointer-events:none; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>
            </div>
            
