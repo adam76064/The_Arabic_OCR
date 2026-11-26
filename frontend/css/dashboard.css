@@ -83,11 +83,13 @@
   border: 1px solid var(--color-primary-border);
 }
 
+.pipeline-step.done,
 .pipeline-step.step-done {
   color: var(--color-success);
   font-weight: 600;
 }
 
+.pipeline-step.done .step-num,
 .pipeline-step.step-done .step-num {
   background: var(--color-success);
   color: #ffffff;

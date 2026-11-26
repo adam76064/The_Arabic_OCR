@@ -74,6 +74,8 @@
     migrateProjectOcr: (pid) => call('migrate_project_ocr_to_pages', pid),
     searchProject: (pid, q, regex, indices) => call('search_project', pid, q, regex, indices),
     replaceInProject: (pid, find, rep, regex, indices) => call('replace_in_project', pid, find, rep, regex, indices),
+    duplicateProject: (id) => call('duplicate_project', id),
+    updateProjectMetadata: (id, meta) => call('update_project_metadata', id, meta),
     listPageSnapshots: (pid, idx) => call('list_page_snapshots', pid, idx),
     restorePageSnapshot: (pid, idx, fn) => call('restore_page_snapshot', pid, idx, fn),
     // ... add as needed fallback generic call covers rest

@@ -109,6 +109,36 @@ function initDashboardViewControls() {
         window.location.href = `layout-editor.html?id=${currentProjectId}&page=${firstIdx}`;
     });
 
+    document.getElementById('btn-batch-export')?.addEventListener('click', () => {
+        if (selectedPageIndices.size === 0) return;
+        const indices = Array.from(selectedPageIndices).sort((a, b) => a - b);
+        const pagesStr = indices.join(',');
+        window.location.href = `export.html?id=${currentProjectId}&pages=${pagesStr}`;
+    });
+
+    document.getElementById('btn-batch-delete')?.addEventListener('click', async () => {
+        if (selectedPageIndices.size === 0) return;
+        const indices = Array.from(selectedPageIndices).sort((a, b) => b - a);
+        const count = indices.length;
+        const confirmMsg = window.AppI18n ? window.AppI18n.t('dash.confirmBatchDelete', { count }) : `هل أنت متأكد من رغبتك في حذف ${count} صفحة محددة؟`;
+        if (!confirm(confirmMsg)) return;
+
+        try {
+            const api = window.AppApi || window.pywebview?.api;
+            for (const idx of indices) {
+                if (api?.delete_page) await api.delete_page(currentProjectId, idx, true);
+                else if (api?.call) await api.call('delete_page', currentProjectId, idx, true);
+            }
+            selectedPageIndices.clear();
+            if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('dash.batchDeleteSuccess') : 'تم حذف الصفحات المحددة بنجاح', 'success');
+            if (typeof loadProjectData === 'function') await loadProjectData();
+            else window.location.reload();
+        } catch (err) {
+            console.error('Batch delete error:', err);
+            alert('حدث خطأ أثناء حذف الصفحات: ' + err);
+        }
+    });
+
     // Pipeline steps clicks
     document.getElementById('step-preprocess')?.addEventListener('click', () => {
         window.location.href = `preprocessing.html?id=${currentProjectId}&page=0`;
@@ -351,32 +381,73 @@ function updatePipelineStepperStates() {
     const stepReview = document.getElementById('step-review');
     const stepExport = document.getElementById('step-export');
 
-    stepPre?.classList.add('step-done');
+    const stepDefs = [
+        { el: stepPre, num: '1' },
+        { el: stepOcr, num: '2' },
+        { el: stepLayout, num: '3' },
+        { el: stepReview, num: '4' },
+        { el: stepExport, num: '5' }
+    ];
+
+    stepDefs.forEach(({ el, num }) => {
+        if (!el) return;
+        el.classList.remove('done', 'step-done', 'active', 'locked');
+        const numEl = el.querySelector('.step-num');
+        if (numEl) numEl.innerHTML = num;
+    });
+
+    if (total === 0) {
+        stepPre?.classList.add('active');
+        stepOcr?.classList.add('locked');
+        stepLayout?.classList.add('locked');
+        stepReview?.classList.add('locked');
+        stepExport?.classList.add('locked');
+        return;
+    }
+
+    // Step 1: Preprocess (completed once project created)
+    stepPre?.classList.add('done', 'step-done');
     const preNum = stepPre?.querySelector('.step-num');
     if (preNum) preNum.innerHTML = '✓';
 
+    // Step 2: OCR
     if (ocredCount === total && total > 0) {
-        stepOcr?.classList.add('step-done');
-        stepOcr?.classList.remove('active');
+        stepOcr?.classList.add('done', 'step-done');
         const num = stepOcr?.querySelector('.step-num');
         if (num) num.innerHTML = '✓';
-    } else if (ocredCount > 0) {
+    } else {
         stepOcr?.classList.add('active');
     }
 
+    // Step 3: Layout
     if (ocredCount === total && total > 0) {
-        stepLayout?.classList.add('step-done');
+        stepLayout?.classList.add('done', 'step-done');
         const num = stepLayout?.querySelector('.step-num');
         if (num) num.innerHTML = '✓';
+    } else if (ocredCount > 0) {
+        stepLayout?.classList.add('active');
+    } else {
+        stepLayout?.classList.add('locked');
     }
 
+    // Step 4: Review
     if (reviewedCount === total && total > 0) {
-        stepReview?.classList.add('step-done');
+        stepReview?.classList.add('done', 'step-done');
         const num = stepReview?.querySelector('.step-num');
         if (num) num.innerHTML = '✓';
-        stepExport?.classList.add('active');
     } else if (reviewedCount > 0 || ocredCount > 0) {
         stepReview?.classList.add('active');
+    } else {
+        stepReview?.classList.add('locked');
+    }
+
+    // Step 5: Export
+    if (reviewedCount === total && total > 0) {
+        stepExport?.classList.add('active');
+    } else if (ocredCount > 0) {
+        // available for export
+    } else {
+        stepExport?.classList.add('locked');
     }
 }
 

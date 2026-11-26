@@ -54,7 +54,9 @@ function sortProjectsList(list) {
       return (a.page_count || 0) - (b.page_count || 0);
     } else {
       // 'recent'
-      return (b.created_at || '') > (a.created_at || '') ? 1 : -1;
+      const da = new Date(a.created_at || 0).getTime();
+      const db = new Date(b.created_at || 0).getTime();
+      return db - da;
     }
   });
 }

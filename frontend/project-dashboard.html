@@ -52,7 +52,7 @@
                 <span data-i18n="dash.stepLayout">محرر التخطيط</span>
             </div>
             <span class="pipeline-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <div class="pipeline-step active" id="step-review" data-i18n-title="dash.stepReviewDesc" title="مراجعة وتدقيق وتنسيق النص">
+            <div class="pipeline-step" id="step-review" data-i18n-title="dash.stepReviewDesc" title="مراجعة وتدقيق وتنسيق النص">
                 <span class="step-num">4</span>
                 <span data-i18n="dash.stepReview">محرر التدقيق</span>
             </div>
@@ -75,13 +75,20 @@
             </div>
         </div>
 
-        <div id="dashboard-stats-container" style="margin-bottom: 20px;"></div>
+        <div id="dashboard-stats-container" style="margin-bottom: 20px;">
+            <div class="stats-skeleton-row">
+                <div class="stats-skeleton-card"></div>
+                <div class="stats-skeleton-card"></div>
+                <div class="stats-skeleton-card"></div>
+                <div class="stats-skeleton-card"></div>
+            </div>
+        </div>
 
-        <!-- Controls Row: View Mode + Select All -->
+        <!-- Controls Row: View Mode + Select All (UI-D5) -->
         <div class="dashboard-controls-row">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <label class="dashboard-select-all">
-                    <input type="checkbox" id="dash-select-all-cb" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                <label class="dashboard-select-all" id="btn-toggle-select-all" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: var(--radius-full); background: var(--color-surface); border: 1px solid var(--color-border); font-size: 13px; font-weight: 600; color: var(--color-text); transition: background-color var(--trans-fast), border-color var(--trans-fast);">
+                    <input type="checkbox" id="dash-select-all-cb" style="accent-color: var(--color-primary); width: 16px; height: 16px; cursor: pointer;">
                     <span data-i18n="dash.selectAllPages">تحديد جميع الصفحات</span>
                 </label>
             </div>
@@ -132,10 +139,12 @@
     <div id="floating-batch-bar" class="floating-batch-bar">
         <span class="batch-count-badge" id="batch-selected-count">0</span>
         <span style="font-size: 13px; font-weight: 600; color: var(--color-text);" data-i18n="dash.pagesSelected">صفحة محددة</span>
-        <div style="display: flex; gap: 8px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <button id="btn-batch-ocr" class="btn-primary" style="padding: 5px 14px; font-size: 12px;" data-icon="ocr" data-i18n="dash.batchOcr">OCR</button>
             <button id="btn-batch-preprocess" class="btn-secondary" style="padding: 5px 14px; font-size: 12px;" data-icon="preprocess" data-i18n="dash.batchPreprocess">معالجة أولية</button>
             <button id="btn-batch-layout" class="btn-secondary" style="padding: 5px 14px; font-size: 12px;" data-icon="layout" data-i18n="dash.batchLayout">تخطيط</button>
+            <button id="btn-batch-export" class="btn-secondary" style="padding: 5px 14px; font-size: 12px;" data-icon="export" data-i18n="dash.batchExport">تصدير المحدد</button>
+            <button id="btn-batch-delete" class="btn-secondary danger" style="padding: 5px 14px; font-size: 12px;" data-icon="trash" data-i18n="dash.batchDelete">حذف المحدد</button>
             <button id="btn-batch-clear" class="btn-plain" style="font-size: 12px; margin-inline-start: 8px; cursor: pointer;" data-i18n="dash.batchClear">إلغاء التحديد</button>
         </div>
     </div>

@@ -411,6 +411,9 @@ def test_ui_audit_report_elements_present():
         d_html = f.read()
     assert "dashboard-coop-panel" in d_html
     assert "dash-lan-toggle-expand" in d_html
+    assert "btn-batch-export" in d_html
+    assert "btn-batch-delete" in d_html
+    assert "stats-skeleton-row" in d_html
 
     # Screen 4: Review
     with open(os.path.join(fe_dir, "review.html"), "r", encoding="utf-8") as f:
@@ -442,10 +445,30 @@ def test_ui_audit_report_elements_present():
     assert 'btn-toggle-key-visibility' in s_html
     assert 'reset-section-link' in s_html
 
-    # Cross-cutting: Notifications queue
+    # Cross-cutting: Notifications queue & Api wrappers
     with open(os.path.join(fe_dir, "js", "components", "notifications.js"), "r", encoding="utf-8") as f:
         n_js = f.read()
     assert "MAX_VISIBLE_TOASTS" in n_js
     assert "pruneQueue" in n_js
 
+    with open(os.path.join(fe_dir, "js", "core", "api.js"), "r", encoding="utf-8") as f:
+        api_js = f.read()
+    assert "duplicateProject" in api_js
+    assert "updateProjectMetadata" in api_js
+
     print("[PASS] All UI Audit Report enhancement elements verified across template and component files.")
+
+
+def test_zero_transition_all_in_stylesheets():
+    """Verify that expensive 'transition: all' is strictly eliminated across all frontend stylesheets (UI-X7)."""
+    css_dir = os.path.join(os.path.dirname(__file__), "..", "frontend", "css")
+    offenders = []
+    for fname in os.listdir(css_dir):
+        if fname.endswith(".css"):
+            fpath = os.path.join(css_dir, fname)
+            with open(fpath, "r", encoding="utf-8") as f:
+                for line_idx, line in enumerate(f, 1):
+                    if re.search(r"transition:\s*all\b", line):
+                        offenders.append(f"{fname}:{line_idx}: {line.strip()}")
+    assert not offenders, f"Found transition: all occurrences:\n" + "\n".join(offenders)
+    print("[PASS] Verified 0 instances of 'transition: all' across all frontend stylesheets.")

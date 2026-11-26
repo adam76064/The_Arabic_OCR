@@ -54,7 +54,7 @@ body.has-sidebar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), color var(--trans-fast);
   cursor: pointer;
   text-decoration: none;
 }
@@ -134,7 +134,7 @@ body.has-sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), color var(--trans-fast);
 }
 
 #toggle-sidebar:hover {
@@ -211,7 +211,7 @@ body.has-sidebar {
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-md);
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), color var(--trans-fast), box-shadow var(--trans-fast);
 }
 
 html[dir="rtl"] #sidebar-collapsed-tab {

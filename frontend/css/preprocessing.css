@@ -93,7 +93,7 @@
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), border-color var(--trans-fast), color var(--trans-fast);
 }
 
 .stage-tab:hover {
@@ -209,7 +209,7 @@
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
   z-index: 50;
 }
 
@@ -368,7 +368,7 @@
   color: var(--color-text);
   cursor: pointer;
   text-align: center;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), border-color var(--trans-fast);
 }
 
 .rotation-btn:hover {
@@ -487,7 +487,7 @@
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
-  transition: all var(--trans-fast);
+  transition: border-color var(--trans-fast), transform var(--trans-fast), box-shadow var(--trans-fast);
 }
 
 .filmstrip-thumb:hover {
@@ -536,7 +536,7 @@
   border: none;
   cursor: pointer;
   font-weight: 700;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), transform var(--trans-fast);
 }
 
 .btn-next-stage-floating:hover {

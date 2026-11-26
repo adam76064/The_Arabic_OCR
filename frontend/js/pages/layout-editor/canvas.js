@@ -586,20 +586,27 @@ function drawLayoutMinimap() {
 
     // Update viewport rect
     if (container && viewRect) {
-        const scrollW = container.scrollWidth || 1;
-        const scrollH = container.scrollHeight || 1;
-        const clientW = container.clientWidth || 1;
-        const clientH = container.clientHeight || 1;
+        const viewport = document.getElementById('minimap-viewport');
+        const vpW = viewport?.clientWidth || 128;
+        const vpH = viewport?.clientHeight || 160;
 
-        const leftRatio = container.scrollLeft / scrollW;
-        const topRatio = container.scrollTop / scrollH;
-        const widthRatio = clientW / scrollW;
-        const heightRatio = clientH / scrollH;
+        const maxScrollX = Math.max(1, container.scrollWidth - container.clientWidth);
+        const maxScrollY = Math.max(1, container.scrollHeight - container.clientHeight);
 
-        viewRect.style.left = `${Math.max(0, leftRatio * 128)}px`;
-        viewRect.style.top = `${Math.max(0, topRatio * 160)}px`;
-        viewRect.style.width = `${Math.min(128, widthRatio * 128)}px`;
-        viewRect.style.height = `${Math.min(160, heightRatio * 160)}px`;
+        const leftRatio = Math.max(0, Math.min(1, container.scrollLeft / maxScrollX));
+        const topRatio = Math.max(0, Math.min(1, container.scrollTop / maxScrollY));
+        const widthRatio = Math.min(1, container.clientWidth / (container.scrollWidth || 1));
+        const heightRatio = Math.min(1, container.clientHeight / (container.scrollHeight || 1));
+
+        const rectW = Math.max(16, widthRatio * vpW);
+        const rectH = Math.max(16, heightRatio * vpH);
+        const rectX = leftRatio * (vpW - rectW);
+        const rectY = topRatio * (vpH - rectH);
+
+        viewRect.style.left = `${Math.max(0, rectX)}px`;
+        viewRect.style.top = `${Math.max(0, rectY)}px`;
+        viewRect.style.width = `${Math.min(vpW, rectW)}px`;
+        viewRect.style.height = `${Math.min(vpH, rectH)}px`;
     }
 }
 
@@ -609,12 +616,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('canvas-container');
     viewport?.addEventListener('click', (e) => {
         const rect = viewport.getBoundingClientRect();
-        const clickXRatio = (e.clientX - rect.left) / rect.width;
-        const clickYRatio = (e.clientY - rect.top) / rect.height;
+        const clickXRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const clickYRatio = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
         if (container) {
+            const targetX = clickXRatio * container.scrollWidth - container.clientWidth / 2;
+            const targetY = clickYRatio * container.scrollHeight - container.clientHeight / 2;
+            const maxScrollX = container.scrollWidth - container.clientWidth;
+            const maxScrollY = container.scrollHeight - container.clientHeight;
             container.scrollTo({
-                left: clickXRatio * container.scrollWidth - container.clientWidth / 2,
-                top: clickYRatio * container.scrollHeight - container.clientHeight / 2,
+                left: Math.max(0, Math.min(maxScrollX, targetX)),
+                top: Math.max(0, Math.min(maxScrollY, targetY)),
                 behavior: 'smooth'
             });
         }
