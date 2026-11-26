@@ -645,12 +645,49 @@
 
         <!-- ── TAB 5: AI & LLM PROMPT ─────────────────────────────────────── -->
         <section class="settings-panel hidden" id="panel-ai">
+            <!-- API Keys Configuration (UI-S2) -->
+            <div class="settings-card" id="card-api-keys">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" data-icon="settings"></div>
+                    <div>
+                        <div class="settings-card-title">مفاتيح محركات الذكاء الاصطناعي (OCR & AI API Keys)</div>
+                    </div>
+                    <button type="button" class="reset-section-link" data-section="api-keys" style="margin-inline-start: auto; background:none; border:none; color:var(--color-primary); font-size:12px; cursor:pointer; font-weight:600;">↺ استعادة القسم</button>
+                </div>
+                <div class="settings-card-desc">أدخل مفاتيح الربط مع محركات الذكاء الاصطناعي السحابية. تُحفظ المفاتيح محلياً بصيغة مقنعة آمنة.</div>
+
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                    <label class="setting-item-label">Google Gemini API Key</label>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <input type="password" id="api-key-gemini" placeholder="AIzaSy..." style="flex:1; padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-family: var(--font-mono);">
+                        <button type="button" class="btn-secondary btn-toggle-key-visibility" data-target="api-key-gemini" style="padding: 8px 12px; font-size: 13px;">👁 عرض</button>
+                    </div>
+                </div>
+
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                    <label class="setting-item-label">Anthropic Claude API Key</label>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <input type="password" id="api-key-claude" placeholder="sk-ant-..." style="flex:1; padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-family: var(--font-mono);">
+                        <button type="button" class="btn-secondary btn-toggle-key-visibility" data-target="api-key-claude" style="padding: 8px 12px; font-size: 13px;">👁 عرض</button>
+                    </div>
+                </div>
+
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                    <label class="setting-item-label">OpenAI API Key</label>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <input type="password" id="api-key-openai" placeholder="sk-..." style="flex:1; padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-family: var(--font-mono);">
+                        <button type="button" class="btn-secondary btn-toggle-key-visibility" data-target="api-key-openai" style="padding: 8px 12px; font-size: 13px;">👁 عرض</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="settings-card">
                 <div class="settings-card-header">
                     <div class="settings-card-icon" data-icon="sparkles"></div>
                     <div>
                         <div class="settings-card-title" data-i18n="settings.llmSystemPrompt">تعليمات النماذج الذكية العامة (LLM System Prompt)</div>
                     </div>
+                    <button type="button" class="reset-section-link" data-section="prompt" style="margin-inline-start: auto; background:none; border:none; color:var(--color-primary); font-size:12px; cursor:pointer; font-weight:600;">↺ استعادة القسم</button>
                 </div>
                 <div class="settings-card-desc" data-i18n="settings.llmPromptDesc">التعليمات البرمجية لتوجيه نماذج الذكاء الاصطناعي (Gemini, Claude, GPT, Qwen) عند استخراج كتل وتنسيقات النصوص العربية.</div>
 
@@ -781,6 +818,14 @@
 
             // LLM System Prompt
             document.getElementById('llm-system-prompt').value = window.__appSettings.llmSystemPrompt || window.DEFAULT_LLM_PROMPT;
+
+            // API Keys (UI-S2)
+            const geminiVal = localStorage.getItem('api_key_gemini') || window.__appSettings?.apiKeyGemini || '';
+            const claudeVal = localStorage.getItem('api_key_claude') || window.__appSettings?.apiKeyClaude || '';
+            const openaiVal = localStorage.getItem('api_key_openai') || window.__appSettings?.apiKeyOpenai || '';
+            if (document.getElementById('api-key-gemini')) document.getElementById('api-key-gemini').value = geminiVal;
+            if (document.getElementById('api-key-claude')) document.getElementById('api-key-claude').value = claudeVal;
+            if (document.getElementById('api-key-openai')) document.getElementById('api-key-openai').value = openaiVal;
 
             pendingShortcuts = Object.assign({}, window.__appSettings.keyboardShortcuts || {});
             renderShortcutsList();
@@ -922,6 +967,17 @@
             // LLM System Prompt
             window.__appSettings.llmSystemPrompt = document.getElementById('llm-system-prompt').value.trim() || window.DEFAULT_LLM_PROMPT;
 
+            // API Keys (UI-S2)
+            const gKey = document.getElementById('api-key-gemini')?.value.trim() || '';
+            const cKey = document.getElementById('api-key-claude')?.value.trim() || '';
+            const oKey = document.getElementById('api-key-openai')?.value.trim() || '';
+            localStorage.setItem('api_key_gemini', gKey);
+            localStorage.setItem('api_key_claude', cKey);
+            localStorage.setItem('api_key_openai', oKey);
+            window.__appSettings.apiKeyGemini = gKey;
+            window.__appSettings.apiKeyClaude = cKey;
+            window.__appSettings.apiKeyOpenai = oKey;
+
             const ok = await saveAppSettings();
             if (window.showNotif) {
                 window.showNotif(window.AppI18n ? window.AppI18n.t('settings.saved') : 'تم حفظ الإعدادات بنجاح', 'success');
@@ -1027,6 +1083,41 @@
                 renderCustomCategories();
             }
         };
+
+        // API Key Show/Hide Toggle (UI-S2)
+        document.querySelectorAll('.btn-toggle-key-visibility').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.dataset.target;
+                const input = document.getElementById(targetId);
+                if (input) {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        btn.textContent = '🔒 إخفاء';
+                    } else {
+                        input.type = 'password';
+                        btn.textContent = '👁 عرض';
+                    }
+                }
+            });
+        });
+
+        // Section Reset Links (UI-S3)
+        document.querySelectorAll('.reset-section-link').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sec = btn.dataset.section;
+                if (sec === 'api-keys') {
+                    ['api-key-gemini', 'api-key-claude', 'api-key-openai'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                        localStorage.removeItem(id);
+                    });
+                    if (window.showNotif) window.showNotif('تمت استعادة إعدادات مفاتيح API', 'info');
+                } else if (sec === 'prompt') {
+                    document.getElementById('llm-system-prompt').value = window.DEFAULT_LLM_PROMPT;
+                    if (window.showNotif) window.showNotif('تمت استعادة التعليمة الافتراضية', 'info');
+                }
+            });
+        });
 
         // Tab Switching
         document.querySelectorAll('.settings-tab-btn').forEach(btn => {

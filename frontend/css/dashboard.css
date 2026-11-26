@@ -66,7 +66,7 @@
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   text-decoration: none;
-  transition: all var(--trans-fast);
+  transition: background-color var(--trans-fast), color var(--trans-fast), border-color var(--trans-fast);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -141,6 +141,15 @@
   gap: 10px;
   width: 100%;
   box-sizing: border-box;
+  transition: padding var(--trans-fast);
+}
+
+#dashboard-coop-panel.collapsed {
+  padding: 6px 16px;
+}
+
+#dashboard-coop-panel.collapsed .coop-members-list {
+  display: none;
 }
 
 .coop-status-text {

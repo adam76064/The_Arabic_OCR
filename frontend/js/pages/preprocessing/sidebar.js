@@ -51,16 +51,19 @@
       // ── Stage 3: Deskew ──
       const deskewSlider = this.sidebar.querySelector('#deskew-angle-slider');
       const deskewVal = this.sidebar.querySelector('#deskew-angle-val');
+      const resetDeskewBtn = this.sidebar.querySelector('#btn-reset-deskew');
       if (deskewSlider) {
         deskewSlider.addEventListener('input', (e) => {
           const val = parseFloat(e.target.value);
           if (deskewVal) deskewVal.textContent = `${val.toFixed(2)}°`;
+          if (resetDeskewBtn) resetDeskewBtn.classList.toggle('hidden', Math.abs(val) < 0.01);
           state.updateStageParams('deskew', { angle: val, manual: true, auto_detect: false });
           this.triggerDebouncedPreview();
         });
         deskewSlider.addEventListener('dblclick', () => {
           deskewSlider.value = 0;
           if (deskewVal) deskewVal.textContent = '0.00°';
+          if (resetDeskewBtn) resetDeskewBtn.classList.add('hidden');
           state.updateStageParams('deskew', { angle: 0.0, manual: true, auto_detect: false });
           this.triggerLivePreview();
         });
@@ -74,12 +77,12 @@
         });
       }
 
-      const resetDeskewBtn = this.sidebar.querySelector('#btn-reset-deskew');
       if (resetDeskewBtn) {
         resetDeskewBtn.addEventListener('click', () => {
           state.updateStageParams('deskew', { angle: 0.0, manual: true, auto_detect: false });
           if (deskewSlider) deskewSlider.value = 0;
           if (deskewVal) deskewVal.textContent = '0.00°';
+          resetDeskewBtn.classList.add('hidden');
           this.triggerLivePreview();
         });
       }

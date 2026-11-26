@@ -25,9 +25,19 @@ function showCroppedView(bbox) {
     const viewer = document.getElementById('crop-viewer');
     const cropImg = document.getElementById('crop-image');
     const placeholder = document.getElementById('crop-placeholder');
+    const labelEl = document.getElementById('crop-block-label');
     const page = currentProject?.pages?.[currentPageIndex];
 
     if (!viewer || !cropImg || !placeholder || !page) return;
+
+    const ocrData = page.ocr_data || [];
+    if (typeof selectedBlockIndex !== 'undefined' && selectedBlockIndex >= 0 && ocrData[selectedBlockIndex]) {
+        const blk = ocrData[selectedBlockIndex];
+        const cat = blk.category || 'Text';
+        if (labelEl) labelEl.textContent = `الكتلة ${selectedBlockIndex + 1} من ${ocrData.length} · ${cat}`;
+    } else {
+        if (labelEl) labelEl.textContent = 'اختر كتلة لعرضها';
+    }
 
     if (!bbox) {
         viewer.classList.add('hidden');
@@ -132,6 +142,25 @@ function setupCropControls() {
     if (zoomIn) zoomIn.addEventListener('click', () => { cropZoom = Math.min(CROP_MAX, cropZoom + 0.25); applyCropZoom(); });
     if (zoomOut) zoomOut.addEventListener('click', () => { cropZoom = Math.max(CROP_MIN, cropZoom - 0.25); applyCropZoom(); });
     if (zoomReset) zoomReset.addEventListener('click', () => { cropZoom = 1.0; applyCropZoom(); });
+
+    // Step through blocks in crop header (UI-R6)
+    document.getElementById('crop-prev-block')?.addEventListener('click', () => {
+        const page = currentProject?.pages?.[currentPageIndex];
+        const ocrData = page?.ocr_data || [];
+        if (ocrData.length === 0) return;
+        const cur = (typeof selectedBlockIndex !== 'undefined' && selectedBlockIndex >= 0) ? selectedBlockIndex : 0;
+        const nextIdx = (cur <= 0) ? (ocrData.length - 1) : (cur - 1);
+        if (typeof selectBlock === 'function') selectBlock(nextIdx);
+    });
+
+    document.getElementById('crop-next-block')?.addEventListener('click', () => {
+        const page = currentProject?.pages?.[currentPageIndex];
+        const ocrData = page?.ocr_data || [];
+        if (ocrData.length === 0) return;
+        const cur = (typeof selectedBlockIndex !== 'undefined' && selectedBlockIndex >= 0) ? selectedBlockIndex : 0;
+        const nextIdx = (cur >= ocrData.length - 1) ? 0 : (cur + 1);
+        if (typeof selectBlock === 'function') selectBlock(nextIdx);
+    });
 
     window.addEventListener('resize', () => {
         if (!document.getElementById('crop-viewer')?.classList.contains('hidden')) {

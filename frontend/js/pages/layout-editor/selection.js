@@ -9,6 +9,18 @@ function updateSelectionUI() {
     if (btnDel) btnDel.disabled = selectedBoxes.size === 0;
     if (btnMerge) btnMerge.disabled = selectedBoxes.size < 2;
 
+    // Multi-select count badge (UI-LE2)
+    const selBadge = document.getElementById('layout-selection-badge');
+    const selCount = document.getElementById('layout-selection-count');
+    if (selBadge && selCount) {
+        if (selectedBoxes.size > 1) {
+            selCount.textContent = selectedBoxes.size;
+            selBadge.classList.remove('hidden');
+        } else {
+            selBadge.classList.add('hidden');
+        }
+    }
+
     const panel = document.getElementById('block-props-panel');
     if (!panel) return;
 

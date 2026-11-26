@@ -67,11 +67,47 @@
         <div class="tool-group">
             <button id="btn-merge" class="tool-btn" data-i18n-title="layout.mergeTitle" title="دمج الكتل المحددة" data-icon="merge" disabled data-i18n="layout.merge">دمج</button>
             <button id="btn-delete" class="tool-btn danger" data-i18n-title="layout.deleteTitle" title="حذف الكتل المحددة" data-icon="trash" disabled data-i18n="layout.delete">حذف</button>
+            <button id="btn-toggle-history" class="tool-btn" title="سجل العمليات" data-icon="order">السجل</button>
         </div>
 
         <div style="flex: 1;"></div>
         <button id="btn-save" class="btn-success" data-icon="save" data-i18n="layout.save">حفظ التخطيط</button>
     </header>
+
+    <!-- Multi-select Count Badge (UI-LE2) -->
+    <div id="layout-selection-badge" class="hidden" style="position: fixed; top: 70px; inset-inline-end: 20px; z-index: 50; background: var(--color-primary); color: #fff; padding: 6px 14px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; box-shadow: var(--shadow-md); pointer-events: none;">
+        <span id="layout-selection-count">0</span> كتل محددة
+    </div>
+
+    <!-- History Panel (UI-LE3) -->
+    <div id="layout-history-panel" class="hidden" style="position: fixed; top: 60px; inset-inline-end: 20px; z-index: 60; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); width: 220px; max-height: 320px; display: flex; flex-direction: column;">
+        <div style="padding: 10px 14px; border-bottom: 1px solid var(--color-border); font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; color: var(--color-text);">
+            <span>سجل العمليات (History)</span>
+            <button id="close-history-btn" style="background:none; border:none; cursor:pointer; font-size:13px; color:var(--color-text-muted);">✕</button>
+        </div>
+        <div id="layout-history-list" style="overflow-y: auto; padding: 6px 0; max-height: 260px;"></div>
+    </div>
+
+    <!-- Block Type Color Legend (UI-LE4) -->
+    <div id="layout-color-legend" style="position: fixed; bottom: 18px; inset-inline-start: 20px; z-index: 50; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 8px 12px; box-shadow: var(--shadow-sm); display: flex; gap: 10px; align-items: center; font-size: 11.5px; font-weight: 600; flex-wrap: wrap; color: var(--color-text);">
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#7c3aed;"></span><span>عنوان</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#2563eb;"></span><span>نص</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#0284c7;"></span><span>جدول</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#64748b;"></span><span>حاشية</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#059669;"></span><span>صورة</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#d97706;"></span><span>شعر</span></div>
+    </div>
+
+    <!-- Canvas Minimap Panel (UI-LE1) -->
+    <div id="layout-minimap-panel" style="position: fixed; bottom: 18px; inset-inline-end: 20px; z-index: 50; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 6px; box-shadow: var(--shadow-md); width: 140px; height: 180px; display: flex; flex-direction: column;">
+        <div style="font-size: 10px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 4px; display: flex; justify-content: space-between;">
+            <span>خريطة مصغرة</span>
+        </div>
+        <div id="minimap-viewport" style="position: relative; flex: 1; background: var(--color-bg-alt); border-radius: 4px; overflow: hidden; cursor: crosshair;">
+            <canvas id="layout-minimap-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+            <div id="minimap-view-rect" style="position: absolute; border: 1.5px solid var(--color-primary); background: rgba(15, 118, 110, 0.15); pointer-events: none;"></div>
+        </div>
+    </div>
 
     <main id="canvas-container">
         <div id="canvas-wrapper">

@@ -44,6 +44,15 @@ function initDashboardViewControls() {
     tableBtn?.addEventListener('click', () => updateView('table'));
     updateView(dashboardViewMode);
 
+    // Collapsible LAN panel (UI-D3)
+    const lanToggleExpand = document.getElementById('dash-lan-toggle-expand');
+    const coopPanel = document.getElementById('dashboard-coop-panel');
+    lanToggleExpand?.addEventListener('click', () => {
+        if (!coopPanel) return;
+        const isCollapsed = coopPanel.classList.toggle('collapsed');
+        lanToggleExpand.textContent = isCollapsed ? '▾' : '▴';
+    });
+
     // Select All Checkbox
     const selectAllCb = document.getElementById('dash-select-all-cb');
     const tableHeaderCb = document.getElementById('dash-table-header-cb');

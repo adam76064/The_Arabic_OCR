@@ -23,11 +23,22 @@
             </div>
         </div>
 
-        <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;" id="projects-filter-bar">
-            <button class="btn-secondary active" data-filter="all" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.all">الكل</span> (<span id="count-all">0</span>)</button>
-            <button class="btn-secondary" data-filter="completed" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.completed">مكتمل</span> (<span id="count-completed">0</span>)</button>
-            <button class="btn-secondary" data-filter="in_progress" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.inProgress">قيد المراجعة</span> (<span id="count-progress">0</span>)</button>
-            <button class="btn-secondary" data-filter="new" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.new">جديد</span> (<span id="count-new">0</span>)</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="projects-filter-bar">
+                <button class="btn-secondary active" data-filter="all" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.all">الكل</span> (<span id="count-all">0</span>)</button>
+                <button class="btn-secondary" data-filter="completed" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.completed">مكتمل</span> (<span id="count-completed">0</span>)</button>
+                <button class="btn-secondary" data-filter="in_progress" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.inProgress">قيد المراجعة</span> (<span id="count-progress">0</span>)</button>
+                <button class="btn-secondary" data-filter="new" style="font-size: 13px; padding: 6px 14px; border-radius: var(--radius-full);"><span data-i18n="filter.new">جديد</span> (<span id="count-new">0</span>)</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-muted);">
+                <span data-i18n="projects.sort">الترتيب:</span>
+                <select id="projects-sort-select" style="padding: 6px 10px; border-radius: var(--radius-md); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-size: 13px; cursor: pointer;">
+                    <option value="recent">الأحدث نشاطاً ▾</option>
+                    <option value="alpha">أبجدياً (أ - ي)</option>
+                    <option value="pages_desc">عدد الصفحات (الأكثر) ↓</option>
+                    <option value="pages_asc">عدد الصفحات (الأقل) ↑</option>
+                </select>
+            </div>
         </div>
 
         <div class="table-wrapper">
@@ -48,6 +59,26 @@
             </table>
         </div>
     </main>
+
+    <!-- Project Context Menu (UI-P4) -->
+    <div id="project-card-context-menu" class="custom-context-menu hidden" style="position:fixed; z-index:9999; background:var(--color-surface-elevated); border:1px solid var(--color-border-strong); box-shadow:var(--shadow-xl); border-radius:var(--radius-md); padding:6px 0; min-width:180px;">
+        <button type="button" class="ctx-item" id="pctx-open" style="width:100%; text-align:start; padding:8px 14px; background:none; border:none; color:var(--color-text); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px;">
+            <span>👁</span> <span data-i18n="projects.open">فتح المشروع</span>
+        </button>
+        <button type="button" class="ctx-item" id="pctx-rename" style="width:100%; text-align:start; padding:8px 14px; background:none; border:none; color:var(--color-text); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px;">
+            <span>✏️</span> <span>إعادة تسمية</span>
+        </button>
+        <button type="button" class="ctx-item" id="pctx-duplicate" style="width:100%; text-align:start; padding:8px 14px; background:none; border:none; color:var(--color-text); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px;">
+            <span>📋</span> <span>استنساخ المشروع</span>
+        </button>
+        <button type="button" class="ctx-item" id="pctx-export" style="width:100%; text-align:start; padding:8px 14px; background:none; border:none; color:var(--color-text); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px;">
+            <span>📤</span> <span>تصدير الكل</span>
+        </button>
+        <div style="height:1px; background:var(--color-border); margin:4px 0;"></div>
+        <button type="button" class="ctx-item" id="pctx-delete" style="width:100%; text-align:start; padding:8px 14px; background:none; border:none; color:var(--color-danger); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px;">
+            <span>🗑</span> <span data-i18n="projects.delete">حذف المشروع</span>
+        </button>
+    </div>
 
     <script src="js/icons.js"></script>
     <script src="js/i18n/locales/ar.js"></script>

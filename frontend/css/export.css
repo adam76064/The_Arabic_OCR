@@ -38,7 +38,7 @@
   padding: 24px;
   margin-bottom: 20px;
   box-shadow: var(--shadow-xs);
-  transition: all var(--trans-fast);
+  transition: border-color var(--trans-fast), background-color var(--trans-fast), box-shadow var(--trans-fast), transform var(--trans-fast);
   width: 100%;
   box-sizing: border-box;
 }

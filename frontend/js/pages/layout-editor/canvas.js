@@ -417,9 +417,9 @@ function drawCanvas() {
         ctx.rect(-pw/2, -ph/2, pw, ph);
 
         if (selectedBoxes.has(index)) {
-            ctx.lineWidth = 4 / scale;
-            ctx.strokeStyle = '#f1c40f'; 
-            ctx.fillStyle = 'rgba(241,196,15,0.35)';
+            ctx.lineWidth = 3.5 / scale;
+            ctx.strokeStyle = '#0f766e'; 
+            ctx.fillStyle = 'rgba(15, 118, 110, 0.20)';
         } else {
             ctx.lineWidth = 2 / scale;
             ctx.strokeStyle = color;
@@ -445,7 +445,7 @@ function drawCanvas() {
         const badgeY = -ph/2 - badgeH; 
 
         // رسم خلفية المربع
-        ctx.fillStyle = selectedBoxes.has(index) ? '#f1c40f' : color;
+        ctx.fillStyle = selectedBoxes.has(index) ? '#0f766e' : color;
         ctx.fillRect(badgeX, badgeY, badgeW, badgeH);
         
         // رسم النص
@@ -552,5 +552,76 @@ function drawCanvas() {
         }
         ctx.restore();
     }
+
+    drawLayoutMinimap();
 }
+
+function drawLayoutMinimap() {
+    const minimapCanvas = document.getElementById('layout-minimap-canvas');
+    const mainCanvas = document.getElementById('layout-canvas');
+    const container = document.getElementById('canvas-container');
+    const viewRect = document.getElementById('minimap-view-rect');
+    if (!minimapCanvas || !mainCanvas || !mainCanvas.width || !mainCanvas.height) return;
+
+    const mCtx = minimapCanvas.getContext('2d');
+    minimapCanvas.width = 128;
+    minimapCanvas.height = 160;
+
+    mCtx.clearRect(0, 0, minimapCanvas.width, minimapCanvas.height);
+    const mScaleX = minimapCanvas.width / mainCanvas.width;
+    const mScaleY = minimapCanvas.height / mainCanvas.height;
+
+    // Draw blocks on minimap
+    (ocrData || []).forEach((el, index) => {
+        const [x1, y1, x2, y2] = el.bbox;
+        const px = x1 * scaleRatioX * mScaleX;
+        const py = y1 * scaleRatioY * mScaleY;
+        const pw = (x2 - x1) * scaleRatioX * mScaleX;
+        const ph = (y2 - y1) * scaleRatioY * mScaleY;
+        const color = getCategoryColors()[el.category || 'Text'] || '#3498db';
+
+        mCtx.fillStyle = selectedBoxes.has(index) ? '#0f766e' : color;
+        mCtx.fillRect(px, py, Math.max(2, pw), Math.max(2, ph));
+    });
+
+    // Update viewport rect
+    if (container && viewRect) {
+        const scrollW = container.scrollWidth || 1;
+        const scrollH = container.scrollHeight || 1;
+        const clientW = container.clientWidth || 1;
+        const clientH = container.clientHeight || 1;
+
+        const leftRatio = container.scrollLeft / scrollW;
+        const topRatio = container.scrollTop / scrollH;
+        const widthRatio = clientW / scrollW;
+        const heightRatio = clientH / scrollH;
+
+        viewRect.style.left = `${Math.max(0, leftRatio * 128)}px`;
+        viewRect.style.top = `${Math.max(0, topRatio * 160)}px`;
+        viewRect.style.width = `${Math.min(128, widthRatio * 128)}px`;
+        viewRect.style.height = `${Math.min(160, heightRatio * 160)}px`;
+    }
+}
+
+// Minimap navigation click binding
+document.addEventListener('DOMContentLoaded', () => {
+    const viewport = document.getElementById('minimap-viewport');
+    const container = document.getElementById('canvas-container');
+    viewport?.addEventListener('click', (e) => {
+        const rect = viewport.getBoundingClientRect();
+        const clickXRatio = (e.clientX - rect.left) / rect.width;
+        const clickYRatio = (e.clientY - rect.top) / rect.height;
+        if (container) {
+            container.scrollTo({
+                left: clickXRatio * container.scrollWidth - container.clientWidth / 2,
+                top: clickYRatio * container.scrollHeight - container.clientHeight / 2,
+                behavior: 'smooth'
+            });
+        }
+    });
+
+    container?.addEventListener('scroll', () => {
+        drawLayoutMinimap();
+    });
+});
 

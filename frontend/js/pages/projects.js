@@ -3,6 +3,8 @@
  */
 let allLoadedProjects = [];
 let currentFilter = 'all';
+let currentSort = 'recent';
+let activeContextMenuProjectId = null;
 
 async function initProjects() {
   await renderProjectsTable();
@@ -17,6 +19,14 @@ async function initProjects() {
     searchInput.addEventListener('input', () => filterAndDisplayProjects());
   }
 
+  const sortSelect = document.getElementById('projects-sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      filterAndDisplayProjects();
+    });
+  }
+
   const filterButtons = document.querySelectorAll('#projects-filter-bar button');
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -27,8 +37,25 @@ async function initProjects() {
     });
   });
 
+  setupProjectContextMenu();
+
   window.addEventListener('languageChanged', () => {
     filterAndDisplayProjects();
+  });
+}
+
+function sortProjectsList(list) {
+  return [...list].sort((a, b) => {
+    if (currentSort === 'alpha') {
+      return (a.title || '').localeCompare(b.title || '');
+    } else if (currentSort === 'pages_desc') {
+      return (b.page_count || 0) - (a.page_count || 0);
+    } else if (currentSort === 'pages_asc') {
+      return (a.page_count || 0) - (b.page_count || 0);
+    } else {
+      // 'recent'
+      return (b.created_at || '') > (a.created_at || '') ? 1 : -1;
+    }
   });
 }
 
@@ -37,7 +64,7 @@ function filterAndDisplayProjects() {
   const tbody = document.getElementById('projects-tbody');
   if (!tbody) return;
 
-  const filtered = allLoadedProjects.filter(p => {
+  let filtered = allLoadedProjects.filter(p => {
     const total = p.page_count || 0;
     const reviewed = p.reviewed_count || 0;
     const pct = total > 0 ? Math.round((reviewed / total) * 100) : 0;
@@ -56,6 +83,8 @@ function filterAndDisplayProjects() {
 
     return true;
   });
+
+  filtered = sortProjectsList(filtered);
 
   tbody.innerHTML = '';
   if (allLoadedProjects.length === 0) {
@@ -103,9 +132,15 @@ function filterAndDisplayProjects() {
         <div class="table-actions">
           <button class="table-btn table-btn-open" data-icon="eye" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.open') : 'فتح'}</button>
           <button class="table-btn table-btn-delete" data-icon="trash" data-id="${p.id}">${window.AppI18n ? window.AppI18n.t('projects.delete') : 'حذف'}</button>
+          <button class="table-btn table-btn-menu" data-id="${p.id}" title="خيارات إضافية (يمين الفأرة)" style="padding: 4px 10px; font-weight: bold; background: var(--color-bg-muted); color: var(--color-text);">⋮</button>
         </div>
       </td>
     `;
+    tr.dataset.id = p.id;
+    tr.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      showProjectContextMenu(p.id, e.clientX, e.clientY);
+    });
     tbody.appendChild(tr);
   });
 
@@ -116,7 +151,107 @@ function filterAndDisplayProjects() {
   bindTableActionButtons();
 }
 
+function showProjectContextMenu(projId, x, y) {
+  activeContextMenuProjectId = projId;
+  const menu = document.getElementById('project-card-context-menu');
+  if (!menu) return;
+
+  menu.style.top = `${Math.min(y, window.innerHeight - 200)}px`;
+  menu.style.left = `${Math.min(x, window.innerWidth - 220)}px`;
+  menu.classList.remove('hidden');
+}
+
+function hideProjectContextMenu() {
+  const menu = document.getElementById('project-card-context-menu');
+  if (menu) menu.classList.add('hidden');
+  activeContextMenuProjectId = null;
+}
+
+function setupProjectContextMenu() {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#project-card-context-menu')) {
+      hideProjectContextMenu();
+    }
+  });
+
+  document.getElementById('pctx-open')?.addEventListener('click', () => {
+    if (activeContextMenuProjectId) {
+      window.location.href = `project-dashboard.html?id=${encodeURIComponent(activeContextMenuProjectId)}`;
+    }
+    hideProjectContextMenu();
+  });
+
+  document.getElementById('pctx-rename')?.addEventListener('click', async () => {
+    const projId = activeContextMenuProjectId;
+    hideProjectContextMenu();
+    if (!projId) return;
+    const project = allLoadedProjects.find(p => p.id === projId);
+    const oldTitle = project?.title || '';
+    const newTitle = prompt(window.AppI18n ? window.AppI18n.t('projects.renamePrompt') : 'أدخل الاسم الجديد للمشروع:', oldTitle);
+    if (newTitle && newTitle.trim() && newTitle.trim() !== oldTitle) {
+      try {
+        const api = window.AppApi || window.pywebview?.api;
+        if (api?.update_project_metadata) {
+          await api.update_project_metadata(projId, { title: newTitle.trim() });
+        } else if (api?.call) {
+          await api.call('update_project_metadata', projId, { title: newTitle.trim() });
+        }
+        if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('projects.renameSuccess') : 'تمت إعادة تسمية المشروع بنجاح', 'success');
+        await renderProjectsTable();
+      } catch (err) {
+        alert('فشل إعادة التسمية: ' + err);
+      }
+    }
+  });
+
+  document.getElementById('pctx-duplicate')?.addEventListener('click', async () => {
+    const projId = activeContextMenuProjectId;
+    hideProjectContextMenu();
+    if (!projId) return;
+    try {
+      const api = window.AppApi || window.pywebview?.api;
+      let res;
+      if (api?.duplicate_project) {
+        res = await api.duplicate_project(projId);
+      } else if (api?.call) {
+        res = await api.call('duplicate_project', projId);
+      }
+      if (res?.ok || res?.id) {
+        if (window.showNotif) window.showNotif(window.AppI18n ? window.AppI18n.t('projects.duplicateSuccess') : 'تم استنساخ المشروع بنجاح', 'success');
+        await renderProjectsTable();
+      } else {
+        alert('فشل استنساخ المشروع: ' + (res?.error || 'خطأ'));
+      }
+    } catch (err) {
+      alert('خطأ أثناء الاستنساخ: ' + err);
+    }
+  });
+
+  document.getElementById('pctx-export')?.addEventListener('click', () => {
+    if (activeContextMenuProjectId) {
+      window.location.href = `export.html?id=${encodeURIComponent(activeContextMenuProjectId)}`;
+    }
+    hideProjectContextMenu();
+  });
+
+  document.getElementById('pctx-delete')?.addEventListener('click', () => {
+    const projId = activeContextMenuProjectId;
+    hideProjectContextMenu();
+    if (projId) {
+      const btn = document.querySelector(`.table-btn-delete[data-id="${projId}"]`);
+      btn?.click();
+    }
+  });
+}
+
 function bindTableActionButtons() {
+  document.querySelectorAll('.table-btn-menu').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const rect = btn.getBoundingClientRect();
+      showProjectContextMenu(btn.dataset.id, rect.left, rect.bottom + 4);
+    });
+  });
   document.querySelectorAll('.table-btn-open').forEach(btn => {
     btn.addEventListener('click', () => { window.location.href = `project-dashboard.html?id=${btn.dataset.id}`; });
   });

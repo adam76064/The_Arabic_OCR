@@ -167,6 +167,12 @@ class Api:
     def delete_project(self, project_id, delete_files=True):
         return self.project_manager.delete_project(project_id, delete_files=delete_files)
 
+    def duplicate_project(self, project_id):
+        new_id = self.project_manager.duplicate_project(project_id)
+        if new_id:
+            return {"ok": True, "id": new_id}
+        return {"ok": False, "error": "Project not found or duplication failed"}
+
     def delete_page(self, project_id, page_index, delete_files=False):
         return self.project_manager.delete_page(project_id, page_index, delete_files=delete_files)
 

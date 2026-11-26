@@ -77,8 +77,12 @@
             <!-- Band 2: Editing, Tools & Verification -->
             <div class="toolbar toolbar-action-band">
                 <div style="display: flex; align-items: center; gap: 6px;">
-                    <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo"></button>
-                    <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo"></button>
+                    <button id="undo-btn" class="btn-icon" data-i18n-title="review.undo" title="تراجع" data-icon="undo">
+                        <span id="undo-depth-badge" class="history-badge hidden" style="font-size: 10px; font-weight: 700; margin-inline-start: 2px; background: var(--color-bg-muted); padding: 1px 4px; border-radius: var(--radius-full);"></span>
+                    </button>
+                    <button id="redo-btn" class="btn-icon" data-i18n-title="review.redo" title="إعادة" data-icon="redo">
+                        <span id="redo-depth-badge" class="history-badge hidden" style="font-size: 10px; font-weight: 700; margin-inline-start: 2px; background: var(--color-bg-muted); padding: 1px 4px; border-radius: var(--radius-full);"></span>
+                    </button>
                     <button id="save-page" class="btn-primary" style="padding: 5px 12px; font-size: 13px; font-weight: 700;" data-i18n-title="review.save" title="حفظ التعديلات (Ctrl+S)" data-icon="save">حفظ (Ctrl+S)</button>
                 </div>
 
@@ -103,6 +107,7 @@
                     </div>
                 </div>
 
+                <button id="btn-cheat-sheet" class="btn-secondary" style="font-weight: bold; font-size: 13px; padding: 4px 10px;" title="دليل اختصارات لوحة المفاتيح (?)">؟ الاختصارات</button>
                 <button id="toggle-filmstrip-btn" class="btn-secondary" style="margin-inline-start: auto; padding: 4px 10px; font-size: 12px;" title="تبديل شريط المصغرات"><span>المصغرات</span></button>
             </div>
         </div>
@@ -114,6 +119,15 @@
                 <div id="editor-panels-container">
                     <div id="crop-section" class="resizable-panel">
                         <div class="panel-resize-handle" id="crop-resize-handle"></div>
+                        <div id="crop-header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; background: var(--color-surface); border-bottom: 1px solid var(--color-border); font-size: 12px; color: var(--color-text-secondary); min-height: 32px;">
+                            <div id="crop-block-info" style="font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                                <span id="crop-block-label" style="font-size: 11.5px;">اختر كتلة لعرضها</span>
+                            </div>
+                            <div id="crop-block-nav" style="display: flex; gap: 4px; align-items: center;">
+                                <button id="crop-prev-block" class="nav-btn" style="width: 22px; height: 22px; font-size: 12px; padding: 0; line-height: 1;" title="الكتلة السابقة">‹</button>
+                                <button id="crop-next-block" class="nav-btn" style="width: 22px; height: 22px; font-size: 12px; padding: 0; line-height: 1;" title="الكتلة التالية">›</button>
+                            </div>
+                        </div>
                         <div id="crop-viewport">
                             <div id="crop-placeholder" data-i18n="review.cropPlaceholder">اختر كتلة نصية لعرضها هنا</div>
                             <div id="crop-viewer" class="hidden">
@@ -349,6 +363,51 @@
                             الفروقات المكتشفة (<span id="audit-disc-count">0</span>):
                         </div>
                         <div id="audit-discrepancies-list" style="max-height: 160px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcut Cheat Sheet Modal (UI-R9) -->
+    <div id="shortcuts-cheat-modal" class="modal hidden" style="z-index: 5500;">
+        <div class="modal-overlay" id="shortcuts-cheat-overlay"></div>
+        <div class="modal-box" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 style="display:flex; align-items:center; gap:8px;">
+                    <span>⌨️</span> <span>دليل اختصارات لوحة المفاتيح</span>
+                </h3>
+                <button class="modal-close" id="shortcuts-cheat-close">✕</button>
+            </div>
+            <div class="modal-body" style="padding: 16px 20px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <h4 style="color:var(--color-primary); font-size:13px; margin-bottom:8px; border-bottom:1px solid var(--color-border); padding-bottom:4px;">التنقل والصفحات</h4>
+                        <div class="cheat-item"><kbd>PageUp</kbd> / <kbd>PageDown</kbd> <span>الصفحة السابقة / التالية</span></div>
+                        <div class="cheat-item"><kbd>Alt + ←</kbd> / <kbd>→</kbd> <span>الخطو بين الصفحات</span></div>
+                        <div class="cheat-item"><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd> <span>الكتلة التالية / السابقة</span></div>
+                        <div class="cheat-item"><kbd>Ctrl + F</kbd> <span>البحث والاستبدال في المشروع</span></div>
+                    </div>
+                    <div>
+                        <h4 style="color:var(--color-primary); font-size:13px; margin-bottom:8px; border-bottom:1px solid var(--color-border); padding-bottom:4px;">التحرير والحفظ</h4>
+                        <div class="cheat-item"><kbd>Ctrl + S</kbd> <span>حفظ الصفحة الحالية</span></div>
+                        <div class="cheat-item"><kbd>Ctrl + Z</kbd> <span>تراجع عن التعديل</span></div>
+                        <div class="cheat-item"><kbd>Ctrl + Y</kbd> <span>إعادة التعديل</span></div>
+                        <div class="cheat-item"><kbd>Del</kbd> <span>حذف الكتلة المحددة</span></div>
+                    </div>
+                    <div>
+                        <h4 style="color:var(--color-primary); font-size:13px; margin-bottom:8px; border-bottom:1px solid var(--color-border); padding-bottom:4px;">تنسيق النصوص</h4>
+                        <div class="cheat-item"><kbd>Ctrl + B</kbd> <span>خط عريض (Bold)</span></div>
+                        <div class="cheat-item"><kbd>Ctrl + I</kbd> <span>خط مائل (Italic)</span></div>
+                        <div class="cheat-item"><kbd>Ctrl + U</kbd> <span>تسطير (Underline)</span></div>
+                        <div class="cheat-item"><kbd>Space</kbd> <span>تبديل حالة التدقيق (مُراجع)</span></div>
+                    </div>
+                    <div>
+                        <h4 style="color:var(--color-primary); font-size:13px; margin-bottom:8px; border-bottom:1px solid var(--color-border); padding-bottom:4px;">العرض والاقتطاع</h4>
+                        <div class="cheat-item"><kbd>+</kbd> / <kbd>-</kbd> <span>تكبير / تصغير الاقتطاع</span></div>
+                        <div class="cheat-item"><kbd>0</kbd> <span>إعادة ضبط تكبير الاقتطاع</span></div>
+                        <div class="cheat-item"><kbd>Esc</kbd> <span>إلغاء التحديد أو إغلاق النوافذ</span></div>
+                        <div class="cheat-item"><kbd>?</kbd> <span>فتح هذا الدليل</span></div>
                     </div>
                 </div>
             </div>

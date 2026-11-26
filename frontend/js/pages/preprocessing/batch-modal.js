@@ -3,6 +3,14 @@
  */
 (function (global) {
   const STAGES_ORDER = ['orientation', 'split', 'deskew', 'content', 'layout', 'output'];
+  const STAGE_NAMES = {
+    orientation: 'الاتجاه والتدوير',
+    split: 'فصل الصفحات المزدوجة',
+    deskew: 'ضبط الاستقامة والميل',
+    content: 'تحديد صندوق المحتوى',
+    layout: 'تخطيط الهوامش',
+    output: 'المعالجة الثنائية والإخراج'
+  };
 
   class BatchModal {
     constructor(modalEl) {
@@ -212,10 +220,12 @@
       if (payload.status === 'processing') {
         const pct = payload.percentage || 0;
         if (fill) fill.style.width = `${pct}%`;
+        const stageKey = payload.stage || payload.current_stage || global.PreprocessingState?.activeStage || 'orientation';
+        const sIdx = STAGES_ORDER.indexOf(stageKey);
+        const stageIdx = (sIdx >= 0 ? sIdx : 0) + 1;
+        const stageName = STAGE_NAMES[stageKey] || stageKey;
         if (statusText) {
-          statusText.textContent = global.AppI18n
-            ? global.AppI18n.t('batch.processingPage', { current: payload.current, total: payload.total, pct })
-            : `Processing page ${payload.current} / ${payload.total} (${pct}%)`;
+          statusText.textContent = `معالجة المرحلة ${stageIdx} من 6: ${stageName} — صفحة ${payload.current || 1} من ${payload.total || 1} (${pct}%)`;
         }
       } else if (payload.status === 'completed' || payload.status === 'cancelled') {
         this.isRunning = false;

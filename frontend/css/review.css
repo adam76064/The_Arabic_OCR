@@ -1158,3 +1158,28 @@ body.table-cell-select-mode .layout-table-overlay td {
   margin: 4px 0;
 }
 
+/* ── Keyboard Shortcuts Cheat Sheet Modal (UI-R9) ── */
+.cheat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  gap: 10px;
+}
+
+.cheat-item kbd {
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+

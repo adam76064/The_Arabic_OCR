@@ -357,3 +357,95 @@ def test_dashboard_and_export_css_files_exist():
     assert ".format-cards-grid" in e_content
     assert ".export-progress-fill" in e_content
     print("[PASS] dashboard.css and export.css extracted files verified.")
+
+
+# ── 9. Project Duplication & Metadata Operations (UI-P4) ──────────────────────
+
+def test_project_duplicate_and_rename_metadata(tmp_path):
+    pm = ProjectManager(projects_dir=str(tmp_path))
+    p = pm.create_project({"title": "Original Arabic Book", "author": "Author 1"})
+    pid = p["id"]
+
+    from backend.app.api import Api
+    api = Api.__new__(Api)
+    api.project_manager = pm
+
+    # Duplicate project
+    dup_res = api.duplicate_project(pid)
+    assert dup_res["ok"] is True
+    dup_id = dup_res["id"]
+    assert dup_id != pid
+
+    dup_proj = pm.load_project(dup_id)
+    assert dup_proj is not None
+    assert dup_proj["id"] == dup_id
+    assert "(نسخة)" in dup_proj["metadata"]["title"]
+
+    # Rename metadata
+    ren_res = api.update_project_metadata(dup_id, {"title": "Renamed Book Title"})
+    assert ren_res["ok"] is True
+    updated = pm.load_project(dup_id)
+    assert updated["metadata"]["title"] == "Renamed Book Title"
+    print("[PASS] Project duplication and metadata renaming verified.")
+
+
+# ── 10. Comprehensive UI Audit Elements Verification ──────────────────────────
+
+def test_ui_audit_report_elements_present():
+    fe_dir = os.path.join(os.path.dirname(__file__), "..", "frontend")
+
+    # Screen 1: Home
+    with open(os.path.join(fe_dir, "index.html"), "r", encoding="utf-8") as f:
+        h_html = f.read()
+    assert "app-topbar" in h_html
+    assert "hero-dropzone" in h_html
+
+    # Screen 2: Projects
+    with open(os.path.join(fe_dir, "projects.html"), "r", encoding="utf-8") as f:
+        p_html = f.read()
+    assert "projects-sort-select" in p_html
+    assert "project-card-context-menu" in p_html
+
+    # Screen 3: Dashboard
+    with open(os.path.join(fe_dir, "project-dashboard.html"), "r", encoding="utf-8") as f:
+        d_html = f.read()
+    assert "dashboard-coop-panel" in d_html
+    assert "dash-lan-toggle-expand" in d_html
+
+    # Screen 4: Review
+    with open(os.path.join(fe_dir, "review.html"), "r", encoding="utf-8") as f:
+        r_html = f.read()
+    assert "crop-header-bar" in r_html
+    assert "undo-depth-badge" in r_html
+    assert "shortcuts-cheat-modal" in r_html
+
+    # Screen 6: Layout Editor
+    with open(os.path.join(fe_dir, "layout-editor.html"), "r", encoding="utf-8") as f:
+        le_html = f.read()
+    assert "layout-minimap-panel" in le_html
+    assert "layout-selection-badge" in le_html
+    assert "layout-color-legend" in le_html
+    assert "layout-history-panel" in le_html
+
+    # Screen 7: Export
+    with open(os.path.join(fe_dir, "export.html"), "r", encoding="utf-8") as f:
+        e_html = f.read()
+    assert "format-size-estimate" in e_html
+    assert "format-features" in e_html
+    assert "btn-cancel-export" in e_html
+    assert "recent-exports-card" in e_html
+
+    # Screen 8: Settings
+    with open(os.path.join(fe_dir, "settings.html"), "r", encoding="utf-8") as f:
+        s_html = f.read()
+    assert 'id="api-key-gemini"' in s_html
+    assert 'btn-toggle-key-visibility' in s_html
+    assert 'reset-section-link' in s_html
+
+    # Cross-cutting: Notifications queue
+    with open(os.path.join(fe_dir, "js", "components", "notifications.js"), "r", encoding="utf-8") as f:
+        n_js = f.read()
+    assert "MAX_VISIBLE_TOASTS" in n_js
+    assert "pruneQueue" in n_js
+
+    print("[PASS] All UI Audit Report enhancement elements verified across template and component files.")

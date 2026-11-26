@@ -44,6 +44,26 @@ class ProjectManager:
         self._save_project_file(project_id, project_data)
         return project_data
 
+    def duplicate_project(self, project_id):
+        """Duplicates an entire project with all assets and pages, giving it a unique ID."""
+        with self.lock:
+            src_dir = os.path.join(self.projects_dir, project_id)
+            if not os.path.isdir(src_dir):
+                return None
+            new_id = str(uuid.uuid4())
+            new_dir = os.path.join(self.projects_dir, new_id)
+            shutil.copytree(src_dir, new_dir)
+
+            data = self.load_project(new_id)
+            if data:
+                data["id"] = new_id
+                data["created_at"] = datetime.now().isoformat()
+                if "metadata" in data and isinstance(data["metadata"], dict):
+                    orig_title = data["metadata"].get("title", "Project")
+                    data["metadata"]["title"] = f"{orig_title} (نسخة)"
+                self._save_project_file(new_id, data)
+            return new_id
+
     def list_projects(self):
         projects = []
         if not os.path.exists(self.projects_dir):

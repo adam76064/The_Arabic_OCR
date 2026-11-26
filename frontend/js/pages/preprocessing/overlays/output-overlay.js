@@ -13,6 +13,29 @@
           global.PreprocessingStudio.canvas.render();
         }
       };
+
+      // Keyboard navigation for split curtain: Left / Right moves it 5% (UI-PP2)
+      window.addEventListener('keydown', (e) => {
+        const state = global.PreprocessingState;
+        if (state?.activeStage !== 'output') return;
+        const ae = document.activeElement;
+        const isTyping = ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA');
+        if (isTyping) return;
+
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const cur = state.splitCurtainPos || 0.5;
+          const next = Math.max(0.05, cur - 0.05);
+          state.set({ splitCurtainPos: next });
+          global.PreprocessingStudio?.canvas?.render();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          const cur = state.splitCurtainPos || 0.5;
+          const next = Math.min(0.95, cur + 0.05);
+          state.set({ splitCurtainPos: next });
+          global.PreprocessingStudio?.canvas?.render();
+        }
+      });
     }
 
     setOriginalImage(dataUrl) {

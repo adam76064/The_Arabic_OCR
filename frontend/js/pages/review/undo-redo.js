@@ -53,8 +53,27 @@ function performRedo() { applyHistoryEntry(history.redo, history.undo); }
 function updateUndoRedoButtons() {
     const uBtn = document.getElementById('undo-btn');
     const rBtn = document.getElementById('redo-btn');
+    const uBadge = document.getElementById('undo-depth-badge');
+    const rBadge = document.getElementById('redo-depth-badge');
     if (uBtn) uBtn.disabled = !history.undo.length;
     if (rBtn) rBtn.disabled = !history.redo.length;
+
+    if (uBadge) {
+        if (history.undo.length > 0) {
+            uBadge.textContent = history.undo.length;
+            uBadge.classList.remove('hidden');
+        } else {
+            uBadge.classList.add('hidden');
+        }
+    }
+    if (rBadge) {
+        if (history.redo.length > 0) {
+            rBadge.textContent = history.redo.length;
+            rBadge.classList.remove('hidden');
+        } else {
+            rBadge.classList.add('hidden');
+        }
+    }
 }
 function setupUndo() { updateUndoRedoButtons(); }
 

@@ -71,11 +71,17 @@ async function initHome() {
 
         const isRtl = document.documentElement.dir === 'rtl' || !document.documentElement.dir;
         const chevronName = isRtl ? 'chevronLeft' : 'chevronRight';
+        const thumbUrl = window.__appDataPath 
+            ? `file:///${window.__appDataPath}/projects/${p.id}/thumbs/page_0.jpg` 
+            : `projects/${p.id}/thumbs/page_0.jpg`;
 
         card.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 14px; flex: 1; min-width: 220px;">
-            <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              ${window.AppIcons ? window.AppIcons.get('book', 'width:20px;height:20px;') : ''}
+          <div style="display: flex; align-items: center; gap: 14px; flex: 1; min-width: 240px;">
+            <div style="width: 48px; height: 64px; border-radius: var(--radius-sm); background: var(--color-bg-muted); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--color-border); position: relative;">
+              <img src="${thumbUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--color-primary-light); color: var(--color-primary);">
+                ${window.AppIcons ? window.AppIcons.get('book', 'width:20px;height:20px;') : ''}
+              </div>
             </div>
             <div>
               <span class="recent-card-title" style="color: var(--color-text); font-weight: 700; display: block;">${safeTitle}</span>
@@ -92,9 +98,10 @@ async function initHome() {
               </span>
             </div>
             <div class="recent-progress" style="width: 120px;"><div class="recent-progress-fill" style="width:${pct}%"></div></div>
-            <div style="color: var(--color-text-muted); display: flex; align-items: center;">
-              ${window.AppIcons ? window.AppIcons.get(chevronName, 'width:16px;height:16px;') : ''}
-            </div>
+            <span class="table-btn table-btn-open" style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;">
+              <span>${window.AppI18n ? window.AppI18n.t('projects.open') : 'فتح'}</span>
+              ${window.AppIcons ? window.AppIcons.get(chevronName, 'width:14px;height:14px;') : '→'}
+            </span>
           </div>
         `;
         recent.appendChild(card);

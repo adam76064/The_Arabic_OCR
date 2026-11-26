@@ -63,11 +63,12 @@
             </div>
         </div>
 
-        <!-- Collaboration Status Bar (Compact) -->
-        <div id="dashboard-coop-panel">
+        <!-- Collaboration Status Bar (Compact & Collapsible - UI-D3) -->
+        <div id="dashboard-coop-panel" class="collapsed">
             <div class="coop-status-text">
-                <span data-icon-label="lan" data-i18n="dash.collab">التعاون المحلي (LAN):</span>
-                <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">محلي: متوقف</button>
+                <span data-icon-label="lan" data-i18n="dash.collab">🔗 المشاركة عبر الشبكة المحلية (LAN):</span>
+                <button type="button" id="dash-lan-status" class="lan-status-badge is-off" data-i18n-title="dash.lanToggleTitle" title="انقر لتفعيل/إيقاف وضع العمل المحلي" data-icon-label="network" data-i18n="dash.lanOff">متوقف [تفعيل]</button>
+                <button type="button" id="dash-lan-toggle-expand" class="btn-icon" style="width:24px;height:24px;font-size:12px;cursor:pointer;" title="عرض/إخفاء التفاصيل">▾</button>
             </div>
             <div id="dash-active-collaborators" class="coop-members-list">
                 <span style="font-style: italic;" data-i18n="dash.noMembers">لا يوجد أعضاء متصلون حالياً</span>

@@ -160,6 +160,40 @@ function setupToolbar() {
         });
     }
 
+    // ── Keyboard Shortcut Cheat Sheet Modal (UI-R9) ──
+    const cheatModal = document.getElementById('shortcuts-cheat-modal');
+    const openCheatBtn = document.getElementById('btn-cheat-sheet');
+    const closeCheatBtn = document.getElementById('shortcuts-cheat-close');
+    const cheatOverlay = document.getElementById('shortcuts-cheat-overlay');
+
+    const toggleCheatSheet = () => {
+        cheatModal?.classList.toggle('hidden');
+    };
+
+    openCheatBtn?.addEventListener('click', toggleCheatSheet);
+    closeCheatBtn?.addEventListener('click', () => cheatModal?.classList.add('hidden'));
+    cheatOverlay?.addEventListener('click', () => cheatModal?.classList.add('hidden'));
+
+    window.addEventListener('keydown', (e) => {
+        // Alt+Left / Alt+Right for Page Filmstrip Navigation (UI-R4)
+        if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+            e.preventDefault();
+            const step = (e.key === 'ArrowRight') ? 1 : -1;
+            navigatePage(step);
+            return;
+        }
+
+        // '?' opens shortcuts cheat sheet (UI-R9)
+        if (e.key === '?' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            const ae = document.activeElement;
+            const isTyping = ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable);
+            if (!isTyping) {
+                e.preventDefault();
+                toggleCheatSheet();
+            }
+        }
+    });
+
     // ── Search & Replace Bar (F-1 / UI-R5) ──
     const searchDrawer = document.getElementById('project-search-bar');
     const openSearchBtn = document.getElementById('btn-open-search');
